@@ -71,8 +71,14 @@ public class Unit : MonoBehaviour
             currentTarget = null;
         }
 
-        // Luôn tìm target mới nếu trong tầm phát hiện
-        FindTarget();
+        // Kiểm tra có unit nào trong tầm đánh không
+        CheckNearbyEnemies();
+
+        // Nếu không có target, tìm target mới với ưu tiên gần base
+        if (currentTarget == null)
+        {
+            FindTargetNearBase();
+        }
 
         if (currentTarget != null)
         {
@@ -154,9 +160,39 @@ public class Unit : MonoBehaviour
         }
     }
     
-    private void FindTarget()
+    private void CheckNearbyEnemies()
     {
-        // Tìm unit gần nhất của đối phương trong tầm phát hiện
+        // Chỉ tìm unit trong tầm đánh nếu chưa có target hoặc target hiện tại ngoài tầm đánh
+        if (currentTarget == null || !IsInRange(currentTarget))
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, data.range);
+            float closestDistance = float.MaxValue;
+            Unit closestUnit = null;
+
+            foreach (Collider2D collider in colliders)
+            {
+                Unit unit = collider.GetComponent<Unit>();
+                if (unit != null && unit.isPlayerUnit != isPlayerUnit && !unit.IsDead)
+                {
+                    float distance = Vector2.Distance(transform.position, unit.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestUnit = unit;
+                    }
+                }
+            }
+
+            if (closestUnit != null)
+            {
+                currentTarget = closestUnit;
+            }
+        }
+    }
+
+    private void FindTargetNearBase()
+    {
+        // Chỉ tìm target gần base khi không có target
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, data.detectRange);
         float closestScore = float.MaxValue;
         Base allyBase = null;
@@ -179,12 +215,10 @@ public class Unit : MonoBehaviour
             {
                 float distanceToMe = Vector2.Distance(transform.position, unit.transform.position);
                 
-                // Tính điểm ưu tiên dựa trên khoảng cách đến unit và nhà chính
                 float score;
                 if (allyBase != null)
                 {
                     float distanceToBase = Vector2.Distance(unit.transform.position, allyBase.transform.position);
-                    // Unit càng gần base và càng gần mình càng được ưu tiên
                     score = distanceToBase * 0.7f + distanceToMe * 0.3f;
                 }
                 else
