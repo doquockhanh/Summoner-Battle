@@ -12,6 +12,8 @@ public class Unit : MonoBehaviour
     
     private const float MIN_DISTANCE_BETWEEN_UNITS = 2f;
     
+    private float hpLossTimer = 0f;
+    
     public bool IsDead => currentHp <= 0;
     
     public void Initialize(UnitData unitData, bool isPlayer)
@@ -46,8 +48,13 @@ public class Unit : MonoBehaviour
     {
         if (IsDead) return;
         
-        // Trừ máu theo thời gian
-        TakeDamage(data.hpLossPerSecond * Time.deltaTime);
+        // Trừ máu mỗi giây
+        hpLossTimer += Time.deltaTime;
+        if (hpLossTimer >= 1f)
+        {
+            TakeDamage(data.hpLossPerSecond);
+            hpLossTimer = 0f;
+        }
         
         if (targetBase != null)
         {
@@ -260,10 +267,37 @@ public class Unit : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
+        // Nếu là hồi máu (damage < 0) và máu đã đầy thì không hồi nữa
+        if (damage < 0 && currentHp >= data.hp)
+        {
+            return;
+        }
+
         currentHp -= damage;
+        // Giới hạn máu không vượt quá max
+        currentHp = Mathf.Clamp(currentHp, 0, data.hp);
+        
         if (unitView != null)
         {
             unitView.UpdateHealth(currentHp);
+        }
+        
+        // Hiển thị floating text
+        if (damage > 0)
+        {
+            FloatingTextManager.Instance.ShowFloatingText(
+                $"-{Mathf.Abs(damage):F0}",
+                transform.position,
+                Color.red
+            );
+        }
+        else if (damage < 0)
+        {
+            FloatingTextManager.Instance.ShowFloatingText(
+                $"+{Mathf.Abs(damage):F0}",
+                transform.position,
+                Color.green
+            );
         }
         
         if (IsDead)
