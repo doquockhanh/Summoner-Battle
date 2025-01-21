@@ -24,6 +24,8 @@ public class BattleManager : MonoBehaviour
     private float currentPlayerHP;
     private float currentEnemyHP;
     
+    [SerializeField] private UnitPoolManager unitPoolManager;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -34,6 +36,8 @@ public class BattleManager : MonoBehaviour
     
     private void Start()
     {
+        // Khởi tạo pools trước khi bắt đầu trận đấu
+        unitPoolManager.InitializePools(playerCards, enemyCards);
         StartBattle(playerCards, enemyCards);
         currentPlayerHP = playerBaseHP;
         currentEnemyHP = enemyBaseHP;

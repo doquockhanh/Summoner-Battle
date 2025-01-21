@@ -18,6 +18,9 @@ public class UnitData : ScriptableObject
     public float detectRange;  // Tầm phát hiện kẻ địch
     public float hpLossPerSecond; // Lượng máu mất mỗi giây
 
+    // Thêm reference đến prefab
+    public GameObject unitPrefab;
+
     private void OnValidate()
     {
         // Đảm bảo các giá trị không âm

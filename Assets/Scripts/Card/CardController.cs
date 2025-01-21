@@ -48,21 +48,20 @@ public class CardController : MonoBehaviour
     
     private void SpawnUnit()
     {
-        if (unitPrefab == null)
+        if (cardData.summonUnit == null)
         {
-            Debug.LogError("Unit Prefab is not assigned!");
+            Debug.LogError("Summon Unit Data is not assigned!");
             return;
         }
 
         Vector3 spawnPos = BattleManager.Instance.GetSpawnPosition(isPlayer);
-        GameObject unitObj = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
         
-        unitObj.transform.SetParent(null);
-        
-        Unit unit = unitObj.GetComponent<Unit>();
+        // Lấy unit từ pool thay vì Instantiate
+        Unit unit = UnitPoolManager.Instance.GetUnit(cardData.summonUnit, isPlayer);
         if (unit != null)
         {
-            unit.Initialize(cardData.summonUnit, isPlayer);
+            unit.transform.position = spawnPos;
+            unit.transform.SetParent(null);
         }
         
         spawnTimer = cardData.spawnCooldown;

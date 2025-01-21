@@ -274,8 +274,8 @@ public class Unit : MonoBehaviour
     
     private void Die()
     {
-        // Có thể thêm animation chết ở đây
-        Destroy(gameObject, 1f);
+        // Thay vì destroy, trả unit về pool
+        UnitPoolManager.Instance.ReturnToPool(this);
     }
     
     private void OnDrawGizmosSelected()
@@ -333,4 +333,7 @@ public class Unit : MonoBehaviour
             }
         }
     }
+
+    // Thêm getter cho UnitData
+    public UnitData GetUnitData() => data;
 }
