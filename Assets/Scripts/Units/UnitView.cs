@@ -12,7 +12,6 @@ public class UnitView : MonoBehaviour
     
     public void Setup(UnitData data, Unit unitComponent)
     {
-        Debug.Log($"Setting up health bar with max HP: {data.hp}");
         unit = unitComponent;
         maxHp = data.hp;
         
@@ -51,7 +50,6 @@ public class UnitView : MonoBehaviour
     
     public void UpdateHealth(float currentHp)
     {
-        Debug.Log($"Updating health: {currentHp}/{maxHp}");
         if (healthBar != null)
         {
             healthBar.value = currentHp;

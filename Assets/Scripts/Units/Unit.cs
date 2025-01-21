@@ -29,7 +29,6 @@ public class Unit : MonoBehaviour
             circleCollider.radius = data.range;
         }
         
-        Debug.Log($"Initializing unit with HP: {currentHp}");
         if (unitView != null)
         {
             unitView.Setup(data, this);
@@ -262,7 +261,6 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHp -= damage;
-        Debug.Log($"Unit took {damage} damage, current HP: {currentHp}");
         if (unitView != null)
         {
             unitView.UpdateHealth(currentHp);
@@ -280,7 +278,6 @@ public class Unit : MonoBehaviour
         Destroy(gameObject, 1f);
     }
     
-    // Để debug trong Unity Editor
     private void OnDrawGizmosSelected()
     {
         if (data != null)
@@ -297,13 +294,18 @@ public class Unit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Base enemyBase = other.GetComponent<Base>();
-        if (enemyBase != null && enemyBase.IsPlayerBase != isPlayerUnit)
+        // Chỉ kiểm tra base nếu chưa có targetBase
+        if (targetBase == null)
         {
-            targetBase = enemyBase;
-            return;
+            Base enemyBase = other.GetComponent<Base>();
+            if (enemyBase != null && enemyBase.IsPlayerBase != isPlayerUnit)
+            {
+                targetBase = enemyBase;
+                currentTarget = null; // Reset current target khi chuyển sang tấn công base
+                return;
+            }
         }
-
+        
         if (currentTarget != null) return;
         
         Unit otherUnit = other.GetComponent<Unit>();

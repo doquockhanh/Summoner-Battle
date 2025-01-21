@@ -48,7 +48,6 @@ public class CardController : MonoBehaviour
     
     private void SpawnUnit()
     {
-        Debug.Log($"Spawning unit at position: {BattleManager.Instance.GetSpawnPosition(isPlayer)}");
         if (unitPrefab == null)
         {
             Debug.LogError("Unit Prefab is not assigned!");
