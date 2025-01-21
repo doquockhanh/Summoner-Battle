@@ -16,7 +16,7 @@ public class UnitData : ScriptableObject
     public float moveSpeed;
     public float range;        // Tầm đánh
     public float detectRange;  // Tầm phát hiện kẻ địch
-    public float spawnCooldown;
+    public float hpLossPerSecond; // Lượng máu mất mỗi giây
 
     private void OnValidate()
     {
@@ -27,6 +27,5 @@ public class UnitData : ScriptableObject
         moveSpeed = Mathf.Max(0, moveSpeed);
         range = Mathf.Max(0.1f, range);
         detectRange = Mathf.Max(range, detectRange); // Tầm phát hiện phải >= tầm đánh
-        spawnCooldown = Mathf.Max(0, spawnCooldown);
     }
 } 

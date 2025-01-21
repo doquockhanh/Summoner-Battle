@@ -17,4 +17,5 @@ MonoBehaviour:
   description: Mekeanwid
   mana: 100
   rageGainRate: 10
+  spawnCooldown: 5
   summonUnit: {fileID: 11400000, guid: 14d57373e757ee44ca14e1dd862f047f, type: 2}

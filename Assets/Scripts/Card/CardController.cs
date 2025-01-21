@@ -25,7 +25,7 @@ public class CardController : MonoBehaviour
     
     private void Start()
     {
-        spawnTimer = cardData.summonUnit.spawnCooldown;
+        spawnTimer = cardData.spawnCooldown;
         SpawnUnit();
     }
     
@@ -43,7 +43,7 @@ public class CardController : MonoBehaviour
         currentRage += cardData.rageGainRate * Time.deltaTime;
         currentRage = Mathf.Min(currentRage, 100f);
         
-        cardView.UpdateUI(currentRage/100f, spawnTimer/cardData.summonUnit.spawnCooldown);
+        cardView.UpdateUI(currentRage/100f, spawnTimer/cardData.spawnCooldown);
     }
     
     private void SpawnUnit()
@@ -66,6 +66,6 @@ public class CardController : MonoBehaviour
             unit.Initialize(cardData.summonUnit, isPlayer);
         }
         
-        spawnTimer = cardData.summonUnit.spawnCooldown;
+        spawnTimer = cardData.spawnCooldown;
     }
 }

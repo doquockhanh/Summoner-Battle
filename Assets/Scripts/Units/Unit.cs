@@ -10,7 +10,7 @@ public class Unit : MonoBehaviour
     private UnitView unitView;
     private Base targetBase;
     
-    private const float MIN_DISTANCE_BETWEEN_UNITS = 1f; // Khoảng cách tối thiểu giữa các unit
+    private const float MIN_DISTANCE_BETWEEN_UNITS = 2f;
     
     public bool IsDead => currentHp <= 0;
     
@@ -46,6 +46,9 @@ public class Unit : MonoBehaviour
     private void Update()
     {
         if (IsDead) return;
+        
+        // Trừ máu theo thời gian
+        TakeDamage(data.hpLossPerSecond * Time.deltaTime);
         
         if (targetBase != null)
         {

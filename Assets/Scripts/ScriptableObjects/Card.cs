@@ -12,6 +12,7 @@ public class Card : ScriptableObject
     [Header("Stats")]
     public float mana;
     public float rageGainRate;
+    public float spawnCooldown; // Thời gian chờ giữa các lần gọi unit
     
     [Header("Unit Data")]
     public UnitData summonUnit;
@@ -21,6 +22,7 @@ public class Card : ScriptableObject
         // Đảm bảo dữ liệu hợp lệ
         mana = Mathf.Max(0, mana);
         rageGainRate = Mathf.Max(0, rageGainRate);
+        spawnCooldown = Mathf.Max(0, spawnCooldown);
     }
     
     private void OnEnable()

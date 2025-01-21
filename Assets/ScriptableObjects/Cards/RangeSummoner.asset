@@ -17,4 +17,5 @@ MonoBehaviour:
   description: Hahahah
   mana: 100
   rageGainRate: 10
+  spawnCooldown: 5
   summonUnit: {fileID: 11400000, guid: 8fac5f475b2d61b47ab3dd93a7c0111c, type: 2}
