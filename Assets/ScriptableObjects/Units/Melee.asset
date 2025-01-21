@@ -20,6 +20,6 @@ MonoBehaviour:
   attackSpeed: 2
   moveSpeed: 2
   range: 0.5
-  detectRange: 3
+  detectRange: 2
   hpLossPerSecond: -10
   unitPrefab: {fileID: 8505144159870094120, guid: 4a60fc513ebe7f44291031255c740697, type: 3}

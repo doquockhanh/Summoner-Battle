@@ -28,23 +28,18 @@ public class UnitView : MonoBehaviour
             unitSprite.color = teamColor;
         }
         
-        // Thiết lập thanh máu
-        healthBar.maxValue = maxHp;
-        healthBar.value = maxHp;
-        
-        // Đảm bảo Canvas luôn hướng về camera
-        Canvas canvas = healthBar.GetComponentInParent<Canvas>();
-        if (canvas != null)
+        // Chuyển thanh máu vào canvas chung
+        if (healthBar != null)
         {
-            canvas.renderMode = RenderMode.WorldSpace;
-            canvas.worldCamera = Camera.main;
-        }
-        
-        // Đảm bảo hướng slider thống nhất
-        if (!unitComponent.isPlayerUnit)
-        {
-            // Đảo ngược direction của slider cho enemy units
-            healthBar.direction = Slider.Direction.RightToLeft;
+            healthBar.transform.SetParent(HealthBarManager.Instance.GetCanvasTransform(), true);
+            healthBar.maxValue = maxHp;
+            healthBar.value = maxHp;
+            
+            // Đảm bảo hướng slider thống nhất
+            if (!unitComponent.isPlayerUnit)
+            {
+                healthBar.direction = Slider.Direction.RightToLeft;
+            }
         }
     }
     
@@ -68,5 +63,39 @@ public class UnitView : MonoBehaviour
     {
         if (attackEffect != null)
             attackEffect.Play();
+    }
+    
+    private void LateUpdate()
+    {
+        if (healthBar != null)
+        {
+            // Cập nhật vị trí thanh máu theo unit
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+            
+            // Offset để thanh máu nằm phía trên unit
+            screenPos.y += 50f; // Điều chỉnh số 50 tùy theo kích thước unit
+            
+            // Chuyển từ screen position sang world position
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+            healthBar.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
+        }
+    }
+    
+    private void OnEnable()
+    {
+        // Hiện thanh máu khi unit được kích hoạt từ pool
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Ẩn thanh máu khi unit được trả về pool
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(false);
+        }
     }
 } 
