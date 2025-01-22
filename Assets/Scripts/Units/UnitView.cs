@@ -9,22 +9,24 @@ public class UnitView : MonoBehaviour
     
     private Unit unit;
     private float maxHp;
+    private UnitStats stats;
     
-    public void Setup(UnitData data, Unit unitComponent)
+    public void Initialize(Unit unit, UnitStats stats)
     {
-        unit = unitComponent;
-        maxHp = data.hp;
+        this.unit = unit;
+        this.stats = stats;
+        maxHp = stats.Data.hp;
         
         // Cập nhật sprite
-        if (unitSprite != null && data.unitImage != null)
+        if (unitSprite != null && stats.Data.unitImage != null)
         {
-            unitSprite.sprite = data.unitImage;
+            unitSprite.sprite = stats.Data.unitImage;
         }
         
         // Thay đổi màu để phân biệt phe
         if (unitSprite != null)
         {
-            Color teamColor = unitComponent.isPlayerUnit ? new Color(0.7f, 0.7f, 1f) : new Color(1f, 0.7f, 0.7f);
+            Color teamColor = unit.IsPlayerUnit ? new Color(0.7f, 0.7f, 1f) : new Color(1f, 0.7f, 0.7f);
             unitSprite.color = teamColor;
         }
         
@@ -36,7 +38,7 @@ public class UnitView : MonoBehaviour
             healthBar.value = maxHp;
             
             // Đảm bảo hướng slider thống nhất
-            if (!unitComponent.isPlayerUnit)
+            if (!unit.IsPlayerUnit)
             {
                 healthBar.direction = Slider.Direction.RightToLeft;
             }
@@ -96,6 +98,22 @@ public class UnitView : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (healthBar != null && stats != null)
+        {
+            healthBar.value = stats.CurrentHP;
+            
+            // Thay đổi màu dựa vào % máu
+            Image fillImage = healthBar.fillRect.GetComponent<Image>();
+            if (fillImage != null)
+            {
+                float healthPercent = Mathf.Clamp01(stats.CurrentHP / maxHp);
+                fillImage.color = Color.Lerp(Color.red, Color.green, healthPercent);
+            }
         }
     }
 } 

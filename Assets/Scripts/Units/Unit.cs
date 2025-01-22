@@ -3,348 +3,139 @@ using System.Collections.Generic;
 
 public class Unit : MonoBehaviour
 {
-    private UnitData data;
-    private float currentHp;
-    public bool isPlayerUnit;
-    private float attackTimer;
+    private UnitStats stats;
+    private UnitCombat combat;
+    private UnitMovement movement;
+    private UnitTargeting targeting;
+    private UnitView view;
+
     private Unit currentTarget;
-    private UnitView unitView;
-    private Base targetBase;
-    
-    private const float MIN_DISTANCE_BETWEEN_UNITS = 2f;
-    
-    private float hpLossTimer = 0f;
-    
-    public bool IsDead => currentHp <= 0;
-    public float GetCurrentHP() => currentHp;
-    
-    private float damageModifier = 1f;
-    private float speedModifier = 1f;
-    private float defenseModifier = 1f;
-    private List<SkillEffect> activeEffects = new List<SkillEffect>();
-    
-    public void Initialize(UnitData unitData, bool isPlayer)
+    private Base currentBaseTarget;
+    private bool isPlayerUnit;
+    private float hpLossTimer;
+
+    public bool IsDead => stats.IsDead;
+    public bool IsPlayerUnit => isPlayerUnit;
+    public Unit CurrentTarget => currentTarget;
+    public Base CurrentBaseTarget => currentBaseTarget;
+    public UnitData GetUnitData() => stats.Data;
+    public float GetCurrentHP() => stats.CurrentHP;
+
+    private void Awake()
     {
-        data = unitData;
-        currentHp = data.hp;
-        isPlayerUnit = isPlayer;
-        attackTimer = 0;
-        unitView = GetComponent<UnitView>();
-        
-        // Điều chỉnh collider radius theo range
-        CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
-        if (circleCollider != null)
-        {
-            circleCollider.radius = data.range;
-        }
-        
-        if (unitView != null)
-        {
-            unitView.Setup(data, this);
-            unitView.UpdateHealth(currentHp);
-        }
-        
-        // Xoay unit nếu là enemy
-        if (!isPlayer)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
+        stats = GetComponent<UnitStats>();
+        combat = GetComponent<UnitCombat>();
+        movement = GetComponent<UnitMovement>();
+        targeting = GetComponent<UnitTargeting>();
+        view = GetComponent<UnitView>();
     }
-    
+
+    public void Initialize(UnitData data, bool isPlayer)
+    {
+        isPlayerUnit = isPlayer;
+        stats.Initialize(data);
+        combat.Initialize(this, stats, view);
+        movement.Initialize(this, stats);
+        targeting.Initialize(this, stats);
+        view.Initialize(this, stats);
+        
+        hpLossTimer = 0;
+    }
+
     private void Update()
     {
         if (IsDead) return;
-        
-        // Trừ máu mỗi giây
+
+        UpdateTarget();
+        HandleCombat();
+        HandleMovement();
+        HandleHpLoss();
+    }
+
+    private void UpdateTarget()
+    {
+        (Unit unit, Base baseTarget) = targeting.FindTarget();
+        currentTarget = unit;
+        currentBaseTarget = baseTarget;
+    }
+
+    private void HandleCombat()
+    {
+        if (currentTarget != null && targeting.IsInRange(currentTarget))
+        {
+            combat.TryAttack(currentTarget);
+        }
+        else if (currentBaseTarget != null && targeting.IsInRange(currentBaseTarget))
+        {
+            combat.AttackBase(currentBaseTarget);
+        }
+    }
+
+    private void HandleMovement()
+    {
+        Vector3 movement = this.movement.CalculateMovement();
+        transform.position += movement * Time.deltaTime;
+    }
+
+    private void HandleHpLoss()
+    {
         hpLossTimer += Time.deltaTime;
         if (hpLossTimer >= 1f)
         {
-            TakeDamage(data.hpLossPerSecond);
-            hpLossTimer = 0f;
-        }
-        
-        if (targetBase != null)
-        {
-            // Nếu đang tấn công base thì dừng lại và tấn công
-            if (attackTimer <= 0)
-            {
-                AttackBase(targetBase);
-                attackTimer = 1f / data.attackSpeed;
-            }
-            else
-            {
-                attackTimer -= Time.deltaTime;
-            }
-            return;
-        }
-
-        // Reset target nếu target đã chết
-        if (currentTarget != null && currentTarget.IsDead)
-        {
-            currentTarget = null;
-        }
-
-        // Kiểm tra có unit nào trong tầm đánh không
-        CheckNearbyEnemies();
-
-        // Nếu không có target, tìm target mới với ưu tiên gần base
-        if (currentTarget == null)
-        {
-            FindTargetNearBase();
-        }
-
-        if (currentTarget != null)
-        {
-            if (IsInRange(currentTarget))
-            {
-                TryAttack();
-            }
-            else
-            {
-                Move();
-            }
-        }
-        else
-        {
-            Move();
-        }
-    }
-    
-    private void Move()
-    {
-        Vector3 direction;
-        
-        if (currentTarget != null)
-        {
-            // Di chuyển tự do về phía target
-            direction = (currentTarget.transform.position - transform.position).normalized;
-        }
-        else
-        {
-            // Tìm vị trí base đối phương và di chuyển về phía đó
-            Base[] bases = FindObjectsOfType<Base>();
-            foreach (Base baseUnit in bases)
-            {
-                if (baseUnit.IsPlayerBase != isPlayerUnit)
-                {
-                    direction = (baseUnit.transform.position - transform.position).normalized;
-                    // Khi không có target, vẫn giữ di chuyển ngang để tiếp cận base
-                    direction = new Vector3(Mathf.Sign(direction.x), 0, 0);
-                    break;
-                }
-            }
-            // Fallback nếu không tìm thấy base
-            direction = isPlayerUnit ? Vector3.right : Vector3.left;
-        }
-        
-        // Tính toán lực đẩy từ các unit lân cận
-        Vector3 separationForce = Vector3.zero;
-        Collider2D[] nearbyUnits = Physics2D.OverlapCircleAll(transform.position, MIN_DISTANCE_BETWEEN_UNITS);
-        
-        foreach (Collider2D collider in nearbyUnits)
-        {
-            Unit otherUnit = collider.GetComponent<Unit>();
-            if (otherUnit != null && otherUnit != this)
-            {
-                Vector3 awayFromOther = transform.position - otherUnit.transform.position;
-                float distance = awayFromOther.magnitude;
-                
-                if (distance < MIN_DISTANCE_BETWEEN_UNITS)
-                {
-                    // Lực đẩy tăng khi càng gần nhau
-                    float strength = (MIN_DISTANCE_BETWEEN_UNITS - distance) / MIN_DISTANCE_BETWEEN_UNITS;
-                    separationForce += awayFromOther.normalized * strength;
-                }
-            }
-        }
-        
-        // Kết hợp hướng di chuyển chính với lực đẩy
-        Vector3 finalDirection = (direction + separationForce * 0.5f).normalized;
-        transform.position += finalDirection * data.moveSpeed * Time.deltaTime;
-        
-        // Xoay sprite theo hướng di chuyển
-        if (finalDirection.x != 0)
-        {
-            transform.localScale = new Vector3(
-                finalDirection.x > 0 ? 1 : -1,
-                1,
-                1
-            );
-        }
-    }
-    
-    private void CheckNearbyEnemies()
-    {
-        // Chỉ tìm unit trong tầm đánh nếu chưa có target hoặc target hiện tại ngoài tầm đánh
-        if (currentTarget == null || !IsInRange(currentTarget))
-        {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, data.range);
-            float closestDistance = float.MaxValue;
-            Unit closestUnit = null;
-
-            foreach (Collider2D collider in colliders)
-            {
-                Unit unit = collider.GetComponent<Unit>();
-                if (unit != null && unit.isPlayerUnit != isPlayerUnit && !unit.IsDead)
-                {
-                    float distance = Vector2.Distance(transform.position, unit.transform.position);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestUnit = unit;
-                    }
-                }
-            }
-
-            if (closestUnit != null)
-            {
-                currentTarget = closestUnit;
-            }
+            stats.TakeDamage(stats.Data.hpLossPerSecond);
+            hpLossTimer = 0;
         }
     }
 
-    private void FindTargetNearBase()
-    {
-        // Chỉ tìm target gần base khi không có target
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, data.detectRange);
-        float closestScore = float.MaxValue;
-        Base allyBase = null;
-        
-        // Tìm nhà chính đồng minh
-        Base[] bases = FindObjectsOfType<Base>();
-        foreach (Base baseUnit in bases)
-        {
-            if (baseUnit.IsPlayerBase == isPlayerUnit)
-            {
-                allyBase = baseUnit;
-                break;
-            }
-        }
-        
-        foreach (Collider2D collider in colliders)
-        {
-            Unit unit = collider.GetComponent<Unit>();
-            if (unit != null && unit.isPlayerUnit != isPlayerUnit && !unit.IsDead)
-            {
-                float distanceToMe = Vector2.Distance(transform.position, unit.transform.position);
-                
-                float score;
-                if (allyBase != null)
-                {
-                    float distanceToBase = Vector2.Distance(unit.transform.position, allyBase.transform.position);
-                    score = distanceToBase * 0.7f + distanceToMe * 0.3f;
-                }
-                else
-                {
-                    score = distanceToMe;
-                }
-                
-                if (score < closestScore)
-                {
-                    closestScore = score;
-                    currentTarget = unit;
-                }
-            }
-        }
-    }
-    
-    private void TryAttack()
-    {
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-            return;
-        }
-
-        Attack(currentTarget);
-        attackTimer = 1f / data.attackSpeed;
-    }
-    
-    private bool IsInRange(Unit target)
-    {
-        float distance = Vector2.Distance(transform.position, target.transform.position);
-        return distance <= data.range;
-    }
-    
-    private void Attack(Unit target)
-    {
-        target.TakeDamage(data.damage);
-        unitView.PlayAttackEffect();
-    }
-    
     public void TakeDamage(float damage)
     {
-        // Áp dụng defense modifier
-        damage *= (1f / defenseModifier);
-        
-        // Nếu là hồi máu (damage < 0) và máu đã đầy thì không hồi nữa
-        if (damage < 0 && currentHp >= data.hp)
-        {
-            return;
-        }
-
-        currentHp -= damage;
-        // Giới hạn máu không vượt quá max
-        currentHp = Mathf.Clamp(currentHp, 0, data.hp);
-        
-        if (unitView != null)
-        {
-            unitView.UpdateHealth(currentHp);
-        }
-        
-        // Hiển thị floating text
-        if (damage > 0)
-        {
-            FloatingTextManager.Instance.ShowFloatingText(
-                $"-{Mathf.Abs(damage):F0}",
-                transform.position,
-                Color.red
-            );
-        }
-        else if (damage < 0)
-        {
-            FloatingTextManager.Instance.ShowFloatingText(
-                $"+{Mathf.Abs(damage):F0}",
-                transform.position,
-                Color.green
-            );
-        }
-        
+        stats.TakeDamage(damage);
         if (IsDead)
         {
-            Die();
+            UnitPoolManager.Instance.ReturnToPool(this);
         }
     }
-    
-    private void Die()
+
+    public void ApplyBuff(float damageModifier, float speedModifier, float defenseModifier, float duration)
     {
-        // Thay vì destroy, trả unit về pool
-        UnitPoolManager.Instance.ReturnToPool(this);
+        stats.ModifyDamage(damageModifier);
+        stats.ModifySpeed(speedModifier);
+        stats.ModifyDefense(defenseModifier);
+        
+        // Reset buff sau duration
+        Invoke(nameof(RemoveBuff), duration);
     }
-    
+
+    private void RemoveBuff(float damageModifier, float speedModifier, float defenseModifier)
+    {
+        stats.ModifyDamage(-damageModifier);
+        stats.ModifySpeed(-speedModifier);
+        stats.ModifyDefense(-defenseModifier);
+    }
+
     private void OnDrawGizmosSelected()
     {
-        if (data != null)
+        if (stats.Data != null)
         {
             // Vẽ tầm đánh
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, data.range);
+            Gizmos.DrawWireSphere(transform.position, stats.Data.range);
             
             // Vẽ tầm phát hiện
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, data.detectRange);
+            Gizmos.DrawWireSphere(transform.position, stats.Data.detectRange);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Chỉ kiểm tra base nếu chưa có targetBase
-        if (targetBase == null)
+        if (currentBaseTarget == null)
         {
             Base enemyBase = other.GetComponent<Base>();
             if (enemyBase != null && enemyBase.IsPlayerBase != isPlayerUnit)
             {
-                targetBase = enemyBase;
+                currentBaseTarget = enemyBase;
                 currentTarget = null; // Reset current target khi chuyển sang tấn công base
                 return;
             }
@@ -357,12 +148,6 @@ public class Unit : MonoBehaviour
         {
             currentTarget = otherUnit;
         }
-    }
-
-    private void AttackBase(Base enemyBase)
-    {
-        enemyBase.TakeDamage(data.damage);
-        unitView.PlayAttackEffect();
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -378,24 +163,19 @@ public class Unit : MonoBehaviour
         }
     }
 
-    // Thêm getter cho UnitData
-    public UnitData GetUnitData() => data;
-
     public void ModifyDamage(float amount)
     {
-        damageModifier += amount;
+        stats.ModifyDamage(amount);
     }
     
     public void ModifySpeed(float amount)
     {
-        speedModifier += amount;
-        // Cập nhật tốc độ di chuyển
-        // ... existing code ...
+        stats.ModifySpeed(amount);
     }
     
     public void ModifyDefense(float amount)
     {
-        defenseModifier += amount;
+        stats.ModifyDefense(amount);
     }
     
     public void AddEffect(EffectType type, float duration, float amount)
@@ -404,6 +184,6 @@ public class Unit : MonoBehaviour
         effectObj.transform.SetParent(transform);
         SkillEffect effect = effectObj.AddComponent<SkillEffect>();
         effect.Initialize(type, duration, amount, this);
-        activeEffects.Add(effect);
+        stats.ActiveEffects.Add(effect);
     }
 }

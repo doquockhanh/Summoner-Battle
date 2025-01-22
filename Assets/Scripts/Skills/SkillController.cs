@@ -114,7 +114,6 @@ public class SkillController : MonoBehaviour
         if (bestTarget != null)
         {
             Vector3 targetWorldPos = bestTarget.transform.position;
-            Debug.Log($"[Skill] Single target position: {targetWorldPos}");
             
             if (hitboxVisual != null)
             {
@@ -136,7 +135,7 @@ public class SkillController : MonoBehaviour
         foreach (Collider2D collider in colliders)
         {
             Unit unit = collider.GetComponent<Unit>();
-            if (unit != null && unit.isPlayerUnit != isPlayer)
+            if (unit != null && unit.IsPlayerUnit != isPlayer)
             {
                 float score = EvaluateTarget(unit);
                 if (score > bestScore)
@@ -174,15 +173,10 @@ public class SkillController : MonoBehaviour
         
         if (hitboxVisual != null)
         {
-            Debug.Log($"[Skill] Hiển thị AOE hitbox tại: {bestPosition}");
             hitboxVisual.transform.position = new Vector3(bestPosition.x, bestPosition.y, 0);
             hitboxVisual.ShowHitbox(TargetType.AOE, cardData.skill.targetRadius, bestPosition);
             isShowingHitbox = true;
             StartCoroutine(HideHitboxAfterDelay(1f));
-        }
-        else
-        {
-            Debug.LogError("[Skill] Không tìm thấy hitbox visual!");
         }
         
         // Áp dụng hiệu ứng cho các unit trong vùng
@@ -192,14 +186,12 @@ public class SkillController : MonoBehaviour
         foreach (Collider2D collider in targets)
         {
             Unit unit = collider.GetComponent<Unit>();
-            if (unit != null && unit.isPlayerUnit != isPlayer)
+            if (unit != null && unit.IsPlayerUnit != isPlayer)
             {
                 affectedTargets++;
                 ApplySkillEffect(unit);
             }
         }
-        
-        Debug.Log($"[Skill] Đã tác động lên {affectedTargets} mục tiêu");
     }
     
     private Vector2 FindBestAOEPosition()
@@ -211,13 +203,11 @@ public class SkillController : MonoBehaviour
         int maxTargets = 0;
         float highestThreatLevel = 0f;
         
-        Debug.Log($"[Skill] Tìm thấy {allUnits.Length} units trong scene");
-        
         // Kiểm tra từng unit enemy làm tâm cho kỹ năng AOE
         foreach (Collider2D collider in allUnits)
         {
             Unit unit = collider.GetComponent<Unit>();
-            if (unit == null || unit.isPlayerUnit == isPlayer) continue;
+            if (unit == null || unit.IsPlayerUnit == isPlayer) continue;
             
             Vector2 testPosition = unit.transform.position;
             // Tìm các unit khác trong phạm vi skill radius
@@ -229,14 +219,13 @@ public class SkillController : MonoBehaviour
             foreach (Collider2D nearby in nearbyUnits)
             {
                 Unit nearbyUnit = nearby.GetComponent<Unit>();
-                if (nearbyUnit != null && nearbyUnit.isPlayerUnit != isPlayer)
+                if (nearbyUnit != null && nearbyUnit.IsPlayerUnit != isPlayer)
                 {
                     targetCount++;
                     threatLevel += EvaluateTarget(nearbyUnit);
                 }
             }
             
-            Debug.Log($"[Skill] Vị trí {testPosition} có {targetCount} mục tiêu");
             
             if (targetCount > maxTargets || 
                 (targetCount == maxTargets && threatLevel > highestThreatLevel))
@@ -244,7 +233,6 @@ public class SkillController : MonoBehaviour
                 maxTargets = targetCount;
                 highestThreatLevel = threatLevel;
                 bestPosition = testPosition;
-                Debug.Log($"[Skill] Cập nhật vị trí tốt nhất: {bestPosition} với {targetCount} mục tiêu");
             }
         }
         
@@ -257,7 +245,6 @@ public class SkillController : MonoBehaviour
         if (bestAlly != null)
         {
             Vector3 allyWorldPos = bestAlly.transform.position;
-            Debug.Log($"[Skill] Ally target position: {allyWorldPos}");
             
             if (hitboxVisual != null)
             {
@@ -267,10 +254,6 @@ public class SkillController : MonoBehaviour
             }
             
             ApplySkillEffect(bestAlly);
-        }
-        else
-        {
-            Debug.LogWarning("[Skill Ally] Không tìm thấy đồng minh phù hợp!");
         }
     }
     
@@ -283,7 +266,7 @@ public class SkillController : MonoBehaviour
         foreach (Collider2D collider in colliders)
         {
             Unit unit = collider.GetComponent<Unit>();
-            if (unit != null && unit.isPlayerUnit == isPlayer)
+            if (unit != null && unit.IsPlayerUnit == isPlayer)
             {
                 float score = EvaluateAlly(unit);
                 if (score > bestScore)
@@ -327,7 +310,7 @@ public class SkillController : MonoBehaviour
         foreach (Collider2D collider in colliders)
         {
             Unit unit = collider.GetComponent<Unit>();
-            if (unit != null && unit.isPlayerUnit == isPlayer)
+            if (unit != null && unit.IsPlayerUnit == isPlayer)
             {
                 ApplySkillEffect(unit);
             }
@@ -360,34 +343,29 @@ public class SkillController : MonoBehaviour
     {
         if (target == null)
         {
-            Debug.LogWarning("[Skill] Không tìm thấy mục tiêu!");
             return;
         }
         
         if (cardData.skill.damage > 0)
         {
-            Debug.Log($"[Skill] Gây {cardData.skill.damage} sát thương cho {target.name}");
             target.TakeDamage(cardData.skill.damage);
             ShowDamageNumber(target.transform.position, cardData.skill.damage);
         }
         
         if (cardData.skill.healing > 0)
         {
-            Debug.Log($"[Skill] Hồi {cardData.skill.healing} máu cho {target.name}");
             target.TakeDamage(-cardData.skill.healing);
             ShowHealNumber(target.transform.position, cardData.skill.healing);
         }
         
         if (cardData.skill.buffDuration > 0 && cardData.skill.buffAmount != 0)
         {
-            Debug.Log($"[Skill] Buff {target.name}: Amount={cardData.skill.buffAmount}, Duration={cardData.skill.buffDuration}s");
-            target.AddEffect(DetermineEffectType(), cardData.skill.buffDuration, cardData.skill.buffAmount);
+           target.AddEffect(DetermineEffectType(), cardData.skill.buffDuration, cardData.skill.buffAmount);
         }
         
         // Visual effects
         if (cardData.skill.skillEffectPrefab != null)
         {
-            Debug.Log($"[Skill] Hiển thị hiệu ứng tại {target.transform.position}");
             GameObject effect = Instantiate(cardData.skill.skillEffectPrefab, 
                 target.transform.position, 
                 Quaternion.identity);
@@ -443,17 +421,6 @@ public class SkillController : MonoBehaviour
         if (skillCooldown > 0)
         {
             skillCooldown -= Time.deltaTime;
-            if (skillCooldown <= 0)
-            {
-                Debug.Log($"[Skill] {cardData.skill.skillName} đã hết cooldown!");
-            }
-        }
-        
-        // Debug vị trí hitbox
-        if (isShowingHitbox && hitboxVisual != null)
-        {
-            Debug.DrawLine(transform.position, hitboxVisual.transform.position, Color.yellow);
-            Debug.Log($"Hitbox position: {hitboxVisual.transform.position}");
         }
     }
     

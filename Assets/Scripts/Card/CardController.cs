@@ -58,10 +58,8 @@ public class CardController : MonoBehaviour
         {
             if (skillController.CanUseSkill(currentRage))
             {
-                Debug.Log($"[Card] {cardData.cardName} đủ rage ({currentRage}) để dùng kỹ năng!");
                 skillController.UseSkill();
                 currentRage -= cardData.skill.rageCost;
-                Debug.Log($"[Card] Rage còn lại: {currentRage}");
             }
         }
         
