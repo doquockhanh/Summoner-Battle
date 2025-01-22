@@ -11,10 +11,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform enemySpawnEnd;
     [SerializeField] private Transform playerCardContainer;
     [SerializeField] private Transform enemyCardContainer;
+    [Header("Card Prefabs")]
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private float playerBaseHP = 1000f;
     [SerializeField] private float enemyBaseHP = 1000f;
     
+    [Header("Player Cards")]
     [SerializeField] private List<Card> playerCards;
     [SerializeField] private List<Card> enemyCards;
     
@@ -54,11 +56,15 @@ public class BattleManager : MonoBehaviour
     
     private void SpawnPlayerCards()
     {
-        foreach (Card card in playerDeck)
+        foreach (Card card in playerCards)
         {
             GameObject cardObj = Instantiate(cardPrefab, playerCardContainer);
             CardController controller = cardObj.GetComponent<CardController>();
+            
+            // Khởi tạo card với skill
             controller.Initialize(card, true);
+            
+            // Skill sẽ tự động được setup thông qua CardController
         }
     }
     

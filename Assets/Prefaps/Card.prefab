@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 6813887978496017261}
   - component: {fileID: 3334156816239315214}
   - component: {fileID: 3572304422869202566}
+  - component: {fileID: -3442318454747068277}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -133,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitPrefab: {fileID: 8505144159870094120, guid: 4a60fc513ebe7f44291031255c740697, type: 3}
   cardView: {fileID: 6813887978496017261}
+  skillController: {fileID: -3442318454747068277}
 --- !u!114 &6813887978496017261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +152,7 @@ MonoBehaviour:
   descriptionText: {fileID: 5499362627846371513}
   rageBar: {fileID: 2115489036234926347}
   spawnCooldownBar: {fileID: 2845395515213235283}
+  skillUI: {fileID: 0}
 --- !u!222 &3334156816239315214
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -188,6 +191,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-3442318454747068277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048700552773762805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0519e2f1818ff418eddfeb1b3c09fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitboxVisual: {fileID: 8981327260354690180, guid: 7fcadad16939aa646bf5cf74c04b8b46, type: 3}
 --- !u!1 &2198384180207627300
 GameObject:
   m_ObjectHideFlags: 0

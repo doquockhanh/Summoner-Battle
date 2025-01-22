@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Unit : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class Unit : MonoBehaviour
     private float hpLossTimer = 0f;
     
     public bool IsDead => currentHp <= 0;
+    public float GetCurrentHP() => currentHp;
+    
+    private float damageModifier = 1f;
+    private float speedModifier = 1f;
+    private float defenseModifier = 1f;
+    private List<SkillEffect> activeEffects = new List<SkillEffect>();
     
     public void Initialize(UnitData unitData, bool isPlayer)
     {
@@ -267,6 +274,9 @@ public class Unit : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
+        // Áp dụng defense modifier
+        damage *= (1f / defenseModifier);
+        
         // Nếu là hồi máu (damage < 0) và máu đã đầy thì không hồi nữa
         if (damage < 0 && currentHp >= data.hp)
         {
@@ -370,4 +380,30 @@ public class Unit : MonoBehaviour
 
     // Thêm getter cho UnitData
     public UnitData GetUnitData() => data;
+
+    public void ModifyDamage(float amount)
+    {
+        damageModifier += amount;
+    }
+    
+    public void ModifySpeed(float amount)
+    {
+        speedModifier += amount;
+        // Cập nhật tốc độ di chuyển
+        // ... existing code ...
+    }
+    
+    public void ModifyDefense(float amount)
+    {
+        defenseModifier += amount;
+    }
+    
+    public void AddEffect(EffectType type, float duration, float amount)
+    {
+        GameObject effectObj = new GameObject("SkillEffect");
+        effectObj.transform.SetParent(transform);
+        SkillEffect effect = effectObj.AddComponent<SkillEffect>();
+        effect.Initialize(type, duration, amount, this);
+        activeEffects.Add(effect);
+    }
 }

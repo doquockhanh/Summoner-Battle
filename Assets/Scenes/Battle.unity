@@ -1913,7 +1913,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatingTextPrefab: {fileID: 6316851383008238693, guid: 00e5530bed0678c409e4d0fefc2e6564, type: 3}
   worldSpaceCanvas: {fileID: 963345071}
-  spawnOffset: {x: 0.25, y: 0.5, z: 0}
+  spawnOffset: {x: 0, y: 0.5, z: 0}
 --- !u!4 &1908972264
 Transform:
   m_ObjectHideFlags: 0
@@ -1923,7 +1923,7 @@ Transform:
   m_GameObject: {fileID: 1908972262}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.022152394, y: -0.5334915, z: -4.121936}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2077,6 +2077,64 @@ MonoBehaviour:
   maxHealth: 1000
   healthBar: {fileID: 332637012}
   healthText: {fileID: 0}
+--- !u!1 &2065520679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2065520681}
+  - component: {fileID: 2065520680}
+  m_Layer: 0
+  m_Name: BattleManager (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &2065520680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065520679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1f19347c4e9f439b68ada98656c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpawnStart: {fileID: 1794994454}
+  playerSpawnEnd: {fileID: 361186931}
+  enemySpawnStart: {fileID: 780686670}
+  enemySpawnEnd: {fileID: 77059004}
+  playerCardContainer: {fileID: 209089114}
+  enemyCardContainer: {fileID: 56616365}
+  cardPrefab: {fileID: 2048700552773762805, guid: 80e58fc53643b224a950e0605bf0be82, type: 3}
+  playerBaseHP: 1000
+  enemyBaseHP: 1000
+  playerCards:
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  enemyCards:
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  unitPoolManager: {fileID: 2146580296}
+--- !u!4 &2065520681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065520679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 871.38525, y: 655.604, z: -15.023553}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2146580295
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2245,7 @@ SceneRoots:
   - {fileID: 1873101197}
   - {fileID: 597115614}
   - {fileID: 985558619}
+  - {fileID: 2065520681}
   - {fileID: 1092234901}
   - {fileID: 1231253669}
   - {fileID: 2146580297}

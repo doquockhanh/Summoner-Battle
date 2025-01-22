@@ -17,6 +17,9 @@ public class Card : ScriptableObject
     [Header("Unit Data")]
     public UnitData summonUnit;
     
+    [Header("Skill")]
+    public SkillData skill;
+    
     private void OnValidate()
     {
         // Đảm bảo dữ liệu hợp lệ

@@ -9,6 +9,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Image rageBar;
     [SerializeField] private Image spawnCooldownBar;
+    [SerializeField] private SkillUI skillUI;
     
     private CardController controller;
     
@@ -19,11 +20,21 @@ public class CardView : MonoBehaviour
         cardImage.sprite = cardData.cardImage;
         cardNameText.text = cardData.cardName;
         descriptionText.text = cardData.description;
+        
+        if (skillUI != null && cardData.skill != null)
+        {
+            skillUI.Setup(cardData.skill);
+        }
     }
     
     public void UpdateUI(float ragePercent, float cooldownPercent)
     {
         rageBar.fillAmount = ragePercent;
         spawnCooldownBar.fillAmount = cooldownPercent;
+        
+        if (skillUI != null)
+        {
+            skillUI.UpdateUI(cooldownPercent, ragePercent);
+        }
     }
 } 
