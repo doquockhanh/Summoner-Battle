@@ -15,8 +15,10 @@ MonoBehaviour:
   cardName: MeleeSummoner
   cardImage: {fileID: 3073021464058892558, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: Mekeanwid
-  mana: 100
-  rageGainRate: 10
+  maxMana: 100
+  manaRegen: 5
+  manaGainFromDamageDealt: 10
+  manaGainFromDamageTaken: 20
   spawnCooldown: 5
   summonUnit: {fileID: 11400000, guid: 14d57373e757ee44ca14e1dd862f047f, type: 2}
   skill: {fileID: 11400000, guid: a4ebcc151945f364fa0b59f9879319b4, type: 2}

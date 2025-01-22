@@ -17,7 +17,7 @@ public class UnitMovement : MonoBehaviour
     public Vector3 CalculateMovement()
     {
         if ((unit.CurrentTarget != null && targeting.IsInRange(unit.CurrentTarget)) ||
-            (unit.CurrentBaseTarget != null && targeting.IsInRange(unit.CurrentBaseTarget)))
+            (unit.CurrentBaseTarget != null && targeting.IsInRange(unit.CurrentBaseTarget.GetComponent<Collider2D>().ClosestPoint(transform.position))))
         {
             return Vector3.zero;
         }

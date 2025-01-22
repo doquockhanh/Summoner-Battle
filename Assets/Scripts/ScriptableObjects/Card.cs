@@ -27,8 +27,8 @@ public class Card : ScriptableObject
         // Đảm bảo dữ liệu hợp lệ
         maxMana = Mathf.Max(0, maxMana);
         manaRegen = Mathf.Max(0, manaRegen);
-        manaGainFromDamageDealt = Mathf.Clamp01(manaGainFromDamageDealt);
-        manaGainFromDamageTaken = Mathf.Clamp01(manaGainFromDamageTaken);
+        manaGainFromDamageDealt = Mathf.Clamp(manaGainFromDamageDealt, 0, 200);
+        manaGainFromDamageTaken = Mathf.Clamp(manaGainFromDamageTaken, 0, 200);
         spawnCooldown = Mathf.Max(0, spawnCooldown);
     }
     

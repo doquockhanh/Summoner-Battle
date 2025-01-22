@@ -88,18 +88,20 @@ public class CardController : MonoBehaviour
     }
     
     // Thêm phương thức để nhận mana từ sát thương
-    public void GainManaFromDamage(float damage, bool isDamageTaken)
+    public void GainManaFromDamage(float damage, float targetMaxHealth, bool isDamageTaken)
     {
+        if(damage <= 0) return;
+        float healthPercentage = damage / targetMaxHealth; // Tính % máu bị mất
         float manaGain;
+        
         if (isDamageTaken)
         {
-            manaGain = damage * cardData.manaGainFromDamageTaken;
+            manaGain = healthPercentage * cardData.manaGainFromDamageTaken;
         }
         else
         {
-            manaGain = damage * cardData.manaGainFromDamageDealt;
+            manaGain = healthPercentage * cardData.manaGainFromDamageDealt;
         }
-        
         currentMana += manaGain;
         currentMana = Mathf.Min(currentMana, cardData.maxMana);
     }

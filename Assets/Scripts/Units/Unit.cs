@@ -102,7 +102,7 @@ public class Unit : MonoBehaviour
         // Thông báo cho Card về sát thương
         if (ownerCard != null)
         {
-            ownerCard.GainManaFromDamage(damage, true);
+            ownerCard.GainManaFromDamage(damage, stats.Data.hp, true);
         }
         
         if (IsDead)
@@ -118,7 +118,7 @@ public class Unit : MonoBehaviour
         // Thông báo cho Card về sát thương gây ra
         if (ownerCard != null)
         {
-            ownerCard.GainManaFromDamage(damage, false);
+            ownerCard.GainManaFromDamage(damage, target.GetUnitData().hp, false);
         }
     }
 

@@ -15,8 +15,10 @@ MonoBehaviour:
   cardName: RangeSummoner
   cardImage: {fileID: 333382803326201578, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: Hahahah
-  mana: 100
-  rageGainRate: 10
+  maxMana: 100
+  manaRegen: 5
+  manaGainFromDamageDealt: 10
+  manaGainFromDamageTaken: 25
   spawnCooldown: 5
   summonUnit: {fileID: 11400000, guid: 8fac5f475b2d61b47ab3dd93a7c0111c, type: 2}
   skill: {fileID: 11400000, guid: 1db38ca281499df4eb8e4b2a4d3ff691, type: 2}
