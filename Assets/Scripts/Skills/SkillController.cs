@@ -11,69 +11,74 @@ public class SkillController : MonoBehaviour
     private bool isPlayer;
     private float skillCooldown;
     
+    private SkillEffectHandler effectHandler;
+    private SkillTargeting targeting;
+    
     public void Initialize(Card card, bool isPlayer)
     {
         this.cardData = card;
         this.isPlayer = isPlayer;
         skillCooldown = 0;
+        
+        effectHandler = gameObject.AddComponent<SkillEffectHandler>();
+        effectHandler.Initialize(card);
+        
+        targeting = gameObject.AddComponent<SkillTargeting>();
+        targeting.Initialize(card, isPlayer);
+        
+        InitializeHitbox();
     }
     
-    private void Start()
+    private void InitializeHitbox()
     {
-        // Tạo hitbox từ prefab nếu có
         if (hitboxPrefab != null && hitboxVisual == null)
         {
             GameObject hitboxObj = Instantiate(hitboxPrefab);
             hitboxVisual = hitboxObj.GetComponent<SkillHitboxVisual>();
             hitboxObj.transform.SetParent(null);
             hitboxObj.SetActive(false);
-            Debug.Log("[Skill] Đã tạo hitbox visual");
         }
-        // Tạo hitbox từ code nếu không có prefab
         else if (hitboxVisual == null)
         {
-            GameObject hitboxObj = new GameObject("SkillHitbox");
-            hitboxObj.transform.SetParent(null);
-            
-            SpriteRenderer renderer = hitboxObj.AddComponent<SpriteRenderer>();
-            hitboxVisual = hitboxObj.AddComponent<SkillHitboxVisual>();
-            
-            // Tạo sprite hình tròn đơn giản
-            int resolution = 128;
-            Texture2D texture = new Texture2D(resolution, resolution);
-            Vector2 center = new Vector2(resolution / 2, resolution / 2);
-            
-            for (int y = 0; y < resolution; y++)
-            {
-                for (int x = 0; x < resolution; x++)
-                {
-                    float distance = Vector2.Distance(new Vector2(x, y), center);
-                    float alpha = distance < (resolution / 2) ? 0.3f : 0f;
-                    texture.SetPixel(x, y, new Color(1, 1, 1, alpha));
-                }
-            }
-            texture.Apply();
-            
-            Sprite circleSprite = Sprite.Create(texture, 
-                new Rect(0, 0, resolution, resolution), 
-                new Vector2(0.5f, 0.5f), 
-                100f);
-                
-            renderer.sprite = circleSprite;
-            renderer.sortingOrder = 5;
-            
-            hitboxObj.SetActive(false);
-            Debug.Log("[Skill] Đã tạo hitbox visual từ code");
+            CreateHitboxFromCode();
         }
     }
     
-    private void OnDestroy()
+    private void CreateHitboxFromCode()
     {
-        // Cleanup hitbox khi destroy SkillController
-        if (hitboxVisual != null)
+        // Tạo hitbox từ code nếu không có prefab
+        GameObject hitboxObj = new GameObject("SkillHitbox");
+        hitboxObj.transform.SetParent(null);
+        
+        SpriteRenderer renderer = hitboxObj.AddComponent<SpriteRenderer>();
+        hitboxVisual = hitboxObj.AddComponent<SkillHitboxVisual>();
+        
+        // Tạo sprite hình tròn đơn giản
+        int resolution = 128;
+        Texture2D texture = new Texture2D(resolution, resolution);
+        Vector2 center = new Vector2(resolution / 2, resolution / 2);
+        
+        for (int y = 0; y < resolution; y++)
         {
-            Destroy(hitboxVisual.gameObject);
+            for (int x = 0; x < resolution; x++)
+            {
+                float distance = Vector2.Distance(new Vector2(x, y), center);
+                float alpha = distance < (resolution / 2) ? 0.3f : 0f;
+                texture.SetPixel(x, y, new Color(1, 1, 1, alpha));
+            }
         }
+        texture.Apply();
+        
+        Sprite circleSprite = Sprite.Create(texture, 
+            new Rect(0, 0, resolution, resolution), 
+            new Vector2(0.5f, 0.5f), 
+            100f);
+            
+        renderer.sprite = circleSprite;
+        renderer.sortingOrder = 5;
+        
+        hitboxObj.SetActive(false);
+        Debug.Log("[Skill] Đã tạo hitbox visual từ code");
     }
     
     public bool CanUseSkill(float currentRage)
@@ -83,10 +88,7 @@ public class SkillController : MonoBehaviour
     
     public void UseSkill()
     {
-        if (cardData.skill == null)
-        {
-            return;
-        }
+        if (cardData.skill == null) return;
         
         switch (cardData.skill.targetType)
         {
@@ -110,133 +112,29 @@ public class SkillController : MonoBehaviour
     
     private void HandleSingleTargetSkill()
     {
-        Unit bestTarget = FindBestSingleTarget();
+        Unit bestTarget = targeting.FindBestSingleTarget(transform.position);
         if (bestTarget != null)
         {
             Vector3 targetWorldPos = bestTarget.transform.position;
-            
-            if (hitboxVisual != null)
-            {
-                hitboxVisual.ShowHitbox(TargetType.SingleTarget, 0.5f, targetWorldPos);
-                isShowingHitbox = true;
-                StartCoroutine(HideHitboxAfterDelay(1f));
-            }
-            
-            ApplySkillEffect(bestTarget);
+            ShowHitbox(TargetType.SingleTarget, 0.5f, targetWorldPos);
+            effectHandler.ApplyEffect(bestTarget);
         }
-    }
-    
-    private Unit FindBestSingleTarget()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, cardData.skill.targetRadius);
-        Unit bestTarget = null;
-        float bestScore = float.MinValue;
-        
-        foreach (Collider2D collider in colliders)
-        {
-            Unit unit = collider.GetComponent<Unit>();
-            if (unit != null && unit.IsPlayerUnit != isPlayer)
-            {
-                float score = EvaluateTarget(unit);
-                if (score > bestScore)
-                {
-                    bestScore = score;
-                    bestTarget = unit;
-                }
-            }
-        }
-        
-        return bestTarget;
-    }
-    
-    private float EvaluateTarget(Unit unit)
-    {
-        float score = 0;
-        UnitData data = unit.GetUnitData();
-        
-        // Đánh giá dựa trên máu còn lại
-        score += (unit.GetCurrentHP() / data.hp) * 0.4f;
-        
-        // Đánh giá dựa trên sát thương
-        score += (data.damage / 100f) * 0.3f;
-        
-        // Đánh giá dựa trên khoảng cách đến base
-        float distanceToBase = Vector2.Distance(unit.transform.position, GetAlliedBase().transform.position);
-        score += (1 - distanceToBase/10f) * 0.3f;
-        
-        return score;
     }
     
     private void HandleAOESkill()
     {
-        Vector2 bestPosition = FindBestAOEPosition();
+        Vector2 bestPosition = targeting.FindBestAOEPosition(transform.position);
+        ShowHitbox(TargetType.AOE, cardData.skill.targetRadius, bestPosition);
         
-        if (hitboxVisual != null)
-        {
-            hitboxVisual.transform.position = new Vector3(bestPosition.x, bestPosition.y, 0);
-            hitboxVisual.ShowHitbox(TargetType.AOE, cardData.skill.targetRadius, bestPosition);
-            isShowingHitbox = true;
-            StartCoroutine(HideHitboxAfterDelay(1f));
-        }
-        
-        // Áp dụng hiệu ứng cho các unit trong vùng
         Collider2D[] targets = Physics2D.OverlapCircleAll(bestPosition, cardData.skill.targetRadius);
-        int affectedTargets = 0;
-        
         foreach (Collider2D collider in targets)
         {
             Unit unit = collider.GetComponent<Unit>();
             if (unit != null && unit.IsPlayerUnit != isPlayer)
             {
-                affectedTargets++;
-                ApplySkillEffect(unit);
+                effectHandler.ApplyEffect(unit);
             }
         }
-    }
-    
-    private Vector2 FindBestAOEPosition()
-    {
-        // Tìm tất cả unit trong phạm vi lớn của world space
-        Collider2D[] allUnits = Physics2D.OverlapCircleAll(Vector2.zero, 50f); // Phạm vi tìm kiếm rộng
-        
-        Vector2 bestPosition = Vector2.zero;
-        int maxTargets = 0;
-        float highestThreatLevel = 0f;
-        
-        // Kiểm tra từng unit enemy làm tâm cho kỹ năng AOE
-        foreach (Collider2D collider in allUnits)
-        {
-            Unit unit = collider.GetComponent<Unit>();
-            if (unit == null || unit.IsPlayerUnit == isPlayer) continue;
-            
-            Vector2 testPosition = unit.transform.position;
-            // Tìm các unit khác trong phạm vi skill radius
-            Collider2D[] nearbyUnits = Physics2D.OverlapCircleAll(testPosition, cardData.skill.targetRadius);
-            
-            int targetCount = 0;
-            float threatLevel = 0f;
-            
-            foreach (Collider2D nearby in nearbyUnits)
-            {
-                Unit nearbyUnit = nearby.GetComponent<Unit>();
-                if (nearbyUnit != null && nearbyUnit.IsPlayerUnit != isPlayer)
-                {
-                    targetCount++;
-                    threatLevel += EvaluateTarget(nearbyUnit);
-                }
-            }
-            
-            
-            if (targetCount > maxTargets || 
-                (targetCount == maxTargets && threatLevel > highestThreatLevel))
-            {
-                maxTargets = targetCount;
-                highestThreatLevel = threatLevel;
-                bestPosition = testPosition;
-            }
-        }
-        
-        return bestPosition;
     }
     
     private void HandleAllySkill()
@@ -253,7 +151,7 @@ public class SkillController : MonoBehaviour
                 StartCoroutine(HideHitboxAfterDelay(1f));
             }
             
-            ApplySkillEffect(bestAlly);
+            effectHandler.ApplyEffect(bestAlly);
         }
     }
     
@@ -312,7 +210,7 @@ public class SkillController : MonoBehaviour
             Unit unit = collider.GetComponent<Unit>();
             if (unit != null && unit.IsPlayerUnit == isPlayer)
             {
-                ApplySkillEffect(unit);
+                effectHandler.ApplyEffect(unit);
             }
         }
     }
@@ -339,67 +237,14 @@ public class SkillController : MonoBehaviour
         return null;
     }
     
-    private void ApplySkillEffect(Unit target)
+    private void ShowHitbox(TargetType targetType, float radius, Vector3 position)
     {
-        if (target == null)
+        if (hitboxVisual != null)
         {
-            return;
+            hitboxVisual.ShowHitbox(targetType, radius, position);
+            isShowingHitbox = true;
+            StartCoroutine(HideHitboxAfterDelay(1f));
         }
-        
-        if (cardData.skill.damage > 0)
-        {
-            target.TakeDamage(cardData.skill.damage);
-            ShowDamageNumber(target.transform.position, cardData.skill.damage);
-        }
-        
-        if (cardData.skill.healing > 0)
-        {
-            target.TakeDamage(-cardData.skill.healing);
-            ShowHealNumber(target.transform.position, cardData.skill.healing);
-        }
-        
-        if (cardData.skill.buffDuration > 0 && cardData.skill.buffAmount != 0)
-        {
-           target.AddEffect(DetermineEffectType(), cardData.skill.buffDuration, cardData.skill.buffAmount);
-        }
-        
-        // Visual effects
-        if (cardData.skill.skillEffectPrefab != null)
-        {
-            GameObject effect = Instantiate(cardData.skill.skillEffectPrefab, 
-                target.transform.position, 
-                Quaternion.identity);
-            Destroy(effect, 2f);
-        }
-    }
-    
-    private void ShowDamageNumber(Vector3 position, float amount)
-    {
-        FloatingTextManager.Instance.ShowFloatingText(
-            amount.ToString("F0"), 
-            position, 
-            Color.red
-        );
-    }
-    
-    private void ShowHealNumber(Vector3 position, float amount)
-    {
-        FloatingTextManager.Instance.ShowFloatingText(
-            amount.ToString("F0"), 
-            position, 
-            Color.green
-        );
-    }
-    
-    private EffectType DetermineEffectType()
-    {
-        // Logic để xác định loại hiệu ứng dựa trên skill data
-        if (cardData.skill.damage > 0)
-            return EffectType.DamageBoost;
-        else if (cardData.skill.buffAmount > 0)
-            return EffectType.SpeedBoost;
-        else
-            return EffectType.DefenseBoost;
     }
     
     private void PlaySkillEffects()
@@ -424,13 +269,21 @@ public class SkillController : MonoBehaviour
         }
     }
     
-    private System.Collections.IEnumerator HideHitboxAfterDelay(float delay)
+    private IEnumerator HideHitboxAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         if (hitboxVisual != null)
         {
             hitboxVisual.Hide();
             isShowingHitbox = false;
+        }
+    }
+    
+    private void OnDestroy()
+    {
+        if (hitboxVisual != null)
+        {
+            Destroy(hitboxVisual.gameObject);
         }
     }
     
