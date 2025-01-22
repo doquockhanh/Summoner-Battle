@@ -62,7 +62,7 @@ public class UnitPoolManager : MonoBehaviour
         poolDictionary[unitId] = pool;
     }
     
-    public Unit GetUnit(UnitData unitData, bool isPlayer)
+    public Unit GetUnit(UnitData unitData, bool isPlayer, CardController card)
     {
         string unitId = unitData.name;
         
@@ -74,20 +74,18 @@ public class UnitPoolManager : MonoBehaviour
         
         Queue<Unit> pool = poolDictionary[unitId];
         
-        // Nếu pool hết unit, tạo thêm unit mới
+        Unit pooledUnit;
         if (pool.Count == 0)
         {
             GameObject poolParent = transform.Find($"Pool_{unitId}")?.gameObject;
             GameObject obj = Instantiate(unitPrefabs[unitId], poolParent.transform);
-            Unit unit = obj.GetComponent<Unit>();
-            unit.Initialize(unitData, isPlayer);
-            return unit;
+            pooledUnit = obj.GetComponent<Unit>();
         }
-        
-        // Lấy unit từ pool
-        Unit pooledUnit = pool.Dequeue();
-        pooledUnit.gameObject.SetActive(true);
-        pooledUnit.Initialize(unitData, isPlayer);
+        else
+        {
+            pooledUnit = pool.Dequeue();
+            pooledUnit.gameObject.SetActive(true);
+        }
         
         return pooledUnit;
     }

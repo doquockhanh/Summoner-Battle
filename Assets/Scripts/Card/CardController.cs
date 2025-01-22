@@ -17,7 +17,7 @@ public class CardController : MonoBehaviour
     {
         this.isPlayer = isPlayer;
         cardData = card;
-        currentMana = cardData.mana;
+        currentMana = 0; // Bắt đầu với 0 mana
         currentRage = 0;
         spawnTimer = 0;
         
@@ -42,6 +42,10 @@ public class CardController : MonoBehaviour
     
     private void Update()
     {
+        // Hồi mana theo thời gian
+        currentMana += cardData.manaRegen * Time.deltaTime;
+        currentMana = Mathf.Min(currentMana, cardData.maxMana);
+        
         if (spawnTimer > 0)
         {
             spawnTimer -= Time.deltaTime;
@@ -51,19 +55,19 @@ public class CardController : MonoBehaviour
             }
         }
         
-        currentRage += cardData.rageGainRate * Time.deltaTime;
+        currentRage += cardData.manaRegen * Time.deltaTime;
         currentRage = Mathf.Min(currentRage, 100f);
         
         if (skillController != null && cardData.skill != null)
         {
-            if (skillController.CanUseSkill(currentRage))
+            if (currentMana >= cardData.skill.manaCost)
             {
                 skillController.UseSkill();
-                currentRage -= cardData.skill.rageCost;
+                currentMana -= cardData.skill.manaCost;
             }
         }
         
-        cardView.UpdateUI(currentRage/100f, spawnTimer/cardData.spawnCooldown);
+        cardView.UpdateUI(currentMana/cardData.maxMana, spawnTimer/cardData.spawnCooldown);
     }
     
     private void SpawnUnit()
@@ -76,14 +80,27 @@ public class CardController : MonoBehaviour
 
         Vector3 spawnPos = BattleManager.Instance.GetSpawnPosition(isPlayer);
         
-        // Lấy unit từ pool thay vì Instantiate
-        Unit unit = UnitPoolManager.Instance.GetUnit(cardData.summonUnit, isPlayer);
-        if (unit != null)
-        {
-            unit.transform.position = spawnPos;
-            unit.transform.SetParent(null);
-        }
+        Unit unit = UnitPoolManager.Instance.GetUnit(cardData.summonUnit, isPlayer, this);
+        unit.transform.position = spawnPos;
+        unit.Initialize(cardData.summonUnit, isPlayer, this);
         
         spawnTimer = cardData.spawnCooldown;
+    }
+    
+    // Thêm phương thức để nhận mana từ sát thương
+    public void GainManaFromDamage(float damage, bool isDamageTaken)
+    {
+        float manaGain;
+        if (isDamageTaken)
+        {
+            manaGain = damage * cardData.manaGainFromDamageTaken;
+        }
+        else
+        {
+            manaGain = damage * cardData.manaGainFromDamageDealt;
+        }
+        
+        currentMana += manaGain;
+        currentMana = Mathf.Min(currentMana, cardData.maxMana);
     }
 }

@@ -13,6 +13,7 @@ public class Unit : MonoBehaviour
     private Base currentBaseTarget;
     private bool isPlayerUnit;
     private float hpLossTimer;
+    private CardController ownerCard;
 
     public bool IsDead => stats.IsDead;
     public bool IsPlayerUnit => isPlayerUnit;
@@ -30,8 +31,9 @@ public class Unit : MonoBehaviour
         view = GetComponent<UnitView>();
     }
 
-    public void Initialize(UnitData data, bool isPlayer)
+    public void Initialize(UnitData data, bool isPlayer, CardController card)
     {
+        ownerCard = card;
         isPlayerUnit = isPlayer;
         stats.Initialize(data);
         combat.Initialize(this, stats, view);
@@ -61,13 +63,19 @@ public class Unit : MonoBehaviour
 
     private void HandleCombat()
     {
-        if (currentTarget != null && targeting.IsInRange(currentTarget))
+        if (currentTarget != null && targeting.IsInRange(currentTarget.transform.position))
         {
             combat.TryAttack(currentTarget);
         }
-        else if (currentBaseTarget != null && targeting.IsInRange(currentBaseTarget))
+        else if (currentBaseTarget != null)
         {
-            combat.AttackBase(currentBaseTarget);
+            Vector2 closestPoint = currentBaseTarget.GetComponent<Collider2D>().ClosestPoint(transform.position);
+            float distanceToBase = Vector2.Distance(transform.position, closestPoint);
+            
+            if (distanceToBase <= stats.Data.range)
+            {
+                combat.AttackBase(currentBaseTarget);
+            }
         }
     }
 
@@ -90,9 +98,27 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         stats.TakeDamage(damage);
+        
+        // Thông báo cho Card về sát thương
+        if (ownerCard != null)
+        {
+            ownerCard.GainManaFromDamage(damage, true);
+        }
+        
         if (IsDead)
         {
             UnitPoolManager.Instance.ReturnToPool(this);
+        }
+    }
+
+    public void DealDamage(Unit target, float damage)
+    {
+        target.TakeDamage(damage);
+        
+        // Thông báo cho Card về sát thương gây ra
+        if (ownerCard != null)
+        {
+            ownerCard.GainManaFromDamage(damage, false);
         }
     }
 
@@ -129,16 +155,13 @@ public class Unit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Chỉ kiểm tra base nếu chưa có targetBase
-        if (currentBaseTarget == null)
+        Base enemyBase = other.GetComponent<Base>();
+        if (enemyBase != null && enemyBase.IsPlayerBase != isPlayerUnit)
         {
-            Base enemyBase = other.GetComponent<Base>();
-            if (enemyBase != null && enemyBase.IsPlayerBase != isPlayerUnit)
-            {
-                currentBaseTarget = enemyBase;
-                currentTarget = null; // Reset current target khi chuyển sang tấn công base
-                return;
-            }
+            currentBaseTarget = enemyBase;
+            currentTarget = null; // Reset current target khi chuyển sang tấn công base
+            Debug.Log($"Found enemy base: {enemyBase.name}");
+            return;
         }
         
         if (currentTarget != null) return;

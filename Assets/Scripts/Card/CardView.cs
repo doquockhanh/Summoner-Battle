@@ -7,8 +7,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private Image cardImage;
     [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private Image rageBar;
-    [SerializeField] private Image spawnCooldownBar;
+    [SerializeField] private Image manaBar;
     [SerializeField] private SkillUI skillUI;
     
     private CardController controller;
@@ -27,14 +26,13 @@ public class CardView : MonoBehaviour
         }
     }
     
-    public void UpdateUI(float ragePercent, float cooldownPercent)
+    public void UpdateUI(float manaPercent, float cooldownPercent)
     {
-        rageBar.fillAmount = ragePercent;
-        spawnCooldownBar.fillAmount = cooldownPercent;
-        
+        manaBar.fillAmount = manaPercent;
+            
         if (skillUI != null)
         {
-            skillUI.UpdateUI(cooldownPercent, ragePercent);
+            skillUI.UpdateUI(manaPercent);
         }
     }
 } 

@@ -9,8 +9,7 @@ public class PowerBuffSkill : SkillData
         description = "Tăng sức mạnh cho một đồng minh";
         targetType = TargetType.Ally;
         targetRadius = 2f;
-        rageCost = 50f;
-        cooldown = 10f;
+        manaCost = 50f;
         buffAmount = 1.5f;
         buffDuration = 5f;
     }

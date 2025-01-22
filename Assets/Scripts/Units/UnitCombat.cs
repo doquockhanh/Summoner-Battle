@@ -17,26 +17,23 @@ public class UnitCombat : MonoBehaviour
 
     public void TryAttack(Unit target)
     {
-        if (attackTimer > 0)
+        if (attackTimer <= 0)
         {
-            attackTimer -= Time.deltaTime;
-            return;
+            target.TakeDamage(stats.GetModifiedDamage());
+            view.PlayAttackEffect();
+            attackTimer = 1f / stats.Data.attackSpeed;
         }
-
-        Attack(target);
-        attackTimer = 1f / stats.Data.attackSpeed;
+        attackTimer -= Time.deltaTime;
     }
 
-    public void AttackBase(Base enemyBase)
+    public void AttackBase(Base baseTarget)
     {
-        enemyBase.TakeDamage(stats.GetModifiedDamage());
-        view.PlayAttackEffect();
-        attackTimer = 1f / stats.Data.attackSpeed;
-    }
-
-    private void Attack(Unit target)
-    {
-        target.TakeDamage(stats.GetModifiedDamage());
-        view.PlayAttackEffect();
+        if (attackTimer <= 0)
+        {
+            baseTarget.TakeDamage(stats.GetModifiedDamage());
+            view.PlayAttackEffect();
+            attackTimer = 1f / stats.Data.attackSpeed;
+        }
+        attackTimer -= Time.deltaTime;
     }
 } 

@@ -80,11 +80,7 @@ public class SkillController : MonoBehaviour
         hitboxObj.SetActive(false);
         Debug.Log("[Skill] Đã tạo hitbox visual từ code");
     }
-    
-    public bool CanUseSkill(float currentRage)
-    {
-        return skillCooldown <= 0 && currentRage >= cardData.skill.rageCost;
-    }
+
     
     public void UseSkill()
     {
@@ -106,7 +102,6 @@ public class SkillController : MonoBehaviour
                 break;
         }
         
-        skillCooldown = cardData.skill.cooldown;
         PlaySkillEffects();
     }
     

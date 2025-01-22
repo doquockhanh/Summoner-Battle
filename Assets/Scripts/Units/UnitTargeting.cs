@@ -82,4 +82,10 @@ public class UnitTargeting : MonoBehaviour
         if (target == null) return false;
         return Vector2.Distance(transform.position, target.transform.position) <= stats.Data.range;
     }
+
+    public bool IsInRange(Vector3 targetPosition)
+    {
+        float distance = Vector3.Distance(transform.position, targetPosition);
+        return distance <= stats.Data.range;
+    }
 } 

@@ -10,8 +10,10 @@ public class Card : ScriptableObject
     public string description;
     
     [Header("Stats")]
-    public float mana;
-    public float rageGainRate;
+    public float maxMana = 100f;
+    public float manaRegen = 5f; // Hồi mana/giây
+    public float manaGainFromDamageDealt = 0.1f; // % mana hồi từ sát thương gây ra
+    public float manaGainFromDamageTaken = 0.15f; // % mana hồi từ sát thương nhận
     public float spawnCooldown; // Thời gian chờ giữa các lần gọi unit
     
     [Header("Unit Data")]
@@ -23,8 +25,10 @@ public class Card : ScriptableObject
     private void OnValidate()
     {
         // Đảm bảo dữ liệu hợp lệ
-        mana = Mathf.Max(0, mana);
-        rageGainRate = Mathf.Max(0, rageGainRate);
+        maxMana = Mathf.Max(0, maxMana);
+        manaRegen = Mathf.Max(0, manaRegen);
+        manaGainFromDamageDealt = Mathf.Clamp01(manaGainFromDamageDealt);
+        manaGainFromDamageTaken = Mathf.Clamp01(manaGainFromDamageTaken);
         spawnCooldown = Mathf.Max(0, spawnCooldown);
     }
     

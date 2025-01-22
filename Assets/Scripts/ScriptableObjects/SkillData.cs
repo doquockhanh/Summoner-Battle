@@ -31,8 +31,7 @@ public class SkillData : ScriptableObject
     public float targetRadius = 1f;  // Cho kỹ năng AOE
     
     [Header("Stats")]
-    public float rageCost = 50f;
-    public float cooldown = 5f;
+    public float manaCost = 50f;
     
     [Header("Effects")]
     public float damage;
@@ -43,4 +42,9 @@ public class SkillData : ScriptableObject
     [Header("Visual Effects")]
     public GameObject skillEffectPrefab;
     public AudioClip skillSound;
+    
+    private void OnValidate()
+    {
+        manaCost = Mathf.Max(20f, manaCost);
+    }
 } 

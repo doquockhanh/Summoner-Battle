@@ -9,8 +9,7 @@ public class FireballSkill : SkillData
         description = "Gây sát thương diện rộng cho kẻ địch";
         targetType = TargetType.AOE;
         targetRadius = 2f;
-        rageCost = 60f;
-        cooldown = 8f;
+        manaCost = 60f;
         damage = 50f;
     }
-} 
+}
