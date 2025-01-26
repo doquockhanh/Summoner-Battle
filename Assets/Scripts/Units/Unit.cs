@@ -20,7 +20,15 @@ public class Unit : MonoBehaviour
     public Unit CurrentTarget => currentTarget;
     public Base CurrentBaseTarget => currentBaseTarget;
     public UnitData GetUnitData() => stats.Data;
+    public UnitStats GetUnitStats() => stats;
     public float GetCurrentHP() => stats.CurrentHP;
+
+    // Thêm delegates để xử lý sự kiện
+    public delegate float DamageTakenHandler(float damage);
+    public delegate void DamageDealtHandler(float damage, Unit target);
+    
+    public event DamageTakenHandler OnDamageTaken;
+    public event DamageDealtHandler OnDamageDealt;
 
     private void Awake()
     {
@@ -97,6 +105,12 @@ public class Unit : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        // Cho phép các effect xử lý sát thương trước
+        if (OnDamageTaken != null)
+        {
+            damage = OnDamageTaken(damage);
+        }
+        
         stats.TakeDamage(damage);
         
         // Thông báo cho Card về sát thương
@@ -111,9 +125,15 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void DealDamage(Unit target, float damage)
+    public void DealDamage(float damage, Unit target)
     {
         target.TakeDamage(damage);
+        
+        // Thông báo cho các effect
+        if (OnDamageDealt != null)
+        {
+            OnDamageDealt(damage, target);
+        }
         
         // Thông báo cho Card về sát thương gây ra
         if (ownerCard != null)

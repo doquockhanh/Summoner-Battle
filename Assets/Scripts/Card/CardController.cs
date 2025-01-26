@@ -78,4 +78,13 @@ public class CardController : MonoBehaviour
         currentMana += manaGain;
         currentMana = Mathf.Min(currentMana, cardData.maxMana);
     }
+
+    public void ActivateSkill(Vector3 targetPosition)
+{
+    if (cardData.skill != null && cardData.skill.CanActivate(currentMana))
+    {
+        SkillManager.Instance.ActivateSkill(cardData.skill.skillName, null, targetPosition);
+        currentMana -= cardData.skill.manaCost;
+    }
+}
 }
