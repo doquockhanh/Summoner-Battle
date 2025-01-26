@@ -8,12 +8,10 @@ public class UnitStats : MonoBehaviour
     private float damageModifier = 1f;
     private float speedModifier = 1f; 
     private float defenseModifier = 1f;
-    private List<SkillEffect> activeEffects = new List<SkillEffect>();
     
     public bool IsDead => currentHp <= 0;
     public float CurrentHP => currentHp;
     public UnitData Data => data;
-    public List<SkillEffect> ActiveEffects => activeEffects;
     
     public void Initialize(UnitData unitData)
     {

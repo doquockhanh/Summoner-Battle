@@ -201,12 +201,4 @@ public class Unit : MonoBehaviour
         stats.ModifyDefense(amount);
     }
     
-    public void AddEffect(EffectType type, float duration, float amount)
-    {
-        GameObject effectObj = new GameObject("SkillEffect");
-        effectObj.transform.SetParent(transform);
-        SkillEffect effect = effectObj.AddComponent<SkillEffect>();
-        effect.Initialize(type, duration, amount, this);
-        stats.ActiveEffects.Add(effect);
-    }
 }

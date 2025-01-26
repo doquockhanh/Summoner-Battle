@@ -5,11 +5,9 @@ public class CardController : MonoBehaviour
 {
     [SerializeField] private GameObject unitPrefab;
     [SerializeField] private CardView cardView;
-    [SerializeField] private SkillController skillController;
     
     private Card cardData;
     private float currentMana;
-    private float currentRage;
     private float spawnTimer;
     private bool isPlayer;
     
@@ -17,21 +15,10 @@ public class CardController : MonoBehaviour
     {
         this.isPlayer = isPlayer;
         cardData = card;
-        currentMana = 0; // Bắt đầu với 0 mana
-        currentRage = 0;
+        currentMana = 0;
         spawnTimer = 0;
         
         cardView.Setup(cardData, this);
-        
-        if (skillController != null && cardData.skill != null)
-        {
-            Debug.Log($"[Card] {cardData.cardName} được khởi tạo với kỹ năng {cardData.skill.skillName}");
-            skillController.Initialize(cardData, isPlayer);
-        }
-        else
-        {
-            Debug.LogWarning($"[Card] {cardData.cardName} thiếu SkillController hoặc Skill Data!");
-        }
     }
     
     private void Start()
@@ -42,7 +29,6 @@ public class CardController : MonoBehaviour
     
     private void Update()
     {
-        // Hồi mana theo thời gian
         currentMana += cardData.manaRegen * Time.deltaTime;
         currentMana = Mathf.Min(currentMana, cardData.maxMana);
         
@@ -52,18 +38,6 @@ public class CardController : MonoBehaviour
             if (spawnTimer <= 0)
             {
                 SpawnUnit();
-            }
-        }
-        
-        currentRage += cardData.manaRegen * Time.deltaTime;
-        currentRage = Mathf.Min(currentRage, 100f);
-        
-        if (skillController != null && cardData.skill != null)
-        {
-            if (currentMana >= cardData.skill.manaCost)
-            {
-                skillController.UseSkill();
-                currentMana -= cardData.skill.manaCost;
             }
         }
         
@@ -87,11 +61,10 @@ public class CardController : MonoBehaviour
         spawnTimer = cardData.spawnCooldown;
     }
     
-    // Thêm phương thức để nhận mana từ sát thương
     public void GainManaFromDamage(float damage, float targetMaxHealth, bool isDamageTaken)
     {
         if(damage <= 0) return;
-        float healthPercentage = damage / targetMaxHealth; // Tính % máu bị mất
+        float healthPercentage = damage / targetMaxHealth;
         float manaGain;
         
         if (isDamageTaken)
