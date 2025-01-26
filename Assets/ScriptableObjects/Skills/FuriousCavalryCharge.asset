@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b543bad7f31e89143a3eb371c53137d2, type: 3}
+  m_Name: FuriousCavalryCharge
+  m_EditorClassIdentifier: 
+  skillName: 
+  description: 
+  manaCost: 50
+  cooldown: 0
+  duration: 5
+  radius: 5
+  skillType: 3
+  targetType: 1
+  ownerCard: {fileID: 0}
+  chargeSpeed: 10
+  damageMultiplier: 1.5
+  knockupDuration: 1
+  shieldPercent: 30
+  shieldDuration: 5
+  lifestealPercent: 20

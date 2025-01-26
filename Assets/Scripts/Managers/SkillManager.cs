@@ -27,9 +27,7 @@ public class SkillManager : MonoBehaviour
     {
         if (activeSkills.TryGetValue(skillId, out Skill skill))
         {
-            // Tìm units trong phạm vi
             Unit[] targets = FindUnitsInRange(targetPosition, skill.radius);
-            
             if (targets.Length > 0)
             {
                 foreach (Unit target in targets)

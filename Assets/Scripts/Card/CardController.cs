@@ -10,6 +10,10 @@ public class CardController : MonoBehaviour
     private float currentMana;
     private float spawnTimer;
     private bool isPlayer;
+    public bool IsPlayer => isPlayer;
+    
+    private bool isWaitingForUnit = false;
+    private bool canActivateSkill = true;
     
     public void Initialize(Card card, bool isPlayer = true)
     {
@@ -17,6 +21,13 @@ public class CardController : MonoBehaviour
         cardData = card;
         currentMana = 0;
         spawnTimer = 0;
+        isWaitingForUnit = false;
+        canActivateSkill = true;
+        
+        if (cardData != null && cardData.skill != null)
+        {
+            cardData.skill.ownerCard = this;
+        }
         
         cardView.Setup(cardData, this);
     }
@@ -38,10 +49,58 @@ public class CardController : MonoBehaviour
             if (spawnTimer <= 0)
             {
                 SpawnUnit();
+                
+                if (isWaitingForUnit)
+                {
+                    TryActivateSkill();
+                }
             }
         }
         
+        if (canActivateSkill && cardData.skill != null && cardData.skill.CanActivate(currentMana))
+        {
+            TryActivateSkill();
+        }
+        
         cardView.UpdateUI(currentMana/cardData.maxMana, spawnTimer/cardData.spawnCooldown);
+    }
+    
+    private void TryActivateSkill()
+    {
+        if (cardData == null || cardData.skill == null) return;
+        
+        if (cardData.skill.CanActivate(currentMana))
+        {
+            ChargeSkill chargeSkill = cardData.skill as ChargeSkill;
+            if (chargeSkill != null)
+            {
+                chargeSkill.ownerCard = this;
+                chargeSkill.ApplyToSummon(null);
+            }
+        }
+    }
+    
+    public void OnSkillActivated()
+    {
+        currentMana -= cardData.skill.manaCost;
+        isWaitingForUnit = false;
+        
+        FloatingTextManager.Instance.ShowFloatingText(
+            "Kích hoạt " + cardData.skill.skillName,
+            transform.position,
+            Color.cyan
+        );
+    }
+    
+    public void OnSkillFailed()
+    {
+        isWaitingForUnit = true;
+        
+        FloatingTextManager.Instance.ShowFloatingText(
+            "Chờ unit để kích hoạt kỹ năng",
+            transform.position,
+            Color.yellow
+        );
     }
     
     private void SpawnUnit()
@@ -59,6 +118,11 @@ public class CardController : MonoBehaviour
         unit.Initialize(cardData.summonUnit, isPlayer, this);
         
         spawnTimer = cardData.spawnCooldown;
+        
+        if (isWaitingForUnit)
+        {
+            TryActivateSkill();
+        }
     }
     
     public void GainManaFromDamage(float damage, float targetMaxHealth, bool isDamageTaken)
@@ -78,13 +142,4 @@ public class CardController : MonoBehaviour
         currentMana += manaGain;
         currentMana = Mathf.Min(currentMana, cardData.maxMana);
     }
-
-    public void ActivateSkill(Vector3 targetPosition)
-{
-    if (cardData.skill != null && cardData.skill.CanActivate(currentMana))
-    {
-        SkillManager.Instance.ActivateSkill(cardData.skill.skillName, null, targetPosition);
-        currentMana -= cardData.skill.manaCost;
-    }
-}
 }

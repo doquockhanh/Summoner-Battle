@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Unit : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class Unit : MonoBehaviour
     private float hpLossTimer;
     private CardController ownerCard;
 
+    private float currentShield;
+    private float lifestealPercent;
+    private bool hasLifesteal;
+
     public bool IsDead => stats.IsDead;
     public bool IsPlayerUnit => isPlayerUnit;
     public Unit CurrentTarget => currentTarget;
@@ -22,6 +27,7 @@ public class Unit : MonoBehaviour
     public UnitData GetUnitData() => stats.Data;
     public UnitStats GetUnitStats() => stats;
     public float GetCurrentHP() => stats.CurrentHP;
+    public CardController OwnerCard => ownerCard;
 
     // Thêm delegates để xử lý sự kiện
     public delegate float DamageTakenHandler(float damage);
@@ -39,9 +45,9 @@ public class Unit : MonoBehaviour
         view = GetComponent<UnitView>();
     }
 
-    public void Initialize(UnitData data, bool isPlayer, CardController card)
+    public void Initialize(UnitData data, bool isPlayer, CardController cardController)
     {
-        ownerCard = card;
+        ownerCard = cardController;
         isPlayerUnit = isPlayer;
         stats.Initialize(data);
         combat.Initialize(this, stats, view);
@@ -221,4 +227,44 @@ public class Unit : MonoBehaviour
         stats.ModifyDefense(amount);
     }
     
+    public void ApplyShield(float shieldAmount, float duration)
+    {
+        currentShield = shieldAmount;
+        StartCoroutine(ShieldDecayCoroutine(duration));
+    }
+
+    public void EnableLifesteal(float percent)
+    {
+        lifestealPercent = percent;
+        hasLifesteal = true;
+    }
+
+    public void DisableLifesteal()
+    {
+        hasLifesteal = false;
+        lifestealPercent = 0;
+    }
+
+    private IEnumerator ShieldDecayCoroutine(float duration)
+    {
+        float startShield = currentShield;
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            float remainingPercent = 1 - (elapsedTime / duration);
+            currentShield = startShield * remainingPercent;
+            
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        currentShield = 0;
+        DisableLifesteal();
+    }
+
+    public void Heal(float amount)
+    {
+        stats.TakeDamage(-amount); // Sử dụng số âm để hồi máu
+    }
 }

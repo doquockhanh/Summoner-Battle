@@ -34,6 +34,13 @@ public class BattleManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+        
+        // Đảm bảo có SkillEffectHandler
+        if (SkillEffectHandler.Instance == null)
+        {
+            GameObject skillEffectHandler = new GameObject("SkillEffectHandler");
+            skillEffectHandler.AddComponent<SkillEffectHandler>();
+        }
     }
     
     private void Start()

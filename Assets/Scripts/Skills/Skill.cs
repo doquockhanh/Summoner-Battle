@@ -14,34 +14,17 @@ public abstract class Skill : ScriptableObject
     public SkillType skillType;
     public TargetType targetType;
     
-    protected bool isOnCooldown;
-    protected float currentCooldown;
+    // Thêm reference đến card sở hữu
+    [HideInInspector]
+    public CardController ownerCard;
     
     public virtual bool CanActivate(float currentMana)
     {
-        return currentMana >= manaCost && !isOnCooldown;
+        return currentMana >= manaCost;
     }
     
     public abstract void ApplyToUnit(Unit target, Unit[] nearbyUnits = null);
     public abstract void ApplyToSummon(Unit summonedUnit);
-    
-    protected virtual void StartCooldown()
-    {
-        isOnCooldown = true;
-        currentCooldown = cooldown;
-    }
-    
-    public virtual void UpdateCooldown()
-    {
-        if (isOnCooldown)
-        {
-            currentCooldown -= Time.deltaTime;
-            if (currentCooldown <= 0)
-            {
-                isOnCooldown = false;
-            }
-        }
-    }
 }
 
 public enum SkillType
