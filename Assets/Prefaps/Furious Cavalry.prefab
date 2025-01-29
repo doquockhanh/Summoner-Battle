@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7802411455003669048}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 9095539105676445772}
   - component: {fileID: 8822846193170244363}
   - component: {fileID: 3683318913063956366}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 7524797599744353227}
   - component: {fileID: 3547237024752374677}
   - component: {fileID: 2956723404514213268}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,8 +205,8 @@ GameObject:
   - component: {fileID: 2644694188224282508}
   - component: {fileID: 1817729600305747794}
   - component: {fileID: -7956776128962548195}
-  m_Layer: 0
-  m_Name: Unit
+  m_Layer: 8
+  m_Name: Furious Cavalry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,7 +269,7 @@ SpriteRenderer:
   m_SortingLayerID: 2061747461
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3073021464058892558, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  m_Sprite: {fileID: 6442386570805944571, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -354,6 +354,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cefc1d2775d41bb4eae221e5b9c66f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 0}
+  combat: {fileID: 0}
+  movement: {fileID: 0}
+  targeting: {fileID: 0}
+  view: {fileID: 0}
 --- !u!114 &281707964024161012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,6 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitSprite: {fileID: 8254720302422736851}
   healthBar: {fileID: 2895224568860442173}
+  shieldBar: {fileID: 0}
   attackEffect: {fileID: 0}
 --- !u!114 &2569714632955878430
 MonoBehaviour:
@@ -439,7 +445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7541858904823127448}
   - component: {fileID: 2895224568860442173}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

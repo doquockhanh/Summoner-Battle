@@ -22,4 +22,5 @@ MonoBehaviour:
   range: 3
   detectRange: 4
   hpLossPerSecond: 4
-  unitPrefab: {fileID: 8505144159870094120, guid: 4a60fc513ebe7f44291031255c740697, type: 3}
+  lifestealPercent: 0
+  unitPrefab: {fileID: 8505144159870094120, guid: 6aa62223d366e504994b6c3526bcaa23, type: 3}

@@ -4,71 +4,38 @@ public class UnitTargeting : MonoBehaviour
 {
     private Unit unit;
     private UnitStats stats;
+    
+    private Unit currentTarget;
+    private Base currentBaseTarget;
+    
+    private readonly Collider2D[] detectedColliders = new Collider2D[20]; // Pool cố định
+    private int detectedCount;
 
-    public void Initialize(Unit unit, UnitStats stats)
+    public Unit CurrentTarget => currentTarget;
+    public Base CurrentBaseTarget => currentBaseTarget;
+
+    public void Initialize(Unit unit)
     {
         this.unit = unit;
-        this.stats = stats;
+        this.stats = unit.GetComponent<UnitStats>();
     }
 
-    public (Unit unit, Base baseTarget) FindTarget()
+    public void UpdateTarget()
     {
-        // Ưu tiên target hiện tại nếu vẫn hợp lệ
-        if (unit.CurrentTarget != null && IsValidTarget(unit.CurrentTarget))
+        // Kiểm tra target hiện tại
+        if (IsValidTarget(currentTarget))
         {
-            return (unit.CurrentTarget, null);
+            return;
         }
 
-        if (unit.CurrentBaseTarget != null && unit.CurrentBaseTarget.IsPlayerBase != unit.IsPlayerUnit)
+        if (IsValidBaseTarget(currentBaseTarget))
         {
-            return (null, unit.CurrentBaseTarget);
+            currentTarget = null;
+            return;
         }
 
-        // Logic tìm target mới
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, stats.Data.detectRange);
-        
-        // Ưu tiên tìm unit trước
-        Unit bestTarget = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (Collider2D collider in colliders)
-        {
-            Unit potentialTarget = collider.GetComponent<Unit>();
-            if (IsValidTarget(potentialTarget))
-            {
-                float distance = Vector2.Distance(transform.position, potentialTarget.transform.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    bestTarget = potentialTarget;
-                }
-            }
-        }
-
-        if (bestTarget != null)
-        {
-            return (bestTarget, null);
-        }
-
-        // Nếu không tìm thấy unit, tìm base
-        foreach (Collider2D collider in colliders)
-        {
-            Base baseTarget = collider.GetComponent<Base>();
-            if (baseTarget != null && baseTarget.IsPlayerBase != unit.IsPlayerUnit)
-            {
-                return (null, baseTarget);
-            }
-        }
-
-        return (null, null);
-    }
-
-    private bool IsValidTarget(Unit target)
-    {
-        if (target == null || target == unit || target.IsDead)
-            return false;
-            
-        return target.IsPlayerUnit != unit.IsPlayerUnit;
+        // Tìm target mới
+        FindNewTarget();
     }
 
     public bool IsInRange(Unit target)
@@ -77,15 +44,84 @@ public class UnitTargeting : MonoBehaviour
         return Vector2.Distance(transform.position, target.transform.position) <= stats.Data.range;
     }
 
-    public bool IsInRange(Base target)
+    public bool IsInRangeOfBase()
     {
-        if (target == null) return false;
-        return Vector2.Distance(transform.position, target.transform.position) <= stats.Data.range;
+        if (currentBaseTarget == null) return false;
+        
+        Vector2 closestPoint = currentBaseTarget.GetComponent<Collider2D>()
+            .ClosestPoint(transform.position);
+        return Vector2.Distance(transform.position, closestPoint) <= stats.Data.range;
     }
 
-    public bool IsInRange(Vector3 targetPosition)
+    private void FindNewTarget()
     {
-        float distance = Vector3.Distance(transform.position, targetPosition);
-        return distance <= stats.Data.range;
+        detectedCount = Physics2D.OverlapCircleNonAlloc(
+            transform.position,
+            stats.Data.detectRange,
+            detectedColliders
+        );
+
+        Unit bestTarget = null;
+        float closestDistance = float.MaxValue;
+        Base nearestBase = null;
+
+        for (int i = 0; i < detectedCount; i++)
+        {
+            // Kiểm tra Unit
+            Unit potentialTarget = detectedColliders[i].GetComponent<Unit>();
+            if (IsValidTarget(potentialTarget))
+            {
+                float distance = Vector2.Distance(transform.position, potentialTarget.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    bestTarget = potentialTarget;
+                }
+                continue;
+            }
+
+            // Kiểm tra Base
+            Base potentialBase = detectedColliders[i].GetComponent<Base>();
+            if (IsValidBaseTarget(potentialBase))
+            {
+                nearestBase = potentialBase;
+            }
+        }
+
+        currentTarget = bestTarget;
+        currentBaseTarget = bestTarget == null ? nearestBase : null;
+    }
+
+    private bool IsValidTarget(Unit target)
+    {
+        return target != null && 
+               !target.IsDead && 
+               target.IsPlayerUnit != unit.IsPlayerUnit;
+    }
+
+    private bool IsValidBaseTarget(Base baseTarget)
+    {
+        return baseTarget != null && 
+               baseTarget.IsPlayerBase != unit.IsPlayerUnit;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (currentTarget != null) return;
+
+        Base enemyBase = other.GetComponent<Base>();
+        if (IsValidBaseTarget(enemyBase))
+        {
+            currentBaseTarget = enemyBase;
+            currentTarget = null;
+            return;
+        }
+
+        Unit otherUnit = other.GetComponent<Unit>();
+        if (IsValidTarget(otherUnit))
+        {
+            currentTarget = otherUnit;
+            currentBaseTarget = null;
+        }
     }
 } 

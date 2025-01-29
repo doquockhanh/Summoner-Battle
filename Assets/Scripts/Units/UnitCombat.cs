@@ -6,34 +6,61 @@ public class UnitCombat : MonoBehaviour
     private UnitStats stats;
     private UnitView view;
     private float attackTimer;
+    
+    private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
 
-    public void Initialize(Unit unit, UnitStats stats, UnitView view)
+    public void Initialize(Unit unit)
     {
         this.unit = unit;
-        this.stats = stats;
-        this.view = view;
-        attackTimer = 0;
+        this.stats = unit.GetComponent<UnitStats>();
+        this.view = unit.GetComponent<UnitView>();
+        ResetAttackTimer();
     }
 
     public void TryAttack(Unit target)
     {
-        if (attackTimer <= 0)
-        {
-            target.TakeDamage(stats.GetModifiedDamage());
-            view.PlayAttackEffect();
-            attackTimer = 1f / stats.Data.attackSpeed;
-        }
-        attackTimer -= Time.deltaTime;
+        if (!CanAttack() || target == null || target.IsDead) return;
+
+        PerformAttack(target);
+        ResetAttackTimer();
     }
 
-    public void AttackBase(Base baseTarget)
+    public void AttackBase(Base baseTarget) 
     {
-        if (attackTimer <= 0)
+        if (!CanAttack() || baseTarget == null) return;
+
+        PerformBaseAttack(baseTarget);
+        ResetAttackTimer();
+    }
+
+    private bool CanAttack() => attackTimer <= 0;
+
+    private void PerformAttack(Unit target)
+    {
+        float damage = stats.GetModifiedDamage();
+        target.TakeDamage(damage);
+        view.PlayAttackEffect();
+        
+        UnitEvents.Combat.RaiseDamageDealt(unit, target, damage);
+    }
+
+    private void PerformBaseAttack(Base baseTarget)
+    {
+        float damage = stats.GetModifiedDamage();
+        baseTarget.TakeDamage(damage);
+        view.PlayAttackEffect();
+    }
+
+    private void ResetAttackTimer()
+    {
+        attackTimer = (1f / stats.Data.attackSpeed) + ATTACK_COOLDOWN_BUFFER;
+    }
+
+    private void Update()
+    {
+        if (attackTimer > 0)
         {
-            baseTarget.TakeDamage(stats.GetModifiedDamage());
-            view.PlayAttackEffect();
-            attackTimer = 1f / stats.Data.attackSpeed;
+            attackTimer -= Time.deltaTime;
         }
-        attackTimer -= Time.deltaTime;
     }
 } 

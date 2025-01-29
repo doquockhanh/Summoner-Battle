@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
-  m_Name: MeleeSummoner
+  m_Name: Furious Cavalry
   m_EditorClassIdentifier: 
-  cardName: MeleeSummoner
+  cardName: Furious Cavalry
   cardImage: {fileID: 3073021464058892558, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
-  description: Mekeanwid
+  description: "K\u1EF5 S\u0129 Phong Ba, c\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"
   maxMana: 100
   manaRegen: 5
   manaGainFromDamageDealt: 10

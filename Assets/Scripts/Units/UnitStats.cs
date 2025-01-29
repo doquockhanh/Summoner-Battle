@@ -4,179 +4,202 @@ using System.Collections;
 
 public class UnitStats : MonoBehaviour
 {
-    public delegate void HealthChangedHandler(float currentHealth);
-    public event HealthChangedHandler OnHealthChanged;
-    public delegate void ShieldChangedHandler(float shieldAmount);
-    public event ShieldChangedHandler OnShieldChanged;
-
-    public delegate void ShieldDamageHandler(float damage);
-    public event ShieldDamageHandler OnShieldDamage;
-
     private UnitData data;
     private float currentHp;
+    private float currentShield;
+    
+    // Các hệ số modifier
     private float damageModifier = 1f;
     private float speedModifier = 1f;
     private float defenseModifier = 1f;
-    private float maxHp;
-    private float currentShield;
-    private float shieldModifier = 1f;
-    private float lifestealPercent;
-    private bool hasLifesteal;
+    
+    // Cache các giá trị đã tính toán
+    private float cachedModifiedDamage;
+    private bool isDamageModified = false;
 
-    public bool IsDead => currentHp <= 0;
-    public float CurrentHP => currentHp;
     public UnitData Data => data;
-    public float MaxHp => maxHp;
-    public float CurrentShield => currentShield;
-    public bool HasLifesteal => hasLifesteal;
-    public float LifestealPercent => lifestealPercent;
+    public float CurrentHP => currentHp;
+    public float MaxHp => data.hp;
+    public bool IsDead => currentHp <= 0;
+    
+    // Events
+    public event System.Action<float> OnHealthChanged;
+    public event System.Action<float> OnShieldChanged;
+    public event System.Action OnDeath;
 
     public void Initialize(UnitData unitData)
     {
         data = unitData;
-        currentHp = data.hp;
-        maxHp = data.hp;
+        currentHp = unitData.hp;
+        currentShield = 0;
+        ResetModifiers();
     }
 
-    public void ModifyDamage(float amount)
+    public void TakeDamage(float rawDamage)
     {
-        damageModifier += amount;
+        if (IsDead) return;
+
+        float damage = CalculateDamageAfterDefense(rawDamage);
+        
+        // Xử lý shield trước
+        float remainingDamage = ProcessShieldDamage(damage);
+        
+        // Xử lý HP
+        if (remainingDamage > 0)
+        {
+            ProcessHealthDamage(remainingDamage);
+        }
+
+        CheckDeath();
     }
 
-    public void ModifySpeed(float amount)
+    private float CalculateDamageAfterDefense(float rawDamage)
     {
-        speedModifier += amount;
+        return rawDamage / defenseModifier;
     }
 
-    public void ModifyDefense(float amount)
+    private float ProcessShieldDamage(float damage)
     {
-        defenseModifier += amount;
+        if (currentShield <= 0) return damage;
+
+        float shieldDamage = Mathf.Min(damage, currentShield);
+        currentShield -= shieldDamage;
+        OnShieldChanged?.Invoke(currentShield);
+        
+        ShowDamageNumber(shieldDamage, DamageType.Shield);
+        
+        return damage - shieldDamage;
+    }
+
+    private void ProcessHealthDamage(float damage)
+    {
+        currentHp -= damage;
+        OnHealthChanged?.Invoke(currentHp);
+        ShowDamageNumber(damage, DamageType.Health);
+    }
+
+    private void CheckDeath()
+    {
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            OnDeath?.Invoke();
+            UnitEvents.Status.RaiseUnitDeath(GetComponent<Unit>());
+        }
     }
 
     public float GetModifiedDamage()
     {
-        return data.damage * damageModifier;
-    }
-
-    public float GetModifiedSpeed()
-    {
-        return data.moveSpeed * speedModifier;
-    }
-
-    public float GetModifiedDefense()
-    {
-        return defenseModifier;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        float remainingDamage = damage;
-
-        // Xử lý shield trước
-        if (currentShield > 0)
+        if (!isDamageModified)
         {
-            float shieldDamage = Mathf.Min(remainingDamage, currentShield);
-            currentShield -= shieldDamage;
-            remainingDamage -= shieldDamage;
-            OnShieldChanged?.Invoke(currentShield);
-
-            // Hiển thị sát thương shield
-            FloatingTextManager.Instance.ShowFloatingText(
-                shieldDamage.ToString("F0"),
-                transform.position + Vector3.up * 0.5f,
-                Color.black
-            );
+            cachedModifiedDamage = data.damage * damageModifier;
+            isDamageModified = true;
         }
-
-        // Nếu còn sát thương, xử lý HP
-        if (remainingDamage > 0)
-        {
-            currentHp -= remainingDamage;
-            OnHealthChanged?.Invoke(currentHp);
-
-            // Hiển thị sát thương HP
-            FloatingTextManager.Instance.ShowFloatingText(
-                remainingDamage.ToString("F0"),
-                transform.position,
-                Color.red
-            );
-        }
+        return cachedModifiedDamage;
     }
 
-    public void Heal(float amount)
+    public void ModifyDamage(float modifier)
     {
-        currentHp = Mathf.Min(currentHp + amount, MaxHp);
-        OnHealthChanged?.Invoke(CurrentHP);
-        FloatingTextManager.Instance.ShowFloatingText(
-               amount.ToString("F0"),
-               transform.position,
-               Color.green
-           );
+        damageModifier += modifier;
+        isDamageModified = false;
     }
 
-    public void TakeShieldDamage(float damage)
+    public void ModifySpeed(float modifier)
     {
-        if (currentShield > 0)
-        {
-            float shieldDamage = Mathf.Min(damage, currentShield);
-            currentShield -= shieldDamage;
-            OnShieldDamage?.Invoke(shieldDamage);
-        }
+        speedModifier += modifier;
+    }
+
+    public void ModifyDefense(float modifier)
+    {
+        defenseModifier += modifier;
+    }
+
+    public void ResetModifiers()
+    {
+        damageModifier = 1f;
+        speedModifier = 1f;
+        defenseModifier = 1f;
+        isDamageModified = false;
     }
 
     public void AddShield(float amount)
     {
         currentShield += amount;
-        OnHealthChanged?.Invoke(currentHp); // Cập nhật UI
-    }
-
-    public void ApplyShield(float amount, float duration)
-    {
-        float shieldAmount = MaxHp * (amount / 100f);
-        currentShield += shieldAmount;
         OnShieldChanged?.Invoke(currentShield);
-        StartCoroutine(ShieldDurationCoroutine(duration));
     }
 
-    public void SetLifesteal(float percent, float duration)
+    public void Heal(float amount)
     {
-        lifestealPercent = percent;
-        hasLifesteal = true;
-        StartCoroutine(LifestealDurationCoroutine(duration));
+        if (IsDead) return;
+        
+        float oldHp = currentHp;
+        currentHp = Mathf.Min(currentHp + amount, MaxHp);
+        
+        if (currentHp > oldHp)
+        {
+            OnHealthChanged?.Invoke(currentHp);
+            ShowDamageNumber(currentHp - oldHp, DamageType.Heal);
+        }
     }
 
     public void ProcessLifesteal(float damageDealt)
     {
-        if (hasLifesteal)
-        {
-            float healAmount = damageDealt * (lifestealPercent / 100f);
-            Heal(healAmount);
-        }
+        if (data.lifestealPercent <= 0) return;
+        float healAmount = damageDealt * data.lifestealPercent;
+        Heal(healAmount);
     }
 
-    private IEnumerator ShieldDurationCoroutine(float duration)
+    private void ShowDamageNumber(float amount, DamageType type)
     {
-        float startShield = currentShield;
-        float elapsedTime = 0;
-        
-        while (elapsedTime < duration)
+        Color textColor = type switch
         {
-            float remainingPercent = 1 - (elapsedTime / duration);
-            currentShield = startShield * remainingPercent;
-            OnShieldChanged?.Invoke(currentShield);
-            
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        currentShield = 0;
+            DamageType.Health => Color.red,
+            DamageType.Shield => Color.black,
+            DamageType.Heal => Color.green,
+            _ => Color.white
+        };
+
+        Vector3 position = type == DamageType.Shield ? 
+            transform.position + Vector3.up * 0.5f : 
+            transform.position;
+
+        FloatingTextManager.Instance.ShowFloatingText(
+            amount.ToString("F0"),
+            position,
+            textColor
+        );
+    }
+
+    public void ApplyShield(float shieldPercent, float duration)
+    {
+        float shieldAmount = MaxHp * shieldPercent;
+        AddShield(shieldAmount);
+        StartCoroutine(RemoveShieldAfterDelay(shieldAmount, duration));
+    }
+
+    public void SetLifesteal(float percent, float duration)
+    {
+        data.lifestealPercent = percent;
+        StartCoroutine(ResetLifestealAfterDelay(duration));
+    }
+
+    private IEnumerator RemoveShieldAfterDelay(float amount, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        currentShield = Mathf.Max(0, currentShield - amount);
         OnShieldChanged?.Invoke(currentShield);
     }
 
-    private IEnumerator LifestealDurationCoroutine(float duration)
+    private IEnumerator ResetLifestealAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(duration);
-        lifestealPercent = 0;
-        hasLifesteal = false;
+        yield return new WaitForSeconds(delay);
+        data.lifestealPercent = 0;
+    }
+
+    private enum DamageType
+    {
+        Health,
+        Shield,
+        Heal
     }
 }

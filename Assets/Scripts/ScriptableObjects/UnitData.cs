@@ -17,6 +17,7 @@ public class UnitData : ScriptableObject
     public float range;        // Tầm đánh
     public float detectRange;  // Tầm phát hiện kẻ địch
     public float hpLossPerSecond; // Lượng máu mất mỗi giây
+    public float lifestealPercent; // Phần trăm hút máu (0-1)
 
     // Thêm reference đến prefab
     public GameObject unitPrefab;

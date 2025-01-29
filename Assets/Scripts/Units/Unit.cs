@@ -4,17 +4,36 @@ using System.Collections;
 
 public class Unit : MonoBehaviour
 {
-    private UnitStats stats;
-    private UnitCombat combat;
-    private UnitMovement movement;
-    private UnitTargeting targeting;
-    private UnitView view;
+    [SerializeField] private UnitStats stats;
+    [SerializeField] private UnitCombat combat;
+    [SerializeField] private UnitMovement movement;
+    [SerializeField] private UnitTargeting targeting;
+    [SerializeField] private UnitView view;
 
     private Unit currentTarget;
     private Base currentBaseTarget;
     private bool isPlayerUnit;
     private float hpLossTimer;
     private CardController ownerCard;
+
+    // Chuyển các property vào interface IUnit để dễ mở rộng
+    public interface IUnit 
+    {
+        bool IsDead { get; }
+        bool IsPlayerUnit { get; }
+        Unit CurrentTarget { get; }
+        Base CurrentBaseTarget { get; } 
+        UnitData UnitData { get; }
+        UnitStats Stats { get; }
+        float CurrentHP { get; }
+        CardController OwnerCard { get; }
+    }
+
+    // Events được tổ chức lại
+    public event System.Action<float> OnDamageTaken;
+    public event System.Action<float, Unit> OnDamageDealt;
+    public event System.Action<float> OnShieldChanged;
+    public event System.Action OnDeath;
 
     public bool IsDead => stats.IsDead;
     public bool IsPlayerUnit => isPlayerUnit;
@@ -25,81 +44,72 @@ public class Unit : MonoBehaviour
     public float GetCurrentHP() => stats.CurrentHP;
     public CardController OwnerCard => ownerCard;
 
-    // Thêm delegates để xử lý sự kiện
-    public delegate float DamageTakenHandler(float damage);
-    public delegate void DamageDealtHandler(float damage, Unit target);
-    
-    public event DamageTakenHandler OnDamageTaken;
-    public event DamageDealtHandler OnDamageDealt;
-
-    public delegate void ShieldChangedHandler(float shieldAmount);
-    public event ShieldChangedHandler OnShieldChanged;
-
     private void Awake()
     {
-        stats = GetComponent<UnitStats>();
-        combat = GetComponent<UnitCombat>();
-        movement = GetComponent<UnitMovement>();
-        targeting = GetComponent<UnitTargeting>();
-        view = GetComponent<UnitView>();
+        ValidateComponents();
+    }
+
+    private void ValidateComponents()
+    {
+        stats = stats ?? GetComponent<UnitStats>();
+        combat = combat ?? GetComponent<UnitCombat>();
+        movement = movement ?? GetComponent<UnitMovement>();
+        targeting = targeting ?? GetComponent<UnitTargeting>();
+        view = view ?? GetComponent<UnitView>();
+
+        if (stats == null || combat == null || movement == null || 
+            targeting == null || view == null)
+        {
+            Debug.LogError($"Missing required components on {gameObject.name}");
+        }
     }
 
     public void Initialize(UnitData data, bool isPlayer, CardController cardController)
     {
         ownerCard = cardController;
         isPlayerUnit = isPlayer;
+        
         stats.Initialize(data);
-        combat.Initialize(this, stats, view);
-        movement.Initialize(this, stats);
-        targeting.Initialize(this, stats);
-        view.Initialize(this, stats);
+        combat.Initialize(this);
+        movement.Initialize(this);
+        targeting.Initialize(this);
+        view.Initialize(this);
         
         hpLossTimer = 0;
     }
 
     private void Update()
     {
-        if (IsDead) return;
+        if (stats.IsDead) return;
 
-        UpdateTarget();
+        targeting.UpdateTarget();
         HandleCombat();
         HandleMovement();
         HandleHpLoss();
     }
 
-    private void UpdateTarget()
-    {
-        (Unit unit, Base baseTarget) = targeting.FindTarget();
-        currentTarget = unit;
-        currentBaseTarget = baseTarget;
-    }
-
     private void HandleCombat()
     {
-        if (currentTarget != null && targeting.IsInRange(currentTarget.transform.position))
+        var target = targeting.CurrentTarget;
+        if (target != null && targeting.IsInRange(target))
         {
-            combat.TryAttack(currentTarget);
+            combat.TryAttack(target);
         }
-        else if (currentBaseTarget != null)
+        else if (targeting.CurrentBaseTarget != null && targeting.IsInRangeOfBase())
         {
-            Vector2 closestPoint = currentBaseTarget.GetComponent<Collider2D>().ClosestPoint(transform.position);
-            float distanceToBase = Vector2.Distance(transform.position, closestPoint);
-            
-            if (distanceToBase <= stats.Data.range)
-            {
-                combat.AttackBase(currentBaseTarget);
-            }
+            combat.AttackBase(targeting.CurrentBaseTarget);
         }
     }
 
     private void HandleMovement()
     {
-        Vector3 movement = this.movement.CalculateMovement();
-        transform.position += movement * Time.deltaTime;
+        movement.Move(targeting.CurrentTarget, targeting.CurrentBaseTarget);
     }
 
     private void HandleHpLoss()
     {
+        if (stats.Data.hpLossPerSecond <= 0) return;
+        
         hpLossTimer += Time.deltaTime;
         if (hpLossTimer >= 1f)
         {
