@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FuriousCavalryCharge", menuName = "Game/Skills/FuriousCavalryCharge")]
-public class ChargeSkill : Skill
+public class FuriousCavalryCharge : Skill
 {
     [Header("Charge Properties")]
     public float chargeSpeed = 10f;
@@ -100,19 +100,19 @@ public class ChargeSkill : Skill
         if (caster == null) return Vector3.zero;
 
         Vector3 bestPosition = caster.transform.position;
-        int maxEnemies = 0;
+        float maxScore = 0;
+        float checkRadius = 2f;
 
         try
         {
-            // Quét các vị trí xung quanh trong tầm
-            for (float angle = 0; angle < 360; angle += 30)
+            // Quét nhiều hướng hơn để chính xác hơn
+            for (float angle = 0; angle < 360; angle += 15) // Mỗi 15 độ thay vì 30 độ
             {
                 Vector3 direction = Quaternion.Euler(0, 0, angle) * Vector3.right;
                 Vector3 checkPosition = caster.transform.position + direction * radius;
                 
-                // Đếm số lượng địch trong vùng
-                Collider2D[] hits = Physics2D.OverlapCircleAll(checkPosition, 2f);
-                int enemyCount = 0;
+                Collider2D[] hits = Physics2D.OverlapCircleAll(checkPosition, checkRadius);
+                float positionScore = 0;
                 
                 foreach (Collider2D hit in hits)
                 {
@@ -121,14 +121,48 @@ public class ChargeSkill : Skill
                     Unit enemy = hit.GetComponent<Unit>();
                     if (enemy != null && enemy.IsPlayerUnit != caster.IsPlayerUnit)
                     {
-                        enemyCount++;
+                        // Tính điểm dựa trên:
+                        // 1. Khoảng cách đến enemy
+                        float distance = Vector3.Distance(checkPosition, enemy.transform.position);
+                        float distanceScore = 1 - (distance / checkRadius); // Càng gần càng tốt
+                        
+                        // 2. Máu của enemy
+                        float healthPercent = enemy.GetUnitStats().CurrentHP / enemy.GetUnitStats().MaxHp;
+                        
+                        // 3. Tổng hợp điểm
+                        float enemyScore = distanceScore * (1 + healthPercent);
+                        positionScore += enemyScore;
                     }
                 }
-
-                if (enemyCount > maxEnemies)
+                
+                // Cập nhật vị trí tốt nhất
+                if (positionScore > maxScore)
                 {
-                    maxEnemies = enemyCount;
+                    maxScore = positionScore;
                     bestPosition = checkPosition;
+                }
+            }
+            
+            // Nếu không tìm thấy mục tiêu nào, tìm enemy gần nhất
+            if (maxScore == 0)
+            {
+                Collider2D[] allEnemies = Physics2D.OverlapCircleAll(caster.transform.position, radius * 2);
+                float nearestDistance = float.MaxValue;
+                
+                foreach (Collider2D hit in allEnemies)
+                {
+                    if (hit == null) continue;
+                    
+                    Unit enemy = hit.GetComponent<Unit>();
+                    if (enemy != null && enemy.IsPlayerUnit != caster.IsPlayerUnit)
+                    {
+                        float distance = Vector3.Distance(caster.transform.position, enemy.transform.position);
+                        if (distance < nearestDistance)
+                        {
+                            nearestDistance = distance;
+                            bestPosition = enemy.transform.position;
+                        }
+                    }
                 }
             }
         }

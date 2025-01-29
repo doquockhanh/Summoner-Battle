@@ -23,7 +23,7 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
     
-    public void HandleChargeSkill(Unit caster, Vector3 targetPos, ChargeSkill skill)
+    public void HandleChargeSkill(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
     {
         if (caster == null)
         {
@@ -34,8 +34,12 @@ public class SkillEffectHandler : MonoBehaviour
         StartCoroutine(ChargeCoroutine(caster, targetPos, skill));
     }
     
-    private IEnumerator ChargeCoroutine(Unit caster, Vector3 targetPos, ChargeSkill skill)
+    private IEnumerator ChargeCoroutine(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
     {
+        // Áp dụng lá chắn và hút máu trước khi lao vào
+        caster.GetUnitStats().ApplyShield(skill.shieldPercent, skill.shieldDuration);
+        caster.GetUnitStats().SetLifesteal(skill.lifestealPercent, skill.shieldDuration);
+
         // Hiệu ứng bắt đầu lao
         if (chargeEffectPrefab != null)
         {

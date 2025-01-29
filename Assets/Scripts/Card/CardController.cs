@@ -71,7 +71,7 @@ public class CardController : MonoBehaviour
         
         if (cardData.skill.CanActivate(currentMana))
         {
-            ChargeSkill chargeSkill = cardData.skill as ChargeSkill;
+            FuriousCavalryCharge chargeSkill = cardData.skill as FuriousCavalryCharge;
             if (chargeSkill != null)
             {
                 chargeSkill.ownerCard = this;

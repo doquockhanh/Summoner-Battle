@@ -5,6 +5,7 @@ public class UnitView : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer unitSprite;
     [SerializeField] private Slider healthBar;
+    [SerializeField] private Slider shieldBar;
     [SerializeField] private ParticleSystem attackEffect;
     
     private Unit unit;
@@ -43,6 +44,44 @@ public class UnitView : MonoBehaviour
                 healthBar.direction = Slider.Direction.RightToLeft;
             }
         }
+        
+        // Tạo health bar và shield bar
+        if (healthBar == null)
+        {
+            healthBar = CreateBar(Color.green);
+            healthBar.transform.localPosition = new Vector3(0, 50, 0);
+        }
+        
+        if (shieldBar == null)
+        {
+            shieldBar = CreateBar(Color.cyan);
+            shieldBar.transform.localPosition = new Vector3(0, 55, 0); // Đặt cao hơn health bar
+        }
+        
+        // Setup các giá trị ban đầu
+        healthBar.maxValue = stats.MaxHp;
+        healthBar.value = stats.CurrentHP;
+        
+        shieldBar.maxValue = stats.MaxHp;
+        shieldBar.value = 0;
+        shieldBar.gameObject.SetActive(false);
+        
+        // Subscribe vào các event
+        unit.OnShieldChanged += UpdateShieldBar;
+    }
+    
+    private Slider CreateBar(Color color)
+    {
+        GameObject barObj = Instantiate(healthBar.gameObject, transform);
+        Slider bar = barObj.GetComponent<Slider>();
+        bar.fillRect.GetComponent<Image>().color = color;
+        return bar;
+    }
+    
+    private void UpdateShieldBar(float shieldAmount)
+    {
+        shieldBar.gameObject.SetActive(shieldAmount > 0);
+        shieldBar.value = shieldAmount;
     }
     
     public void UpdateHealth(float currentHp)
@@ -114,6 +153,14 @@ public class UnitView : MonoBehaviour
                 float healthPercent = Mathf.Clamp01(stats.CurrentHP / maxHp);
                 fillImage.color = Color.Lerp(Color.red, Color.green, healthPercent);
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (unit != null)
+        {
+            unit.OnShieldChanged -= UpdateShieldBar;
         }
     }
 } 

@@ -16,10 +16,6 @@ public class Unit : MonoBehaviour
     private float hpLossTimer;
     private CardController ownerCard;
 
-    private float currentShield;
-    private float lifestealPercent;
-    private bool hasLifesteal;
-
     public bool IsDead => stats.IsDead;
     public bool IsPlayerUnit => isPlayerUnit;
     public Unit CurrentTarget => currentTarget;
@@ -35,6 +31,9 @@ public class Unit : MonoBehaviour
     
     public event DamageTakenHandler OnDamageTaken;
     public event DamageDealtHandler OnDamageDealt;
+
+    public delegate void ShieldChangedHandler(float shieldAmount);
+    public event ShieldChangedHandler OnShieldChanged;
 
     private void Awake()
     {
@@ -111,18 +110,12 @@ public class Unit : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        // Cho phép các effect xử lý sát thương trước
-        if (OnDamageTaken != null)
-        {
-            damage = OnDamageTaken(damage);
-        }
         
         stats.TakeDamage(damage);
         
-        // Thông báo cho Card về sát thương
         if (ownerCard != null)
         {
-            ownerCard.GainManaFromDamage(damage, stats.Data.hp, true);
+            ownerCard.GainManaFromDamage(damage, stats.MaxHp, true);
         }
         
         if (IsDead)
@@ -134,17 +127,11 @@ public class Unit : MonoBehaviour
     public void DealDamage(float damage, Unit target)
     {
         target.TakeDamage(damage);
+        stats.ProcessLifesteal(damage);
         
-        // Thông báo cho các effect
-        if (OnDamageDealt != null)
-        {
-            OnDamageDealt(damage, target);
-        }
-        
-        // Thông báo cho Card về sát thương gây ra
         if (ownerCard != null)
         {
-            ownerCard.GainManaFromDamage(damage, target.GetUnitData().hp, false);
+            ownerCard.GainManaFromDamage(damage, target.GetUnitStats().MaxHp, false);
         }
     }
 
@@ -225,42 +212,6 @@ public class Unit : MonoBehaviour
     public void ModifyDefense(float amount)
     {
         stats.ModifyDefense(amount);
-    }
-    
-    public void ApplyShield(float shieldAmount, float duration)
-    {
-        currentShield = shieldAmount;
-        StartCoroutine(ShieldDecayCoroutine(duration));
-    }
-
-    public void EnableLifesteal(float percent)
-    {
-        lifestealPercent = percent;
-        hasLifesteal = true;
-    }
-
-    public void DisableLifesteal()
-    {
-        hasLifesteal = false;
-        lifestealPercent = 0;
-    }
-
-    private IEnumerator ShieldDecayCoroutine(float duration)
-    {
-        float startShield = currentShield;
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
-        {
-            float remainingPercent = 1 - (elapsedTime / duration);
-            currentShield = startShield * remainingPercent;
-            
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        currentShield = 0;
-        DisableLifesteal();
     }
 
     public void Heal(float amount)
