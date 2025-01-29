@@ -16,11 +16,10 @@ MonoBehaviour:
   unitImage: {fileID: 0}
   description: melelelelel
   hp: 150
-  damage: 20
+  damage: 25
   attackSpeed: 2
   moveSpeed: 2
   range: 0.5
-  detectRange: 2
-  hpLossPerSecond: -10
-  lifestealPercent: 0
+  detectRange: 4
+  lifestealPercent: 0.2
   unitPrefab: {fileID: 8505144159870094120, guid: 4a60fc513ebe7f44291031255c740697, type: 3}

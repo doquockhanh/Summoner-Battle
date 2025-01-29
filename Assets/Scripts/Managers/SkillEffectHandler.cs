@@ -36,7 +36,7 @@ public class SkillEffectHandler : MonoBehaviour
     
     private IEnumerator ChargeCoroutine(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
     {
-        // Áp dụng lá chắn và hút máu trước khi lao vào
+        // Áp dụng shield và lifesteal cho caster
         caster.GetUnitStats().ApplyShield(skill.shieldPercent, skill.shieldDuration);
         caster.GetUnitStats().SetLifesteal(skill.lifestealPercent, skill.shieldDuration);
 
@@ -80,8 +80,13 @@ public class SkillEffectHandler : MonoBehaviour
                         Destroy(hitEffect, 0.5f);
                     }
                     
-                    // Hất tung
-                    StartCoroutine(KnockupCoroutine(enemy, skill.knockupDuration));
+                    // Áp dụng hiệu ứng knockup thông qua status effect system
+                    var statusEffects = enemy.GetComponent<UnitStatusEffects>();
+                    if (statusEffects != null)
+                    {
+                        var knockupEffect = new KnockupEffect(enemy, skill.knockupDuration);
+                        statusEffects.AddEffect(knockupEffect);
+                    }
                 }
             }
             
@@ -89,29 +94,7 @@ public class SkillEffectHandler : MonoBehaviour
             yield return null;
         }
         
-        // Đảm bảo unit đến đúng vị trí cuối
+        // Đảm bảo caster đến đúng vị trí cuối
         caster.transform.position = targetPos;
-    }
-    
-    private IEnumerator KnockupCoroutine(Unit target, float duration)
-    {
-        if (target == null) yield break;
-        
-        Vector3 originalPos = target.transform.position;
-        float maxHeight = 0.5f;
-        float elapsedTime = 0f;
-        
-        while (elapsedTime < duration)
-        {
-            float heightPercent = Mathf.Sin((elapsedTime / duration) * Mathf.PI);
-            float currentHeight = maxHeight * heightPercent;
-            
-            target.transform.position = originalPos + Vector3.up * currentHeight;
-            
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        target.transform.position = originalPos;
     }
 } 

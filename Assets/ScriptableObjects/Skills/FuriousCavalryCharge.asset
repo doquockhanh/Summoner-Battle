@@ -23,7 +23,7 @@ MonoBehaviour:
   ownerCard: {fileID: 0}
   chargeSpeed: 10
   damageMultiplier: 1.5
-  knockupDuration: 1
+  knockupDuration: 2
   shieldPercent: 75
   shieldDuration: 10
   lifestealPercent: 20

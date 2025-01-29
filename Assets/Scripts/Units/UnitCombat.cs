@@ -6,8 +6,14 @@ public class UnitCombat : MonoBehaviour
     private UnitStats stats;
     private UnitView view;
     private float attackTimer;
-    
+    private UnitStatusEffects statusEffects;
+
     private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
+
+    private void Awake()
+    {
+        statusEffects = GetComponent<UnitStatusEffects>();
+    }
 
     public void Initialize(Unit unit)
     {
@@ -19,18 +25,24 @@ public class UnitCombat : MonoBehaviour
 
     public void TryAttack(Unit target)
     {
-        if (!CanAttack() || target == null || target.IsDead) return;
+        if (!CanAttack() || !statusEffects.CanAct() || target == null || target.IsDead) return;
 
         PerformAttack(target);
         ResetAttackTimer();
     }
 
-    public void AttackBase(Base baseTarget) 
+    public void AttackBase(Base baseTarget)
     {
-        if (!CanAttack() || baseTarget == null) return;
+        if (!CanAttack() || !statusEffects.CanAct() || baseTarget == null) return;
 
         PerformBaseAttack(baseTarget);
         ResetAttackTimer();
+    }
+
+    public void TryUseSkill()
+    {
+        if (!statusEffects.CanAct()) return;
+        // ... rest of skill logic
     }
 
     private bool CanAttack() => attackTimer <= 0;
@@ -40,7 +52,7 @@ public class UnitCombat : MonoBehaviour
         float damage = stats.GetModifiedDamage();
         target.TakeDamage(damage);
         view.PlayAttackEffect();
-        
+
         UnitEvents.Combat.RaiseDamageDealt(unit, target, damage);
     }
 
@@ -63,4 +75,4 @@ public class UnitCombat : MonoBehaviour
             attackTimer -= Time.deltaTime;
         }
     }
-} 
+}

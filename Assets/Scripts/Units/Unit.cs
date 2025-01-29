@@ -85,7 +85,6 @@ public class Unit : MonoBehaviour
         targeting.UpdateTarget();
         HandleCombat();
         HandleMovement();
-        HandleHpLoss();
     }
 
     private void HandleCombat()
@@ -104,18 +103,6 @@ public class Unit : MonoBehaviour
     private void HandleMovement()
     {
         movement.Move(targeting.CurrentTarget, targeting.CurrentBaseTarget);
-    }
-
-    private void HandleHpLoss()
-    {
-        if (stats.Data.hpLossPerSecond <= 0) return;
-        
-        hpLossTimer += Time.deltaTime;
-        if (hpLossTimer >= 1f)
-        {
-            stats.TakeDamage(stats.Data.hpLossPerSecond);
-            hpLossTimer = 0;
-        }
     }
 
     public void TakeDamage(float damage)

@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2644694188224282508}
   - component: {fileID: 1817729600305747794}
   - component: {fileID: -7956776128962548195}
+  - component: {fileID: 5877337830418339703}
   m_Layer: 8
   m_Name: Furious Cavalry
   m_TagString: Untagged
@@ -167,11 +168,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cefc1d2775d41bb4eae221e5b9c66f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 0}
-  combat: {fileID: 0}
-  movement: {fileID: 0}
-  targeting: {fileID: 0}
-  view: {fileID: 0}
+  stats: {fileID: -962738524164599171}
+  combat: {fileID: 2644694188224282508}
+  movement: {fileID: 1817729600305747794}
+  targeting: {fileID: -7956776128962548195}
+  view: {fileID: 281707964024161012}
 --- !u!114 &281707964024161012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793c3a77d674f3b40b8d2a37126d84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockupHeight: 0.5
 --- !u!114 &-7956776128962548195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,5 +247,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31f80cd46a7d5994ebbb30c2099a53f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5877337830418339703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505144159870094120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc1eacf80580634984d08070bf3dba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
