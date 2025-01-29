@@ -17,6 +17,9 @@ public class UnitStats : MonoBehaviour
     private float cachedModifiedDamage;
     private bool isDamageModified = false;
 
+    private Coroutine removeShieldCoroutine;
+    private Coroutine resetLifestealCoroutine;
+
     public UnitData Data => data;
     public float CurrentHP => currentHp;
     public float MaxHp => data.hp;
@@ -62,13 +65,14 @@ public class UnitStats : MonoBehaviour
     {
         if (currentShield <= 0) return damage;
 
+        // Tính toán lại damage cho shield
         float shieldDamage = Mathf.Min(damage, currentShield);
         currentShield -= shieldDamage;
         OnShieldChanged?.Invoke(currentShield);
         
         ShowDamageNumber(shieldDamage, DamageType.Shield);
         
-        return damage - shieldDamage;
+        return damage - shieldDamage; // Trả về damage còn lại sau khi trừ shield
     }
 
     private void ProcessHealthDamage(float damage)
@@ -172,28 +176,49 @@ public class UnitStats : MonoBehaviour
 
     public void ApplyShield(float shieldPercent, float duration)
     {
-        float shieldAmount = MaxHp * shieldPercent;
-        AddShield(shieldAmount);
-        StartCoroutine(RemoveShieldAfterDelay(shieldAmount, duration));
+        // Hủy coroutine cũ nếu đang có shield
+        if (removeShieldCoroutine != null)
+        {
+            StopCoroutine(removeShieldCoroutine);
+            currentShield = 0; // Reset shield cũ
+        }
+
+        // Áp dụng shield mới
+        float shieldAmount = MaxHp * (shieldPercent / 100f); // Chuyển % thành tỉ lệ
+        currentShield = shieldAmount;
+        OnShieldChanged?.Invoke(currentShield);
+        
+        // Bắt đầu coroutine mới
+        removeShieldCoroutine = StartCoroutine(RemoveShieldAfterDelay(duration));
+    }
+
+    private IEnumerator RemoveShieldAfterDelay(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        currentShield = 0;
+        OnShieldChanged?.Invoke(currentShield);
+        removeShieldCoroutine = null;
     }
 
     public void SetLifesteal(float percent, float duration)
     {
-        data.lifestealPercent = percent;
-        StartCoroutine(ResetLifestealAfterDelay(duration));
+        // Hủy coroutine cũ nếu đang có lifesteal
+        if (resetLifestealCoroutine != null)
+        {
+            StopCoroutine(resetLifestealCoroutine);
+            data.lifestealPercent = 0;
+        }
+
+        // Áp dụng lifesteal mới
+        data.lifestealPercent = percent / 100f; // Chuyển % thành tỉ lệ
+        resetLifestealCoroutine = StartCoroutine(ResetLifestealAfterDelay(duration));
     }
 
-    private IEnumerator RemoveShieldAfterDelay(float amount, float delay)
+    private IEnumerator ResetLifestealAfterDelay(float duration)
     {
-        yield return new WaitForSeconds(delay);
-        currentShield = Mathf.Max(0, currentShield - amount);
-        OnShieldChanged?.Invoke(currentShield);
-    }
-
-    private IEnumerator ResetLifestealAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(duration);
         data.lifestealPercent = 0;
+        resetLifestealCoroutine = null;
     }
 
     private enum DamageType

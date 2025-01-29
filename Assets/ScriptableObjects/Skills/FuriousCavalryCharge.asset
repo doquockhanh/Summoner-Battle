@@ -24,6 +24,6 @@ MonoBehaviour:
   chargeSpeed: 10
   damageMultiplier: 1.5
   knockupDuration: 1
-  shieldPercent: 25
+  shieldPercent: 75
   shieldDuration: 10
   lifestealPercent: 20

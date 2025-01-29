@@ -4,33 +4,30 @@ using UnityEngine.UI;
 
 public class UnitView : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private SpriteRenderer unitSprite;
-    [SerializeField] private Slider healthBar;
-    [SerializeField] private Slider shieldBar;
+    [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private ParticleSystem attackEffect;
     
-    private float maxHp;
-    private readonly Color healthyColor = Color.green;
-    private readonly Color criticalColor = Color.red;
-    private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
-    
+    private HealthBarUI healthBarUI;
     private Material spriteMaterial;
     private Coroutine flashCoroutine;
+    private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
 
     private void OnEnable()
     {
-        if (healthBar != null)
+        if (healthBarUI != null)
         {
-            healthBar.gameObject.SetActive(true);
+            healthBarUI.Show();
             UpdateHealthBarPosition();
         }
     }
 
     private void OnDisable()
     {
-        if (healthBar != null)
+        if (healthBarUI != null)
         {
-            healthBar.gameObject.SetActive(false);
+            healthBarUI.Hide();
         }
     }
 
@@ -45,75 +42,50 @@ public class UnitView : MonoBehaviour
         spriteMaterial = unitSprite.material;
         
         var stats = unit.GetComponent<UnitStats>();
-        maxHp = stats.MaxHp;
-        
-        SetupHealthBar();
-        SetupShieldBar();
+        SetupHealthBar(stats.MaxHp);
         
         // Subscribe to events
         stats.OnHealthChanged += UpdateHealth;
-        stats.OnShieldChanged += UpdateShieldBar;
+        stats.OnShieldChanged += UpdateShield;
         stats.OnDeath += OnUnitDeath;
     }
 
-    private void SetupHealthBar()
+    private void SetupHealthBar(float maxHp)
     {
-        if (healthBar != null)
+        if (healthBarUI == null && healthBarPrefab != null)
         {
-            healthBar.transform.SetParent(HealthBarManager.Instance.GetCanvasTransform(), true);
-            healthBar.gameObject.SetActive(true);
-            healthBar.maxValue = maxHp;
-            healthBar.value = maxHp;
-            UpdateHealthBarPosition();
-            UpdateHealthBarColor(maxHp / maxHp);
+            var healthBarObject = Instantiate(healthBarPrefab, HealthBarManager.Instance.GetCanvasTransform());
+            healthBarUI = healthBarObject.GetComponent<HealthBarUI>();
+            healthBarUI.transform.SetParent(HealthBarManager.Instance.GetCanvasTransform(), true); // Gắn healthbar vào unit
         }
-    }
-
-    private void SetupShieldBar()
-    {
-        if (shieldBar != null)
-        {
-            shieldBar.gameObject.SetActive(false);
-        }
+        
+        healthBarUI.Initialize(maxHp);
+        UpdateHealthBarPosition();
     }
 
     private void UpdateHealthBarPosition()
     {
-        if (healthBar != null)
+        if (healthBarUI != null)
         {
             Vector3 worldPosition = transform.position + Vector3.up * 0.5f;
-            healthBar.transform.position = worldPosition;
+            healthBarUI.transform.position = worldPosition;
         }
     }
 
-    public void UpdateHealth(float currentHp)
+    private void UpdateHealth(float newHp)
     {
-        if (healthBar == null) return;
-        
-        healthBar.value = currentHp;
-        UpdateHealthBarColor(currentHp / maxHp);
-        
-        // Flash effect khi nhận damage
-        if (currentHp < healthBar.value)
-        {
-            PlayDamageFlash();
-        }
+        healthBarUI.UpdateHealth(newHp);
+        PlayDamageFlash();
     }
 
-    private void UpdateHealthBarColor(float healthPercent)
+    private void UpdateShield(float shieldAmount)
     {
-        if (healthBar?.fillRect?.GetComponent<Image>() is Image fillImage)
-        {
-            fillImage.color = Color.Lerp(criticalColor, healthyColor, healthPercent);
-        }
+        healthBarUI.UpdateShield(shieldAmount);
     }
 
-    private void UpdateShieldBar(float shieldAmount)
+    private void OnUnitDeath()
     {
-        if (shieldBar == null) return;
-        
-        shieldBar.gameObject.SetActive(shieldAmount > 0);
-        shieldBar.value = shieldAmount;
+        healthBarUI.Hide();
     }
 
     public void PlayAttackEffect()
@@ -152,13 +124,6 @@ public class UnitView : MonoBehaviour
         spriteMaterial.SetFloat(FlashProperty, 0f);
     }
 
-    private void OnUnitDeath()
-    {
-        // Có thể thêm animation chết ở đây
-        if (healthBar != null) healthBar.gameObject.SetActive(false);
-        if (shieldBar != null) shieldBar.gameObject.SetActive(false);
-    }
-
     private void OnDestroy()
     {
         if (flashCoroutine != null)
@@ -166,9 +131,9 @@ public class UnitView : MonoBehaviour
             StopCoroutine(flashCoroutine);
         }
 
-        if (healthBar != null)
+        if (healthBarUI != null)
         {
-            Destroy(healthBar.gameObject);
+            Destroy(healthBarUI.gameObject);
         }
     }
 }
