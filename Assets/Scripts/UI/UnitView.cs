@@ -9,6 +9,9 @@ public class UnitView : MonoBehaviour
     [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private ParticleSystem attackEffect;
     
+    [Header("Health Bar Settings")]
+    [SerializeField] private Vector3 healthBarOffset = new Vector3(0f, 0.5f, 0f);
+    
     private HealthBarUI healthBarUI;
     private Material spriteMaterial;
     private Coroutine flashCoroutine;
@@ -67,7 +70,7 @@ public class UnitView : MonoBehaviour
     {
         if (healthBarUI != null)
         {
-            Vector3 worldPosition = transform.position + Vector3.up * 0.5f;
+            Vector3 worldPosition = transform.position + healthBarOffset;
             healthBarUI.transform.position = worldPosition;
         }
     }
