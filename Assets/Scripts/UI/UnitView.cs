@@ -8,6 +8,7 @@ public class UnitView : MonoBehaviour
     [SerializeField] private SpriteRenderer unitSprite;
     [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private ParticleSystem attackEffect;
+    [SerializeField] private Animator animator;
     
     [Header("Health Bar Settings")]
     [SerializeField] private Vector3 healthBarOffset = new Vector3(0f, 0.5f, 0f);
@@ -16,6 +17,14 @@ public class UnitView : MonoBehaviour
     private Material spriteMaterial;
     private Coroutine flashCoroutine;
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
+    private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
+    private static readonly int AttackParam = Animator.StringToHash("attack");
+
+    private void Awake()
+    {
+        if (animator == null)
+            animator = GetComponent<Animator>();
+    }
 
     private void OnEnable()
     {
@@ -51,6 +60,30 @@ public class UnitView : MonoBehaviour
         stats.OnHealthChanged += UpdateHealth;
         stats.OnShieldChanged += UpdateShield;
         stats.OnDeath += OnUnitDeath;
+    }
+
+    public void SetMoving(bool isMoving)
+    {
+        if (animator != null)
+        {
+            animator.SetBool(IsMovingParam, isMoving);
+        }
+    }
+
+    public void PlayAttackAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(AttackParam);
+        }
+    }
+
+    public void FlipSprite(bool faceRight)
+    {
+        if (unitSprite != null)
+        {
+            unitSprite.flipX = !faceRight;
+        }
     }
 
     private void SetupHealthBar(float maxHp)

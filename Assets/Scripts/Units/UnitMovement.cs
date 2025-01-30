@@ -44,13 +44,21 @@ public class UnitMovement : MonoBehaviour
     {
         if (unit.IsDead || statusEffects.IsKnockedUp) return;
 
-        if (IsInAttackRange(targetUnit, targetBase)) return;
+        if (IsInAttackRange(targetUnit, targetBase))
+        {
+            unit.GetComponent<UnitView>().SetMoving(false);
+            return;
+        }
 
         Vector3 direction = CalculateDesiredDirection(targetUnit, targetBase);
         Vector3 separation = CalculateSeparation();
         
         Vector3 finalDirection = (direction + separation).normalized;
         transform.position += finalDirection * stats.Data.moveSpeed * Time.deltaTime;
+        
+        var view = unit.GetComponent<UnitView>();
+        view.SetMoving(true);
+        view.FlipSprite(finalDirection.x > 0);
         
         originalPosition = new Vector3(transform.position.x, originalPosition.y, transform.position.z);
     }

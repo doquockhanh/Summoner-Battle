@@ -51,6 +51,7 @@ public class UnitCombat : MonoBehaviour
     {
         float damage = stats.GetModifiedDamage();
         target.TakeDamage(damage);
+        view.PlayAttackAnimation();
         view.PlayAttackEffect();
 
         UnitEvents.Combat.RaiseDamageDealt(unit, target, damage);
@@ -60,6 +61,7 @@ public class UnitCombat : MonoBehaviour
     {
         float damage = stats.GetModifiedDamage();
         baseTarget.TakeDamage(damage);
+        view.PlayAttackAnimation();
         view.PlayAttackEffect();
     }
 
