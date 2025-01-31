@@ -91,7 +91,6 @@ public class FuriousCavalryCharge : Skill
         {
             // Báo cho card là chưa thể kích hoạt
             ownerCard.OnSkillFailed();
-            Debug.Log("No valid units found for charge skill");
         }
     }
 

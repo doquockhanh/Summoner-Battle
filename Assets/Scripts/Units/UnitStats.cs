@@ -24,6 +24,7 @@ public class UnitStats : MonoBehaviour
     public float CurrentHP => currentHp;
     public float MaxHp => data.hp;
     public bool IsDead => currentHp <= 0;
+    public float CurrentHealthPercent => currentHp / MaxHp;
     
     // Events
     public event System.Action<float> OnHealthChanged;

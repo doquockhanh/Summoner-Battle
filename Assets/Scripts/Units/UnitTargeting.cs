@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class UnitTargeting : MonoBehaviour
 {
@@ -22,20 +23,32 @@ public class UnitTargeting : MonoBehaviour
 
     public void UpdateTarget()
     {
-        // Kiểm tra target hiện tại
-        if (IsValidTarget(currentTarget))
+        // Kiểm tra xem unit có đang trong trạng thái Bloodstorm không
+        var bloodstormEffect = unit.GetComponent<UnitStatusEffects>()
+            ?.GetEffect(StatusEffectType.Bloodstorm) as BloodstormStatusEffect;
+            
+        if (bloodstormEffect != null)
         {
-            return;
+            // Nếu đang trong Bloodstorm, tìm mục tiêu xa nhất
+            currentTarget = FindFurthestTarget();
         }
-
-        if (IsValidBaseTarget(currentBaseTarget))
+        else
         {
-            currentTarget = null;
-            return;
-        }
+            // Kiểm tra target hiện tại
+            if (IsValidTarget(currentTarget))
+            {
+                return;
+            }
 
-        // Tìm target mới
-        FindNewTarget();
+            if (IsValidBaseTarget(currentBaseTarget))
+            {
+                currentTarget = null;
+                return;
+            }
+
+            // Tìm target mới
+            FindNewTarget();
+        }
     }
 
     public bool IsInRange(Unit target)
@@ -123,5 +136,44 @@ public class UnitTargeting : MonoBehaviour
             currentTarget = otherUnit;
             currentBaseTarget = null;
         }
+    }
+
+    public Unit FindFurthestTarget()
+    {
+        float maxDistance = 0f;
+        Unit furthestTarget = null;
+        
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, stats.Data.detectRange);
+        foreach (var hit in hits)
+        {
+            Unit potentialTarget = hit.GetComponent<Unit>();
+            if (!IsValidTarget(potentialTarget)) continue;
+            
+            float distance = Vector2.Distance(transform.position, potentialTarget.transform.position);
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                furthestTarget = potentialTarget;
+            }
+        }
+        
+        return furthestTarget;
+    }
+
+    public Unit[] GetUnitsInRange(float range)
+    {
+        List<Unit> units = new List<Unit>();
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
+        
+        foreach (var hit in hits)
+        {
+            Unit unit = hit.GetComponent<Unit>();
+            if (unit != null && unit != this.unit)
+            {
+                units.Add(unit);
+            }
+        }
+        
+        return units.ToArray();
     }
 } 

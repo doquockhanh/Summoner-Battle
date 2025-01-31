@@ -20,5 +20,21 @@ public static class UnitEvents
         {
             OnUnitDeath?.Invoke(unit);
         }
+
+        public delegate void SoulAbsorbHandler(Unit absorber, Unit soul);
+        public static event SoulAbsorbHandler OnSoulAbsorbed;
+        
+        public static void RaiseSoulAbsorbed(Unit absorber, Unit soul)
+        {
+            OnSoulAbsorbed?.Invoke(absorber, soul);
+        }
+
+        public delegate void SkillActivateHandler(Unit unit, Skill skill);
+        public static event SkillActivateHandler OnSkillActivated;
+        
+        public static void RaiseSkillActivated(Unit unit, Skill skill)
+        {
+            OnSkillActivated?.Invoke(unit, skill);
+        }
     }
 } 

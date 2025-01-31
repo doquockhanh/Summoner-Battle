@@ -63,4 +63,10 @@ public class UnitStatusEffects : MonoBehaviour
     {
         return !IsKnockedUp && !IsStunned;
     }
+
+    public IStatusEffect GetEffect(StatusEffectType type)
+    {
+        activeEffects.TryGetValue(type, out var effect);
+        return effect;
+    }
 } 

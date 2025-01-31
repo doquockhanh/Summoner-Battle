@@ -1,0 +1,188 @@
+using UnityEngine;
+
+[RequireComponent(typeof(Unit))]
+public class BloodLordBehavior : MonoBehaviour
+{
+    private Unit unit;
+    private UnitStats stats;
+    private UnitCombat combat;
+    private UnitTargeting targeting;
+    private UnitStatusEffects statusEffects;
+    private BloodstormSkill skill;
+    
+    private int absorbedSouls = 0;
+    private const int MAX_SOULS = 5;
+    private bool isBloodstormActive = false;
+    
+    private float damageTimer = 0f;
+    private float healingTimer = 0f;
+    private float currentHealPercent;
+
+    public void Initialize(BloodstormSkill skill)
+    {
+        this.skill = skill;
+        
+        // Lấy các component
+        unit = GetComponent<Unit>();
+        stats = GetComponent<UnitStats>();
+        combat = GetComponent<UnitCombat>();
+        targeting = GetComponent<UnitTargeting>();
+        statusEffects = GetComponent<UnitStatusEffects>();
+        
+        // Điều chỉnh chỉ số dựa trên vị trí X
+        AdjustStatsByPosition();
+        
+        // Disable combat cho đến khi kích hoạt Bloodstorm
+        combat.enabled = false;
+        
+        // Đăng ký sự kiện
+        UnitEvents.Status.OnUnitDeath += OnUnitDeath;
+    }
+
+    private void AdjustStatsByPosition()
+    {
+        float normalizedX = transform.position.x / 10f; // Giả sử map rộng 10 unit
+        float multiplier = Mathf.Lerp(1.5f, 0.5f, normalizedX);
+        
+        stats.ModifyDamage(multiplier);
+        stats.ModifyDefense(1f / multiplier);
+    }
+
+    private void OnUnitDeath(Unit deadUnit)
+    {
+        if (isBloodstormActive || deadUnit == unit) return;
+
+        // Kiểm tra xem có phải Huyết quỷ gần nhất không
+        if (IsClosestBloodLordTo(deadUnit))
+        {
+            AbsorbSoul(deadUnit);
+        }
+    }
+
+    private bool IsClosestBloodLordTo(Unit deadUnit)
+    {
+        float myDistance = Vector2.Distance(transform.position, deadUnit.transform.position);
+        
+        // Tìm tất cả Huyết quỷ khác
+        var bloodLords = FindObjectsOfType<BloodLordBehavior>();
+        foreach (var bloodLord in bloodLords)
+        {
+            if (bloodLord == this) continue;
+            
+            float otherDistance = Vector2.Distance(bloodLord.transform.position, deadUnit.transform.position);
+            if (otherDistance < myDistance) return false;
+        }
+        
+        return true;
+    }
+
+    private void AbsorbSoul(Unit deadUnit)
+    {
+        if (absorbedSouls >= MAX_SOULS) return;
+        
+        absorbedSouls++;
+        
+        // Tạo hiệu ứng hút linh hồn
+        if (skill.soulAbsorbEffectPrefab != null)
+        {
+            var effect = Instantiate(skill.soulAbsorbEffectPrefab, 
+                deadUnit.transform.position, 
+                Quaternion.identity);
+            Destroy(effect, 1f);
+        }
+        
+        // Thông báo event
+        UnitEvents.Status.RaiseSoulAbsorbed(unit, deadUnit);
+        
+        CheckBloodstormCondition();
+    }
+
+    private void CheckBloodstormCondition()
+    {
+        if (!isBloodstormActive && 
+            (absorbedSouls >= MAX_SOULS || stats.CurrentHealthPercent <= 0.5f))
+        {
+            ActivateBloodstorm();
+        }
+    }
+
+    private void ActivateBloodstorm()
+    {
+        isBloodstormActive = true;
+        
+        // Enable combat và thêm status effect
+        combat.enabled = true;
+        statusEffects.AddEffect(new BloodstormStatusEffect(unit, skill, absorbedSouls));
+        
+        // Tạo hiệu ứng visual
+        if (skill.bloodstormEffectPrefab != null)
+        {
+            var effect = Instantiate(skill.bloodstormEffectPrefab, transform);
+            effect.transform.localPosition = Vector3.zero;
+        }
+        
+        // Reset timers
+        damageTimer = 0f;
+        healingTimer = 0f;
+        currentHealPercent = skill.healingStartPercent;
+
+        // Thông báo event
+        UnitEvents.Status.RaiseSkillActivated(unit, skill);
+        
+        Debug.Log($"[BloodLord] Kích hoạt Bloodstorm! Số linh hồn: {absorbedSouls}, HP: {stats.CurrentHealthPercent:P0}");
+        FloatingTextManager.Instance.ShowFloatingText(
+            $"Kích hoạt Bloodstorm ({absorbedSouls} linh hồn)", 
+            transform.position, 
+            Color.red
+        );
+    }
+
+    private void Update()
+    {
+        if (!isBloodstormActive) return;
+
+        HandleDamageAndHealing();
+        targeting.UpdateTarget();
+    }
+
+    private void HandleDamageAndHealing()
+    {
+        damageTimer -= Time.deltaTime;
+        if (damageTimer <= 0)
+        {
+            DealBloodstormDamage();
+            damageTimer = skill.damageInterval;
+        }
+
+        healingTimer -= Time.deltaTime;
+        if (healingTimer <= 0)
+        {
+            healingTimer = 1f;
+            currentHealPercent = Mathf.Max(currentHealPercent - skill.healingDecreasePercent, 0);
+        }
+    }
+
+    private void DealBloodstormDamage()
+    {
+        float baseDamage = stats.GetModifiedDamage();
+        float totalDamagePercent = skill.damageBasePercent + (skill.damagePerSoulPercent * absorbedSouls);
+        float actualDamage = baseDamage * (totalDamagePercent / 100f);
+
+        // Sử dụng targeting system để lấy các unit trong range
+        Unit[] nearbyUnits = targeting.GetUnitsInRange(skill.effectRadius);
+        foreach (var enemy in nearbyUnits)
+        {
+            if (enemy != unit && enemy.IsPlayerUnit != unit.IsPlayerUnit)
+            {
+                enemy.TakeDamage(actualDamage);
+                float healAmount = actualDamage * (currentHealPercent / 100f);
+                stats.Heal(healAmount);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        UnitEvents.Status.OnUnitDeath -= OnUnitDeath;
+    }
+} 

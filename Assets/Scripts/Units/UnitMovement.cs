@@ -16,6 +16,11 @@ public class UnitMovement : MonoBehaviour
 
     [SerializeField] private float knockupHeight = 0.5f;
 
+    private float moveSpeed;
+
+    public float GetMoveSpeed() => moveSpeed;
+    public void SetMoveSpeed(float speed) => moveSpeed = speed;
+
     private void OnDisable()
     {
         if (knockupCoroutine != null)

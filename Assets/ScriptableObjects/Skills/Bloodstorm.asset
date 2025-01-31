@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a10c2c1b2bd0bc142b3f93c234997001, type: 3}
+  m_Name: Bloodstorm
+  m_EditorClassIdentifier: 
+  skillName: 
+  description: 
+  manaCost: 0
+  cooldown: 0
+  duration: 0
+  radius: 0
+  skillType: 3
+  targetType: 1
+  ownerCard: {fileID: 0}
+  damageBasePercent: 80
+  damagePerSoulPercent: 20
+  healingStartPercent: 50
+  healingDecreasePercent: 10
+  effectRadius: 3
+  moveSpeedBonus: 4
+  damageInterval: 0.5
+  bloodstormEffectPrefab: {fileID: 3632261846723545084, guid: 75e2f81319a5fb548acbf8a7b20d22ef, type: 3}
+  soulAbsorbEffectPrefab: {fileID: 3632261846723545084, guid: 75e2f81319a5fb548acbf8a7b20d22ef, type: 3}
