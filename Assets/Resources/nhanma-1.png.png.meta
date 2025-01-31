@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 82c4d44f829221c4b993c5e02271d8ef
+guid: e0b1a92aee50fea41a204a546840a1cf
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,127 +123,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Furious Cavalry_run_0
+      name: nhanma-1.png_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 263
-        width: 103
-        height: 70
+        x: 8
+        y: 129
+        width: 86
+        height: 66
       alignment: 9
-      pivot: {x: 0.15, y: 0}
+      pivot: {x: 0.13, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ebbb1e997a31a3e409515f9fbeea4b0e
-      internalID: 1043554322
+      spriteID: 3054f37503b70e84b8c28d1299377175
+      internalID: 1151088569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Furious Cavalry_run_1
+      name: nhanma-1.png_1
       rect:
         serializedVersion: 2
-        x: 134
-        y: 263
-        width: 103
-        height: 70
+        x: 128
+        y: 129
+        width: 94
+        height: 66
       alignment: 9
-      pivot: {x: 0.15, y: 0}
+      pivot: {x: 0.2, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89b68c1a1d4accd47ab29b5aa035a5d5
-      internalID: -1230265152
+      spriteID: 89715ddee59ab8a4ca7019a4707067aa
+      internalID: 979817501
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Furious Cavalry_run_2
+      name: nhanma-1.png_2
       rect:
         serializedVersion: 2
-        x: 6
-        y: 134
-        width: 104
-        height: 70
+        x: 8
+        y: 1
+        width: 120
+        height: 66
       alignment: 9
-      pivot: {x: 0.15, y: 0}
+      pivot: {x: 0.09, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76e5be0b7aae91e4fbae23f8d534e542
-      internalID: 47986794
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Furious Cavalry_run_3
-      rect:
-        serializedVersion: 2
-        x: 134
-        y: 134
-        width: 104
-        height: 70
-      alignment: 9
-      pivot: {x: 0.15, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fddd2ba9a047c1944affcd76b20ce6ef
-      internalID: 1411612678
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Furious Cavalry_run_4
-      rect:
-        serializedVersion: 2
-        x: 6
-        y: 7
-        width: 104
-        height: 70
-      alignment: 9
-      pivot: {x: 0.15, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 73a891c69b0aea74a903f7494ea52607
-      internalID: -404154764
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Furious Cavalry_run_5
-      rect:
-        serializedVersion: 2
-        x: 134
-        y: 7
-        width: 104
-        height: 70
-      alignment: 9
-      pivot: {x: 0.15, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 54f2039673659cd4fbfa4015f65bd932
-      internalID: 835281122
+      spriteID: 1b485fc52419ba84e9395cd93d36a6a8
+      internalID: -830899430
       vertices: []
       indices: 
       edges: []
@@ -259,12 +196,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Furious Cavalry_run_0: 1043554322
-      Furious Cavalry_run_1: -1230265152
-      Furious Cavalry_run_2: 47986794
-      Furious Cavalry_run_3: 1411612678
-      Furious Cavalry_run_4: -404154764
-      Furious Cavalry_run_5: 835281122
+      nhanma-1.png_0: 1151088569
+      nhanma-1.png_1: 979817501
+      nhanma-1.png_2: -830899430
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1144,7 +1144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &985558618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1173,7 +1173,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   enemyCards:
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
@@ -2093,7 +2093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2065520680
 MonoBehaviour:
   m_ObjectHideFlags: 0
