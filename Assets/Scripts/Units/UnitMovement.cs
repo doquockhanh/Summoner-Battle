@@ -17,6 +17,7 @@ public class UnitMovement : MonoBehaviour
     [SerializeField] private float knockupHeight = 0.5f;
 
     private float moveSpeed;
+    private Vector3 moveDirection;
 
     public float GetMoveSpeed() => moveSpeed;
     public void SetMoveSpeed(float speed) => moveSpeed = speed;
@@ -162,5 +163,11 @@ public class UnitMovement : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void SetMoveDirection(Vector3 direction)
+    {
+        moveDirection = direction;
+        transform.position += direction * moveSpeed * Time.deltaTime;
     }
 } 

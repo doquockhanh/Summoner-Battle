@@ -29,8 +29,14 @@ public class BloodstormSkill : Skill
 
     public override void ApplyToSummon(Unit summonedUnit)
     {
-        // Thêm behavior đặc biệt cho Huyết Quỷ
-        var bloodLord = summonedUnit.gameObject.AddComponent<BloodLordBehavior>();
+
+        var bloodLord = summonedUnit.gameObject.GetComponent<BloodLordBehavior>();
+        if (bloodLord != null)
+        {
+            // remove BloodLordBehavior if it exists
+            Destroy(bloodLord);
+        }
+        bloodLord = summonedUnit.gameObject.AddComponent<BloodLordBehavior>();
         bloodLord.Initialize(this);
     }
 } 

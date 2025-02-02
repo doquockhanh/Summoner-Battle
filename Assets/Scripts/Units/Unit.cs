@@ -64,7 +64,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Initialize(UnitData data, bool isPlayer, CardController cardController)
+    public virtual void Initialize(UnitData data, bool isPlayer, CardController cardController)
     {
         ownerCard = cardController;
         isPlayerUnit = isPlayer;

@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: -7956776128962548195}
   - component: {fileID: 5877337830418339703}
   - component: {fileID: 5474085529745017857}
-  - component: {fileID: 3487911008530267870}
+  - component: {fileID: -6089394560558315240}
   m_Layer: 8
   m_Name: Blood Wraith
   m_TagString: Untagged
@@ -274,7 +274,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.62432754, y: 0.9245813}
   m_EdgeRadius: 0
---- !u!114 &3487911008530267870
+--- !u!114 &-6089394560558315240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

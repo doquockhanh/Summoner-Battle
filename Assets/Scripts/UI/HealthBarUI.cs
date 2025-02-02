@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Image damageDelayedBar;
     [SerializeField] private Image healthBar;
     [SerializeField] private Image shieldBar;
+    [SerializeField] private TextMeshProUGUI soulCountText;
     
     [Header("Settings")]
     [SerializeField] private float damageDelayTime = 0.35f;
@@ -118,4 +120,20 @@ public class HealthBarUI : MonoBehaviour
 
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
+
+    public void ShowSoulCounter(bool show)
+    {
+        if (soulCountText != null)
+        {
+            soulCountText.gameObject.SetActive(show);
+        }
+    }
+    
+    public void UpdateSoulCount(int count)
+    {
+        if (soulCountText != null)
+        {
+            soulCountText.text = $"{count}";
+        }
+    }
 } 

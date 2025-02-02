@@ -9,10 +9,10 @@ public class UnitView : MonoBehaviour
     [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private ParticleSystem attackEffect;
     [SerializeField] private Animator animator;
-    
+
     [Header("Health Bar Settings")]
     [SerializeField] private Vector3 healthBarOffset = new Vector3(0f, 0.5f, 0f);
-    
+
     private HealthBarUI healthBarUI;
     private Material spriteMaterial;
     private Coroutine flashCoroutine;
@@ -52,10 +52,10 @@ public class UnitView : MonoBehaviour
     {
         if (unitSprite == null) unitSprite = GetComponentInChildren<SpriteRenderer>();
         spriteMaterial = unitSprite.material;
-        
+
         var stats = unit.GetComponent<UnitStats>();
         SetupHealthBar(stats.MaxHp);
-        
+
         // Subscribe to events
         stats.OnHealthChanged += UpdateHealth;
         stats.OnShieldChanged += UpdateShield;
@@ -94,7 +94,7 @@ public class UnitView : MonoBehaviour
             healthBarUI = healthBarObject.GetComponent<HealthBarUI>();
             healthBarUI.transform.SetParent(HealthBarManager.Instance.GetCanvasTransform(), true); // Gắn healthbar vào unit
         }
-        
+
         healthBarUI.Initialize(maxHp);
         UpdateHealthBarPosition();
     }
@@ -144,19 +144,19 @@ public class UnitView : MonoBehaviour
     private IEnumerator DamageFlashCoroutine()
     {
         spriteMaterial.SetFloat(FlashProperty, 1f);
-        
+
         float flashDuration = 0.1f;
         float elapsedTime = 0;
-        
+
         while (elapsedTime < flashDuration)
         {
             float flashStrength = Mathf.Lerp(1f, 0f, elapsedTime / flashDuration);
             spriteMaterial.SetFloat(FlashProperty, flashStrength);
-            
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         spriteMaterial.SetFloat(FlashProperty, 0f);
     }
 
@@ -171,5 +171,10 @@ public class UnitView : MonoBehaviour
         {
             Destroy(healthBarUI.gameObject);
         }
+    }
+
+    public HealthBarUI GetHealthBar()
+    {
+        return healthBarUI;
     }
 }

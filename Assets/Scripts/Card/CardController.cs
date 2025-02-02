@@ -116,6 +116,10 @@ public class CardController : MonoBehaviour
         Unit unit = UnitPoolManager.Instance.GetUnit(cardData.summonUnit, isPlayer, this);
         unit.transform.position = spawnPos;
         unit.Initialize(cardData.summonUnit, isPlayer, this);
+        if (unit.OwnerCard.cardData.skill is BloodstormSkill bloodstormSkill)
+        {
+            bloodstormSkill.ApplyToSummon(unit);
+        }
         
         spawnTimer = cardData.spawnCooldown;
         

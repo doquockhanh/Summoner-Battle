@@ -18,6 +18,11 @@ public class BloodLordBehavior : MonoBehaviour
     private float healingTimer = 0f;
     private float currentHealPercent;
 
+    private HealthBarUI healthBar;
+    
+    private Unit currentTarget;
+    private UnitMovement movement;
+
     public void Initialize(BloodstormSkill skill)
     {
         this.skill = skill;
@@ -28,6 +33,7 @@ public class BloodLordBehavior : MonoBehaviour
         combat = GetComponent<UnitCombat>();
         targeting = GetComponent<UnitTargeting>();
         statusEffects = GetComponent<UnitStatusEffects>();
+        movement = GetComponent<UnitMovement>();
         
         // Điều chỉnh chỉ số dựa trên vị trí X
         AdjustStatsByPosition();
@@ -37,13 +43,17 @@ public class BloodLordBehavior : MonoBehaviour
         
         // Đăng ký sự kiện
         UnitEvents.Status.OnUnitDeath += OnUnitDeath;
+
+        healthBar = unit.GetComponent<UnitView>().GetHealthBar();
+        healthBar.ShowSoulCounter(true);
+        Debug.Log("ShowSoulCounter: " + healthBar);
     }
 
     private void AdjustStatsByPosition()
     {
         float normalizedX = transform.position.x / 10f; // Giả sử map rộng 10 unit
         float multiplier = Mathf.Lerp(1.5f, 0.5f, normalizedX);
-        
+        Debug.Log("AdjustStatsByPosition: " + multiplier);
         stats.ModifyDamage(multiplier);
         stats.ModifyDefense(1f / multiplier);
     }
@@ -81,6 +91,7 @@ public class BloodLordBehavior : MonoBehaviour
         if (absorbedSouls >= MAX_SOULS) return;
         
         absorbedSouls++;
+        healthBar.UpdateSoulCount(absorbedSouls);
         
         // Tạo hiệu ứng hút linh hồn
         if (skill.soulAbsorbEffectPrefab != null)
@@ -129,10 +140,9 @@ public class BloodLordBehavior : MonoBehaviour
         // Thông báo event
         UnitEvents.Status.RaiseSkillActivated(unit, skill);
         
-        Debug.Log($"[BloodLord] Kích hoạt Bloodstorm! Số linh hồn: {absorbedSouls}, HP: {stats.CurrentHealthPercent:P0}");
         FloatingTextManager.Instance.ShowFloatingText(
-            $"Kích hoạt Bloodstorm ({absorbedSouls} linh hồn)", 
-            transform.position, 
+            $"Bloodstorm ({absorbedSouls} Souls)", 
+            transform.position + new Vector3(0, 1, 0), 
             Color.red
         );
     }
@@ -142,7 +152,7 @@ public class BloodLordBehavior : MonoBehaviour
         if (!isBloodstormActive) return;
 
         HandleDamageAndHealing();
-        targeting.UpdateTarget();
+        HandleBloodstormMovement();
     }
 
     private void HandleDamageAndHealing()
@@ -179,6 +189,51 @@ public class BloodLordBehavior : MonoBehaviour
                 stats.Heal(healAmount);
             }
         }
+    }
+
+    private void HandleBloodstormMovement()
+    {
+        // Nếu không có mục tiêu hoặc đã đến gần mục tiêu, tìm mục tiêu mới
+        if (currentTarget == null || 
+            currentTarget.IsDead || 
+            Vector2.Distance(transform.position, currentTarget.transform.position) < 0.5f)
+        {
+            FindFurthestTarget();
+        }
+
+        // Di chuyển đến mục tiêu
+        if (currentTarget != null)
+        {
+            Vector3 direction = (currentTarget.transform.position - transform.position).normalized;
+            movement.SetMoveDirection(direction);
+        }
+    }
+
+    private void FindFurthestTarget()
+    {
+        float maxDistance = 0f;
+        Unit furthestTarget = null;
+        
+        // Tìm tất cả unit đối phương trong scene
+        var allUnits = FindObjectsOfType<Unit>();
+        foreach (var potentialTarget in allUnits)
+        {
+            if (potentialTarget == unit || 
+                potentialTarget.IsDead || 
+                potentialTarget.IsPlayerUnit == unit.IsPlayerUnit) 
+                continue;
+
+            float distance = Vector2.Distance(transform.position, potentialTarget.transform.position);
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                furthestTarget = potentialTarget;
+            }
+        }
+
+        currentTarget = furthestTarget;
+        Debug.Log($"[BloodLord] Tìm thấy mục tiêu mới: {(currentTarget ? currentTarget.name : "Không có")} " +
+                 $"ở khoảng cách: {maxDistance:F1}");
     }
 
     private void OnDestroy()
