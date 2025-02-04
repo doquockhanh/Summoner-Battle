@@ -18,9 +18,11 @@ public class UnitMovement : MonoBehaviour
 
     private float moveSpeed;
     private Vector3 moveDirection;
+    private Vector3 targetPosition;
 
     public float GetMoveSpeed() => moveSpeed;
     public void SetMoveSpeed(float speed) => moveSpeed = speed;
+    public Vector3 TargetPosition => targetPosition;
 
     private void OnDisable()
     {
@@ -44,6 +46,8 @@ public class UnitMovement : MonoBehaviour
         this.statusEffects = unit.GetComponent<UnitStatusEffects>();
         originalPosition = transform.position;
         unitLayer = LayerMask.GetMask("Units");
+        moveSpeed = unit.GetUnitStats().Data.moveSpeed;
+        targetPosition = Vector3.zero;
     }
 
     public void Move(Unit targetUnit, Base targetBase)
@@ -169,5 +173,10 @@ public class UnitMovement : MonoBehaviour
     {
         moveDirection = direction;
         transform.position += direction * moveSpeed * Time.deltaTime;
+    }
+
+    public void SetTargetPosition(Vector3 position)
+    {
+        targetPosition = position;
     }
 } 

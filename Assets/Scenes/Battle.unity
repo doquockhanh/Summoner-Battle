@@ -1237,8 +1237,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1231253669}
   - component: {fileID: 1231253668}
+  - component: {fileID: 1231253670}
   m_Layer: 0
-  m_Name: Capture1
+  m_Name: map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1311,6 +1312,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1231253670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231253667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89213bf509b6f9c48a6869d38d3f053d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapWidth: 15
+  mapHeight: 10
+  gridSize: 1
+  showDebugGrid: 1
+  showVisitedPositions: 1
 --- !u!1 &1358559698
 GameObject:
   m_ObjectHideFlags: 0

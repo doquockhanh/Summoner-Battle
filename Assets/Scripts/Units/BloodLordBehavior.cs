@@ -193,20 +193,25 @@ public class BloodLordBehavior : MonoBehaviour
 
     private void HandleBloodstormMovement()
     {
-        // Nếu không có mục tiêu hoặc đã đến gần mục tiêu, tìm mục tiêu mới
-        if (currentTarget == null || 
-            currentTarget.IsDead || 
-            Vector2.Distance(transform.position, currentTarget.transform.position) < 0.5f)
+        if (!isBloodstormActive) return;
+
+        // Nếu chưa có vị trí đích hoặc đã đến gần đích
+        if (movement.TargetPosition == Vector3.zero || 
+            Vector2.Distance(transform.position, movement.TargetPosition) < 0.1f)
         {
-            FindFurthestTarget();
+            // Lấy vị trí mới
+            Vector3 newPos = RandomMovementHandler.Instance.GetNextRandomPosition(
+                transform.position, 
+                unit.IsPlayerUnit
+            );
+            
+            Debug.Log($"[BloodLord] Di chuyển đến vị trí mới: {newPos}");
+            movement.SetTargetPosition(newPos);
         }
 
-        // Di chuyển đến mục tiêu
-        if (currentTarget != null)
-        {
-            Vector3 direction = (currentTarget.transform.position - transform.position).normalized;
-            movement.SetMoveDirection(direction);
-        }
+        // Di chuyển về phía đích
+        Vector3 direction = (movement.TargetPosition - transform.position).normalized;
+        movement.SetMoveDirection(direction);
     }
 
     private void FindFurthestTarget()
