@@ -16,7 +16,11 @@ public class BloodLordBehavior : MonoBehaviour
     private UnitTargeting targeting;
     private UnitStatusEffects statusEffects;
     private UnitMovement movement;
+    private UnitView view;
     private HealthBarUI healthBar;
+    private Animator animator;
+    private static readonly int SpawnTrigger = Animator.StringToHash("spawn");
+    private static readonly int UseSkillBool = Animator.StringToHash("useSkill");
     #endregion
 
     #region State
@@ -53,19 +57,24 @@ public class BloodLordBehavior : MonoBehaviour
         targeting = GetComponent<UnitTargeting>();
         statusEffects = GetComponent<UnitStatusEffects>();
         movement = GetComponent<UnitMovement>();
-        healthBar = unit.GetComponent<UnitView>()?.GetHealthBar();
+        view = GetComponent<UnitView>();
+        healthBar = view?.GetHealthBar();
+        animator = GetComponent<Animator>();
 
         ValidateComponents();
     }
 
     private void ValidateComponents()
     {
-        if (unit == null || stats == null || combat == null || 
-            targeting == null || statusEffects == null || 
-            movement == null || healthBar == null)
+        if (unit == null || stats == null || combat == null ||
+            targeting == null || statusEffects == null ||
+            movement == null || view == null || healthBar == null || animator == null)
         {
             throw new MissingComponentException("Required components not found on BloodLord");
         }
+
+        // Kích hoạt animation spawn ngay khi khởi tạo
+        animator.SetTrigger(SpawnTrigger);
     }
 
     private void InitializeState(BloodstormSkill bloodstormSkill)
@@ -92,26 +101,31 @@ public class BloodLordBehavior : MonoBehaviour
 
     private void AdjustStatsByPosition()
     {
-        // Chuẩn hóa vị trí X về khoảng 0-1
-        float normalizedX = (transform.position.x + BloodLordConfig.MAP_WIDTH/2) / BloodLordConfig.MAP_WIDTH;
+        // Chuẩn hóa vị trí X về khoảng -1 đến 1
+        // -1: Biên trái sân
+        //  0: Giữa sân
+        //  1: Biên phải sân
+        float normalizedX = transform.position.x / (BloodLordConfig.MAP_WIDTH / 2);
 
         // Đảo ngược normalizedX nếu là unit của player
+        // Để -1 luôn là vị trí gần nhà của phe sở hữu unit
         if (unit.IsPlayerUnit)
         {
-            normalizedX = 1 - normalizedX;
+            normalizedX = -normalizedX;
         }
 
-        // Càng xa căn cứ (normalizedX càng lớn):
-        // - Tăng defense (1/multiplier càng lớn)
-        // - Giảm damage (multiplier càng nhỏ)
+        // Tính multiplier dựa trên khoảng cách từ giữa sân
+        // normalizedX = -1: Gần nhà mình nhất -> tăng damage, giảm defense
+        // normalizedX =  0: Giữa sân -> chỉ số cơ bản (multiplier = 1)
+        // normalizedX =  1: Gần nhà địch nhất -> giảm damage, tăng defense
         float multiplier = Mathf.Lerp(
-            BloodLordConfig.MAX_STAT_MULTIPLIER,  // Gần căn cứ: damage cao, defense thấp
-            BloodLordConfig.MIN_STAT_MULTIPLIER,  // Xa căn cứ: damage thấp, defense cao
-            normalizedX
+            BloodLordConfig.MAX_STAT_MULTIPLIER,  // Khi normalizedX = -1
+            BloodLordConfig.MIN_STAT_MULTIPLIER,  // Khi normalizedX = 1
+            (normalizedX + 1) / 2  // Chuyển từ [-1,1] sang [0,1]
         );
 
         Debug.Log($"[BloodLord] Vị trí X: {transform.position.x}, NormalizedX: {normalizedX}, " +
-                  $"Damage Multiplier: {multiplier}, Defense Multiplier: {1/multiplier}");
+                  $"Damage Multiplier: {multiplier:F2}, Defense Multiplier: {1 / multiplier:F2}");
 
         stats.ModifyDamage(multiplier);
         stats.ModifyDefense(1f / multiplier);
@@ -127,8 +141,8 @@ public class BloodLordBehavior : MonoBehaviour
 
     private bool ShouldSkipSoulAbsorption(Unit deadUnit)
     {
-        return isBloodstormActive || 
-               deadUnit == unit || 
+        return isBloodstormActive ||
+               deadUnit == unit ||
                deadUnit == null;
     }
 
@@ -140,15 +154,15 @@ public class BloodLordBehavior : MonoBehaviour
         foreach (var bloodLord in bloodLords)
         {
             if (bloodLord == this) continue;
-            
+
             float otherDistance = Vector2.Distance(
-                bloodLord.transform.position, 
+                bloodLord.transform.position,
                 deadUnit.transform.position
             );
-            
+
             if (otherDistance < myDistance) return false;
         }
-        
+
         return true;
     }
 
@@ -171,8 +185,8 @@ public class BloodLordBehavior : MonoBehaviour
         if (skill.soulAbsorbEffectPrefab == null) return;
 
         var effect = Instantiate(
-            skill.soulAbsorbEffectPrefab, 
-            position, 
+            skill.soulAbsorbEffectPrefab,
+            position,
             Quaternion.identity
         );
         Destroy(effect, BloodLordConfig.EFFECT_DURATION);
@@ -180,8 +194,8 @@ public class BloodLordBehavior : MonoBehaviour
 
     private void CheckBloodstormCondition()
     {
-        bool shouldActivate = !isBloodstormActive && 
-            (absorbedSouls >= MAX_SOULS || 
+        bool shouldActivate = !isBloodstormActive &&
+            (absorbedSouls >= MAX_SOULS ||
              stats.CurrentHealthPercent <= BLOODSTORM_HP_THRESHOLD);
 
         if (shouldActivate)
@@ -194,6 +208,7 @@ public class BloodLordBehavior : MonoBehaviour
     {
         isBloodstormActive = true;
         combat.enabled = true;
+        animator.SetBool(UseSkillBool, true);
 
         ApplyBloodstormEffect();
         SpawnBloodstormVisualEffect();
@@ -213,7 +228,7 @@ public class BloodLordBehavior : MonoBehaviour
         if (skill.bloodstormEffectPrefab == null) return;
 
         var effect = Instantiate(
-            skill.bloodstormEffectPrefab, 
+            skill.bloodstormEffectPrefab,
             transform
         );
         effect.transform.localPosition = Vector3.zero;
@@ -234,8 +249,8 @@ public class BloodLordBehavior : MonoBehaviour
         UnitEvents.Status.RaiseSkillActivated(unit, skill);
 
         FloatingTextManager.Instance.ShowFloatingText(
-            $"Bloodstorm ({absorbedSouls} Souls)", 
-            transform.position + Vector3.up * SOUL_COUNTER_Y_OFFSET, 
+            $"Bloodstorm ({absorbedSouls} Souls)",
+            transform.position + Vector3.up * SOUL_COUNTER_Y_OFFSET,
             Color.red
         );
     }
@@ -278,23 +293,18 @@ public class BloodLordBehavior : MonoBehaviour
         if (healingTimer <= 0)
         {
             healingTimer = 1f;
-            
+
             if (healingDecreaseTimer < skill.healingDecreaseDuration)
             {
                 healingDecreaseTimer += 1f;
                 currentHealPercent = Mathf.Max(
-                    currentHealPercent - skill.healingDecreasePercent, 
+                    currentHealPercent - skill.healingDecreasePercent,
                     0
                 );
-                
-                Debug.Log($"[BloodLord] Giảm healing: {currentHealPercent}% " +
-                         $"(Thời gian: {healingDecreaseTimer}/{skill.healingDecreaseDuration}s)");
 
                 if (healingDecreaseTimer >= skill.healingDecreaseDuration)
                 {
                     isHealingDecreaseComplete = true;
-                    Debug.Log($"[BloodLord] Kết thúc giảm healing. " +
-                            $"Healing cuối cùng: {currentHealPercent}%");
                 }
             }
         }
@@ -318,28 +328,25 @@ public class BloodLordBehavior : MonoBehaviour
 
     private float CalculateTotalDamagePercent()
     {
-        return skill.damageBasePercent + 
+        return skill.damageBasePercent +
                (skill.damagePerSoulPercent * absorbedSouls);
     }
 
     private bool IsValidTarget(Unit target)
     {
-        return target != null && 
-               target != unit && 
+        return target != null &&
+               target != unit &&
                target.IsPlayerUnit != unit.IsPlayerUnit;
     }
 
     private void DealDamageAndHeal(Unit enemy, float damage)
     {
         enemy.TakeDamage(damage);
-        
+
         if (currentHealPercent > 0)
         {
             float healAmount = damage * (currentHealPercent / 100f);
             stats.Heal(healAmount);
-            
-            Debug.Log($"[BloodLord] Hồi {healAmount} máu " +
-                     $"(Tỉ lệ hồi máu: {currentHealPercent}%)");
         }
     }
 
@@ -347,15 +354,14 @@ public class BloodLordBehavior : MonoBehaviour
     {
         if (!isBloodstormActive) return;
 
-        if (movement.TargetPosition == Vector3.zero || 
+        if (movement.TargetPosition == Vector3.zero ||
             Vector2.Distance(transform.position, movement.TargetPosition) < 0.1f)
         {
             Vector3 newPos = RandomMovementHandler.Instance.GetNextRandomPosition(
-                transform.position, 
+                transform.position,
                 unit.IsPlayerUnit
             );
-            
-            Debug.Log($"[BloodLord] Di chuyển đến vị trí mới: {newPos}");
+
             movement.SetTargetPosition(newPos);
         }
 
@@ -366,6 +372,12 @@ public class BloodLordBehavior : MonoBehaviour
     private void OnDestroy()
     {
         UnitEvents.Status.OnUnitDeath -= OnUnitDeath;
+
+        // Reset animation khi destroy
+        if (animator != null)
+        {
+            animator.SetBool(UseSkillBool, false);
+        }
     }
 }
 
@@ -376,4 +388,4 @@ public static class BloodLordConfig
     public const float MAX_STAT_MULTIPLIER = 1.5f;
     public const float MIN_STAT_MULTIPLIER = 0.5f;
     public const float EFFECT_DURATION = 1f;
-} 
+}

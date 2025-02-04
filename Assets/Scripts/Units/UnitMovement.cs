@@ -9,7 +9,7 @@ public class UnitMovement : MonoBehaviour
     private bool isKnockedUp;
     private Coroutine knockupCoroutine;
     private UnitStatusEffects statusEffects;
-    
+
     private const float MIN_DISTANCE_BETWEEN_UNITS = 0.5f;
     private const float SEPARATION_FORCE = 1.5f;
     private LayerMask unitLayer;
@@ -31,7 +31,7 @@ public class UnitMovement : MonoBehaviour
             StopCoroutine(knockupCoroutine);
             knockupCoroutine = null;
         }
-        
+
         if (isKnockedUp)
         {
             transform.position = originalPosition;
@@ -62,14 +62,14 @@ public class UnitMovement : MonoBehaviour
 
         Vector3 direction = CalculateDesiredDirection(targetUnit, targetBase);
         Vector3 separation = CalculateSeparation();
-        
+
         Vector3 finalDirection = (direction + separation).normalized;
         transform.position += finalDirection * stats.Data.moveSpeed * Time.deltaTime;
-        
+
         var view = unit.GetComponent<UnitView>();
         view.SetMoving(true);
         view.FlipSprite(finalDirection.x > 0);
-        
+
         originalPosition = new Vector3(transform.position.x, originalPosition.y, transform.position.z);
     }
 
@@ -81,7 +81,7 @@ public class UnitMovement : MonoBehaviour
         {
             StopCoroutine(knockupCoroutine);
         }
-        
+
         originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         knockupCoroutine = StartCoroutine(KnockupCoroutine(duration));
     }
@@ -90,22 +90,22 @@ public class UnitMovement : MonoBehaviour
     {
         isKnockedUp = true;
         float elapsedTime = 0f;
-        
+
         while (elapsedTime < duration && !unit.IsDead)
         {
             float heightPercent = Mathf.Sin((elapsedTime / duration) * Mathf.PI);
             float currentHeight = knockupHeight * heightPercent;
-            
+
             transform.position = new Vector3(
                 originalPosition.x,
                 originalPosition.y + currentHeight,
                 originalPosition.z
             );
-            
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         transform.position = originalPosition;
         isKnockedUp = false;
         knockupCoroutine = null;
@@ -117,7 +117,7 @@ public class UnitMovement : MonoBehaviour
         {
             return (targetUnit.transform.position - transform.position).normalized;
         }
-        
+
         if (targetBase != null)
         {
             Vector3 direction = (targetBase.transform.position - transform.position).normalized;
@@ -131,18 +131,18 @@ public class UnitMovement : MonoBehaviour
     {
         Vector3 separationForce = Vector3.zero;
         Collider2D[] nearbyUnits = Physics2D.OverlapCircleAll(
-            transform.position, 
+            transform.position,
             MIN_DISTANCE_BETWEEN_UNITS,
             unitLayer
         );
-        
+
         foreach (Collider2D collider in nearbyUnits)
         {
             if (collider.gameObject == gameObject) continue;
 
             Vector3 awayFromOther = transform.position - collider.transform.position;
             float distance = awayFromOther.magnitude;
-            
+
             if (distance < MIN_DISTANCE_BETWEEN_UNITS)
             {
                 float strength = 1 - (distance / MIN_DISTANCE_BETWEEN_UNITS);
@@ -159,7 +159,7 @@ public class UnitMovement : MonoBehaviour
         {
             return Vector2.Distance(transform.position, targetUnit.transform.position) <= stats.Data.range;
         }
-        
+
         if (targetBase != null)
         {
             Vector2 closestPoint = targetBase.GetComponent<Collider2D>().ClosestPoint(transform.position);
@@ -173,10 +173,12 @@ public class UnitMovement : MonoBehaviour
     {
         moveDirection = direction;
         transform.position += direction * moveSpeed * Time.deltaTime;
+        var view = unit.GetComponent<UnitView>();
+        view.FlipSprite(direction.x > 0);
     }
 
     public void SetTargetPosition(Vector3 position)
     {
         targetPosition = position;
     }
-} 
+}

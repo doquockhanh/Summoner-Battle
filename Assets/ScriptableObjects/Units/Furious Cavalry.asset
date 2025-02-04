@@ -15,8 +15,8 @@ MonoBehaviour:
   unitName: Melee
   unitImage: {fileID: 0}
   description: melelelelel
-  hp: 150
-  damage: 25
+  hp: 450
+  damage: 75
   attackSpeed: 2
   moveSpeed: 2
   range: 1.5

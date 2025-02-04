@@ -22,7 +22,7 @@ MonoBehaviour:
   targetType: 1
   ownerCard: {fileID: 0}
   chargeSpeed: 10
-  damageMultiplier: 1.5
+  damageMultiplier: 1
   knockupDuration: 1
   shieldPercent: 75
   shieldDuration: 10

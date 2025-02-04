@@ -1144,7 +1144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &985558618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1168,16 +1168,14 @@ MonoBehaviour:
   enemyBaseHP: 1000
   playerCards:
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
   enemyCards:
+  - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &985558619
 Transform:
@@ -1325,7 +1323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapWidth: 15
-  mapHeight: 10
+  mapHeight: 7
   gridSize: 1
   showDebugGrid: 1
   showVisitedPositions: 1
@@ -2112,7 +2110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2065520680
 MonoBehaviour:
   m_ObjectHideFlags: 0
