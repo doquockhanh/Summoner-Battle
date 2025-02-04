@@ -908,7 +908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597115613}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -917,7 +917,7 @@ Transform:
   - {fileID: 361186931}
   - {fileID: 780686670}
   - {fileID: 77059004}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1873101197}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &694003637 stripped
 Camera:
@@ -1897,7 +1897,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 597115614}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1908972262
@@ -2136,7 +2137,7 @@ MonoBehaviour:
   playerCards:
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
-  - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
+  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   enemyCards:
@@ -2269,7 +2270,6 @@ SceneRoots:
   - {fileID: 3500423387292384618}
   - {fileID: 101292864}
   - {fileID: 1873101197}
-  - {fileID: 597115614}
   - {fileID: 985558619}
   - {fileID: 2065520681}
   - {fileID: 1092234901}

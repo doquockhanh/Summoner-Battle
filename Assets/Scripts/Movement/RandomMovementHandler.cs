@@ -76,16 +76,13 @@ public class RandomMovementHandler : MonoBehaviour
 
     private Vector3 GetRandomPosition(bool isPlayerUnit)
     {
-        float xMin = isPlayerUnit ? -mapWidth/2 : 0;
-        float xMax = isPlayerUnit ? 0 : mapWidth/2;
-        
         Vector3 randomPos;
         Vector2Int gridPos;
         
         do
         {
             randomPos = new Vector3(
-                Random.Range(xMin, xMax),
+                Random.Range(-mapWidth/2, mapWidth/2),  // Cho phép di chuyển toàn bộ chiều rộng
                 Random.Range(-mapHeight/2, mapHeight/2),
                 0
             );
@@ -115,13 +112,9 @@ public class RandomMovementHandler : MonoBehaviour
 
     private bool IsValidPosition(Vector2Int gridPos, bool isPlayerUnit)
     {
-        if (gridPos.x < 0 || gridPos.x >= gridWidth || 
-            gridPos.y < 0 || gridPos.y >= gridHeight)
-            return false;
-
-        // Kiểm tra phạm vi cho từng phe
-        int midX = gridWidth / 2;
-        return isPlayerUnit ? gridPos.x <= midX : gridPos.x >= midX;
+        // Chỉ kiểm tra xem vị trí có nằm trong grid không
+        return gridPos.x >= 0 && gridPos.x < gridWidth && 
+               gridPos.y >= 0 && gridPos.y < gridHeight;
     }
 
     private bool IsVisited(Vector2Int gridPos)
@@ -161,5 +154,24 @@ public class RandomMovementHandler : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Thêm phương thức mới để lấy vị trí spawn ngẫu nhiên
+    public Vector3 GetRandomSpawnPosition()
+    {
+        Vector3 randomPos;
+        Vector2Int gridPos;
+        
+        do
+        {
+            randomPos = new Vector3(
+                Random.Range(-mapWidth/2, mapWidth/2),   // Ngẫu nhiên toàn bộ chiều rộng
+                Random.Range(-mapHeight/2, mapHeight/2),  // Ngẫu nhiên toàn bộ chiều cao
+                0
+            );
+            gridPos = WorldToGrid(randomPos);
+        } while (!IsValidPosition(gridPos, true));  // Chỉ kiểm tra có nằm trong map không
+
+        return randomPos;
     }
 } 

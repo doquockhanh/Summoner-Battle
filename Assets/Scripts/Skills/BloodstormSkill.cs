@@ -3,22 +3,45 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Bloodstorm", menuName = "Game/Skills/Bloodstorm")]
 public class BloodstormSkill : Skill
 {
-    [Header("Bloodstorm Settings")]
+    [Header("Damage Settings")]
+    [Range(0f, 200f)]
+    [Tooltip("Base damage as percentage (80% = 80)")]
     public float damageBasePercent = 80f;
+
+    [Range(0f, 100f)]
+    [Tooltip("Additional damage percent per soul (20% = 20)")]
     public float damagePerSoulPercent = 20f;
+
+    [Header("Healing Settings")]
+    [Range(0f, 100f)]
+    [Tooltip("Initial healing percentage")]
     public float healingStartPercent = 50f;
+
+    [Range(0f, 50f)]
+    [Tooltip("Healing decrease per second")]
     public float healingDecreasePercent = 10f;
+
+    [Range(1f, 10f)]
+    [Tooltip("Duration of healing decrease in seconds")]
+    public float healingDecreaseDuration = 4f;
+
+    [Header("Effect Settings")]
+    [Range(1f, 10f)]
     public float effectRadius = 3f;
+
+    [Range(0f, 10f)]
     public float moveSpeedBonus = 5f;
+
+    [Range(0.1f, 2f)]
     public float damageInterval = 0.5f;
     
-    [Header("Effects")]
+    [Header("Visual Effects")]
     public GameObject bloodstormEffectPrefab;
     public GameObject soulAbsorbEffectPrefab;
 
     public override bool CanActivate(float currentMana)
     {
-        // Kỹ năng này kích hoạt tự động khi đủ điều kiện
+        // Kỹ năng kích hoạt tự động
         return false;
     }
 
@@ -29,14 +52,36 @@ public class BloodstormSkill : Skill
 
     public override void ApplyToSummon(Unit summonedUnit)
     {
+        if (summonedUnit == null)
+            throw new System.ArgumentNullException(nameof(summonedUnit));
 
-        var bloodLord = summonedUnit.gameObject.GetComponent<BloodLordBehavior>();
-        if (bloodLord != null)
+        // Xóa behavior cũ nếu có
+        var existingBehavior = summonedUnit.gameObject
+            .GetComponent<BloodLordBehavior>();
+        if (existingBehavior != null)
         {
-            // remove BloodLordBehavior if it exists
-            Destroy(bloodLord);
+            Destroy(existingBehavior);
         }
-        bloodLord = summonedUnit.gameObject.AddComponent<BloodLordBehavior>();
+
+        // Di chuyển unit đến vị trí ngẫu nhiên
+        Vector3 randomPosition = RandomMovementHandler.Instance.GetRandomSpawnPosition();
+        summonedUnit.transform.position = randomPosition;
+
+        // Thêm behavior mới
+        var bloodLord = summonedUnit.gameObject
+            .AddComponent<BloodLordBehavior>();
         bloodLord.Initialize(this);
+    }
+
+    private void OnValidate()
+    {
+        // Đảm bảo các giá trị hợp lệ
+        damageBasePercent = Mathf.Max(0f, damageBasePercent);
+        damagePerSoulPercent = Mathf.Max(0f, damagePerSoulPercent);
+        healingStartPercent = Mathf.Clamp(healingStartPercent, 0f, 100f);
+        healingDecreasePercent = Mathf.Clamp(healingDecreasePercent, 0f, 50f);
+        effectRadius = Mathf.Max(1f, effectRadius);
+        moveSpeedBonus = Mathf.Max(0f, moveSpeedBonus);
+        damageInterval = Mathf.Max(0.1f, damageInterval);
     }
 } 
