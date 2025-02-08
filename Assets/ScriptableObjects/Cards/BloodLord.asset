@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BloodLord
   m_EditorClassIdentifier: 
   cardName: Blood Wraith
-  cardImage: {fileID: -1662232594, guid: dd48a7a68374bac438834014ddcc364a, type: 3}
+  cardImage: {fileID: 1369273406, guid: 1a39a1460d122174daf803085ac56d65, type: 3}
   description: 
   maxMana: 10
   manaRegen: 0

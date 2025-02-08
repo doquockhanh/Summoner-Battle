@@ -52,7 +52,6 @@ public class UnitCombat : MonoBehaviour
         float damage = stats.GetModifiedDamage();
         target.TakeDamage(damage);
         
-        // Flip về hướng mục tiêu
         bool faceRight = target.transform.position.x > transform.position.x;
         view.FlipSprite(faceRight);
         
@@ -67,7 +66,6 @@ public class UnitCombat : MonoBehaviour
         float damage = stats.GetModifiedDamage();
         baseTarget.TakeDamage(damage);
         
-        // Flip về hướng base mục tiêu
         bool faceRight = baseTarget.transform.position.x > transform.position.x;
         view.FlipSprite(faceRight);
         

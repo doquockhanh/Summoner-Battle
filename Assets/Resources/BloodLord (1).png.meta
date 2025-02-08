@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dd48a7a68374bac438834014ddcc364a
+guid: 1a39a1460d122174daf803085ac56d65
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 48
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,85 +123,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BloodLord_0
+      name: BloodLord (1)_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 104
-        width: 46
-        height: 72
-      alignment: 9
-      pivot: {x: 0.33, y: 0}
+        x: 22
+        y: 117
+        width: 52
+        height: 52
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dcfcec5fc4d929a48adabdd9bd557bb7
-      internalID: -1662232594
+      spriteID: 159cdeeac6812274694319cb19d786db
+      internalID: 1369273406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BloodLord_1
+      name: BloodLord (1)_1
       rect:
         serializedVersion: 2
-        x: 73
-        y: 104
-        width: 46
-        height: 72
-      alignment: 9
-      pivot: {x: 0.33, y: 0}
+        x: 116
+        y: 117
+        width: 56
+        height: 51
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c8edb59a78ffb7459cecc9de646af0f
-      internalID: -934088875
+      spriteID: ba8ef7554ea7f614d9e19181407403a2
+      internalID: 1303661870
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BloodLord_2
+      name: BloodLord (1)_2
       rect:
         serializedVersion: 2
-        x: 9
-        y: 6
-        width: 46
-        height: 72
-      alignment: 9
-      pivot: {x: 0.33, y: 0}
+        x: 21
+        y: 21
+        width: 54
+        height: 50
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6aa6ba794fa4874e9c0c02f557752d7
-      internalID: -757627844
+      spriteID: 915fd8ee7fc72644f94b5b2c7ffa0f22
+      internalID: 1749526374
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BloodLord_3
+      name: BloodLord (1)_3
       rect:
         serializedVersion: 2
-        x: 73
-        y: 5
-        width: 46
-        height: 72
-      alignment: 9
-      pivot: {x: 0.33, y: 0}
+        x: 117
+        y: 21
+        width: 54
+        height: 50
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7b8f2f2bc367754caccf2ee3675b2db
-      internalID: -313943192
+      spriteID: 58bdee3370e8456429d53e6ca2a33ab8
+      internalID: 1565244230
       vertices: []
       indices: 
       edges: []
@@ -217,10 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BloodLord_0: -1662232594
-      BloodLord_1: -934088875
-      BloodLord_2: -757627844
-      BloodLord_3: -313943192
+      BloodLord (1)_0: 1369273406
+      BloodLord (1)_1: 1303661870
+      BloodLord (1)_2: 1749526374
+      BloodLord (1)_3: 1565244230
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e494300630952e4489b5ed5781403fcd
+guid: 64a537d2c6b8fd44d8a21e195e7329a1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 48
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,127 +123,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bloodLord_Spawn_0
+      name: BloodLord_spawn (1)_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 98
-        width: 37
-        height: 98
+        x: 18
+        y: 127
+        width: 29
+        height: 27
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.47986913, y: 0.52702785}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a0fd69764b2a4af4abedd865094a4c9c
-      internalID: -1855534172
+      spriteID: 87239d037d341e548b22a6543cc82ee9
+      internalID: -925906116
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bloodLord_Spawn_1
+      name: BloodLord_spawn (1)_1
       rect:
         serializedVersion: 2
-        x: 72
-        y: 98
-        width: 35
-        height: 98
+        x: 79
+        y: 123
+        width: 34
+        height: 34
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.4871227, y: 0.5343413}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4ee131afcfd80eb45adb246724d0bb11
-      internalID: -1965156149
+      spriteID: 31ea2b369bb154f42b3e7ee4b370850c
+      internalID: 438224079
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bloodLord_Spawn_2
+      name: BloodLord_spawn (1)_2
       rect:
         serializedVersion: 2
-        x: 130
-        y: 98
-        width: 41
-        height: 81
+        x: 68
+        y: 64
+        width: 54
+        height: 53
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5205575, y: 0.25164494}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6ca97adec991d3a4e95937b7ea4c6be4
-      internalID: -1488134710
+      spriteID: 08cebca9d3eae9f40a374743da69df0b
+      internalID: -1579655608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bloodLord_Spawn_3
+      name: BloodLord_spawn (1)_3
       rect:
         serializedVersion: 2
-        x: 5
-        y: 0
-        width: 42
-        height: 71
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dc15792525584c8449bec14ce4621d56
-      internalID: -1009443167
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bloodLord_Spawn_5
-      rect:
-        serializedVersion: 2
-        x: 71
-        y: 0
-        width: 40
+        x: 8
+        y: 64
+        width: 50
         height: 41
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.48096955, y: 0.32980794}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b7dabaa161bce64bb300bddd5975cb2
-      internalID: 2038739571
+      spriteID: c40458baccfacea4e839266b3ab7d5fa
+      internalID: -1630417563
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bloodLord_Spawn_6
+      name: BloodLord_spawn (1)_4
       rect:
         serializedVersion: 2
-        x: 136
+        x: 1
         y: 0
-        width: 37
-        height: 25
+        width: 59
+        height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.515, y: 0.21}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a6dc9fdc32c2a4488ae815eb3cce8a9
-      internalID: 1009041094
+      spriteID: 5844288927d5afe4aa6293f37c3d8585
+      internalID: -1776989474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BloodLord_spawn (1)_5
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 0
+        width: 59
+        height: 64
+      alignment: 9
+      pivot: {x: 0.517207, y: 0.20959298}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96df8aad41095b04f9b8fd6d337070b2
+      internalID: 1992959385
       vertices: []
       indices: 
       edges: []
@@ -259,13 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      bloodLord_Spawn_0: -1855534172
-      bloodLord_Spawn_1: -1965156149
-      bloodLord_Spawn_2: -1488134710
-      bloodLord_Spawn_3: -1009443167
-      bloodLord_Spawn_4: -1505402587
-      bloodLord_Spawn_5: 2038739571
-      bloodLord_Spawn_6: 1009041094
+      BloodLord_spawn (1)_0: -925906116
+      BloodLord_spawn (1)_1: 438224079
+      BloodLord_spawn (1)_2: -1579655608
+      BloodLord_spawn (1)_3: -1630417563
+      BloodLord_spawn (1)_4: -1776989474
+      BloodLord_spawn (1)_5: 1992959385
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -23,7 +23,7 @@ MonoBehaviour:
   ownerCard: {fileID: 0}
   damageBasePercent: 80
   damagePerSoulPercent: 20
-  healingStartPercent: 90
+  healingStartPercent: 50
   healingDecreasePercent: 10
   healingDecreaseDuration: 4
   effectRadius: 3

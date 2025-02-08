@@ -19,6 +19,7 @@ public class UnitMovement : MonoBehaviour
     private float moveSpeed;
     private Vector3 moveDirection;
     private Vector3 targetPosition;
+    private UnitTargeting unitTargeting;
 
     public float GetMoveSpeed() => moveSpeed;
     public void SetMoveSpeed(float speed) => moveSpeed = speed;
@@ -48,13 +49,14 @@ public class UnitMovement : MonoBehaviour
         unitLayer = LayerMask.GetMask("Units");
         moveSpeed = unit.GetUnitStats().Data.moveSpeed;
         targetPosition = Vector3.zero;
+        unitTargeting = unit.GetComponent<UnitTargeting>();
     }
 
     public void Move(Unit targetUnit, Base targetBase)
     {
         if (unit.IsDead || statusEffects.IsKnockedUp) return;
 
-        if (IsInAttackRange(targetUnit, targetBase))
+        if (unitTargeting.IsInRange(targetUnit) || unitTargeting.IsInRangeOfBase())
         {
             unit.GetComponent<UnitView>().SetMoving(false);
             return;
@@ -151,22 +153,6 @@ public class UnitMovement : MonoBehaviour
         }
 
         return separationForce;
-    }
-
-    private bool IsInAttackRange(Unit targetUnit, Base targetBase)
-    {
-        if (targetUnit != null)
-        {
-            return Vector2.Distance(transform.position, targetUnit.transform.position) <= stats.Data.range;
-        }
-
-        if (targetBase != null)
-        {
-            Vector2 closestPoint = targetBase.GetComponent<Collider2D>().ClosestPoint(transform.position);
-            return Vector2.Distance(transform.position, closestPoint) <= stats.Data.range;
-        }
-
-        return false;
     }
 
     public void SetMoveDirection(Vector3 direction)

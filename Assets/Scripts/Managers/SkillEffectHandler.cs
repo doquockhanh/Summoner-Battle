@@ -99,5 +99,8 @@ public class SkillEffectHandler : MonoBehaviour
 
         // Đảm bảo caster đến đúng vị trí cuối
         caster.transform.position = targetPos;
+        UnitTargeting unitTargeting = caster.GetComponent<UnitTargeting>();
+        Unit unit = unitTargeting.FindNearestTarget();
+        unitTargeting.AssignTarget(unit);
     }
 }
