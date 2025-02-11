@@ -77,6 +77,12 @@ public class CardController : MonoBehaviour
                 chargeSkill.ownerCard = this;
                 chargeSkill.ApplyToSummon(null);
             }
+            RainArrowSkill rainArrowSkill = cardData.skill as RainArrowSkill;
+            if (rainArrowSkill != null)
+            {
+                rainArrowSkill.ownerCard = this;
+                rainArrowSkill.ApplyToSummon(null);
+            }
         }
     }
     

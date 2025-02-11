@@ -103,4 +103,59 @@ public class SkillEffectHandler : MonoBehaviour
         Unit unit = unitTargeting.FindNearestTarget();
         unitTargeting.AssignTarget(unit);
     }
+
+    public void HandleRainArrowSkill(Vector3 targetPos, RainArrowSkill skill)
+    {
+        StartCoroutine(RainArrowCoroutine(targetPos, skill));
+    }
+
+    private IEnumerator RainArrowCoroutine(Vector3 targetPos, RainArrowSkill skill)
+    {
+        float totalDamage = 0;
+
+        for (int i = 0; i < skill.arrowWaveCount; i++)
+        {
+            // Tạo hiệu ứng mưa tên
+            if (skill.arrowEffectPrefab != null)
+            {
+                GameObject arrowEffect = Instantiate(
+                    skill.arrowEffectPrefab,
+                    targetPos,
+                    Quaternion.identity
+                );
+                Destroy(arrowEffect, 1f);
+            }
+
+            // Gây sát thương cho các unit trong vùng
+            Collider2D[] hits = Physics2D.OverlapCircleAll(targetPos, skill.effectRadius);
+            int hitCount = 0;
+            
+            foreach (Collider2D hit in hits)
+            {
+                if (hit == null) continue;
+
+                Unit enemy = hit.GetComponent<Unit>();
+                if (enemy != null && enemy.IsPlayerUnit != skill.ownerCard.IsPlayer)
+                {
+                    float damage = enemy.GetUnitStats().GetModifiedDamage() * 
+                                 (skill.damagePerWavePercent / 100f);
+                    enemy.TakeDamage(damage);
+                    totalDamage += damage;
+                    hitCount++;
+                }
+            }
+            
+            // Hiển thị floating text
+            if (hitCount > 0)
+            {
+                FloatingTextManager.Instance.ShowFloatingText(
+                    $"Mưa Tên x{hitCount}",
+                    targetPos,
+                    Color.yellow
+                );
+            }
+
+            yield return new WaitForSeconds(skill.timeBetweenWaves);
+        }
+    }
 }

@@ -21,4 +21,4 @@ MonoBehaviour:
   manaGainFromDamageTaken: 25
   spawnCooldown: 5
   summonUnit: {fileID: 11400000, guid: 8fac5f475b2d61b47ab3dd93a7c0111c, type: 2}
-  skill: {fileID: 0}
+  skill: {fileID: 11400000, guid: e3057551f54b08143ae90d6f6a48ff62, type: 2}
