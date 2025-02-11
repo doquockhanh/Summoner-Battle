@@ -9,6 +9,10 @@ public class SkillEffectHandler : MonoBehaviour
     [Header("Hiệu ứng")]
     [SerializeField] private GameObject hitEffectPrefab;
     [SerializeField] private GameObject chargeEffectPrefab;
+    [SerializeField] private GameObject rangeIndicatorPrefab;
+    [SerializeField] private GameObject rainArrowEffectPrefab;
+
+    private GameObject currentRangeIndicator;
 
     private void Awake()
     {
@@ -111,51 +115,69 @@ public class SkillEffectHandler : MonoBehaviour
 
     private IEnumerator RainArrowCoroutine(Vector3 targetPos, RainArrowSkill skill)
     {
+        // Hiển thị vòng tròn AOE
+        ShowRangeIndicator(targetPos, skill.effectRadius);
+
         float totalDamage = 0;
-
-        for (int i = 0; i < skill.arrowWaveCount; i++)
+        // Tạo hiệu ứng mưa tên với callback
+        GameObject effectObj = Instantiate(rainArrowEffectPrefab);
+        RainArrowEffect effect = effectObj.GetComponent<RainArrowEffect>();
+        if (effect != null)
         {
-            // Tạo hiệu ứng mưa tên
-            if (skill.arrowEffectPrefab != null)
+            effect.Initialize(skill, targetPos, (hitPos) =>
             {
-                GameObject arrowEffect = Instantiate(
-                    skill.arrowEffectPrefab,
-                    targetPos,
-                    Quaternion.identity
-                );
-                Destroy(arrowEffect, 1f);
-            }
+                ApplyDamageAtPosition(hitPos, skill, ref totalDamage);
+            });
+        }
 
-            // Gây sát thương cho các unit trong vùng
-            Collider2D[] hits = Physics2D.OverlapCircleAll(targetPos, skill.effectRadius);
-            int hitCount = 0;
-            
-            foreach (Collider2D hit in hits)
+        yield return new WaitForSeconds(1.1f);
+        // Xóa vòng tròn AOE
+        HideRangeIndicator();
+    }
+
+    private void ApplyDamageAtPosition(Vector3 position, RainArrowSkill skill, ref float totalDamage)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(position, skill.effectRadius);
+        int hitCount = 0;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit == null) continue;
+
+            Unit enemy = hit.GetComponent<Unit>();
+            if (enemy != null && enemy.IsPlayerUnit != skill.ownerCard.IsPlayer)
             {
-                if (hit == null) continue;
-
-                Unit enemy = hit.GetComponent<Unit>();
-                if (enemy != null && enemy.IsPlayerUnit != skill.ownerCard.IsPlayer)
-                {
-                    float damage = enemy.GetUnitStats().GetModifiedDamage() * 
-                                 (skill.damagePerWavePercent / 100f);
-                    enemy.TakeDamage(damage);
-                    totalDamage += damage;
-                    hitCount++;
-                }
+                float damage = enemy.GetUnitStats().GetModifiedDamage() *
+                             (skill.damagePerWavePercent / 100f);
+                enemy.TakeDamage(damage);
+                totalDamage += damage;
+                hitCount++;
             }
-            
-            // Hiển thị floating text
-            if (hitCount > 0)
-            {
-                FloatingTextManager.Instance.ShowFloatingText(
-                    $"Mưa Tên x{hitCount}",
-                    targetPos,
-                    Color.yellow
-                );
-            }
+        }
+    }
 
-            yield return new WaitForSeconds(skill.timeBetweenWaves);
+    private void ShowRangeIndicator(Vector3 position, float radius)
+    {
+        if (currentRangeIndicator != null)
+        {
+            Destroy(currentRangeIndicator);
+        }
+
+        currentRangeIndicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);
+        SkillRangeIndicator indicator = currentRangeIndicator.GetComponent<SkillRangeIndicator>();
+        if (indicator != null)
+        {
+            indicator.SetRadius(radius);
+            indicator.SetColor(Color.red);
+        }
+    }
+
+    private void HideRangeIndicator()
+    {
+        if (currentRangeIndicator != null)
+        {
+            Destroy(currentRangeIndicator);
+            currentRangeIndicator = null;
         }
     }
 }

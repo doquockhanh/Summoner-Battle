@@ -1138,6 +1138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 985558619}
   - component: {fileID: 985558618}
+  - component: {fileID: 985558620}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -1186,6 +1187,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &985558620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985558617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa79d88f6290c442a79fc63b4dbb576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffectPrefab: {fileID: 3632261846723545084, guid: 75e2f81319a5fb548acbf8a7b20d22ef, type: 3}
+  chargeEffectPrefab: {fileID: 0}
+  rangeIndicatorPrefab: {fileID: 3161873951448071639, guid: 364a222d9b5857f4cb7f04a05c0e442a, type: 3}
+  rainArrowEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}
 --- !u!1 &1092234900
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class RainArrowSkill : Skill
     public float effectRadius = 2f;
     
     [Header("Hiệu ứng")]
-    public GameObject arrowEffectPrefab;
+    public GameObject rainArrowEffectPrefab;
 
     public override bool CanActivate(float currentMana)
     {

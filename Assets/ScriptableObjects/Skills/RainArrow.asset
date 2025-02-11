@@ -21,8 +21,8 @@ MonoBehaviour:
   skillType: 0
   targetType: 1
   ownerCard: {fileID: 0}
-  arrowWaveCount: 10
-  damagePerWavePercent: 15
-  timeBetweenWaves: 0.2
-  effectRadius: 5
-  arrowEffectPrefab: {fileID: 3632261846723545084, guid: 75e2f81319a5fb548acbf8a7b20d22ef, type: 3}
+  arrowWaveCount: 5
+  damagePerWavePercent: 40
+  timeBetweenWaves: 0.1
+  effectRadius: 2
+  rainArrowEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}
