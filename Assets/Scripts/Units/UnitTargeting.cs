@@ -226,4 +226,13 @@ public class UnitTargeting : MonoBehaviour
             currentBaseTarget = null;
         } 
     }
+
+    public void SetTarget(Unit target)
+    {
+        if (target != null && !target.IsDead)
+        {
+            currentTarget = target;
+            currentBaseTarget = null;
+        }
+    }
 }

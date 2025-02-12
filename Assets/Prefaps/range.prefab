@@ -123,7 +123,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -188,6 +188,8 @@ MonoBehaviour:
   unitSprite: {fileID: 8254720302422736851}
   healthBarPrefab: {fileID: 6144050299231746094, guid: 295b71fbb8aeae14a8a8487de25efd85, type: 3}
   attackEffect: {fileID: 0}
+  animator: {fileID: 0}
+  healthBarOffset: {x: 0, y: 0.5, z: 0}
 --- !u!114 &2569714632955878430
 MonoBehaviour:
   m_ObjectHideFlags: 0
