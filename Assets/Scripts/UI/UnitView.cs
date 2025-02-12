@@ -20,6 +20,8 @@ public class UnitView : MonoBehaviour
     private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
     private static readonly int AttackParam = Animator.StringToHash("attack");
 
+    private Unit unit;
+
     private void Awake()
     {
         if (animator == null)
@@ -50,11 +52,13 @@ public class UnitView : MonoBehaviour
 
     public void Initialize(Unit unit)
     {
+        this.unit = unit;
         if (unitSprite == null) unitSprite = GetComponentInChildren<SpriteRenderer>();
         spriteMaterial = unitSprite.material;
 
         var stats = unit.GetComponent<UnitStats>();
         SetupHealthBar(stats.MaxHp);
+        SetupOutline();
 
         // Subscribe to events
         stats.OnHealthChanged += UpdateHealth;
@@ -176,5 +180,13 @@ public class UnitView : MonoBehaviour
     public HealthBarUI GetHealthBar()
     {
         return healthBarUI;
+    }
+
+    private void SetupOutline()
+    {
+        if (unitSprite != null && MaterialManager.Instance != null)
+        {
+            unitSprite.material = MaterialManager.Instance.GetUnitMaterial(unit.IsPlayerUnit);
+        }
     }
 }

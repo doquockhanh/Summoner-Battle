@@ -156,6 +156,8 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 6144050299231746094, guid: 295b71fbb8aeae14a8a8487de25efd85, type: 3}
   attackEffect: {fileID: 0}
   animator: {fileID: 0}
+  allyOutlineMaterial: {fileID: 2100000, guid: ee6532154c03eac49be77952d8381ef2, type: 2}
+  enemyOutlineMaterial: {fileID: 2100000, guid: 7e2578d73920fd244a4b9065e39a5cc4, type: 2}
   healthBarOffset: {x: 0, y: 1.2, z: 0}
 --- !u!114 &2569714632955878430
 MonoBehaviour:

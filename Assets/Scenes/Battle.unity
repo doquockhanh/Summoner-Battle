@@ -1139,13 +1139,14 @@ GameObject:
   - component: {fileID: 985558619}
   - component: {fileID: 985558618}
   - component: {fileID: 985558620}
+  - component: {fileID: 985558621}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &985558618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1203,6 +1204,20 @@ MonoBehaviour:
   chargeEffectPrefab: {fileID: 0}
   rangeIndicatorPrefab: {fileID: 3161873951448071639, guid: 364a222d9b5857f4cb7f04a05c0e442a, type: 3}
   rainArrowEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}
+--- !u!114 &985558621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985558617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d478362f6ddf235439937a95bbf0fb3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allyOutlineMaterial: {fileID: 2100000, guid: ee6532154c03eac49be77952d8381ef2, type: 2}
+  enemyOutlineMaterial: {fileID: 2100000, guid: 7e2578d73920fd244a4b9065e39a5cc4, type: 2}
 --- !u!1 &1092234900
 GameObject:
   m_ObjectHideFlags: 0
@@ -2115,13 +2130,15 @@ GameObject:
   m_Component:
   - component: {fileID: 2065520681}
   - component: {fileID: 2065520680}
+  - component: {fileID: 2065520682}
+  - component: {fileID: 2065520683}
   m_Layer: 0
   m_Name: BattleManager (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2065520680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,6 +2188,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2065520682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065520679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa79d88f6290c442a79fc63b4dbb576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffectPrefab: {fileID: 3632261846723545084, guid: 75e2f81319a5fb548acbf8a7b20d22ef, type: 3}
+  chargeEffectPrefab: {fileID: 0}
+  rangeIndicatorPrefab: {fileID: 3161873951448071639, guid: 364a222d9b5857f4cb7f04a05c0e442a, type: 3}
+  rainArrowEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}
+--- !u!114 &2065520683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065520679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d478362f6ddf235439937a95bbf0fb3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allyOutlineMaterial: {fileID: 2100000, guid: ee6532154c03eac49be77952d8381ef2, type: 2}
+  enemyOutlineMaterial: {fileID: 2100000, guid: 7e2578d73920fd244a4b9065e39a5cc4, type: 2}
 --- !u!1 &2146580295
 GameObject:
   m_ObjectHideFlags: 0

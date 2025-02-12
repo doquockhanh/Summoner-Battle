@@ -41,6 +41,15 @@ public class BattleManager : MonoBehaviour
             GameObject skillEffectHandler = new GameObject("SkillEffectHandler");
             skillEffectHandler.AddComponent<SkillEffectHandler>();
         }
+        
+        // Đảm bảo có MaterialManager
+        if (MaterialManager.Instance == null)
+        {
+            GameObject materialManager = new GameObject("MaterialManager");
+            var manager = materialManager.AddComponent<MaterialManager>();
+            // Gán material từ Resources nếu cần
+            manager.Initialize();
+        }
     }
     
     private void Start()
