@@ -12,6 +12,11 @@ public class UnitSelector : MonoBehaviour
     private GameObject selectionCircle;
     private Camera mainCamera;
     
+    // Thêm biến xử lý double click
+    private float lastClickTime;
+    private Unit lastClickedUnit;
+    private const float doubleClickTime = 0.3f; // Thời gian giữa 2 lần click để tính là double click
+    
     private void Awake()
     {
         if (Instance == null)
@@ -48,13 +53,28 @@ public class UnitSelector : MonoBehaviour
 
         if (clickedUnit != null)
         {
-            HandleUnitClick(clickedUnit);
+            float timeSinceLastClick = Time.time - lastClickTime;
+            
+            if (clickedUnit == lastClickedUnit && timeSinceLastClick <= doubleClickTime)
+            {
+                // Double click - hiển thị stats panel
+                statsPanel.ShowStats(clickedUnit);
+            }
+            else
+            {
+                // Single click - chỉ xử lý selection và targeting
+                HandleUnitClick(clickedUnit);
+            }
+            
+            lastClickTime = Time.time;
+            lastClickedUnit = clickedUnit;
         }
         else
         {
-            // Click ra ngoài - hủy selection và ẩn stats
+            // Click ra ngoài
             ClearSelection();
             statsPanel.Hide();
+            lastClickedUnit = null;
         }
     }
 
@@ -73,9 +93,6 @@ public class UnitSelector : MonoBehaviour
 
     private void HandleUnitClick(Unit clickedUnit)
     {
-        // Luôn hiển thị stats của unit được click
-        statsPanel.ShowStats(clickedUnit);
-
         if (selectedUnit != null && selectedUnit.IsPlayerUnit)
         {
             if (!clickedUnit.IsPlayerUnit)
