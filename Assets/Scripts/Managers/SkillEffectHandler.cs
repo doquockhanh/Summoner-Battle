@@ -180,4 +180,73 @@ public class SkillEffectHandler : MonoBehaviour
             currentRangeIndicator = null;
         }
     }
+
+    public void HandleFireballSkill(Vector3 targetPos, FireballSkill skill)
+    {
+        StartCoroutine(FireballCoroutine(targetPos, skill));
+    }
+
+    private IEnumerator FireballCoroutine(Vector3 targetPos, FireballSkill skill)
+    {
+        // Hiển thị vòng tròn AOE
+        ShowRangeIndicator(targetPos, skill.effectRadius);
+        
+        // Tạo hiệu ứng cầu lửa bay đến
+        if (skill.fireballEffectPrefab != null)
+        {
+            GameObject fireballEffect = Instantiate(
+                skill.fireballEffectPrefab,
+                skill.ownerCard.transform.position,
+                Quaternion.identity
+            );
+            
+            // Animation cầu lửa bay đến mục tiêu
+            float flightTime = 0.5f;
+            float elapsedTime = 0f;
+            Vector3 startPos = fireballEffect.transform.position;
+            
+            while (elapsedTime < flightTime)
+            {
+                fireballEffect.transform.position = Vector3.Lerp(
+                    startPos,
+                    targetPos,
+                    elapsedTime / flightTime
+                );
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            
+            Destroy(fireballEffect);
+        }
+        
+        // Gây sát thương và áp dụng hiệu ứng thiêu đốt
+        Collider2D[] hits = Physics2D.OverlapCircleAll(targetPos, skill.effectRadius);
+        foreach (Collider2D hit in hits)
+        {
+            Unit enemy = hit.GetComponent<Unit>();
+            if (enemy != null && enemy.IsPlayerUnit != skill.ownerCard.IsPlayer)
+            {
+                // Gây sát thương phép
+                float magicDamage = enemy.GetUnitStats().GetModifiedDamage() * 
+                                  (skill.magicDamagePercent / 100f);
+                enemy.TakeDamage(magicDamage);
+                
+                // Áp dụng hiệu ứng thiêu đốt
+                var statusEffects = enemy.GetComponent<UnitStatusEffects>();
+                if (statusEffects != null)
+                {
+                    var burningEffect = new BurningEffect(
+                        enemy,
+                        skill.burnDuration,
+                        skill.burnDamagePercent,
+                        skill.healingReduction
+                    );
+                    statusEffects.AddEffect(burningEffect);
+                }
+            }
+        }
+        
+        yield return new WaitForSeconds(0.5f);
+        HideRangeIndicator();
+    }
 }

@@ -20,6 +20,8 @@ public class UnitStats : MonoBehaviour
     private Coroutine removeShieldCoroutine;
     private Coroutine resetLifestealCoroutine;
 
+    private float healingReceivedModifier = 1f;
+
     public UnitData Data => data;
     public float CurrentHP => currentHp;
     public float MaxHp => data.hp;
@@ -135,16 +137,9 @@ public class UnitStats : MonoBehaviour
 
     public void Heal(float amount)
     {
-        if (IsDead) return;
-        
-        float oldHp = currentHp;
-        currentHp = Mathf.Min(currentHp + amount, MaxHp);
-        
-        if (currentHp > oldHp)
-        {
-            OnHealthChanged?.Invoke(currentHp);
-            ShowDamageNumber(currentHp - oldHp, DamageType.Heal);
-        }
+        float modifiedHealing = amount * healingReceivedModifier;
+        currentHp = Mathf.Min(currentHp + modifiedHealing, MaxHp);
+        OnHealthChanged?.Invoke(currentHp);
     }
 
     public void ProcessLifesteal(float damageDealt)
@@ -220,6 +215,16 @@ public class UnitStats : MonoBehaviour
         yield return new WaitForSeconds(duration);
         data.lifestealPercent = 0;
         resetLifestealCoroutine = null;
+    }
+
+    public void ModifyHealingReceived(float modifier)
+    {
+        healingReceivedModifier = modifier;
+    }
+    
+    public void ResetHealingReceived()
+    {
+        healingReceivedModifier = 1f;
     }
 
     private enum DamageType

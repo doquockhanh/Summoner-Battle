@@ -1,25 +1,30 @@
 using UnityEngine;
-using System.Collections;
 
-[CreateAssetMenu(fileName = "RainArrow", menuName = "Game/Skills/RainArrow")]
-public class RainArrowSkill : Skill
+[CreateAssetMenu(fileName = "Fireball", menuName = "Game/Skills/Fireball")]
+public class FireballSkill : Skill
 {
-    [Header("Cài đặt mưa tên")]
-    [Range(1, 10)]
-    public int arrowWaveCount = 5;
-    
+    [Header("Cài đặt Fireball")]
     [Range(0f, 200f)]
-    [Tooltip("Phần trăm sát thương mỗi đợt tên (50% = 50)")]
-    public float damagePerWavePercent = 50f;
+    [Tooltip("Phần trăm sát thương phép (100% = 100)")]
+    public float magicDamagePercent = 100f;
     
-    [Range(0.1f, 2f)]
-    public float timeBetweenWaves = 0.3f;
-    
-    [Range(1f, 5f)]
+    [Range(0f, 5f)]
     public float effectRadius = 2f;
     
+    [Header("Hiệu ứng thiêu đốt")]
+    [Range(0f, 5f)]
+    [Tooltip("Phần trăm sát thương mỗi giây theo máu tối đa (1% = 0.01)")]
+    public float burnDamagePercent = 0.01f;
+    
+    [Range(0f, 20f)]
+    public float burnDuration = 10f;
+    
+    [Range(0f, 1f)]
+    [Tooltip("Giảm hồi máu (50% = 0.5)")]
+    public float healingReduction = 0.5f;
+    
     [Header("Hiệu ứng")]
-    public GameObject rainArrowEffectPrefab;
+    public GameObject fireballEffectPrefab;
 
     public override bool CanActivate(float currentMana)
     {
@@ -35,7 +40,7 @@ public class RainArrowSkill : Skill
     {
         if (ownerCard == null)
         {
-            Debug.LogError("RainArrowSkill: ownerCard is null!");
+            Debug.LogError("FireballSkill: ownerCard is null!");
             return;
         }
 
@@ -43,7 +48,7 @@ public class RainArrowSkill : Skill
         
         if (SkillEffectHandler.Instance != null)
         {
-            SkillEffectHandler.Instance.HandleRainArrowSkill(bestTargetPos, this);
+            SkillEffectHandler.Instance.HandleFireballSkill(bestTargetPos, this);
             ownerCard.OnSkillActivated();
         }
         else
@@ -57,7 +62,7 @@ public class RainArrowSkill : Skill
     {
         if (BattleManager.Instance == null)
         {
-            Debug.LogError("RainArrowSkill: BattleManager.Instance is null!");
+            Debug.LogError("BattleManager.Instance is null!");
             return Vector3.zero;
         }
 

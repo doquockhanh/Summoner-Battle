@@ -83,6 +83,12 @@ public class CardController : MonoBehaviour
                 rainArrowSkill.ownerCard = this;
                 rainArrowSkill.ApplyToSummon(null);
             }
+            FireballSkill fireballSkill = cardData.skill as FireballSkill;
+            if (fireballSkill != null)
+            {
+                fireballSkill.ownerCard = this;
+                fireballSkill.ApplyToSummon(null);
+            }
         }
     }
     

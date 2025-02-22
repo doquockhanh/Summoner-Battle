@@ -9,7 +9,8 @@ public enum StatusEffectType
     DefenseBuff,
     Shield,
     Lifesteal,
-    Bloodstorm
+    Bloodstorm,
+    Burning
 }
 
 public interface IStatusEffect
