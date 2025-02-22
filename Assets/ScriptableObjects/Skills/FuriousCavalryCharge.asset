@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldown: 0
   duration: 5
   radius: 5
-  skillType: 3
+  skillType: 1
   targetType: 1
   ownerCard: {fileID: 0}
   chargeSpeed: 10

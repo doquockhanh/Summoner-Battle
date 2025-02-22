@@ -7,17 +7,17 @@ public class RainArrowSkill : Skill
     [Header("Cài đặt mưa tên")]
     [Range(1, 10)]
     public int arrowWaveCount = 5;
-    
+
     [Range(0f, 200f)]
     [Tooltip("Phần trăm sát thương mỗi đợt tên (50% = 50)")]
     public float damagePerWavePercent = 50f;
-    
+
     [Range(0.1f, 2f)]
     public float timeBetweenWaves = 0.3f;
-    
+
     [Range(1f, 5f)]
     public float effectRadius = 2f;
-    
+
     [Header("Hiệu ứng")]
     public GameObject rainArrowEffectPrefab;
 
@@ -28,11 +28,6 @@ public class RainArrowSkill : Skill
 
     public override void ApplyToUnit(Unit target, Unit[] nearbyUnits = null)
     {
-        // Không sử dụng phương thức này vì đây là kỹ năng đặc biệt
-    }
-
-    public override void ApplyToSummon(Unit summonedUnit)
-    {
         if (ownerCard == null)
         {
             Debug.LogError("RainArrowSkill: ownerCard is null!");
@@ -40,7 +35,7 @@ public class RainArrowSkill : Skill
         }
 
         Vector3 bestTargetPos = FindBestTargetPosition();
-        
+
         if (SkillEffectHandler.Instance != null)
         {
             SkillEffectHandler.Instance.HandleRainArrowSkill(bestTargetPos, this);
@@ -51,6 +46,11 @@ public class RainArrowSkill : Skill
             Debug.LogError("SkillEffectHandler.Instance is null!");
             ownerCard.OnSkillFailed();
         }
+    }
+
+    public override void ApplyToSummon(Unit summonedUnit)
+    {
+        // Không sử dụng vì đây không phải kỹ năng liên quan đến summon
     }
 
     private Vector3 FindBestTargetPosition()
@@ -73,4 +73,4 @@ public class RainArrowSkill : Skill
 
         return AOETargetFinder.FindBestAOEPosition(searchParams);
     }
-} 
+}

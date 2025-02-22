@@ -33,11 +33,6 @@ public class FireballSkill : Skill
 
     public override void ApplyToUnit(Unit target, Unit[] nearbyUnits = null)
     {
-        // Không sử dụng phương thức này vì đây là kỹ năng đặc biệt
-    }
-
-    public override void ApplyToSummon(Unit summonedUnit)
-    {
         if (ownerCard == null)
         {
             Debug.LogError("FireballSkill: ownerCard is null!");
@@ -56,6 +51,11 @@ public class FireballSkill : Skill
             Debug.LogError("SkillEffectHandler.Instance is null!");
             ownerCard.OnSkillFailed();
         }
+    }
+
+    public override void ApplyToSummon(Unit summonedUnit)
+    {
+        // Không sử dụng vì đây là kỹ năng AOE trực tiếp
     }
 
     private Vector3 FindBestTargetPosition()

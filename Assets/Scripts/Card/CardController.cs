@@ -71,23 +71,15 @@ public class CardController : MonoBehaviour
         
         if (cardData.skill.CanActivate(currentMana))
         {
-            FuriousCavalryCharge chargeSkill = cardData.skill as FuriousCavalryCharge;
-            if (chargeSkill != null)
+            cardData.skill.ownerCard = this;
+            
+            if (cardData.skill.skillType == SkillType.OnSummon)
             {
-                chargeSkill.ownerCard = this;
-                chargeSkill.ApplyToSummon(null);
+                cardData.skill.ApplyToSummon(null);
             }
-            RainArrowSkill rainArrowSkill = cardData.skill as RainArrowSkill;
-            if (rainArrowSkill != null)
+            else
             {
-                rainArrowSkill.ownerCard = this;
-                rainArrowSkill.ApplyToSummon(null);
-            }
-            FireballSkill fireballSkill = cardData.skill as FireballSkill;
-            if (fireballSkill != null)
-            {
-                fireballSkill.ownerCard = this;
-                fireballSkill.ApplyToSummon(null);
+                cardData.skill.ApplyToUnit(null);
             }
         }
     }

@@ -3910,6 +3910,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff1f19347c4e9f439b68ada98656c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapWidth: 20
+  mapHeight: 10
   playerSpawnStart: {fileID: 1794994454}
   playerSpawnEnd: {fileID: 361186931}
   enemySpawnStart: {fileID: 780686670}
@@ -3920,9 +3922,15 @@ MonoBehaviour:
   playerBaseHP: 1000
   enemyBaseHP: 1000
   playerCards:
+  - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
+  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
-  enemyCards:
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  enemyCards:
+  - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
+  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &2065520681
 Transform:

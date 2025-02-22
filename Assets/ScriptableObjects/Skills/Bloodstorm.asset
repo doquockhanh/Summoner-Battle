@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldown: 0
   duration: 0
   radius: 0
-  skillType: 3
+  skillType: 2
   targetType: 1
   ownerCard: {fileID: 0}
   damageBasePercent: 80
