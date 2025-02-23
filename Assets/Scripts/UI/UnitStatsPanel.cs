@@ -110,8 +110,8 @@ public class UnitStatsPanel : MonoBehaviour
         UnitData data = stats.Data;
         
         unitNameText.text = data.unitName;
-        hpText.text = $"HP: {stats.CurrentHP}/{data.hp}";
-        damageText.text = $"Sát thương: {data.damage}";
+        hpText.text = $"HP: {stats.CurrentHP}/{data.maxHp}";
+        damageText.text = $"Sát thương vật lý: {data.physicalDamage}";
         attackSpeedText.text = $"Tốc độ đánh: {data.attackSpeed}";
         moveSpeedText.text = $"Tốc độ di chuyển: {data.moveSpeed}";
         rangeText.text = $"Tầm đánh: {data.range}";

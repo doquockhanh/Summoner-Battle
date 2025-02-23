@@ -14,6 +14,7 @@ public class CardController : MonoBehaviour
     
     private bool isWaitingForUnit = false;
     private bool canActivateSkill = true;
+    public UnitData Unit => cardData.summonUnit;
     
     public void Initialize(Card card, bool isPlayer = true)
     {
@@ -131,23 +132,5 @@ public class CardController : MonoBehaviour
         {
             TryActivateSkill();
         }
-    }
-    
-    public void GainManaFromDamage(float damage, float targetMaxHealth, bool isDamageTaken)
-    {
-        if(damage <= 0) return;
-        float healthPercentage = damage / targetMaxHealth;
-        float manaGain;
-        
-        if (isDamageTaken)
-        {
-            manaGain = healthPercentage * cardData.manaGainFromDamageTaken;
-        }
-        else
-        {
-            manaGain = healthPercentage * cardData.manaGainFromDamageDealt;
-        }
-        currentMana += manaGain;
-        currentMana = Mathf.Min(currentMana, cardData.maxMana);
     }
 }

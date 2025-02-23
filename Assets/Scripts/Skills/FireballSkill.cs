@@ -43,7 +43,7 @@ public class FireballSkill : Skill
         
         if (SkillEffectHandler.Instance != null)
         {
-            SkillEffectHandler.Instance.HandleFireballSkill(bestTargetPos, this);
+            SkillEffectHandler.Instance.HandleFireballSkill(bestTargetPos, this, ownerCard.IsPlayer);
             ownerCard.OnSkillActivated();
         }
         else

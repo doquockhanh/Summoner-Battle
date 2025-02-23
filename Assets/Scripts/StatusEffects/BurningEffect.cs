@@ -23,7 +23,7 @@ public class BurningEffect : BaseStatusEffect
         base.Apply(target);
         if (stats != null)
         {
-            stats.ModifyHealingReceived(1f - healingReduction);
+            stats.ModifyHealingReceived(-healingReduction);
         }
     }
 
@@ -36,17 +36,7 @@ public class BurningEffect : BaseStatusEffect
         {
             // Gây sát thương theo % máu tối đa
             float damage = stats.MaxHp * maxHealthPercent;
-            target.TakeDamage(damage);
-            
-            // Hiển thị số sát thương
-            if (FloatingTextManager.Instance != null)
-            {
-                FloatingTextManager.Instance.ShowFloatingText(
-                    damage.ToString("F0"),
-                    target.transform.position,
-                    Color.red
-                );
-            }
+            target.TakeDamage(damage, DamageType.Magic);
             
             damageTimer = DAMAGE_INTERVAL;
         }

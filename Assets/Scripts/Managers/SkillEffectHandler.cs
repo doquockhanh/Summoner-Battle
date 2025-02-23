@@ -12,7 +12,8 @@ public class SkillEffectHandler : MonoBehaviour
     [SerializeField] private GameObject rangeIndicatorPrefab;
     [SerializeField] private GameObject rainArrowEffectPrefab;
 
-    private GameObject currentRangeIndicator;
+    private Dictionary<int, GameObject> activeRangeIndicators = new Dictionary<int, GameObject>();
+    private int nextIndicatorId = 0;
 
     private void Awake()
     {
@@ -41,8 +42,7 @@ public class SkillEffectHandler : MonoBehaviour
     private IEnumerator ChargeCoroutine(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
     {
         // Áp dụng shield và lifesteal cho caster
-        caster.GetUnitStats().ApplyShield(skill.shieldPercent, skill.shieldDuration);
-        caster.GetUnitStats().SetLifesteal(skill.lifestealPercent, skill.shieldDuration);
+        caster.GetUnitStats().AddShield(skill.shieldPercent, skill.shieldDuration);
 
         bool faceRight = targetPos.x > caster.transform.position.x;
         caster.GetComponent<UnitView>().FlipSprite(faceRight);
@@ -77,8 +77,8 @@ public class SkillEffectHandler : MonoBehaviour
                     hitUnits.Add(enemy);
 
                     // Gây sát thương
-                    float damage = caster.GetUnitStats().GetModifiedDamage() * skill.damageMultiplier;
-                    enemy.TakeDamage(damage);
+                    float damage = caster.GetUnitStats().GetPhysicalDamage() * skill.damageMultiplier;
+                    enemy.TakeDamage(damage, DamageType.Physical, caster);
 
                     // Hiệu ứng va chạm
                     if (hitEffectPrefab != null)
@@ -108,17 +108,16 @@ public class SkillEffectHandler : MonoBehaviour
         unitTargeting.AssignTarget(unit);
     }
 
-    public void HandleRainArrowSkill(Vector3 targetPos, RainArrowSkill skill)
+    public void HandleRainArrowSkill(Vector3 targetPos, RainArrowSkill skill, bool isFromPlayer)
     {
-        StartCoroutine(RainArrowCoroutine(targetPos, skill));
+        StartCoroutine(RainArrowCoroutine(targetPos, skill, isFromPlayer));
     }
 
-    private IEnumerator RainArrowCoroutine(Vector3 targetPos, RainArrowSkill skill)
+    private IEnumerator RainArrowCoroutine(Vector3 targetPos, RainArrowSkill skill, bool isFromPlayer)
     {
-        // Hiển thị vòng tròn AOE
-        ShowRangeIndicator(targetPos, skill.effectRadius);
+        // Hiển thị vòng tròn AOE và lưu ID
+        int indicatorId = ShowRangeIndicator(targetPos, skill.effectRadius);
 
-        float totalDamage = 0;
         // Tạo hiệu ứng mưa tên với callback
         GameObject effectObj = Instantiate(rainArrowEffectPrefab);
         RainArrowEffect effect = effectObj.GetComponent<RainArrowEffect>();
@@ -126,71 +125,39 @@ public class SkillEffectHandler : MonoBehaviour
         {
             effect.Initialize(skill, targetPos, (hitPos) =>
             {
-                ApplyDamageAtPosition(hitPos, skill, ref totalDamage);
+                Collider2D[] hits = Physics2D.OverlapCircleAll(hitPos, skill.effectRadius);
+
+                foreach (Collider2D hit in hits)
+                {
+                    if (hit == null) continue;
+
+                    Unit enemy = hit.GetComponent<Unit>();
+                    if (enemy != null && enemy.IsPlayerUnit != isFromPlayer)
+                    {
+                        float damage = skill.ownerCard.Unit.physicalDamage *
+                                     (skill.damagePerWavePercent / 100f);
+                        enemy.TakeDamage(damage, DamageType.Physical);
+                    }
+                }
             });
         }
 
         yield return new WaitForSeconds(1.1f);
-        // Xóa vòng tròn AOE
-        HideRangeIndicator();
+        // Xóa đúng vòng tròn AOE theo ID
+        HideRangeIndicator(indicatorId);
     }
 
-    private void ApplyDamageAtPosition(Vector3 position, RainArrowSkill skill, ref float totalDamage)
+
+    public void HandleFireballSkill(Vector3 targetPos, FireballSkill skill, bool isFromPlayer)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(position, skill.effectRadius);
-        int hitCount = 0;
-
-        foreach (Collider2D hit in hits)
-        {
-            if (hit == null) continue;
-
-            Unit enemy = hit.GetComponent<Unit>();
-            if (enemy != null && enemy.IsPlayerUnit != skill.ownerCard.IsPlayer)
-            {
-                float damage = enemy.GetUnitStats().GetModifiedDamage() *
-                             (skill.damagePerWavePercent / 100f);
-                enemy.TakeDamage(damage);
-                totalDamage += damage;
-                hitCount++;
-            }
-        }
+        StartCoroutine(FireballCoroutine(targetPos, skill, isFromPlayer));
     }
 
-    private void ShowRangeIndicator(Vector3 position, float radius)
+    private IEnumerator FireballCoroutine(Vector3 targetPos, FireballSkill skill, bool isFromPlayer)
     {
-        if (currentRangeIndicator != null)
-        {
-            Destroy(currentRangeIndicator);
-        }
+        // Hiển thị vòng tròn AOE và lưu ID
+        int indicatorId = ShowRangeIndicator(targetPos, skill.effectRadius);
 
-        currentRangeIndicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);
-        SkillRangeIndicator indicator = currentRangeIndicator.GetComponent<SkillRangeIndicator>();
-        if (indicator != null)
-        {
-            indicator.SetRadius(radius);
-            indicator.SetColor(Color.red);
-        }
-    }
-
-    private void HideRangeIndicator()
-    {
-        if (currentRangeIndicator != null)
-        {
-            Destroy(currentRangeIndicator);
-            currentRangeIndicator = null;
-        }
-    }
-
-    public void HandleFireballSkill(Vector3 targetPos, FireballSkill skill)
-    {
-        StartCoroutine(FireballCoroutine(targetPos, skill));
-    }
-
-    private IEnumerator FireballCoroutine(Vector3 targetPos, FireballSkill skill)
-    {
-        // Hiển thị vòng tròn AOE
-        ShowRangeIndicator(targetPos, skill.effectRadius);
-        
         // Tạo hiệu ứng cầu lửa bay đến
         if (skill.fireballEffectPrefab != null)
         {
@@ -199,12 +166,12 @@ public class SkillEffectHandler : MonoBehaviour
                 skill.ownerCard.transform.position,
                 Quaternion.identity
             );
-            
+
             // Animation cầu lửa bay đến mục tiêu
             float flightTime = 0.5f;
             float elapsedTime = 0f;
             Vector3 startPos = fireballEffect.transform.position;
-            
+
             while (elapsedTime < flightTime)
             {
                 fireballEffect.transform.position = Vector3.Lerp(
@@ -215,22 +182,22 @@ public class SkillEffectHandler : MonoBehaviour
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
-            
+
             Destroy(fireballEffect);
         }
-        
+
         // Gây sát thương và áp dụng hiệu ứng thiêu đốt
         Collider2D[] hits = Physics2D.OverlapCircleAll(targetPos, skill.effectRadius);
         foreach (Collider2D hit in hits)
         {
             Unit enemy = hit.GetComponent<Unit>();
-            if (enemy != null && enemy.IsPlayerUnit != skill.ownerCard.IsPlayer)
+            if (enemy != null && enemy.IsPlayerUnit != isFromPlayer)
             {
                 // Gây sát thương phép
-                float magicDamage = enemy.GetUnitStats().GetModifiedDamage() * 
+                float magicDamage = skill.ownerCard.Unit.magicDamage *
                                   (skill.magicDamagePercent / 100f);
-                enemy.TakeDamage(magicDamage);
-                
+                enemy.TakeDamage(magicDamage, DamageType.Magic);
+
                 // Áp dụng hiệu ứng thiêu đốt
                 var statusEffects = enemy.GetComponent<UnitStatusEffects>();
                 if (statusEffects != null)
@@ -245,8 +212,44 @@ public class SkillEffectHandler : MonoBehaviour
                 }
             }
         }
-        
+
         yield return new WaitForSeconds(0.5f);
-        HideRangeIndicator();
+        // Xóa đúng vòng tròn AOE theo ID
+        HideRangeIndicator(indicatorId);
+    }
+
+
+    private int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
+    {
+        GameObject indicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);
+        SkillRangeIndicator rangeIndicator = indicator.GetComponent<SkillRangeIndicator>();
+
+        if (rangeIndicator != null)
+        {
+            rangeIndicator.SetRadius(radius);
+            rangeIndicator.SetColor(color ?? Color.red);
+        }
+
+        int indicatorId = nextIndicatorId++;
+        activeRangeIndicators[indicatorId] = indicator;
+        return indicatorId;
+    }
+
+    private void HideRangeIndicator(int indicatorId)
+    {
+        if (activeRangeIndicators.TryGetValue(indicatorId, out GameObject indicator))
+        {
+            Destroy(indicator);
+            activeRangeIndicators.Remove(indicatorId);
+        }
+    }
+
+    private void HideAllRangeIndicators()
+    {
+        foreach (var indicator in activeRangeIndicators.Values)
+        {
+            Destroy(indicator);
+        }
+        activeRangeIndicators.Clear();
     }
 }

@@ -44,7 +44,7 @@ public class FuriousCavalryCharge : Skill
                 
                 try
                 {
-                    float damage = stats.GetModifiedDamage();
+                    float damage = stats.GetPhysicalDamage() + stats.GetMagicDamage();
                     if (damage > highestDamage)
                     {
                         highestDamage = damage;

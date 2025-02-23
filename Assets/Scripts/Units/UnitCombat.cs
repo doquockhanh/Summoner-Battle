@@ -49,8 +49,15 @@ public class UnitCombat : MonoBehaviour
 
     private void PerformAttack(Unit target)
     {
-        float damage = stats.GetModifiedDamage();
-        target.TakeDamage(damage);
+        float physicalDamage = stats.GetPhysicalDamage();
+        
+        // Xử lý chí mạng cho sát thương vật lý
+        if (stats.RollForCritical())
+        {
+            physicalDamage = stats.CalculateCriticalDamage(physicalDamage);
+        }
+        
+        target.TakeDamage(physicalDamage, DamageType.Physical, unit);
         
         bool faceRight = target.transform.position.x > transform.position.x;
         view.FlipSprite(faceRight);
@@ -58,12 +65,12 @@ public class UnitCombat : MonoBehaviour
         view.PlayAttackAnimation();
         view.PlayAttackEffect();
 
-        UnitEvents.Combat.RaiseDamageDealt(unit, target, damage);
+        UnitEvents.Combat.RaiseDamageDealt(unit, target, physicalDamage);
     }
 
     private void PerformBaseAttack(Base baseTarget)
     {
-        float damage = stats.GetModifiedDamage();
+        float damage = stats.GetPhysicalDamage();
         baseTarget.TakeDamage(damage);
         
         bool faceRight = baseTarget.transform.position.x > transform.position.x;

@@ -15,11 +15,23 @@ MonoBehaviour:
   unitName: Mage
   unitImage: {fileID: 6347813038107732699, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
-  hp: 400
-  damage: 30
-  attackSpeed: 0.7
+  maxHp: 450
+  hpRegen: 0
+  armor: 10
+  magicResist: 10
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 30
+  magicDamage: 100
+  damageAmplification: 0
+  armorPenetration: 0
+  magicPenetration: 0.1
+  criticalChance: 0.1
+  criticalDamage: 150
+  lifestealPercent: 0
+  attackSpeed: 0.74
   moveSpeed: 1.2
   range: 2.5
   detectRange: 3.5
-  lifestealPercent: 0
+  healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: bb72571158aa68f4cb895f250cea62af, type: 3}

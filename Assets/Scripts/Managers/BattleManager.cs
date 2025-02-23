@@ -28,8 +28,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private List<Card> playerCards;
     [SerializeField] private List<Card> enemyCards;
     
-    private List<Card> playerDeck = new List<Card>();
-    private List<Card> enemyDeck = new List<Card>();
     private List<CardController> activeCards = new List<CardController>();
     private float currentPlayerHP;
     private float currentEnemyHP;
@@ -71,9 +69,6 @@ public class BattleManager : MonoBehaviour
     
     public void StartBattle(List<Card> playerCards, List<Card> enemyCards)
     {
-        playerDeck = playerCards;
-        enemyDeck = enemyCards;
-        
         SpawnPlayerCards();
         SpawnEnemyCards();
     }
@@ -87,14 +82,12 @@ public class BattleManager : MonoBehaviour
             
             // Khởi tạo card với skill
             controller.Initialize(card, true);
-            
-            // Skill sẽ tự động được setup thông qua CardController
         }
     }
     
     private void SpawnEnemyCards()
     {
-        foreach (Card card in enemyDeck)
+        foreach (Card card in enemyCards)
         {
             GameObject cardObj = Instantiate(cardPrefab, enemyCardContainer);
             CardController controller = cardObj.GetComponent<CardController>();
@@ -118,24 +111,6 @@ public class BattleManager : MonoBehaviour
     {
         float randomT = Random.Range(0f, 1f);
         return Vector3.Lerp(start, end, randomT);
-    }
-
-    public void DamageBase(float damage, bool isPlayer)
-    {
-        if (isPlayer)
-            currentPlayerHP -= damage;
-        else
-            currentEnemyHP -= damage;
-
-        CheckGameOver();
-    }
-
-    private void CheckGameOver()
-    {
-        if (currentPlayerHP <= 0)
-            EndGame(false);
-        else if (currentEnemyHP <= 0)
-            EndGame(true);
     }
 
     public void EndGame(bool playerWon)

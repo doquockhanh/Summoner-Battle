@@ -15,11 +15,23 @@ MonoBehaviour:
   unitName: BloodLord
   unitImage: {fileID: -8690465714316191496, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: BloodLord
-  hp: 800
-  damage: 30
+  maxHp: 1000
+  hpRegen: 10
+  armor: 10
+  magicResist: 10
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 10
+  magicDamage: 39
+  damageAmplification: 0
+  armorPenetration: 0
+  magicPenetration: 0
+  criticalChance: 0
+  criticalDamage: 150
+  lifestealPercent: 20
   attackSpeed: 0.1
   moveSpeed: 0
   range: 0.1
   detectRange: 0.1
-  lifestealPercent: 20
+  healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: 77a1020af15ce174cbb417dfd60ccad0, type: 3}

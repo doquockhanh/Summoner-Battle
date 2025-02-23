@@ -1,33 +1,41 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using UnityEngine;
 
 public class UnitStats : MonoBehaviour
 {
     private UnitData data;
+
+    // Current Stats
     private float currentHp;
     private float currentShield;
-    
-    // Các hệ số modifier
-    private float damageModifier = 1f;
-    private float speedModifier = 1f;
-    private float defenseModifier = 1f;
-    
-    // Cache các giá trị đã tính toán
-    private float cachedModifiedDamage;
-    private bool isDamageModified = false;
+
+    // Stat Modifiers
+    private StatModifier physicalDamageModifier = new StatModifier();
+    private StatModifier magicDamageModifier = new StatModifier();
+    private StatModifier armorModifier = new StatModifier();
+    private StatModifier magicResistModifier = new StatModifier();
+    private StatModifier speedModifier = new StatModifier();
+    private StatModifier healingReceivedModifier = new StatModifier();
+
+    // Cached calculated values
+    private float cachedPhysicalDamage;
+    private float cachedMagicDamage;
+    private bool isPhysicalDamageModified;
+    private bool isMagicDamageModified;
+
 
     private Coroutine removeShieldCoroutine;
-    private Coroutine resetLifestealCoroutine;
 
-    private float healingReceivedModifier = 1f;
+    private float hpRegenTimer;
+    private const float HP_REGEN_INTERVAL = 2f;
 
-    public UnitData Data => data;
+    // Properties
     public float CurrentHP => currentHp;
-    public float MaxHp => data.hp;
+    public float MaxHp => data.maxHp;
     public bool IsDead => currentHp <= 0;
     public float CurrentHealthPercent => currentHp / MaxHp;
-    
+    public UnitData Data => data;
+
     // Events
     public event System.Action<float> OnHealthChanged;
     public event System.Action<float> OnShieldChanged;
@@ -36,201 +44,305 @@ public class UnitStats : MonoBehaviour
     public void Initialize(UnitData unitData)
     {
         data = unitData;
-        currentHp = unitData.hp;
+        currentHp = unitData.maxHp;
         currentShield = 0;
         ResetModifiers();
     }
 
-    public void TakeDamage(float rawDamage)
+    public void TakeDamage(float rawDamage, DamageType damageType, Unit source = null)
     {
         if (IsDead) return;
 
-        float damage = CalculateDamageAfterDefense(rawDamage);
-        
+        float finalDamage = CalculateFinalDamage(rawDamage, damageType, source);
+
         // Xử lý shield trước
-        float remainingDamage = ProcessShieldDamage(damage);
-        
+        float remainingDamage = ProcessShieldDamage(finalDamage);
+
         // Xử lý HP
         if (remainingDamage > 0)
         {
-            ProcessHealthDamage(remainingDamage);
-        }
+            float damageApplied = ProcessHealthDamage(remainingDamage);
+            FloatingTextManager.Instance.ShowFloatingText(
+               remainingDamage.ToString("F0"),
+               transform.position,
+               damageType == DamageType.Physical ? Color.red : Color.blue
+            );
 
-        CheckDeath();
+            // Sửa lại phần xử lý hút máu
+            if (source != null)
+            {
+                UnitStats sourceStats = source.GetComponent<UnitStats>();
+                if (sourceStats.GetLifesteal() > 0)
+                {
+                    float lifestealAmount = sourceStats.CalculateLifestealAmount(damageApplied);
+                    if (lifestealAmount > 0)
+                    {
+                        sourceStats.Heal(lifestealAmount);
+                    }
+                }
+            }
+
+            CheckDeath();
+        }
     }
 
-    private float CalculateDamageAfterDefense(float rawDamage)
+    private float CalculateFinalDamage(float rawDamage, DamageType damageType, Unit source)
     {
-        return rawDamage / defenseModifier;
+        float damage = rawDamage;
+
+        if (source != null)
+        {
+            var sourceStats = source.GetComponent<UnitStats>();
+
+            // Lấy sát thương gốc
+            damage = damageType == DamageType.Physical
+                ? sourceStats.GetPhysicalDamage()
+                : sourceStats.GetMagicDamage();
+        }
+
+        // Áp dụng giáp/kháng phép
+        if (damageType == DamageType.Physical)
+        {
+            float effectiveArmor = armorModifier.Calculate(data.armor);
+            damage *= 100f / (100f + effectiveArmor);
+        }
+        else
+        {
+            float effectiveMagicResist = magicResistModifier.Calculate(data.magicResist);
+            damage *= 100f / (100f + effectiveMagicResist);
+        }
+
+        // Áp dụng giảm sát thương chung
+        damage *= 1f - data.damageReduction;
+
+        return damage;
     }
 
     private float ProcessShieldDamage(float damage)
     {
         if (currentShield <= 0) return damage;
 
-        // Tính toán lại damage cho shield
-        float shieldDamage = Mathf.Min(damage, currentShield);
-        currentShield -= shieldDamage;
+        float absorbedDamage = Mathf.Min(currentShield, damage);
+        currentShield -= absorbedDamage;
         OnShieldChanged?.Invoke(currentShield);
-        
-        ShowDamageNumber(shieldDamage, DamageType.Shield);
-        
-        return damage - shieldDamage; // Trả về damage còn lại sau khi trừ shield
+
+        FloatingTextManager.Instance.ShowFloatingText(
+                absorbedDamage.ToString("F0"),
+                transform.position,
+                Color.white
+             );
+
+        return damage - absorbedDamage;
     }
 
-    private void ProcessHealthDamage(float damage)
+    private float ProcessHealthDamage(float damage)
     {
-        currentHp -= damage;
+        currentHp = Mathf.Max(0, currentHp - damage);
         OnHealthChanged?.Invoke(currentHp);
-        ShowDamageNumber(damage, DamageType.Health);
+        return Mathf.Min(damage, currentHp);
+    }
+
+    public void Heal(float amount, Unit source = null)
+    {
+        if (IsDead) return;
+
+        float healingMultiplier = healingReceivedModifier.Calculate(data.healingReceivedPercent / 100);
+        float finalHealing = amount * healingMultiplier;
+
+        if (finalHealing >= 1)
+        {
+            FloatingTextManager.Instance.ShowFloatingText(
+                        finalHealing.ToString("F0"),
+                        transform.position,
+                        Color.green
+                    );
+        }
+
+
+        currentHp = Mathf.Min(data.maxHp, currentHp + finalHealing);
+        OnHealthChanged?.Invoke(currentHp);
+    }
+
+    public void AddShield(float amount, float duration)
+    {
+        currentShield += amount;
+        OnShieldChanged?.Invoke(currentShield);
+
+        if (removeShieldCoroutine != null)
+            StopCoroutine(removeShieldCoroutine);
+
+        removeShieldCoroutine = StartCoroutine(RemoveShieldAfterDelay(amount, duration));
+    }
+
+    private IEnumerator RemoveShieldAfterDelay(float amount, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        currentShield = Mathf.Max(0, currentShield - amount);
+        OnShieldChanged?.Invoke(currentShield);
     }
 
     private void CheckDeath()
     {
         if (currentHp <= 0)
         {
-            currentHp = 0;
             OnDeath?.Invoke();
-            UnitEvents.Status.RaiseUnitDeath(GetComponent<Unit>());
         }
     }
 
-    public float GetModifiedDamage()
+    #region Stat Getters
+    public float GetPhysicalDamage()
     {
-        if (!isDamageModified)
+        if (!isPhysicalDamageModified)
         {
-            cachedModifiedDamage = data.damage * damageModifier;
-            isDamageModified = true;
+            cachedPhysicalDamage = physicalDamageModifier.Calculate(data.physicalDamage);
+            isPhysicalDamageModified = true;
         }
-        return cachedModifiedDamage;
+        return cachedPhysicalDamage;
     }
 
-    public void ModifyDamage(float modifier)
+    public float GetMagicDamage()
     {
-        damageModifier += modifier;
-        isDamageModified = false;
+        if (!isMagicDamageModified)
+        {
+            cachedMagicDamage = magicDamageModifier.Calculate(data.magicDamage);
+            isMagicDamageModified = true;
+        }
+        return cachedMagicDamage;
     }
+    public float GetArmor() => armorModifier.Calculate(data.armor);
+    public float GetMagicResist() => magicResistModifier.Calculate(data.magicResist);
+    public float GetMoveSpeed() => speedModifier.Calculate(data.moveSpeed);
+    public float GetAttackSpeed() => data.attackSpeed;
+    public float GetRange() => data.range;
+    public float GetDetectRange() => data.detectRange;
+    public float GetLifesteal() => data.lifestealPercent;
+    public float GetCriticalChance() => data.criticalChance;
+    public float GetCriticalDamage() => data.criticalDamage;
+    public float GetArmorPenetration() => data.armorPenetration;
+    public float GetMagicPenetration() => data.magicPenetration;
+    public float GetDamageAmplification() => data.damageAmplification;
+    public float GetTenacity() => data.tenacity;
+    public float GetHPRegen() => data.hpRegen;
+    public float GetHealingReceived() => data.healingReceivedPercent;
+    #endregion
 
-    public void ModifySpeed(float modifier)
+    #region Stat Modifiers
+    public void ModifyPhysicalDamage(float flatBonus, float percentBonus = 0)
     {
-        speedModifier += modifier;
+        physicalDamageModifier.AddFlat(flatBonus);
+        if (percentBonus != 0) physicalDamageModifier.AddPercent(percentBonus);
+        isPhysicalDamageModified = false;
     }
 
-    public void ModifyDefense(float modifier)
+    public void ModifyMagicDamage(float flatBonus, float percentBonus = 0)
     {
-        defenseModifier += modifier;
+        magicDamageModifier.AddFlat(flatBonus);
+        if (percentBonus != 0) magicDamageModifier.AddPercent(percentBonus);
+        isMagicDamageModified = false;
     }
 
+    public void ModifyArmor(float flatBonus, float percentBonus = 0)
+    {
+        armorModifier.AddFlat(flatBonus);
+        if (percentBonus != 0) armorModifier.AddPercent(percentBonus);
+    }
+
+    public void ModifyMagicResist(float flatBonus, float percentBonus = 0)
+    {
+        magicResistModifier.AddFlat(flatBonus);
+        if (percentBonus != 0) magicResistModifier.AddPercent(percentBonus);
+    }
+
+    public void ModifySpeed(float flatBonus, float percentBonus = 0)
+    {
+        speedModifier.AddFlat(flatBonus);
+        if (percentBonus != 0) speedModifier.AddPercent(percentBonus);
+    }
+
+    public void ModifyHealingReceived(float percentBonus)
+    {
+        healingReceivedModifier.AddPercent(percentBonus);
+    }
+    #endregion
+
+    #region Reset Methods
     public void ResetModifiers()
     {
-        damageModifier = 1f;
-        speedModifier = 1f;
-        defenseModifier = 1f;
-        isDamageModified = false;
+        physicalDamageModifier.Reset();
+        magicDamageModifier.Reset();
+        armorModifier.Reset();
+        magicResistModifier.Reset();
+        speedModifier.Reset();
+        healingReceivedModifier.Reset();
+        isPhysicalDamageModified = false;
+        isMagicDamageModified = false;
     }
 
-    public void AddShield(float amount)
-    {
-        currentShield += amount;
-        OnShieldChanged?.Invoke(currentShield);
-    }
-
-    public void Heal(float amount)
-    {
-        float modifiedHealing = amount * healingReceivedModifier;
-        currentHp = Mathf.Min(currentHp + modifiedHealing, MaxHp);
-        OnHealthChanged?.Invoke(currentHp);
-    }
-
-    public void ProcessLifesteal(float damageDealt)
-    {
-        if (data.lifestealPercent <= 0) return;
-        float healAmount = damageDealt * data.lifestealPercent;
-        Heal(healAmount);
-    }
-
-    private void ShowDamageNumber(float amount, DamageType type)
-    {
-        Color textColor = type switch
-        {
-            DamageType.Health => Color.red,
-            DamageType.Shield => Color.black,
-            DamageType.Heal => Color.green,
-            _ => Color.white
-        };
-
-        Vector3 position = type == DamageType.Shield ? 
-            transform.position + Vector3.up * 0.5f : 
-            transform.position;
-
-        FloatingTextManager.Instance.ShowFloatingText(
-            amount.ToString("F0"),
-            position,
-            textColor
-        );
-    }
-
-    public void ApplyShield(float shieldPercent, float duration)
-    {
-        // Hủy coroutine cũ nếu đang có shield
-        if (removeShieldCoroutine != null)
-        {
-            StopCoroutine(removeShieldCoroutine);
-            currentShield = 0; // Reset shield cũ
-        }
-
-        // Áp dụng shield mới
-        float shieldAmount = MaxHp * (shieldPercent / 100f); // Chuyển % thành tỉ lệ
-        currentShield = shieldAmount;
-        OnShieldChanged?.Invoke(currentShield);
-        
-        // Bắt đầu coroutine mới
-        removeShieldCoroutine = StartCoroutine(RemoveShieldAfterDelay(duration));
-    }
-
-    private IEnumerator RemoveShieldAfterDelay(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        currentShield = 0;
-        OnShieldChanged?.Invoke(currentShield);
-        removeShieldCoroutine = null;
-    }
-
-    public void SetLifesteal(float percent, float duration)
-    {
-        // Hủy coroutine cũ nếu đang có lifesteal
-        if (resetLifestealCoroutine != null)
-        {
-            StopCoroutine(resetLifestealCoroutine);
-            data.lifestealPercent = 0;
-        }
-
-        // Áp dụng lifesteal mới
-        data.lifestealPercent = percent / 100f; // Chuyển % thành tỉ lệ
-        resetLifestealCoroutine = StartCoroutine(ResetLifestealAfterDelay(duration));
-    }
-
-    private IEnumerator ResetLifestealAfterDelay(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        data.lifestealPercent = 0;
-        resetLifestealCoroutine = null;
-    }
-
-    public void ModifyHealingReceived(float modifier)
-    {
-        healingReceivedModifier = modifier;
-    }
-    
     public void ResetHealingReceived()
     {
-        healingReceivedModifier = 1f;
+        healingReceivedModifier.Reset();
+    }
+    #endregion
+
+    #region Combat Utility Methods
+    public bool RollForCritical()
+    {
+        return Random.value < GetCriticalChance() / 100f;
     }
 
-    private enum DamageType
+    public float CalculateCriticalDamage(float damage)
     {
-        Health,
-        Shield,
-        Heal
+        return damage * GetCriticalDamage() / 100f;
     }
+
+    public float CalculateLifestealAmount(float damageDealt)
+    {
+        return damageDealt * GetLifesteal() / 100f;
+    }
+
+    public float GetCrowdControlDuration(float baseDuration)
+    {
+        return baseDuration * (1f - GetTenacity());
+    }
+    #endregion
+
+    private void FixedUpdate()
+    {
+        // Xử lý hồi máu theo thời gian
+        if (!IsDead && currentHp < MaxHp)
+        {
+            hpRegenTimer += Time.fixedDeltaTime;
+            if (hpRegenTimer >= HP_REGEN_INTERVAL)
+            {
+                float regenAmount = GetHPRegen();
+                if (regenAmount > 0)
+                {
+                    Heal(regenAmount);
+                }
+                hpRegenTimer = 0f;
+            }
+        }
+    }
+}
+
+// Helper class để quản lý modifier
+public class StatModifier
+{
+    private float flatBonus;
+    private float percentBonus;
+
+    public void AddFlat(float value) => flatBonus += value;
+    public void AddPercent(float value) => percentBonus += value;
+    public void Reset() { flatBonus = 0; percentBonus = 1; }
+
+    public float Calculate(float baseValue)
+    {
+        return (baseValue + flatBonus) * percentBonus;
+    }
+}
+
+public enum DamageType
+{
+    Physical,
+    Magic
 }

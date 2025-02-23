@@ -105,48 +105,17 @@ public class Unit : MonoBehaviour
         movement.Move(targeting.CurrentTarget, targeting.CurrentBaseTarget);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float amount, DamageType damageType, Unit source = null)
     {
-        
-        stats.TakeDamage(damage);
-        
-        if (ownerCard != null)
+        if (stats != null)
         {
-            ownerCard.GainManaFromDamage(damage, stats.MaxHp, true);
+            stats.TakeDamage(amount, damageType, source);
         }
         
         if (IsDead)
         {
             UnitPoolManager.Instance.ReturnToPool(this);
         }
-    }
-
-    public void DealDamage(float damage, Unit target)
-    {
-        target.TakeDamage(damage);
-        stats.ProcessLifesteal(damage);
-        
-        if (ownerCard != null)
-        {
-            ownerCard.GainManaFromDamage(damage, target.GetUnitStats().MaxHp, false);
-        }
-    }
-
-    public void ApplyBuff(float damageModifier, float speedModifier, float defenseModifier, float duration)
-    {
-        stats.ModifyDamage(damageModifier);
-        stats.ModifySpeed(speedModifier);
-        stats.ModifyDefense(defenseModifier);
-        
-        // Reset buff sau duration
-        Invoke(nameof(RemoveBuff), duration);
-    }
-
-    private void RemoveBuff(float damageModifier, float speedModifier, float defenseModifier)
-    {
-        stats.ModifyDamage(-damageModifier);
-        stats.ModifySpeed(-speedModifier);
-        stats.ModifyDefense(-defenseModifier);
     }
 
     private void OnDrawGizmosSelected()
@@ -194,25 +163,5 @@ public class Unit : MonoBehaviour
                 currentTarget = otherUnit;
             }
         }
-    }
-
-    public void ModifyDamage(float amount)
-    {
-        stats.ModifyDamage(amount);
-    }
-    
-    public void ModifySpeed(float amount)
-    {
-        stats.ModifySpeed(amount);
-    }
-    
-    public void ModifyDefense(float amount)
-    {
-        stats.ModifyDefense(amount);
-    }
-
-    public void Heal(float amount)
-    {
-        stats.TakeDamage(-amount); // Sử dụng số âm để hồi máu
     }
 }

@@ -15,11 +15,23 @@ MonoBehaviour:
   unitName: Melee
   unitImage: {fileID: 0}
   description: melelelelel
-  hp: 450
-  damage: 75
+  maxHp: 600
+  hpRegen: 0
+  armor: 20
+  magicResist: 10
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 50
+  magicDamage: 0
+  damageAmplification: 0
+  armorPenetration: 0.1
+  magicPenetration: 0
+  criticalChance: 0.1
+  criticalDamage: 1.5
+  lifestealPercent: 0.2
   attackSpeed: 2
   moveSpeed: 2
   range: 1.5
   detectRange: 4
-  lifestealPercent: 0.2
+  healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: 4a60fc513ebe7f44291031255c740697, type: 3}

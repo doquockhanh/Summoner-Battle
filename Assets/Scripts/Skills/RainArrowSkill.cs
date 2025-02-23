@@ -38,7 +38,7 @@ public class RainArrowSkill : Skill
 
         if (SkillEffectHandler.Instance != null)
         {
-            SkillEffectHandler.Instance.HandleRainArrowSkill(bestTargetPos, this);
+            SkillEffectHandler.Instance.HandleRainArrowSkill(bestTargetPos, this, ownerCard.IsPlayer);
             ownerCard.OnSkillActivated();
         }
         else
