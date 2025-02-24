@@ -3364,6 +3364,10 @@ MonoBehaviour:
   floatingTextPrefab: {fileID: 6316851383008238693, guid: 00e5530bed0678c409e4d0fefc2e6564, type: 3}
   worldSpaceCanvas: {fileID: 963345071}
   spawnOffset: {x: 0, y: 0.5, z: 0}
+  minBounceAngle: -30
+  maxBounceAngle: 30
+  bounceForce: 2
+  scale: 12
 --- !u!114 &1666147976
 MonoBehaviour:
   m_ObjectHideFlags: 0
