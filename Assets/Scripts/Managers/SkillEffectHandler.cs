@@ -304,6 +304,32 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
+    public void HandleHealingSkill(Unit target, HealingSkill skill)
+    {
+        if (target == null) return;
+
+        // Tính lượng máu hồi phục
+        float healAmount = target.GetUnitStats().MaxHp * (skill.healPercent / 100f);
+        target.GetUnitStats().Heal(healAmount);
+
+        // Hồi mana cho card sở hữu unit
+        if (target.OwnerCard != null)
+        {
+            target.OwnerCard.AddMana(skill.manaRestore);
+        }
+
+        // Hiệu ứng hồi máu
+        if (skill.healEffectPrefab != null)
+        {
+            GameObject healEffect = Instantiate(
+                skill.healEffectPrefab,
+                target.transform.position,
+                Quaternion.identity
+            );
+            Destroy(healEffect, 1f);
+        }
+    }
+
     private int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
     {
         GameObject indicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);

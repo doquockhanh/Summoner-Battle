@@ -133,4 +133,9 @@ public class CardController : MonoBehaviour
             TryActivateSkill();
         }
     }
+
+    public void AddMana(float amount)
+    {
+        currentMana = Mathf.Min(currentMana + amount, cardData.maxMana);
+    }
 }
