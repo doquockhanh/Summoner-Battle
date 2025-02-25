@@ -265,6 +265,45 @@ public class SkillEffectHandler : MonoBehaviour
         HideRangeIndicator(indicatorId);
     }
 
+    public void HandleAssassinateSkill(Unit assassin, Unit target, AssassinateSkill skill)
+    {
+        if (assassin == null || target == null) return;
+
+        StartCoroutine(AssassinateCoroutine(assassin, target, skill));
+    }
+
+    private IEnumerator AssassinateCoroutine(Unit assassin, Unit target, AssassinateSkill skill)
+    {
+        // Lưu vị trí ban đầu
+        Vector3 startPos = assassin.transform.position;
+        Vector3 targetPos = target.transform.position;
+        
+        // Animation nhảy
+        float jumpTime = 0.3f;
+        float elapsedTime = 0f;
+        
+        while (elapsedTime < jumpTime)
+        {
+            float t = elapsedTime / jumpTime;
+            // Thêm đường cong cho animation nhảy
+            float height = Mathf.Sin(t * Mathf.PI) * 2f;
+            assassin.transform.position = Vector3.Lerp(startPos, targetPos, t) + Vector3.up * height;
+            
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Đảm bảo đến đúng vị trí
+        assassin.transform.position = targetPos;
+        
+        // Gán target mới cho assassin
+        var targeting = assassin.GetComponent<UnitTargeting>();
+        if (targeting != null)
+        {
+            targeting.AssignTarget(target);
+        }
+    }
+
     private int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
     {
         GameObject indicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);

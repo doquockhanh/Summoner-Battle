@@ -189,4 +189,15 @@ public class UnitView : MonoBehaviour
             unitSprite.material = MaterialManager.Instance.GetUnitMaterial(unit.IsPlayerUnit);
         }
     }
+
+    public void SetAlpha(float alpha)
+    {
+        if (unitSprite != null)
+        {
+            Debug.Log("awd");
+            Color color = unitSprite.color;
+            color.a = alpha;
+            unitSprite.color = color;
+        }
+    }
 }

@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ccc6c9290466a274280f4c5ab19d9469, type: 3}
-  m_Name: Mage
+  m_Name: Assassin
   m_EditorClassIdentifier: 
-  unitName: Mage
-  unitImage: {fileID: 6347813038107732699, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  unitName: Assassin
+  unitImage: {fileID: 7594536691759110762, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
-  maxHp: 450
+  maxHp: 700
   hpRegen: 0
-  armor: 10
+  armor: 15
   magicResist: 10
   damageReduction: 0
   tenacity: 0
-  physicalDamage: 30
-  magicDamage: 50
+  physicalDamage: 200
+  magicDamage: 0
   damageAmplification: 0
   armorPenetration: 0
-  magicPenetration: 0.1
-  criticalChance: 0.1
+  magicPenetration: 0
+  criticalChance: 20
   criticalDamage: 150
   lifestealPercent: 0
-  attackSpeed: 0.74
-  moveSpeed: 1.2
-  range: 2.5
-  detectRange: 3.5
+  attackSpeed: 1
+  moveSpeed: 1.35
+  range: 1
+  detectRange: 3
   healingReceivedPercent: 100
-  unitPrefab: {fileID: 8505144159870094120, guid: bb72571158aa68f4cb895f250cea62af, type: 3}
+  unitPrefab: {fileID: 8505144159870094120, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}

@@ -8,7 +8,7 @@ public class GuardianAuraEffect : BaseStatusEffect
     private readonly UnitStats stats;
 
     public GuardianAuraEffect(
-        Unit target, 
+        Unit target,
         float duration,
         float armorBoost,
         float magicResistBoost
@@ -39,4 +39,4 @@ public class GuardianAuraEffect : BaseStatusEffect
             stats.ModifyMagicResist(-magicResistBoost);
         }
     }
-} 
+}

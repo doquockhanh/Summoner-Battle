@@ -11,7 +11,6 @@ public abstract class Skill : ScriptableObject
 
     [Header("Phân loại")]
     public SkillType skillType;
-    public TargetType targetType;
 
     // Thêm reference đến card sở hữu
     [HideInInspector]
@@ -31,11 +30,4 @@ public enum SkillType
     Direct,     // Tác động trực tiếp (AOE, single target)
     OnSummon,   // Áp dụng cho unit mới summon
     Passive
-}
-
-public enum TargetType
-{
-    Single,
-    AOE,
-    Self
 }

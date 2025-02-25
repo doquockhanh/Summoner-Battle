@@ -16,6 +16,7 @@ public class UnitStats : MonoBehaviour
     private StatModifier magicResistModifier = new StatModifier();
     private StatModifier speedModifier = new StatModifier();
     private StatModifier healingReceivedModifier = new StatModifier();
+    private StatModifier lifeStealModifier = new StatModifier();
 
     // Cached calculated values
     private float cachedPhysicalDamage;
@@ -215,7 +216,7 @@ public class UnitStats : MonoBehaviour
     public float GetAttackSpeed() => data.attackSpeed;
     public float GetRange() => data.range;
     public float GetDetectRange() => data.detectRange;
-    public float GetLifesteal() => data.lifestealPercent;
+    public float GetLifesteal() => lifeStealModifier.Calculate(data.lifestealPercent) / 100f;
     public float GetCriticalChance() => data.criticalChance;
     public float GetCriticalDamage() => data.criticalDamage;
     public float GetArmorPenetration() => data.armorPenetration;
@@ -263,6 +264,11 @@ public class UnitStats : MonoBehaviour
     {
         healingReceivedModifier.AddPercent(percentBonus);
     }
+
+    public void ModifyLifeSteal(float flatBonus)
+    {
+        lifeStealModifier.AddFlat(flatBonus);
+    }
     #endregion
 
     #region Reset Methods
@@ -297,7 +303,7 @@ public class UnitStats : MonoBehaviour
 
     public float CalculateLifestealAmount(float damageDealt)
     {
-        return damageDealt * GetLifesteal() / 100f;
+        return damageDealt * GetLifesteal();
     }
 
     public float GetCrowdControlDuration(float baseDuration)

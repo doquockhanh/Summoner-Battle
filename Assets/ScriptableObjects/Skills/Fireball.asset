@@ -15,7 +15,6 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 30
-  cooldown: 0
   duration: 0
   radius: 0
   skillType: 0
@@ -23,7 +22,7 @@ MonoBehaviour:
   ownerCard: {fileID: 0}
   magicDamagePercent: 200
   effectRadius: 2
-  burnDamagePercent: 0.01
+  burnDamagePercent: 0.02
   burnDuration: 10
   healingReduction: 0.5
   fireballEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}

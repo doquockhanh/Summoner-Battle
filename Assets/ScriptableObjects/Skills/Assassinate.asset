@@ -9,18 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e7772d94098064e877de561664f11b, type: 3}
-  m_Name: GuardianAura
+  m_Script: {fileID: 11500000, guid: d775bb0b64bd7154dbd2ae9184fe0fce, type: 3}
+  m_Name: Assassinate
   m_EditorClassIdentifier: 
-  skillName: Guardian aura
+  skillName: 
   description: 
   manaCost: 30
-  duration: 5
+  duration: 0
   radius: 0
   skillType: 1
-  targetType: 1
+  targetType: 0
   ownerCard: {fileID: 0}
-  armorBoost: 30
-  magicResistBoost: 20
-  auraRadius: 2
-  auraEffectPrefab: {fileID: 3632261846723545084, guid: 20dcb69ec3dc0d4409040da90916f808, type: 3}
+  jumpRange: 6
+  lifestealPercent: 20
+  firstHitCritMultiplier: 2
