@@ -1618,6 +1618,8 @@ MonoBehaviour:
   attackSpeedText: {fileID: 516706740}
   moveSpeedText: {fileID: 1449039482}
   rangeText: {fileID: 1331381778}
+  ArmorText: {fileID: 1006890270}
+  MagicResistText: {fileID: 656452343}
 --- !u!20 &694003637 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 354077450769762411, guid: 678375a4f9ca3d34c843e60791f15d45, type: 3}
@@ -3366,8 +3368,8 @@ MonoBehaviour:
   spawnOffset: {x: 0, y: 0.5, z: 0}
   minBounceAngle: -30
   maxBounceAngle: 30
-  bounceForce: 2
-  scale: 12
+  bounceForce: 3
+  scale: 10
 --- !u!114 &1666147976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3926,15 +3928,9 @@ MonoBehaviour:
   playerBaseHP: 1000
   enemyBaseHP: 1000
   playerCards:
-  - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
-  - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
   enemyCards:
-  - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: 5c6e028ee174fe84ab941126a15e443b, type: 2}
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &2065520681
 Transform:

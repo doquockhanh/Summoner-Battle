@@ -103,13 +103,13 @@ public class UnitStats : MonoBehaviour
         // Áp dụng giáp/kháng phép
         if (damageType == DamageType.Physical)
         {
-            float effectiveArmor = armorModifier.Calculate(data.armor);
-            damage *= 100f / (100f + effectiveArmor);
+            float armor = GetArmor();
+            damage *= 100f / (100f + armor);
         }
         else
         {
-            float effectiveMagicResist = magicResistModifier.Calculate(data.magicResist);
-            damage *= 100f / (100f + effectiveMagicResist);
+            float magicResist = GetMagicResist();
+            damage *= 100f / (100f + magicResist);
         }
 
         // Áp dụng giảm sát thương chung

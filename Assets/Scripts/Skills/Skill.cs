@@ -6,7 +6,6 @@ public abstract class Skill : ScriptableObject
     public string skillName;
     public string description;
     public float manaCost;
-    public float cooldown;
     public float duration;
     public float radius;
 

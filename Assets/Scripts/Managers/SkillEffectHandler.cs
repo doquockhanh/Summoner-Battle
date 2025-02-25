@@ -218,6 +218,52 @@ public class SkillEffectHandler : MonoBehaviour
         HideRangeIndicator(indicatorId);
     }
 
+    public void HandleGuardianAuraSkill(Unit caster, GuardianAuraSkill skill)
+    {
+        StartCoroutine(GuardianAuraCoroutine(caster, skill));
+    }
+
+    private IEnumerator GuardianAuraCoroutine(Unit caster, GuardianAuraSkill skill)
+    {
+        // Hiển thị vòng tròn AOE
+        int indicatorId = ShowRangeIndicator(caster.transform.position, skill.auraRadius, Color.cyan);
+
+        // Tạo hiệu ứng visual
+        if (skill.auraEffectPrefab != null)
+        {
+            GameObject auraEffect = Instantiate(
+                skill.auraEffectPrefab,
+                caster.transform.position,
+                Quaternion.identity,
+                caster.transform
+            );
+            Destroy(auraEffect, skill.duration);
+        }
+
+        // Áp dụng buff cho caster và allies
+        Collider2D[] hits = Physics2D.OverlapCircleAll(caster.transform.position, skill.auraRadius);
+        foreach (Collider2D hit in hits)
+        {
+            Unit ally = hit.GetComponent<Unit>();
+            if (ally != null && ally.IsPlayerUnit == caster.IsPlayerUnit)
+            {
+                var statusEffects = ally.GetComponent<UnitStatusEffects>();
+                if (statusEffects != null)
+                {
+                    var auraEffect = new GuardianAuraEffect(
+                        ally,
+                        skill.duration,
+                        skill.armorBoost,
+                        skill.magicResistBoost
+                    );
+                    statusEffects.AddEffect(auraEffect);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        HideRangeIndicator(indicatorId);
+    }
 
     private int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
     {

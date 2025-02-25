@@ -82,7 +82,7 @@ public class UnitCombat : MonoBehaviour
 
     private void ResetAttackTimer()
     {
-        attackTimer = (1f / stats.Data.attackSpeed) + ATTACK_COOLDOWN_BUFFER;
+        attackTimer = (1f / stats.GetAttackSpeed()) + ATTACK_COOLDOWN_BUFFER;
     }
 
     private void Update()

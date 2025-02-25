@@ -9,19 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02f4028ec0749b1429daf9f07ac2d685, type: 3}
-  m_Name: RainArrow
+  m_Script: {fileID: 11500000, guid: 45e7772d94098064e877de561664f11b, type: 3}
+  m_Name: GuardianAura
   m_EditorClassIdentifier: 
-  skillName: RainArr
+  skillName: Guardian aura
   description: 
-  manaCost: 50
+  manaCost: 30
   duration: 0
-  radius: 4
-  skillType: 0
+  radius: 0
+  skillType: 1
   targetType: 1
   ownerCard: {fileID: 0}
-  arrowWaveCount: 5
-  damagePerWavePercent: 40
-  timeBetweenWaves: 0.1
-  effectRadius: 1.5
-  rainArrowEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}
+  armorBoostPercent: 100
+  magicResistBoostPercent: 100
+  auraRadius: 2
+  auraEffectPrefab: {fileID: 3632261846723545084, guid: 20dcb69ec3dc0d4409040da90916f808, type: 3}

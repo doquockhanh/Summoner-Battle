@@ -6,12 +6,15 @@ public class FloatingText : MonoBehaviour
     private TextMeshProUGUI textMesh;
     [SerializeField] private float fadeSpeed = 1f;
     [SerializeField] private float lifeTime = 1f;
+    [SerializeField] private float gravity = 9.8f;
+    [SerializeField] private float outLineWidth = 0.3f;
+    [SerializeField] private Color outlineColor = Color.black;
 
     private float currentLifeTime;
     private Color textColor;
     private RectTransform rectTransform;
     private Vector3 bounceDirection;
-    private float gravity = 9.8f;
+    
     private float verticalVelocity;
     private float bounceForce;
 
@@ -24,6 +27,8 @@ public class FloatingText : MonoBehaviour
         {
             Debug.LogError("Không tìm thấy TextMeshProUGUI trong FloatingText!");
         }
+        textMesh.outlineWidth = outLineWidth; // Độ dày viền
+        textMesh.outlineColor = outlineColor; // Màu viền
     }
 
     public void Initialize(string text, Color color, Vector3 bounceDir, float force)
