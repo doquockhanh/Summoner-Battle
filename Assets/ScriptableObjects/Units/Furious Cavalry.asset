@@ -15,19 +15,19 @@ MonoBehaviour:
   unitName: Melee
   unitImage: {fileID: 0}
   description: melelelelel
-  maxHp: 600
+  maxHp: 900
   hpRegen: 0
   armor: 20
   magicResist: 10
   damageReduction: 0
   tenacity: 0
-  physicalDamage: 50
+  physicalDamage: 65
   magicDamage: 0
   damageAmplification: 0
   armorPenetration: 0.1
   magicPenetration: 0
   criticalChance: 0.1
-  criticalDamage: 1.5
+  criticalDamage: 150
   lifestealPercent: 0.2
   attackSpeed: 2
   moveSpeed: 2

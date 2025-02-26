@@ -21,13 +21,13 @@ MonoBehaviour:
   magicResist: 10
   damageReduction: 0
   tenacity: 0
-  physicalDamage: 50
+  physicalDamage: 60
   magicDamage: 0
   damageAmplification: 0
   armorPenetration: 0
   magicPenetration: 0
-  criticalChance: 0.1
-  criticalDamage: 1.5
+  criticalChance: 20
+  criticalDamage: 150
   lifestealPercent: 0
   attackSpeed: 1.4
   moveSpeed: 1

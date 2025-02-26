@@ -21,7 +21,7 @@ MonoBehaviour:
   magicResist: 0
   damageReduction: 0
   tenacity: 0
-  physicalDamage: 50
+  physicalDamage: 40
   magicDamage: 0
   damageAmplification: 0
   armorPenetration: 0

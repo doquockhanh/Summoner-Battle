@@ -21,10 +21,10 @@ MonoBehaviour:
   magicResist: 10
   damageReduction: 0
   tenacity: 0
-  physicalDamage: 200
+  physicalDamage: 70
   magicDamage: 0
   damageAmplification: 0
-  armorPenetration: 0
+  armorPenetration: 20
   magicPenetration: 0
   criticalChance: 20
   criticalDamage: 150

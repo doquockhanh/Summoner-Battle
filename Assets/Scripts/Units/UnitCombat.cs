@@ -10,6 +10,12 @@ public class UnitCombat : MonoBehaviour
 
     private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
 
+    [Header("Projectile Settings")]
+    [SerializeField] private bool useProjectile;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Color projectileColor = Color.white;
+    [SerializeField] private Transform projectileSpawnPoint;
+
     private void Awake()
     {
         statusEffects = GetComponent<UnitStatusEffects>();
@@ -49,23 +55,33 @@ public class UnitCombat : MonoBehaviour
 
     private void PerformAttack(Unit target)
     {
-        float physicalDamage = stats.GetPhysicalDamage();
+        float damage = stats.GetPhysicalDamage();
         
-        // Xử lý chí mạng cho sát thương vật lý
         if (stats.RollForCritical())
         {
-            physicalDamage = stats.CalculateCriticalDamage(physicalDamage);
+            damage = stats.CalculateCriticalDamage(damage);
         }
-        
-        target.TakeDamage(physicalDamage, DamageType.Physical, unit);
-        
+
         bool faceRight = target.transform.position.x > transform.position.x;
         view.FlipSprite(faceRight);
-        
         view.PlayAttackAnimation();
-        view.PlayAttackEffect();
+        
+        if (useProjectile && projectilePrefab != null)
+        {
+            Vector3 spawnPos = projectileSpawnPoint != null ? 
+                projectileSpawnPoint.position : transform.position;
+            
+            GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+            var projectile = proj.GetComponent<Projectile>();
+            projectile.Initialize(target, damage, projectileColor);
+        }
+        else
+        {
+            target.TakeDamage(damage, DamageType.Physical, unit);
+            view.PlayAttackEffect();
+        }
 
-        UnitEvents.Combat.RaiseDamageDealt(unit, target, physicalDamage);
+        UnitEvents.Combat.RaiseDamageDealt(unit, target, damage);
     }
 
     private void PerformBaseAttack(Base baseTarget)

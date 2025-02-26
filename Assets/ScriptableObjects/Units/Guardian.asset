@@ -17,8 +17,8 @@ MonoBehaviour:
   description: 
   maxHp: 1000
   hpRegen: 10
-  armor: 60
-  magicResist: 30
+  armor: 25
+  magicResist: 25
   damageReduction: 0
   tenacity: 0
   physicalDamage: 40

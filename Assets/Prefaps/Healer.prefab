@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1847634128402881819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3660773201594949553}
+  m_Layer: 8
+  m_Name: firepoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3660773201594949553
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847634128402881819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.204, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4343516724881931010}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8505144159870094120
 GameObject:
   m_ObjectHideFlags: 0
@@ -39,7 +70,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3660773201594949553}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8254720302422736851
@@ -226,6 +258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4655a58c970c29b4ba31cac6ae8c95b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useProjectile: 1
+  projectilePrefab: {fileID: 7079476164047036491, guid: ec4e1c1b6659f7140b820b0a68d5c9f6, type: 3}
+  projectileColor: {r: 0.019753337, g: 1, b: 0, a: 1}
+  projectileSpawnPoint: {fileID: 3660773201594949553}
 --- !u!114 &1817729600305747794
 MonoBehaviour:
   m_ObjectHideFlags: 0
