@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UnitStats : MonoBehaviour
@@ -30,6 +32,10 @@ public class UnitStats : MonoBehaviour
     private float hpRegenTimer;
     private const float HP_REGEN_INTERVAL = 2f;
 
+    private List<ShieldLayer> shieldLayers = new List<ShieldLayer>();
+
+    private ShieldEffectHandler shieldEffectHandler;
+
     // Properties
     public float CurrentHP => currentHp;
     public float MaxHp => data.maxHp;
@@ -41,6 +47,11 @@ public class UnitStats : MonoBehaviour
     public event System.Action<float> OnHealthChanged;
     public event System.Action<float> OnShieldChanged;
     public event System.Action OnDeath;
+
+    private void Awake()
+    {
+        shieldEffectHandler = GetComponent<ShieldEffectHandler>();
+    }
 
     public void Initialize(UnitData unitData)
     {
@@ -121,19 +132,37 @@ public class UnitStats : MonoBehaviour
 
     private float ProcessShieldDamage(float damage)
     {
-        if (currentShield <= 0) return damage;
+        if (shieldLayers.Count == 0) return damage;
 
-        float absorbedDamage = Mathf.Min(currentShield, damage);
-        currentShield -= absorbedDamage;
-        OnShieldChanged?.Invoke(currentShield);
+        float remainingDamage = damage;
+        
+        // Sắp xếp shield theo thời gian (shield ngắn hạn trước)
+        var orderedShields = shieldLayers
+            .Where(s => s.RemainingValue > 0)
+            .OrderBy(s => s.Duration)
+            .ToList();
 
-        FloatingTextManager.Instance.ShowFloatingText(
+        foreach (var shield in orderedShields)
+        {
+            if (remainingDamage <= 0) break;
+            remainingDamage = shield.AbsorbDamage(remainingDamage);
+        }
+
+        // Cập nhật UI
+        OnShieldChanged?.Invoke(GetTotalShield());
+        
+        // Hiển thị số sát thương được hấp thụ
+        float absorbedDamage = damage - remainingDamage;
+        if (absorbedDamage > 0)
+        {
+            FloatingTextManager.Instance.ShowFloatingText(
                 absorbedDamage.ToString("F0"),
                 transform.position,
                 Color.white
-             );
+            );
+        }
 
-        return damage - absorbedDamage;
+        return remainingDamage;
     }
 
     private float ProcessHealthDamage(float damage)
@@ -164,22 +193,81 @@ public class UnitStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHp);
     }
 
-    public void AddShield(float amount, float duration)
+    public void AddShield(float amount, float duration, ShieldType type = ShieldType.Normal)
     {
-        currentShield += amount;
-        OnShieldChanged?.Invoke(currentShield);
+        var shield = new ShieldLayer(amount, duration, GetComponent<Unit>(), type);
+        
+        shield.OnShieldAbsorbed += (absorbed) => {
+            if (shieldEffectHandler != null)
+            {
+                shieldEffectHandler.HandleShieldAbsorbed(shield, absorbed);
+            }
+            OnShieldChanged?.Invoke(GetTotalShield());
+        };
 
-        if (removeShieldCoroutine != null)
-            StopCoroutine(removeShieldCoroutine);
-
-        removeShieldCoroutine = StartCoroutine(RemoveShieldAfterDelay(amount, duration));
+        shield.OnShieldExpired += () => {
+            if (shieldEffectHandler != null)
+            {
+                shieldEffectHandler.HandleShieldExpired(shield);
+            }
+        };
+        
+        shieldLayers.Add(shield);
+        OnShieldChanged?.Invoke(GetTotalShield());
     }
 
-    private IEnumerator RemoveShieldAfterDelay(float amount, float duration)
+    private void Update()
     {
-        yield return new WaitForSeconds(duration);
-        currentShield = Mathf.Max(0, currentShield - amount);
-        OnShieldChanged?.Invoke(currentShield);
+        // Cập nhật thời gian của các shield
+        for (int i = shieldLayers.Count - 1; i >= 0; i--)
+        {
+            var shield = shieldLayers[i];
+            shield.UpdateDuration(Time.deltaTime);
+            
+            if (shield.IsExpired)
+            {
+                shieldLayers.RemoveAt(i);
+                OnShieldChanged?.Invoke(GetTotalShield());
+            }
+        }
+    }
+
+    private float GetTotalShield()
+    {
+        return shieldLayers.Sum(s => s.RemainingValue);
+    }
+
+    private void HandleShieldBroken(ShieldLayer shield)
+    {
+        switch (shield.Type)
+        {
+            case ShieldType.Reflective:
+                // Xử lý phản sát thương
+                break;
+            case ShieldType.Sharing:
+                // Xử lý chia sẻ shield
+                break;
+            case ShieldType.Absorption:
+                // Xử lý hấp thụ thành máu
+                break;
+        }
+    }
+
+    private void HandleShieldExpired(ShieldLayer shield)
+    {
+        // Xử lý các hiệu ứng khi shield hết hạn
+        switch (shield.Type)
+        {
+            case ShieldType.Reflective:
+                // Gây sát thương xung quanh
+                break;
+            case ShieldType.Sharing:
+                // Chia shield còn lại cho đồng minh
+                break;
+            case ShieldType.Absorption:
+                // Hồi máu theo shield còn lại
+                break;
+        }
     }
 
     private void CheckDeath()
@@ -328,6 +416,11 @@ public class UnitStats : MonoBehaviour
                 hpRegenTimer = 0f;
             }
         }
+    }
+
+    public List<ShieldLayer> GetShieldLayers()
+    {
+        return new List<ShieldLayer>(shieldLayers);
     }
 }
 

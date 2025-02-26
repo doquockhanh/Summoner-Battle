@@ -62,7 +62,7 @@ public class UnitView : MonoBehaviour
 
         // Subscribe to events
         stats.OnHealthChanged += UpdateHealth;
-        stats.OnShieldChanged += UpdateShield;
+        stats.OnShieldChanged += UpdateShields;
         stats.OnDeath += OnUnitDeath;
     }
 
@@ -118,9 +118,13 @@ public class UnitView : MonoBehaviour
         PlayDamageFlash();
     }
 
-    private void UpdateShield(float shieldAmount)
+    private void UpdateShields(float totalShield)
     {
-        healthBarUI.UpdateShield(shieldAmount);
+        if (healthBarUI != null)
+        {
+            var stats = unit.GetComponent<UnitStats>();
+            healthBarUI.UpdateShields(stats.GetShieldLayers());
+        }
     }
 
     private void OnUnitDeath()
