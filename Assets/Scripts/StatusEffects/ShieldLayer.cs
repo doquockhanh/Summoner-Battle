@@ -7,19 +7,23 @@ public class ShieldLayer
     public float RemainingValue { get; private set; }
     public float Duration { get; private set; }
     public Unit Source { get; private set; }
-    public ShieldType Type { get; private set; }
+    public int OwnerSkillID { get; private set; }
     
-    public event Action<float> OnShieldAbsorbed;
-    public event Action OnShieldBroken;
-    public event Action OnShieldExpired;
+    public event Action<float, int> OnShieldAbsorbed;
+    public event Action<int> OnShieldBroken;
+    public event Action<int> OnShieldExpired;
 
-    public ShieldLayer(float value, float duration, Unit source, ShieldType type = ShieldType.Normal)
+    public ShieldLayer(float value, float duration, Unit source = null)
     {
         Value = value;
         RemainingValue = value;
         Duration = duration;
         Source = source;
-        Type = type;
+        OwnerSkillID = UnityEngine.Random.Range(0, 100000);
+    }
+
+    public int GetOwnerSkillID(){
+        return OwnerSkillID;
     }
 
     public float AbsorbDamage(float damage)
@@ -27,11 +31,11 @@ public class ShieldLayer
         float absorbed = Mathf.Min(RemainingValue, damage);
         RemainingValue -= absorbed;
         
-        OnShieldAbsorbed?.Invoke(absorbed);
+        OnShieldAbsorbed?.Invoke(absorbed, OwnerSkillID);
         
         if (RemainingValue <= 0)
         {
-            OnShieldBroken?.Invoke();
+            OnShieldBroken?.Invoke(OwnerSkillID);
         }
         
         return damage - absorbed;
@@ -44,27 +48,9 @@ public class ShieldLayer
         Duration -= deltaTime;
         if (Duration <= 0 && RemainingValue > 0)
         {
-            OnShieldExpired?.Invoke();
+            OnShieldExpired?.Invoke(OwnerSkillID);
         }
     }
 
     public bool IsExpired => Duration >= 0 && Duration <= 0;
-
-    public void ProcessAbsorption(float absorbedAmount)
-    {
-        OnShieldAbsorbed?.Invoke(absorbedAmount);
-        
-        if (RemainingValue <= 0)
-        {
-            OnShieldBroken?.Invoke();
-        }
-    }
 }
-
-public enum ShieldType
-{
-    Normal,     // Shield thông thường
-    Absorption, // Shield hấp thụ và chuyển hóa
-    Reflective, // Shield phản sát thương
-    Sharing,     // Shield chia sẻ
-} 

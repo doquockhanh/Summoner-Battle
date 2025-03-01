@@ -43,7 +43,7 @@ public class SkillEffectHandler : MonoBehaviour
     {
         // Áp dụng shield và lifesteal cho caster
         float shieldAmount = caster.GetUnitStats().MaxHp * (skill.shieldPercent / 100f);
-        caster.GetUnitStats().AddShield(shieldAmount, skill.shieldDuration, ShieldType.Normal);
+        caster.GetUnitStats().AddShield(shieldAmount, skill.shieldDuration);
         caster.GetUnitStats().ModifyLifeSteal(skill.lifestealPercent);
 
         bool faceRight = targetPos.x > caster.transform.position.x;

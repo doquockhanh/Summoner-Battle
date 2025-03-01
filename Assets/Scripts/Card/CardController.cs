@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CardController : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class CardController : MonoBehaviour
     private bool isWaitingForUnit = false;
     private bool canActivateSkill = true;
     public UnitData Unit => cardData.summonUnit;
+    
+    private List<Unit> activeUnits = new List<Unit>();
     
     public void Initialize(Card card, bool isPlayer = true)
     {
@@ -121,6 +124,11 @@ public class CardController : MonoBehaviour
         Unit unit = UnitPoolManager.Instance.GetUnit(cardData.summonUnit, isPlayer, this);
         unit.transform.position = spawnPos;
         unit.Initialize(cardData.summonUnit, isPlayer, this);
+        
+        activeUnits.Add(unit);
+        
+        unit.OnDeath += () => RemoveUnit(unit);
+        
         if (unit.OwnerCard.cardData.skill is BloodstormSkill bloodstormSkill)
         {
             bloodstormSkill.ApplyToSummon(unit);
@@ -132,6 +140,20 @@ public class CardController : MonoBehaviour
         {
             TryActivateSkill();
         }
+    }
+
+    private void RemoveUnit(Unit unit)
+    {
+        activeUnits.Remove(unit);
+    }
+
+    public List<Unit> GetActiveUnits() => activeUnits;
+
+    public Unit GetStrongestUnit(System.Func<Unit, float> strengthCriteria)
+    {
+        if (activeUnits.Count == 0) return null;
+        
+        return activeUnits.OrderByDescending(strengthCriteria).FirstOrDefault();
     }
 
     public void AddMana(float amount)

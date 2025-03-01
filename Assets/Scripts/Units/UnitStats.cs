@@ -34,8 +34,6 @@ public class UnitStats : MonoBehaviour
 
     private List<ShieldLayer> shieldLayers = new List<ShieldLayer>();
 
-    private ShieldEffectHandler shieldEffectHandler;
-
     // Properties
     public float CurrentHP => currentHp;
     public float MaxHp => data.maxHp;
@@ -50,7 +48,6 @@ public class UnitStats : MonoBehaviour
 
     private void Awake()
     {
-        shieldEffectHandler = GetComponent<ShieldEffectHandler>();
     }
 
     public void Initialize(UnitData unitData)
@@ -193,27 +190,14 @@ public class UnitStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHp);
     }
 
-    public void AddShield(float amount, float duration, ShieldType type = ShieldType.Normal)
+    public void AddShield(float amount, float duration)
     {
-        var shield = new ShieldLayer(amount, duration, GetComponent<Unit>(), type);
+        var shield = new ShieldLayer(amount, duration, GetComponent<Unit>());
+        AddShield(shield);
+    }
 
-        shield.OnShieldAbsorbed += (absorbed) =>
-        {
-            if (shieldEffectHandler != null)
-            {
-                shieldEffectHandler.HandleShieldAbsorbed(shield, absorbed);
-            }
-            OnShieldChanged?.Invoke(GetTotalShield());
-        };
-
-        shield.OnShieldExpired += () =>
-        {
-            if (shieldEffectHandler != null)
-            {
-                shieldEffectHandler.HandleShieldExpired(shield);
-            }
-        };
-
+    public void AddShield(ShieldLayer shield)
+    {
         shieldLayers.Add(shield);
         OnShieldChanged?.Invoke(GetTotalShield());
     }
@@ -237,39 +221,6 @@ public class UnitStats : MonoBehaviour
     private float GetTotalShield()
     {
         return shieldLayers.Sum(s => s.RemainingValue);
-    }
-
-    private void HandleShieldBroken(ShieldLayer shield)
-    {
-        switch (shield.Type)
-        {
-            case ShieldType.Reflective:
-                // Xử lý phản sát thương
-                break;
-            case ShieldType.Sharing:
-                // Xử lý chia sẻ shield
-                break;
-            case ShieldType.Absorption:
-                // Xử lý hấp thụ thành máu
-                break;
-        }
-    }
-
-    private void HandleShieldExpired(ShieldLayer shield)
-    {
-        // Xử lý các hiệu ứng khi shield hết hạn
-        switch (shield.Type)
-        {
-            case ShieldType.Reflective:
-                // Gây sát thương xung quanh
-                break;
-            case ShieldType.Sharing:
-                // Chia shield còn lại cho đồng minh
-                break;
-            case ShieldType.Absorption:
-                // Hồi máu theo shield còn lại
-                break;
-        }
     }
 
     private void CheckDeath()
