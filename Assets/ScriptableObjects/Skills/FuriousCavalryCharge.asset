@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 
   description: 
-  manaCost: 50
+  manaCost: 30
   duration: 5
-  radius: 5
+  radius: 2
   skillType: 1
   ownerCard: {fileID: 0}
   chargeSpeed: 10
@@ -25,3 +25,5 @@ MonoBehaviour:
   shieldPercent: 25
   shieldDuration: 10
   lifestealPercent: 20
+  chargeEffectPrefab: {fileID: 0}
+  hitEffectPrefab: {fileID: 0}

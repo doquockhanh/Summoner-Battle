@@ -45,8 +45,8 @@ public class ShieldLayer
     {
         if (Duration < 0) return; // Shield vĩnh viễn
         
-        Duration -= deltaTime;
-        if (Duration <= 0 && RemainingValue > 0)
+        Duration = Mathf.Max(Duration - deltaTime, 0);
+        if (Duration == 0)
         {
             OnShieldExpired?.Invoke(OwnerSkillID);
         }

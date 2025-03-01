@@ -17,12 +17,12 @@ public class Unit : MonoBehaviour
     private CardController ownerCard;
 
     // Chuyển các property vào interface IUnit để dễ mở rộng
-    public interface IUnit 
+    public interface IUnit
     {
         bool IsDead { get; }
         bool IsPlayerUnit { get; }
         Unit CurrentTarget { get; }
-        Base CurrentBaseTarget { get; } 
+        Base CurrentBaseTarget { get; }
         UnitData UnitData { get; }
         UnitStats Stats { get; }
         float CurrentHP { get; }
@@ -57,7 +57,7 @@ public class Unit : MonoBehaviour
         targeting = targeting ?? GetComponent<UnitTargeting>();
         view = view ?? GetComponent<UnitView>();
 
-        if (stats == null || combat == null || movement == null || 
+        if (stats == null || combat == null || movement == null ||
             targeting == null || view == null)
         {
             Debug.LogError($"Missing required components on {gameObject.name}");
@@ -68,13 +68,13 @@ public class Unit : MonoBehaviour
     {
         ownerCard = cardController;
         isPlayerUnit = isPlayer;
-        
+
         stats.Initialize(data);
         combat.Initialize(this);
         movement.Initialize(this);
         targeting.Initialize(this);
         view.Initialize(this);
-        
+
         hpLossTimer = 0;
     }
 
@@ -82,9 +82,12 @@ public class Unit : MonoBehaviour
     {
         if (stats.IsDead) return;
 
-        targeting.UpdateTarget();
-        HandleCombat();
-        HandleMovement();
+        if (!targeting.IsPaused)
+        {
+            targeting.UpdateTarget();
+            HandleCombat();
+            HandleMovement();
+        }
     }
 
     private void HandleCombat()
@@ -111,7 +114,7 @@ public class Unit : MonoBehaviour
         {
             stats.TakeDamage(amount, damageType, source);
         }
-        
+
         if (IsDead)
         {
             UnitPoolManager.Instance.ReturnToPool(this);
@@ -125,7 +128,7 @@ public class Unit : MonoBehaviour
             // Vẽ tầm đánh
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, stats.Data.range);
-            
+
             // Vẽ tầm phát hiện
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, stats.Data.detectRange);
@@ -142,9 +145,9 @@ public class Unit : MonoBehaviour
             Debug.Log($"Found enemy base: {enemyBase.name}");
             return;
         }
-        
+
         if (currentTarget != null) return;
-        
+
         Unit otherUnit = other.GetComponent<Unit>();
         if (otherUnit != null && !otherUnit.IsDead && otherUnit.isPlayerUnit != isPlayerUnit)
         {

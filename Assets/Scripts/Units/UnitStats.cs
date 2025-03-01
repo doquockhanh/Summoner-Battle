@@ -202,22 +202,6 @@ public class UnitStats : MonoBehaviour
         OnShieldChanged?.Invoke(GetTotalShield());
     }
 
-    private void Update()
-    {
-        // Cập nhật thời gian của các shield
-        for (int i = shieldLayers.Count - 1; i >= 0; i--)
-        {
-            var shield = shieldLayers[i];
-            shield.UpdateDuration(Time.deltaTime);
-
-            if (shield.IsExpired)
-            {
-                shieldLayers.RemoveAt(i);
-                OnShieldChanged?.Invoke(GetTotalShield());
-            }
-        }
-    }
-
     private float GetTotalShield()
     {
         return shieldLayers.Sum(s => s.RemainingValue);
@@ -368,6 +352,18 @@ public class UnitStats : MonoBehaviour
                     Heal(regenAmount);
                 }
                 hpRegenTimer = 0f;
+            }
+        }
+
+        for (int i = shieldLayers.Count - 1; i >= 0; i--)
+        {
+            var shield = shieldLayers[i];
+            shield.UpdateDuration(Time.fixedDeltaTime);
+
+            if (shield.IsExpired)
+            {
+                shieldLayers.RemoveAt(i);
+                OnShieldChanged?.Invoke(GetTotalShield());
             }
         }
     }
