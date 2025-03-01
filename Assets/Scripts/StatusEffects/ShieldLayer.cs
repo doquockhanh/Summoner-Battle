@@ -66,5 +66,5 @@ public enum ShieldType
     Normal,     // Shield thông thường
     Absorption, // Shield hấp thụ và chuyển hóa
     Reflective, // Shield phản sát thương
-    Sharing     // Shield chia sẻ
+    Sharing,     // Shield chia sẻ
 } 

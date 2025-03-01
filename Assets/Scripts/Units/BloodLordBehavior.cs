@@ -248,7 +248,7 @@ public class BloodLordBehavior : MonoBehaviour
         {
             if (IsValidTarget(enemy))
             {
-                 enemy.TakeDamage(actualDamage, DamageType.Magic, unit);
+                enemy.TakeDamage(actualDamage, DamageType.Magic, unit);
             }
         }
     }

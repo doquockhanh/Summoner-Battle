@@ -15,15 +15,13 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 50
-  cooldown: 0
   duration: 5
   radius: 5
   skillType: 1
-  targetType: 1
   ownerCard: {fileID: 0}
   chargeSpeed: 10
   damageMultiplier: 1
   knockupDuration: 1
-  shieldPercent: 75
+  shieldPercent: 25
   shieldDuration: 10
   lifestealPercent: 20

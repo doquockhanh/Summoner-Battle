@@ -73,7 +73,7 @@ public class UnitCombat : MonoBehaviour
             
             GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
             var projectile = proj.GetComponent<Projectile>();
-            projectile.Initialize(target, damage, projectileColor);
+            projectile.Initialize(target, damage, projectileColor, unit);
         }
         else
         {

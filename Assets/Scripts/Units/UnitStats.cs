@@ -135,7 +135,7 @@ public class UnitStats : MonoBehaviour
         if (shieldLayers.Count == 0) return damage;
 
         float remainingDamage = damage;
-        
+
         // Sắp xếp shield theo thời gian (shield ngắn hạn trước)
         var orderedShields = shieldLayers
             .Where(s => s.RemainingValue > 0)
@@ -150,7 +150,7 @@ public class UnitStats : MonoBehaviour
 
         // Cập nhật UI
         OnShieldChanged?.Invoke(GetTotalShield());
-        
+
         // Hiển thị số sát thương được hấp thụ
         float absorbedDamage = damage - remainingDamage;
         if (absorbedDamage > 0)
@@ -196,8 +196,9 @@ public class UnitStats : MonoBehaviour
     public void AddShield(float amount, float duration, ShieldType type = ShieldType.Normal)
     {
         var shield = new ShieldLayer(amount, duration, GetComponent<Unit>(), type);
-        
-        shield.OnShieldAbsorbed += (absorbed) => {
+
+        shield.OnShieldAbsorbed += (absorbed) =>
+        {
             if (shieldEffectHandler != null)
             {
                 shieldEffectHandler.HandleShieldAbsorbed(shield, absorbed);
@@ -205,13 +206,14 @@ public class UnitStats : MonoBehaviour
             OnShieldChanged?.Invoke(GetTotalShield());
         };
 
-        shield.OnShieldExpired += () => {
+        shield.OnShieldExpired += () =>
+        {
             if (shieldEffectHandler != null)
             {
                 shieldEffectHandler.HandleShieldExpired(shield);
             }
         };
-        
+
         shieldLayers.Add(shield);
         OnShieldChanged?.Invoke(GetTotalShield());
     }
@@ -223,7 +225,7 @@ public class UnitStats : MonoBehaviour
         {
             var shield = shieldLayers[i];
             shield.UpdateDuration(Time.deltaTime);
-            
+
             if (shield.IsExpired)
             {
                 shieldLayers.RemoveAt(i);
@@ -304,7 +306,7 @@ public class UnitStats : MonoBehaviour
     public float GetAttackSpeed() => data.attackSpeed;
     public float GetRange() => data.range;
     public float GetDetectRange() => data.detectRange;
-    public float GetLifesteal() => lifeStealModifier.Calculate(data.lifestealPercent) / 100f;
+    public float GetLifesteal() => lifeStealModifier.Calculate(data.lifestealPercent);
     public float GetCriticalChance() => data.criticalChance;
     public float GetCriticalDamage() => data.criticalDamage;
     public float GetArmorPenetration() => data.armorPenetration;
@@ -370,6 +372,7 @@ public class UnitStats : MonoBehaviour
         healingReceivedModifier.Reset();
         isPhysicalDamageModified = false;
         isMagicDamageModified = false;
+        lifeStealModifier.Reset();
     }
 
     public void ResetHealingReceived()
@@ -391,7 +394,7 @@ public class UnitStats : MonoBehaviour
 
     public float CalculateLifestealAmount(float damageDealt)
     {
-        return damageDealt * GetLifesteal();
+        return damageDealt * GetLifesteal() / 100f;
     }
 
     public float GetCrowdControlDuration(float baseDuration)
@@ -428,7 +431,7 @@ public class UnitStats : MonoBehaviour
 public class StatModifier
 {
     private float flatBonus;
-    private float percentBonus;
+    private float percentBonus = 1;
 
     public void AddFlat(float value) => flatBonus += value;
     public void AddPercent(float value) => percentBonus += value;

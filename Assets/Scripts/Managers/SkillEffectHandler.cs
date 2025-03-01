@@ -42,7 +42,9 @@ public class SkillEffectHandler : MonoBehaviour
     private IEnumerator ChargeCoroutine(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
     {
         // Áp dụng shield và lifesteal cho caster
-        caster.GetUnitStats().AddShield(skill.shieldPercent, skill.shieldDuration);
+        float shieldAmount = caster.GetUnitStats().MaxHp * (skill.shieldPercent / 100f);
+        caster.GetUnitStats().AddShield(shieldAmount, skill.shieldDuration, ShieldType.Normal);
+        caster.GetUnitStats().ModifyLifeSteal(skill.lifestealPercent);
 
         bool faceRight = targetPos.x > caster.transform.position.x;
         caster.GetComponent<UnitView>().FlipSprite(faceRight);

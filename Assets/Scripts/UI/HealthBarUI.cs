@@ -11,13 +11,13 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Image damageDelayedBar;
     [SerializeField] private Image healthBar;
     [SerializeField] private Transform shieldBarContainer;
-    [SerializeField] private Image shieldBarPrefab;
+    [SerializeField] private Image shieldBar;
     [SerializeField] private TextMeshProUGUI soulCountText;
-    
+
     [Header("Settings")]
     [SerializeField] private float damageDelayTime = 0.5f;
     [SerializeField] private float damageDelaySpeed = 2f;
-    
+
     [Header("Shield Colors")]
     [SerializeField] private Color normalShieldColor = new Color(0.7f, 0.7f, 1f, 0.8f);
     [SerializeField] private Color absorptionShieldColor = new Color(0.7f, 1f, 0.7f, 0.8f);
@@ -29,7 +29,7 @@ public class HealthBarUI : MonoBehaviour
     private float delayedHp;
     private Dictionary<ShieldType, Image> shieldBars = new Dictionary<ShieldType, Image>();
     private Coroutine damageDelayCoroutine;
-    
+
     public Color healthColor = new Color(0.3f, 0.8f, 0.3f);
     public Color delayedColor = new Color(0.4f, 0.4f, 0.4f);
 
@@ -39,7 +39,7 @@ public class HealthBarUI : MonoBehaviour
         currentHp = maxHealth;
         delayedHp = maxHealth;
         ClearShieldBars();
-        
+
         SetupBars();
     }
 
@@ -48,10 +48,11 @@ public class HealthBarUI : MonoBehaviour
         backgroundBar.transform.SetSiblingIndex(0);
         damageDelayedBar.transform.SetSiblingIndex(1);
         healthBar.transform.SetSiblingIndex(2);
-        
+        shieldBar.transform.SetSiblingIndex(3);
+
         backgroundBar.color = Color.black;
         healthBar.color = healthColor;
-        
+
         healthBar.fillAmount = 1f;
         damageDelayedBar.fillAmount = 1f;
     }
@@ -60,9 +61,9 @@ public class HealthBarUI : MonoBehaviour
     {
         float oldHpPercent = currentHp / maxHp;
         float newHpPercent = newHp / maxHp;
-        
+
         currentHp = newHp;
-        
+
         if (newHpPercent < oldHpPercent)
         {
             if (damageDelayCoroutine != null)
@@ -83,7 +84,7 @@ public class HealthBarUI : MonoBehaviour
     public void UpdateShields(List<ShieldLayer> shields)
     {
         float totalShieldPercent = 0;
-        
+
         foreach (var shield in shields)
         {
             if (shield.RemainingValue <= 0) continue;
@@ -102,6 +103,10 @@ public class HealthBarUI : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(0, totalShieldPercent * rectTransform.rect.height);
 
             totalShieldPercent += shieldPercent;
+
+            Color shieldColorWithAlpha = shieldBar.color;
+            shieldColorWithAlpha.a = totalShieldPercent > 0 ? 0.8f : 0f;
+            shieldBar.color = shieldColorWithAlpha;
         }
 
         var unusedTypes = new List<ShieldType>();
@@ -122,7 +127,7 @@ public class HealthBarUI : MonoBehaviour
 
     private Image CreateShieldBar(ShieldType type)
     {
-        var newBar = Instantiate(shieldBarPrefab, shieldBarContainer);
+        var newBar = Instantiate(shieldBar, shieldBarContainer);
         newBar.color = GetShieldColor(type);
         return newBar;
     }
@@ -152,9 +157,9 @@ public class HealthBarUI : MonoBehaviour
     {
         damageDelayedBar.fillAmount = startPercent;
         yield return new WaitForSeconds(damageDelayTime);
-        
+
         float targetFill = currentHp / maxHp;
-        
+
         while (damageDelayedBar.fillAmount > targetFill)
         {
             damageDelayedBar.fillAmount = Mathf.MoveTowards(
@@ -176,7 +181,7 @@ public class HealthBarUI : MonoBehaviour
             soulCountText.gameObject.SetActive(show);
         }
     }
-    
+
     public void UpdateSoulCount(int count)
     {
         if (soulCountText != null)
@@ -184,4 +189,4 @@ public class HealthBarUI : MonoBehaviour
             soulCountText.text = $"{count}";
         }
     }
-} 
+}

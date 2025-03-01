@@ -198,7 +198,6 @@ public class UnitView : MonoBehaviour
     {
         if (unitSprite != null)
         {
-            Debug.Log("awd");
             Color color = unitSprite.color;
             color.a = alpha;
             unitSprite.color = color;

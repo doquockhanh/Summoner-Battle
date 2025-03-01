@@ -13,14 +13,16 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Material projectileMaterial;
 
     private Unit target;
+    private Unit source;
     private float damage;
     private bool isInitialized;
     private float lifetime;
 
-    public void Initialize(Unit target, float damage, Color projectileColor)
+    public void Initialize(Unit target, float damage, Color projectileColor, Unit source)
     {
         this.target = target;
         this.damage = damage;
+        this.source = source;
         this.lifetime = 0f;
 
         if (projectileMaterial != null)
@@ -48,9 +50,6 @@ public class Projectile : MonoBehaviour
 
             gradient.SetKeys(colorKeys, alphaKeys);
             trailRenderer.colorGradient = gradient;
-
-            // Debug trail
-            Debug.Log("Trail Renderer configured");
         }
 
         isInitialized = true;
@@ -92,7 +91,7 @@ public class Projectile : MonoBehaviour
     {
         if (target != null)
         {
-            target.TakeDamage(damage, DamageType.Physical);
+            target.TakeDamage(damage, DamageType.Physical, source);
         }
 
         if (hitEffectPrefab != null)

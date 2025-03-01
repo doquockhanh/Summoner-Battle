@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc6c9290466a274280f4c5ab19d9469, type: 3}
   m_Name: Furious Cavalry
   m_EditorClassIdentifier: 
-  unitName: Melee
-  unitImage: {fileID: 0}
+  unitName: Cavalier
+  unitImage: {fileID: -2052561053, guid: 09918634292a6034a903f1facea95597, type: 3}
   description: melelelelel
   maxHp: 900
   hpRegen: 0
@@ -28,8 +28,8 @@ MonoBehaviour:
   magicPenetration: 0
   criticalChance: 0.1
   criticalDamage: 150
-  lifestealPercent: 0.2
-  attackSpeed: 2
+  lifestealPercent: 0
+  attackSpeed: 1.5
   moveSpeed: 2
   range: 1.5
   detectRange: 4
