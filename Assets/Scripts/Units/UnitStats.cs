@@ -401,5 +401,6 @@ public class StatModifier
 public enum DamageType
 {
     Physical,
-    Magic
+    Magic,
+    True
 }

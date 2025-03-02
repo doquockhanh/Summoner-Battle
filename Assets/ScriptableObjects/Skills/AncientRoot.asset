@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db4c9ef0e4f3cd04ba4fcf3416283e16, type: 3}
+  m_Name: AncientRoot
+  m_EditorClassIdentifier: 
+  skillName: 
+  description: 
+  manaCost: 80
+  duration: 4
+  radius: 0
+  skillType: 1
+  ownerCard: {fileID: 0}
+  maxHealthDrainPercent: 10
+  magicPercent: 100
+  drainInterval: 0.5
+  stunDuration: 2
+  rootRadius: 4
+  rootEffectPrefab: {fileID: 0}
+  drainEffectPrefab: {fileID: 0}

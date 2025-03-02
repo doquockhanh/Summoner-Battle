@@ -3928,8 +3928,7 @@ MonoBehaviour:
   playerBaseHP: 1000
   enemyBaseHP: 1000
   playerCards:
-  - {fileID: 11400000, guid: 104203f6327943548ada9ebb01efd4ac, type: 2}
-  - {fileID: 11400000, guid: badb9fa9e6c65fa4a9fd5e14b7bb8cbc, type: 2}
+  - {fileID: 11400000, guid: 31ff38d10e318df4595c69d08b62a3a0, type: 2}
   enemyCards:
   - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
   - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
