@@ -44,7 +44,6 @@ public class ForgeShieldSkill : Skill
 
         // Tính lượng khiên dựa trên máu tối đa
         float shieldAmount = strongestSmith.GetUnitStats().MaxHp * (shieldHealthPercent / 100f);
-        Debug.Log("shieldAmount: " + shieldAmount);
 
         // Áp dụng khiên sharing
         if (SkillEffectHandler.Instance != null)

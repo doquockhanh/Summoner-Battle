@@ -24,7 +24,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         ApplyInitialEffects();
         caster.GetComponent<UnitTargeting>().PauseTargeting();
-        StartCoroutine(ChargeCoroutine());
+        this.StartCoroutineSafely(ChargeCoroutine());
     }
 
     private bool ValidateExecution()

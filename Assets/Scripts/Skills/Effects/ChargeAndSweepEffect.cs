@@ -56,7 +56,7 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
         Vector3 pullbackPos = target.transform.position + direction * skillData.pullbackDistance;
 
         // Thực hiện charge
-        StartCoroutine(ChargeCoroutine(target, pullbackPos));
+        this.StartCoroutineSafely(ChargeCoroutine(target, pullbackPos));
     }
 
     private IEnumerator ChargeCoroutine(Unit target, Vector3 pullbackPos)
@@ -72,7 +72,7 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
         while (elapsed < chargeTime)
         {
             float t = elapsed / chargeTime;
-            
+
             // Di chuyển caster
             caster.transform.position = Vector3.Lerp(startPos, pullbackPos, t);
 
