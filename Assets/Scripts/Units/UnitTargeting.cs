@@ -147,6 +147,7 @@ public class UnitTargeting : MonoBehaviour
     }
 
     public Unit FindNearestTarget() => FindTargetByDistance((d1, d2) => d1 < d2);
+    public Unit FindFurtherTarget() => FindTargetByDistance((d1, d2) => d1 > d2);
 
     private Unit FindTargetByDistance(System.Func<float, float, bool> compareDistance)
     {
@@ -169,7 +170,7 @@ public class UnitTargeting : MonoBehaviour
         return bestTarget;
     }
 
-    private bool IsValidTarget(Unit target)
+    public bool IsValidTarget(Unit target)
     {
         return target != null &&
                !target.IsDead &&

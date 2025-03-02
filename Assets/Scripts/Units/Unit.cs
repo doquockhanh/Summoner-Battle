@@ -89,10 +89,10 @@ public class Unit : MonoBehaviour
 
     private void HandleCombat()
     {
-        var target = targeting.CurrentTarget;
-        if (target != null && targeting.IsInRange(target))
+        currentTarget = targeting.CurrentTarget;
+        if (currentTarget != null && targeting.IsInRange(currentTarget))
         {
-            combat.TryAttack(target);
+            combat.TryAttack(currentTarget);
         }
         else if (targeting.CurrentBaseTarget != null && targeting.IsInRangeOfBase())
         {

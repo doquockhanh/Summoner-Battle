@@ -64,7 +64,7 @@ public class UnitStats : MonoBehaviour
     {
         if (IsDead) return;
 
-        float finalDamage = CalculateFinalDamage(rawDamage, damageType, source);
+        float finalDamage = CalculateFinalDamage(rawDamage, damageType);
         OnTakeDamage?.Invoke(finalDamage, source);
 
         // Xử lý shield trước
@@ -98,19 +98,9 @@ public class UnitStats : MonoBehaviour
         }
     }
 
-    private float CalculateFinalDamage(float rawDamage, DamageType damageType, Unit source)
+    private float CalculateFinalDamage(float rawDamage, DamageType damageType)
     {
         float damage = rawDamage;
-
-        if (source != null)
-        {
-            var sourceStats = source.GetComponent<UnitStats>();
-
-            // Lấy sát thương gốc
-            damage = damageType == DamageType.Physical
-                ? sourceStats.GetPhysicalDamage()
-                : sourceStats.GetMagicDamage();
-        }
 
         // Áp dụng giáp/kháng phép
         if (damageType == DamageType.Physical)
