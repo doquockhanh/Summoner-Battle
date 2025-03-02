@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
-  m_Name: Furious Cavalry
+  m_Name: JungleGuardian
   m_EditorClassIdentifier: 
-  cardName: Furious Cavalry
-  cardImage: {fileID: -2052561053, guid: 09918634292a6034a903f1facea95597, type: 3}
-  description: "K\u1EF5 S\u0129 Phong Ba, c\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"
+  cardName: 
+  cardImage: {fileID: 0}
+  description: 
   maxMana: 100
   manaRegen: 5
-  spawnCooldown: 10
-  summonUnit: {fileID: 11400000, guid: 14d57373e757ee44ca14e1dd862f047f, type: 2}
-  skill: {fileID: 11400000, guid: 846be4996af3f68419af65cfbd4d2a28, type: 2}
+  spawnCooldown: 5
+  summonUnit: {fileID: 11400000, guid: d2a2259808b32934ab72624c8b01a6f4, type: 2}
+  skill: {fileID: 11400000, guid: 49cff896079785b4c9fcf7b03c576126, type: 2}

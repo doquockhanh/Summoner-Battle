@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 
   description: 
-  manaCost: 30
+  manaCost: 60
   duration: 5
   radius: 2
   skillType: 1

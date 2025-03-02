@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d775bb0b64bd7154dbd2ae9184fe0fce, type: 3}
-  m_Name: Assassinate
+  m_Script: {fileID: 11500000, guid: 48f64daa1205df44fad5c0ef4b0ee703, type: 3}
+  m_Name: DefensiveThorns
   m_EditorClassIdentifier: 
   skillName: 
   description: 
@@ -19,6 +19,9 @@ MonoBehaviour:
   radius: 0
   skillType: 1
   ownerCard: {fileID: 0}
-  jumpRange: 6
-  lifestealPercent: 20
-  firstHitCritMultiplier: 3
+  damageReduction: 50
+  thornsDamagePercent: 50
+  tauntRadius: 5
+  tauntDuration: 5
+  thornsEffectPrefab: {fileID: 0}
+  tauntEffectPrefab: {fileID: 0}

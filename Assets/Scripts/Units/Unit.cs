@@ -30,9 +30,6 @@ public class Unit : MonoBehaviour
     }
 
     // Events được tổ chức lại
-    public event System.Action<float> OnDamageTaken;
-    public event System.Action<float, Unit> OnDamageDealt;
-    public event System.Action<float> OnShieldChanged;
     public event System.Action OnDeath;
 
     public bool IsDead => stats.IsDead;

@@ -28,88 +28,6 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public void HandleChargeSkill(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
-    {
-        if (caster == null)
-        {
-            Debug.LogError("HandleChargeSkill: caster is null!");
-            return;
-        }
-
-        StartCoroutine(ChargeCoroutine(caster, targetPos, skill));
-    }
-
-    private IEnumerator ChargeCoroutine(Unit caster, Vector3 targetPos, FuriousCavalryCharge skill)
-    {
-        // Áp dụng shield và lifesteal cho caster
-        float shieldAmount = caster.GetUnitStats().MaxHp * (skill.shieldPercent / 100f);
-        caster.GetUnitStats().AddShield(shieldAmount, skill.shieldDuration);
-        caster.GetUnitStats().ModifyLifeSteal(skill.lifestealPercent);
-
-        bool faceRight = targetPos.x > caster.transform.position.x;
-        caster.GetComponent<UnitView>().FlipSprite(faceRight);
-
-        // Hiệu ứng bắt đầu lao
-        if (chargeEffectPrefab != null)
-        {
-            GameObject chargeEffect = Instantiate(chargeEffectPrefab, caster.transform.position, Quaternion.identity);
-            Destroy(chargeEffect, 1f);
-        }
-
-        Vector3 startPos = caster.transform.position;
-        Vector3 direction = (targetPos - startPos).normalized;
-        float distance = Vector3.Distance(startPos, targetPos);
-        float chargeTime = distance / skill.chargeSpeed;
-        float elapsedTime = 0f;
-
-        HashSet<Unit> hitUnits = new HashSet<Unit>();
-
-        while (elapsedTime < chargeTime)
-        {
-            caster.transform.position += direction * skill.chargeSpeed * Time.deltaTime;
-
-            Collider2D[] hits = Physics2D.OverlapCircleAll(caster.transform.position, 0.5f);
-            foreach (Collider2D hit in hits)
-            {
-                if (hit == null) continue;
-
-                Unit enemy = hit.GetComponent<Unit>();
-                if (enemy != null && enemy.IsPlayerUnit != caster.IsPlayerUnit && !hitUnits.Contains(enemy))
-                {
-                    hitUnits.Add(enemy);
-
-                    // Gây sát thương
-                    float damage = caster.GetUnitStats().GetPhysicalDamage() * skill.damageMultiplier;
-                    enemy.TakeDamage(damage, DamageType.Physical, caster);
-
-                    // Hiệu ứng va chạm
-                    if (hitEffectPrefab != null)
-                    {
-                        GameObject hitEffect = Instantiate(hitEffectPrefab, enemy.transform.position, Quaternion.identity);
-                        Destroy(hitEffect, 0.5f);
-                    }
-
-                    // Áp dụng hiệu ứng knockup thông qua status effect system
-                    var statusEffects = enemy.GetComponent<UnitStatusEffects>();
-                    if (statusEffects != null)
-                    {
-                        var knockupEffect = new KnockupEffect(enemy, skill.knockupDuration);
-                        statusEffects.AddEffect(knockupEffect);
-                    }
-                }
-            }
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Đảm bảo caster đến đúng vị trí cuối
-        caster.transform.position = targetPos;
-        UnitTargeting unitTargeting = caster.GetComponent<UnitTargeting>();
-        Unit unit = unitTargeting.FindNearestTarget();
-        unitTargeting.AssignTarget(unit);
-    }
-
     public void HandleRainArrowSkill(Vector3 targetPos, RainArrowSkill skill, bool isFromPlayer)
     {
         StartCoroutine(RainArrowCoroutine(targetPos, skill, isFromPlayer));
@@ -332,7 +250,7 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    private int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
+    public int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
     {
         GameObject indicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);
         SkillRangeIndicator rangeIndicator = indicator.GetComponent<SkillRangeIndicator>();
@@ -348,7 +266,7 @@ public class SkillEffectHandler : MonoBehaviour
         return indicatorId;
     }
 
-    private void HideRangeIndicator(int indicatorId)
+    public void HideRangeIndicator(int indicatorId)
     {
         if (activeRangeIndicators.TryGetValue(indicatorId, out GameObject indicator))
         {

@@ -19,6 +19,7 @@ public class UnitStats : MonoBehaviour
     private StatModifier speedModifier = new StatModifier();
     private StatModifier healingReceivedModifier = new StatModifier();
     private StatModifier lifeStealModifier = new StatModifier();
+    private StatModifier damageReductionModifier = new StatModifier();
 
     // Cached calculated values
     private float cachedPhysicalDamage;
@@ -44,6 +45,7 @@ public class UnitStats : MonoBehaviour
     // Events
     public event System.Action<float> OnHealthChanged;
     public event System.Action<float> OnShieldChanged;
+    public event System.Action<float, Unit> OnTakeDamage;
     public event System.Action OnDeath;
 
     private void Awake()
@@ -63,6 +65,7 @@ public class UnitStats : MonoBehaviour
         if (IsDead) return;
 
         float finalDamage = CalculateFinalDamage(rawDamage, damageType, source);
+        OnTakeDamage?.Invoke(finalDamage, source);
 
         // Xử lý shield trước
         float remainingDamage = ProcessShieldDamage(finalDamage);
@@ -122,8 +125,7 @@ public class UnitStats : MonoBehaviour
         }
 
         // Áp dụng giảm sát thương chung
-        damage *= 1f - data.damageReduction;
-
+        damage = CalculateDamageAfterReduction(damage);
         return damage;
     }
 
@@ -250,6 +252,7 @@ public class UnitStats : MonoBehaviour
     public float GetTenacity() => data.tenacity;
     public float GetHPRegen() => data.hpRegen;
     public float GetHealingReceived() => data.healingReceivedPercent;
+    public float GetDamageReduction() => damageReductionModifier.CalculateForPercentStat(data.damageReduction);
     #endregion
 
     #region Stat Modifiers
@@ -294,6 +297,12 @@ public class UnitStats : MonoBehaviour
     {
         lifeStealModifier.AddFlat(flatBonus);
     }
+
+    public void ModifyDamageReduction(float percentBonus)
+    {
+        damageReductionModifier.AddPercent(percentBonus);
+    }
+
     #endregion
 
     #region Reset Methods
@@ -330,6 +339,11 @@ public class UnitStats : MonoBehaviour
     public float CalculateLifestealAmount(float damageDealt)
     {
         return damageDealt * GetLifesteal() / 100f;
+    }
+
+    public float CalculateDamageAfterReduction(float damage)
+    {
+        return damage * (1f - GetDamageReduction() / 100f);
     }
 
     public float GetCrowdControlDuration(float baseDuration)
@@ -387,6 +401,10 @@ public class StatModifier
     public float Calculate(float baseValue)
     {
         return (baseValue + flatBonus) * percentBonus;
+    }
+
+    public float CalculateForPercentStat(float baseValue) {
+        return baseValue + percentBonus;
     }
 }
 

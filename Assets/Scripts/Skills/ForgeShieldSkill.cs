@@ -22,6 +22,7 @@ public class ForgeShieldSkill : Skill
 
     private int shieldID;
     private Unit strongestSmith;
+    private ShieldLayer shield;
 
     public override bool CanActivate(float currentMana)
     {
@@ -48,7 +49,7 @@ public class ForgeShieldSkill : Skill
         // Áp dụng khiên sharing
         if (SkillEffectHandler.Instance != null)
         {
-            var shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
+            shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
             strongestSmith.GetUnitStats().AddShield(shield);
             shield.OnShieldBroken += HandleShareShield;
             shield.OnShieldExpired += HandleShareShield;
@@ -72,6 +73,8 @@ public class ForgeShieldSkill : Skill
 
     private void HandleShareShield(int id)
     {
+        shield.OnShieldBroken -= HandleShareShield;
+        shield.OnShieldExpired -= HandleShareShield;
         if (id == shieldID)
         {
             Unit[] allUnits = GameObject.FindObjectsOfType<Unit>();
