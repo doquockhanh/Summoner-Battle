@@ -3931,9 +3931,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
   - {fileID: 11400000, guid: fcba7c37e2216c0408a312f2499d8d41, type: 2}
   enemyCards:
-  - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: badb9fa9e6c65fa4a9fd5e14b7bb8cbc, type: 2}
+  - {fileID: 11400000, guid: 9bdb439acb53f164c9ac943d8aeb3305, type: 2}
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &2065520681
 Transform:

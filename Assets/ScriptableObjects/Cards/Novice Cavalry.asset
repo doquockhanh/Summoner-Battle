@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
-  m_Name: JungleGuardian
+  m_Name: Novice Cavalry
   m_EditorClassIdentifier: 
   cardName: 
   cardImage: {fileID: 0}
   description: 
   maxMana: 100
   manaRegen: 5
-  spawnCooldown: 11
-  summonUnit: {fileID: 11400000, guid: d2a2259808b32934ab72624c8b01a6f4, type: 2}
-  skill: {fileID: 11400000, guid: 49cff896079785b4c9fcf7b03c576126, type: 2}
+  spawnCooldown: 10
+  summonUnit: {fileID: 11400000, guid: bc247dc3379ce00468fe13579e7a6992, type: 2}
+  skill: {fileID: 11400000, guid: 5669cc92dea7f6740a5d9d515532f868, type: 2}

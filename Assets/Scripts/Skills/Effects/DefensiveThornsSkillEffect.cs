@@ -18,12 +18,12 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        StartCoroutine(ApplyInitialEffects());
+        ApplyInitialEffects();
         HandleDefensiveThornsSkill();
     }
 
 
-    private IEnumerator ApplyInitialEffects()
+    private void ApplyInitialEffects()
     {
         if (skillData.tauntEffectPrefab != null)
         {
@@ -31,9 +31,7 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
                 caster.transform.position, Quaternion.identity);
             Destroy(chargeEffect, 1f);
         } else if (SkillEffectHandler.Instance != null) {
-            int indicatorId =SkillEffectHandler.Instance.ShowRangeIndicator(caster.transform.position, skillData.tauntRadius, Color.yellow);
-            yield return new WaitForSeconds(1f);
-            SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
+            SkillEffectHandler.Instance.ShowRangeIndicator(caster.transform.position, skillData.tauntRadius, Color.yellow, 0.2f);
         }
     }
 

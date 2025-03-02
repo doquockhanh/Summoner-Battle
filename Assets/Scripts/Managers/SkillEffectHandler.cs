@@ -250,7 +250,7 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public int ShowRangeIndicator(Vector3 position, float radius, Color? color = null)
+    public int ShowRangeIndicator(Vector3 position, float radius, Color? color = null, float? duration = 0f)
     {
         GameObject indicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);
         SkillRangeIndicator rangeIndicator = indicator.GetComponent<SkillRangeIndicator>();
@@ -263,7 +263,18 @@ public class SkillEffectHandler : MonoBehaviour
 
         int indicatorId = nextIndicatorId++;
         activeRangeIndicators[indicatorId] = indicator;
+
+        if (duration > 0)
+        {
+            StartCoroutine(HideRangeIndicator(indicatorId, duration.Value));
+        }
         return indicatorId;
+    }
+
+    public IEnumerator HideRangeIndicator(int indicatorId, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        HideRangeIndicator(indicatorId);
     }
 
     public void HideRangeIndicator(int indicatorId)
