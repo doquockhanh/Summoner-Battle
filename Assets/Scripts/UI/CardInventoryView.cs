@@ -19,8 +19,6 @@ public class CardInventoryView : MonoBehaviour
         // Hiển thị thông tin stats của card
         statsText.text = $"Mana: {card.maxMana}\n" +
                         $"Hồi mana/giây: {card.manaRegen}\n" +
-                        $"Hồi mana từ sát thương gây ra: {card.manaGainFromDamageDealt}%\n" +
-                        $"Hồi mana từ sát thương nhận: {card.manaGainFromDamageTaken}%\n" +
                         $"Thời gian hồi chiêu: {card.spawnCooldown}s";
     }
 } 

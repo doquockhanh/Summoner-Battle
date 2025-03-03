@@ -32,7 +32,7 @@ public class AncientRootEffect : MonoBehaviour, ISkillEffect
         ApplyRootEffect(hits);
         
         // Bắt đầu hút máu theo interval
-        StartCoroutine(DrainHealthCoroutine());
+        this.StartCoroutineSafely(DrainHealthCoroutine());
     }
 
     private void CalculateDrainAmount(Collider2D[] hits)
