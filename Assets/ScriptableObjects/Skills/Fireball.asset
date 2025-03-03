@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1bc30baa0b64d74695ca23243fb6222, type: 3}
+  m_Name: Fireball
+  m_EditorClassIdentifier: 
+  skillName: 
+  description: 
+  manaCost: 30
+  duration: 0
+  radius: 0
+  skillType: 0
+  targetType: 1
+  ownerCard: {fileID: 0}
+  magicDamagePercent: 200
+  effectRadius: 2
+  burnDamagePercent: 0.02
+  burnDuration: 10
+  healingReduction: 0.5
+  fireballEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}

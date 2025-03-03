@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 
   description: 
-  manaCost: 50
-  cooldown: 0
+  manaCost: 60
   duration: 5
-  radius: 5
-  skillType: 3
-  targetType: 1
+  radius: 2
+  skillType: 1
   ownerCard: {fileID: 0}
   chargeSpeed: 10
   damageMultiplier: 1
   knockupDuration: 1
-  shieldPercent: 75
+  shieldPercent: 25
   shieldDuration: 10
   lifestealPercent: 20
+  chargeEffectPrefab: {fileID: 0}
+  hitEffectPrefab: {fileID: 0}

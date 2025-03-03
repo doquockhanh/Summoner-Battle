@@ -17,8 +17,6 @@ MonoBehaviour:
   description: "K\u1EF5 S\u0129 Phong Ba, c\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"
   maxMana: 100
   manaRegen: 5
-  manaGainFromDamageDealt: 10
-  manaGainFromDamageTaken: 20
-  spawnCooldown: 8
+  spawnCooldown: 10
   summonUnit: {fileID: 11400000, guid: 14d57373e757ee44ca14e1dd862f047f, type: 2}
   skill: {fileID: 11400000, guid: 846be4996af3f68419af65cfbd4d2a28, type: 2}

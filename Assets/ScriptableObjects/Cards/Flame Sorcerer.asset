@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
+  m_Name: Flame Sorcerer
+  m_EditorClassIdentifier: 
+  cardName: Flame Sorcerer
+  cardImage: {fileID: -761581998088165820, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  description: 
+  maxMana: 100
+  manaRegen: 5
+  spawnCooldown: 10
+  summonUnit: {fileID: 11400000, guid: e10f42031aa359d47af31a1e0d43bcb9, type: 2}
+  skill: {fileID: 11400000, guid: 1972c13ae8d05714ba11d28b547ceb5a, type: 2}

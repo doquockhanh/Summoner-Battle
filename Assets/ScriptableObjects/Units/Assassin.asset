@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc6c9290466a274280f4c5ab19d9469, type: 3}
+  m_Name: Assassin
+  m_EditorClassIdentifier: 
+  unitName: Assassin
+  unitImage: {fileID: 7594536691759110762, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  description: 
+  maxHp: 700
+  hpRegen: 0
+  armor: 15
+  magicResist: 10
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 70
+  magicDamage: 0
+  damageAmplification: 0
+  armorPenetration: 20
+  magicPenetration: 0
+  criticalChance: 20
+  criticalDamage: 150
+  lifestealPercent: 0
+  attackSpeed: 1
+  moveSpeed: 1.35
+  range: 1
+  detectRange: 3
+  healingReceivedPercent: 100
+  unitPrefab: {fileID: 8505144159870094120, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}

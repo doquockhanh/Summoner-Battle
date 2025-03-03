@@ -1618,6 +1618,8 @@ MonoBehaviour:
   attackSpeedText: {fileID: 516706740}
   moveSpeedText: {fileID: 1449039482}
   rangeText: {fileID: 1331381778}
+  ArmorText: {fileID: 1006890270}
+  MagicResistText: {fileID: 656452343}
 --- !u!20 &694003637 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 354077450769762411, guid: 678375a4f9ca3d34c843e60791f15d45, type: 3}
@@ -3364,6 +3366,10 @@ MonoBehaviour:
   floatingTextPrefab: {fileID: 6316851383008238693, guid: 00e5530bed0678c409e4d0fefc2e6564, type: 3}
   worldSpaceCanvas: {fileID: 963345071}
   spawnOffset: {x: 0, y: 0.5, z: 0}
+  minBounceAngle: -30
+  maxBounceAngle: 30
+  bounceForce: 3
+  scale: 10
 --- !u!114 &1666147976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3910,6 +3916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff1f19347c4e9f439b68ada98656c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapWidth: 20
+  mapHeight: 10
   playerSpawnStart: {fileID: 1794994454}
   playerSpawnEnd: {fileID: 361186931}
   enemySpawnStart: {fileID: 780686670}
@@ -3920,15 +3928,11 @@ MonoBehaviour:
   playerBaseHP: 1000
   enemyBaseHP: 1000
   playerCards:
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: 31ff38d10e318df4595c69d08b62a3a0, type: 2}
   enemyCards:
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
+  - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
+  - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
+  - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &2065520681
 Transform:

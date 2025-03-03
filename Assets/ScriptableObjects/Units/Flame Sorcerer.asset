@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc6c9290466a274280f4c5ab19d9469, type: 3}
+  m_Name: Flame Sorcerer
+  m_EditorClassIdentifier: 
+  unitName: Flame Sorcerer
+  unitImage: {fileID: -761581998088165820, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  description: 
+  maxHp: 700
+  hpRegen: 0
+  armor: 15
+  magicResist: 10
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 50
+  magicDamage: 100
+  damageAmplification: 0
+  armorPenetration: 0
+  magicPenetration: 0
+  criticalChance: 0
+  criticalDamage: 150
+  lifestealPercent: 0
+  attackSpeed: 0.9
+  moveSpeed: 1
+  range: 3
+  detectRange: 4
+  healingReceivedPercent: 100
+  unitPrefab: {fileID: 8505144159870094120, guid: 84427f8a6953f5c4d8c8484eaca8db43, type: 3}

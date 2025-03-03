@@ -15,11 +15,23 @@ MonoBehaviour:
   unitName: range
   unitImage: {fileID: 4988752278279130801, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: long range
-  hp: 400
-  damage: 20
+  maxHp: 400
+  hpRegen: 0
+  armor: 10
+  magicResist: 10
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 60
+  magicDamage: 0
+  damageAmplification: 0
+  armorPenetration: 0
+  magicPenetration: 0
+  criticalChance: 20
+  criticalDamage: 150
+  lifestealPercent: 0
   attackSpeed: 1.4
   moveSpeed: 1
   range: 3
   detectRange: 4
-  lifestealPercent: 0
+  healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: 6aa62223d366e504994b6c3526bcaa23, type: 3}

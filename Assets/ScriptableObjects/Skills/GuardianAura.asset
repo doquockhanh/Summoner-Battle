@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e7772d94098064e877de561664f11b, type: 3}
+  m_Name: GuardianAura
+  m_EditorClassIdentifier: 
+  skillName: Guardian aura
+  description: 
+  manaCost: 30
+  duration: 5
+  radius: 0
+  skillType: 1
+  targetType: 1
+  ownerCard: {fileID: 0}
+  armorBoost: 30
+  magicResistBoost: 20
+  auraRadius: 2
+  auraEffectPrefab: {fileID: 3632261846723545084, guid: 20dcb69ec3dc0d4409040da90916f808, type: 3}

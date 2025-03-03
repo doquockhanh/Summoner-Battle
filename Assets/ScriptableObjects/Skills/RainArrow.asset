@@ -15,14 +15,12 @@ MonoBehaviour:
   skillName: RainArr
   description: 
   manaCost: 50
-  cooldown: 0
   duration: 0
   radius: 4
   skillType: 0
-  targetType: 1
   ownerCard: {fileID: 0}
   arrowWaveCount: 5
-  damagePerWavePercent: 40
+  damagePerWavePercent: 60
   timeBetweenWaves: 0.1
-  effectRadius: 1
+  effectRadius: 1.5
   rainArrowEffectPrefab: {fileID: 3929840487698254384, guid: e9415832785a26c469368dcbd81f9787, type: 3}

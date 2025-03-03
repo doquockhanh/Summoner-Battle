@@ -17,12 +17,12 @@ public class Unit : MonoBehaviour
     private CardController ownerCard;
 
     // Chuyển các property vào interface IUnit để dễ mở rộng
-    public interface IUnit 
+    public interface IUnit
     {
         bool IsDead { get; }
         bool IsPlayerUnit { get; }
         Unit CurrentTarget { get; }
-        Base CurrentBaseTarget { get; } 
+        Base CurrentBaseTarget { get; }
         UnitData UnitData { get; }
         UnitStats Stats { get; }
         float CurrentHP { get; }
@@ -30,9 +30,6 @@ public class Unit : MonoBehaviour
     }
 
     // Events được tổ chức lại
-    public event System.Action<float> OnDamageTaken;
-    public event System.Action<float, Unit> OnDamageDealt;
-    public event System.Action<float> OnShieldChanged;
     public event System.Action OnDeath;
 
     public bool IsDead => stats.IsDead;
@@ -57,7 +54,7 @@ public class Unit : MonoBehaviour
         targeting = targeting ?? GetComponent<UnitTargeting>();
         view = view ?? GetComponent<UnitView>();
 
-        if (stats == null || combat == null || movement == null || 
+        if (stats == null || combat == null || movement == null ||
             targeting == null || view == null)
         {
             Debug.LogError($"Missing required components on {gameObject.name}");
@@ -68,13 +65,13 @@ public class Unit : MonoBehaviour
     {
         ownerCard = cardController;
         isPlayerUnit = isPlayer;
-        
+
         stats.Initialize(data);
         combat.Initialize(this);
         movement.Initialize(this);
         targeting.Initialize(this);
         view.Initialize(this);
-        
+
         hpLossTimer = 0;
     }
 
@@ -82,17 +79,20 @@ public class Unit : MonoBehaviour
     {
         if (stats.IsDead) return;
 
-        targeting.UpdateTarget();
-        HandleCombat();
-        HandleMovement();
+        if (!targeting.IsPaused)
+        {
+            targeting.UpdateTarget();
+            HandleCombat();
+            HandleMovement();
+        }
     }
 
     private void HandleCombat()
     {
-        var target = targeting.CurrentTarget;
-        if (target != null && targeting.IsInRange(target))
+        currentTarget = targeting.CurrentTarget;
+        if (currentTarget != null && targeting.IsInRange(currentTarget))
         {
-            combat.TryAttack(target);
+            combat.TryAttack(currentTarget);
         }
         else if (targeting.CurrentBaseTarget != null && targeting.IsInRangeOfBase())
         {
@@ -105,48 +105,17 @@ public class Unit : MonoBehaviour
         movement.Move(targeting.CurrentTarget, targeting.CurrentBaseTarget);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float amount, DamageType damageType, Unit source = null)
     {
-        
-        stats.TakeDamage(damage);
-        
-        if (ownerCard != null)
+        if (stats != null)
         {
-            ownerCard.GainManaFromDamage(damage, stats.MaxHp, true);
+            stats.TakeDamage(amount, damageType, source);
         }
-        
+
         if (IsDead)
         {
             UnitPoolManager.Instance.ReturnToPool(this);
         }
-    }
-
-    public void DealDamage(float damage, Unit target)
-    {
-        target.TakeDamage(damage);
-        stats.ProcessLifesteal(damage);
-        
-        if (ownerCard != null)
-        {
-            ownerCard.GainManaFromDamage(damage, target.GetUnitStats().MaxHp, false);
-        }
-    }
-
-    public void ApplyBuff(float damageModifier, float speedModifier, float defenseModifier, float duration)
-    {
-        stats.ModifyDamage(damageModifier);
-        stats.ModifySpeed(speedModifier);
-        stats.ModifyDefense(defenseModifier);
-        
-        // Reset buff sau duration
-        Invoke(nameof(RemoveBuff), duration);
-    }
-
-    private void RemoveBuff(float damageModifier, float speedModifier, float defenseModifier)
-    {
-        stats.ModifyDamage(-damageModifier);
-        stats.ModifySpeed(-speedModifier);
-        stats.ModifyDefense(-defenseModifier);
     }
 
     private void OnDrawGizmosSelected()
@@ -156,7 +125,7 @@ public class Unit : MonoBehaviour
             // Vẽ tầm đánh
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, stats.Data.range);
-            
+
             // Vẽ tầm phát hiện
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, stats.Data.detectRange);
@@ -173,9 +142,9 @@ public class Unit : MonoBehaviour
             Debug.Log($"Found enemy base: {enemyBase.name}");
             return;
         }
-        
+
         if (currentTarget != null) return;
-        
+
         Unit otherUnit = other.GetComponent<Unit>();
         if (otherUnit != null && !otherUnit.IsDead && otherUnit.isPlayerUnit != isPlayerUnit)
         {
@@ -194,25 +163,5 @@ public class Unit : MonoBehaviour
                 currentTarget = otherUnit;
             }
         }
-    }
-
-    public void ModifyDamage(float amount)
-    {
-        stats.ModifyDamage(amount);
-    }
-    
-    public void ModifySpeed(float amount)
-    {
-        stats.ModifySpeed(amount);
-    }
-    
-    public void ModifyDefense(float amount)
-    {
-        stats.ModifyDefense(amount);
-    }
-
-    public void Heal(float amount)
-    {
-        stats.TakeDamage(-amount); // Sử dụng số âm để hồi máu
     }
 }

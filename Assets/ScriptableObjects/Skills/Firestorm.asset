@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d9c438f3bbaaf4f80c17b48d5075c3, type: 3}
+  m_Name: Firestorm
+  m_EditorClassIdentifier: 
+  skillName: 
+  description: 
+  manaCost: 40
+  duration: 4
+  radius: 10
+  skillType: 1
+  ownerCard: {fileID: 0}
+  initialDamagePercent: 80
+  tickDamagePercent: 33
+  tickInterval: 0.5
+  stormSpeed: 2
+  stormRadius: 3
+  stormDuration: 4
+  firestormEffectPrefab: {fileID: 0}

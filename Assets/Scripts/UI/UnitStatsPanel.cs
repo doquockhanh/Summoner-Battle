@@ -10,6 +10,8 @@ public class UnitStatsPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attackSpeedText;
     [SerializeField] private TextMeshProUGUI moveSpeedText;
     [SerializeField] private TextMeshProUGUI rangeText;
+    [SerializeField] private TextMeshProUGUI ArmorText;
+    [SerializeField] private TextMeshProUGUI MagicResistText;
     
     private Unit targetUnit;
     private Camera mainCamera;
@@ -110,10 +112,12 @@ public class UnitStatsPanel : MonoBehaviour
         UnitData data = stats.Data;
         
         unitNameText.text = data.unitName;
-        hpText.text = $"HP: {stats.CurrentHP}/{data.hp}";
-        damageText.text = $"Sát thương: {data.damage}";
-        attackSpeedText.text = $"Tốc độ đánh: {data.attackSpeed}";
-        moveSpeedText.text = $"Tốc độ di chuyển: {data.moveSpeed}";
-        rangeText.text = $"Tầm đánh: {data.range}";
+        hpText.text = $"HP: {stats.CurrentHP}/{data.maxHp}";
+        damageText.text = $"Physic: {stats.GetPhysicalDamage()}";
+        attackSpeedText.text = $"Atk speed: {stats.GetAttackSpeed()}";
+        moveSpeedText.text = $"move: {stats.GetMoveSpeed()}";
+        rangeText.text = $"Range: {stats.GetRange()}";
+        ArmorText.text = $"Armor: {stats.GetArmor()}";
+        MagicResistText.text = $"Magic Resist: {stats.GetMagicResist()}";
     }
 } 

@@ -6,38 +6,28 @@ public abstract class Skill : ScriptableObject
     public string skillName;
     public string description;
     public float manaCost;
-    public float cooldown;
     public float duration;
     public float radius;
-    
+
     [Header("Phân loại")]
     public SkillType skillType;
-    public TargetType targetType;
-    
+
     // Thêm reference đến card sở hữu
     [HideInInspector]
     public CardController ownerCard;
-    
+
     public virtual bool CanActivate(float currentMana)
     {
         return currentMana >= manaCost;
     }
-    
+
     public abstract void ApplyToUnit(Unit target, Unit[] nearbyUnits = null);
     public abstract void ApplyToSummon(Unit summonedUnit);
 }
 
 public enum SkillType
 {
-    Damage,
-    Buff,
-    Debuff,
-    Special
+    Direct,     // Tác động trực tiếp (AOE, single target)
+    OnSummon,   // Áp dụng cho unit mới summon
+    Passive
 }
-
-public enum TargetType 
-{
-    Single,
-    AOE,
-    Self
-} 

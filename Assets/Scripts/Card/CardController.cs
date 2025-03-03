@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CardController : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class CardController : MonoBehaviour
     
     private bool isWaitingForUnit = false;
     private bool canActivateSkill = true;
+    public UnitData Unit => cardData.summonUnit;
+    
+    private List<Unit> activeUnits = new List<Unit>();
     
     public void Initialize(Card card, bool isPlayer = true)
     {
@@ -71,17 +75,15 @@ public class CardController : MonoBehaviour
         
         if (cardData.skill.CanActivate(currentMana))
         {
-            FuriousCavalryCharge chargeSkill = cardData.skill as FuriousCavalryCharge;
-            if (chargeSkill != null)
+            cardData.skill.ownerCard = this;
+            
+            if (cardData.skill.skillType == SkillType.OnSummon)
             {
-                chargeSkill.ownerCard = this;
-                chargeSkill.ApplyToSummon(null);
+                cardData.skill.ApplyToSummon(null);
             }
-            RainArrowSkill rainArrowSkill = cardData.skill as RainArrowSkill;
-            if (rainArrowSkill != null)
+            else
             {
-                rainArrowSkill.ownerCard = this;
-                rainArrowSkill.ApplyToSummon(null);
+                cardData.skill.ApplyToUnit(null);
             }
         }
     }
@@ -122,6 +124,11 @@ public class CardController : MonoBehaviour
         Unit unit = UnitPoolManager.Instance.GetUnit(cardData.summonUnit, isPlayer, this);
         unit.transform.position = spawnPos;
         unit.Initialize(cardData.summonUnit, isPlayer, this);
+        
+        activeUnits.Add(unit);
+        
+        unit.OnDeath += () => RemoveUnit(unit);
+        
         if (unit.OwnerCard.cardData.skill is BloodstormSkill bloodstormSkill)
         {
             bloodstormSkill.ApplyToSummon(unit);
@@ -134,22 +141,23 @@ public class CardController : MonoBehaviour
             TryActivateSkill();
         }
     }
-    
-    public void GainManaFromDamage(float damage, float targetMaxHealth, bool isDamageTaken)
+
+    private void RemoveUnit(Unit unit)
     {
-        if(damage <= 0) return;
-        float healthPercentage = damage / targetMaxHealth;
-        float manaGain;
+        activeUnits.Remove(unit);
+    }
+
+    public List<Unit> GetActiveUnits() => activeUnits;
+
+    public Unit GetStrongestUnit(System.Func<Unit, float> strengthCriteria)
+    {
+        if (activeUnits.Count == 0) return null;
         
-        if (isDamageTaken)
-        {
-            manaGain = healthPercentage * cardData.manaGainFromDamageTaken;
-        }
-        else
-        {
-            manaGain = healthPercentage * cardData.manaGainFromDamageDealt;
-        }
-        currentMana += manaGain;
-        currentMana = Mathf.Min(currentMana, cardData.maxMana);
+        return activeUnits.OrderByDescending(strengthCriteria).FirstOrDefault();
+    }
+
+    public void AddMana(float amount)
+    {
+        currentMana = Mathf.Min(currentMana + amount, cardData.maxMana);
     }
 }

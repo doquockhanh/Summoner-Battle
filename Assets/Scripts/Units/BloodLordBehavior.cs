@@ -28,10 +28,6 @@ public class BloodLordBehavior : MonoBehaviour
     private int absorbedSouls;
     private bool isBloodstormActive;
     private float damageTimer;
-    private float healingTimer;
-    private float healingDecreaseTimer;
-    private float currentHealPercent;
-    private bool isHealingDecreaseComplete;
     #endregion
 
     #region Events
@@ -84,7 +80,6 @@ public class BloodLordBehavior : MonoBehaviour
         isBloodstormActive = false;
         combat.enabled = false;
 
-        AdjustStatsByPosition();
         InitializeHealthBar();
     }
 
@@ -97,38 +92,6 @@ public class BloodLordBehavior : MonoBehaviour
     private void RegisterEvents()
     {
         UnitEvents.Status.OnUnitDeath += OnUnitDeath;
-    }
-
-    private void AdjustStatsByPosition()
-    {
-        // Chuẩn hóa vị trí X về khoảng -1 đến 1
-        // -1: Biên trái sân
-        //  0: Giữa sân
-        //  1: Biên phải sân
-        float normalizedX = transform.position.x / (BloodLordConfig.MAP_WIDTH / 2);
-
-        // Đảo ngược normalizedX nếu là unit của player
-        // Để -1 luôn là vị trí gần nhà của phe sở hữu unit
-        if (unit.IsPlayerUnit)
-        {
-            normalizedX = -normalizedX;
-        }
-
-        // Tính multiplier dựa trên khoảng cách từ giữa sân
-        // normalizedX = -1: Gần nhà mình nhất -> tăng damage, giảm defense
-        // normalizedX =  0: Giữa sân -> chỉ số cơ bản (multiplier = 1)
-        // normalizedX =  1: Gần nhà địch nhất -> giảm damage, tăng defense
-        float multiplier = Mathf.Lerp(
-            BloodLordConfig.MAX_STAT_MULTIPLIER,  // Khi normalizedX = -1
-            BloodLordConfig.MIN_STAT_MULTIPLIER,  // Khi normalizedX = 1
-            (normalizedX + 1) / 2  // Chuyển từ [-1,1] sang [0,1]
-        );
-
-        Debug.Log($"[BloodLord] Vị trí X: {transform.position.x}, NormalizedX: {normalizedX}, " +
-                  $"Damage Multiplier: {multiplier:F2}, Defense Multiplier: {1 / multiplier:F2}");
-
-        stats.ModifyDamage(multiplier);
-        stats.ModifyDefense(1f / multiplier);
     }
 
     private void OnUnitDeath(Unit deadUnit)
@@ -237,10 +200,6 @@ public class BloodLordBehavior : MonoBehaviour
     private void ResetTimers()
     {
         damageTimer = 0f;
-        healingTimer = 0f;
-        healingDecreaseTimer = 0f;
-        currentHealPercent = skill.healingStartPercent;
-        isHealingDecreaseComplete = false;
     }
 
     private void NotifyBloodstormActivation()
@@ -255,23 +214,17 @@ public class BloodLordBehavior : MonoBehaviour
         );
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isBloodstormActive)
         {
-            HandleDamageAndHealing();
+            UpdateDamageTimer();
             HandleBloodstormMovement();
         }
         else
         {
             CheckBloodstormCondition();
         }
-    }
-
-    private void HandleDamageAndHealing()
-    {
-        UpdateDamageTimer();
-        UpdateHealingTimer();
     }
 
     private void UpdateDamageTimer()
@@ -284,35 +237,9 @@ public class BloodLordBehavior : MonoBehaviour
         }
     }
 
-    private void UpdateHealingTimer()
-    {
-        if (isHealingDecreaseComplete && currentHealPercent > 0)
-            return;
-
-        healingTimer -= Time.deltaTime;
-        if (healingTimer <= 0)
-        {
-            healingTimer = 1f;
-
-            if (healingDecreaseTimer < skill.healingDecreaseDuration)
-            {
-                healingDecreaseTimer += 1f;
-                currentHealPercent = Mathf.Max(
-                    currentHealPercent - skill.healingDecreasePercent,
-                    0
-                );
-
-                if (healingDecreaseTimer >= skill.healingDecreaseDuration)
-                {
-                    isHealingDecreaseComplete = true;
-                }
-            }
-        }
-    }
-
     private void DealBloodstormDamage()
     {
-        float baseDamage = stats.GetModifiedDamage();
+        float baseDamage = stats.GetMagicDamage();
         float totalDamagePercent = CalculateTotalDamagePercent();
         float actualDamage = baseDamage * (totalDamagePercent / 100f);
 
@@ -321,7 +248,7 @@ public class BloodLordBehavior : MonoBehaviour
         {
             if (IsValidTarget(enemy))
             {
-                DealDamageAndHeal(enemy, actualDamage);
+                enemy.TakeDamage(actualDamage, DamageType.Magic, unit);
             }
         }
     }
@@ -337,17 +264,6 @@ public class BloodLordBehavior : MonoBehaviour
         return target != null &&
                target != unit &&
                target.IsPlayerUnit != unit.IsPlayerUnit;
-    }
-
-    private void DealDamageAndHeal(Unit enemy, float damage)
-    {
-        enemy.TakeDamage(damage);
-
-        if (currentHealPercent > 0)
-        {
-            float healAmount = damage * (currentHealPercent / 100f);
-            stats.Heal(healAmount);
-        }
     }
 
     private void HandleBloodstormMovement()
@@ -381,7 +297,6 @@ public class BloodLordBehavior : MonoBehaviour
     }
 }
 
-// Config class để tránh magic numbers
 public static class BloodLordConfig
 {
     public const float MAP_WIDTH = 10f;

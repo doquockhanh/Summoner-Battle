@@ -5,23 +5,38 @@ public class UnitTargeting : MonoBehaviour
 {
     // Constants
     private const int MAX_COLLIDERS = 20;
-    
+
     // Dependencies
     private Unit unit;
     private UnitStats stats;
     private BloodstormStatusEffect bloodstormEffect;
-    
+
     // Target state
     private Unit currentTarget;
     private Base currentBaseTarget;
     private readonly Collider2D[] detectedColliders = new Collider2D[MAX_COLLIDERS];
     private int detectedCount;
 
+    private bool isPaused = false;
+    private float targetCheckTimer;
+
     // Properties với XML documentation
     /// <summary>Unit hiện đang được nhắm tới</summary>
     public Unit CurrentTarget => currentTarget;
     /// <summary>Base hiện đang được nhắm tới</summary>
     public Base CurrentBaseTarget => currentBaseTarget;
+
+    public bool IsPaused
+    {
+        get => isPaused;
+        private set
+        {
+            if (isPaused != value)
+            {
+                isPaused = value;
+            }
+        }
+    }
 
     public void Initialize(Unit unit)
     {
@@ -33,24 +48,11 @@ public class UnitTargeting : MonoBehaviour
 
     public void UpdateTarget()
     {
-        if (bloodstormEffect != null)
-        {
-            AssignTarget(FindFurthestTarget());
-        }
-        else
-        {
-            // Kiểm tra target hiện tại
-            if (IsValidTarget(currentTarget))
-            {
-                return;
-            }
+        if (IsPaused) return;
 
-            if (IsValidBaseTarget(currentBaseTarget))
-            {
-                AssignTarget(null);
-                return;
-            }
-
+        // Kiểm tra target hiện tại
+        if (!IsValidTarget(currentTarget) && !IsValidBaseTarget(currentBaseTarget))
+        {
             FindNewTarget();
         }
     }
@@ -74,7 +76,7 @@ public class UnitTargeting : MonoBehaviour
     {
         ScanForTargets();
         (Unit bestTarget, Base nearestBase) = FindBestTargetsFromDetected();
-        
+
         if (bestTarget != null)
         {
             AssignTarget(bestTarget);
@@ -104,7 +106,7 @@ public class UnitTargeting : MonoBehaviour
         for (int i = 0; i < detectedCount; i++)
         {
             var collider = detectedColliders[i];
-            
+
             Unit potentialTarget = TryGetValidUnit(collider);
             if (potentialTarget != null)
             {
@@ -144,9 +146,8 @@ public class UnitTargeting : MonoBehaviour
         return Vector2.Distance(transform.position, position);
     }
 
-    // Tối ưu FindFurthestTarget và FindNearestTarget bằng cách tách logic chung
-    public Unit FindFurthestTarget() => FindTargetByDistance((d1, d2) => d1 > d2);
     public Unit FindNearestTarget() => FindTargetByDistance((d1, d2) => d1 < d2);
+    public Unit FindFurtherTarget() => FindTargetByDistance((d1, d2) => d1 > d2);
 
     private Unit FindTargetByDistance(System.Func<float, float, bool> compareDistance)
     {
@@ -169,7 +170,7 @@ public class UnitTargeting : MonoBehaviour
         return bestTarget;
     }
 
-    private bool IsValidTarget(Unit target)
+    public bool IsValidTarget(Unit target)
     {
         return target != null &&
                !target.IsDead &&
@@ -224,7 +225,7 @@ public class UnitTargeting : MonoBehaviour
         if (newTarget != null)
         {
             currentBaseTarget = null;
-        } 
+        }
     }
 
     public void SetTarget(Unit target)
@@ -234,5 +235,22 @@ public class UnitTargeting : MonoBehaviour
             currentTarget = target;
             currentBaseTarget = null;
         }
+    }
+
+    // Thêm các phương thức điều khiển targeting
+    public void PauseTargeting()
+    {
+        IsPaused = true;
+    }
+
+    public void ResumeTargeting()
+    {
+        IsPaused = false;
+    }
+
+    public void ForceTargetUpdate()
+    {
+        targetCheckTimer = 0;
+        UpdateTarget();
     }
 }

@@ -12,19 +12,6 @@ public class BloodstormSkill : Skill
     [Tooltip("Additional damage percent per soul (20% = 20)")]
     public float damagePerSoulPercent = 20f;
 
-    [Header("Healing Settings")]
-    [Range(0f, 100f)]
-    [Tooltip("Initial healing percentage")]
-    public float healingStartPercent = 50f;
-
-    [Range(0f, 50f)]
-    [Tooltip("Healing decrease per second")]
-    public float healingDecreasePercent = 10f;
-
-    [Range(1f, 10f)]
-    [Tooltip("Duration of healing decrease in seconds")]
-    public float healingDecreaseDuration = 4f;
-
     [Header("Effect Settings")]
     [Range(1f, 10f)]
     public float effectRadius = 3f;
@@ -78,8 +65,6 @@ public class BloodstormSkill : Skill
         // Đảm bảo các giá trị hợp lệ
         damageBasePercent = Mathf.Max(0f, damageBasePercent);
         damagePerSoulPercent = Mathf.Max(0f, damagePerSoulPercent);
-        healingStartPercent = Mathf.Clamp(healingStartPercent, 0f, 100f);
-        healingDecreasePercent = Mathf.Clamp(healingDecreasePercent, 0f, 50f);
         effectRadius = Mathf.Max(1f, effectRadius);
         moveSpeedBonus = Mathf.Max(0f, moveSpeedBonus);
         damageInterval = Mathf.Max(0.1f, damageInterval);

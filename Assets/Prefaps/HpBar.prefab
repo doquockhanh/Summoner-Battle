@@ -336,12 +336,16 @@ MonoBehaviour:
   backgroundBar: {fileID: 997283026418679251}
   damageDelayedBar: {fileID: 5550102841393094091}
   healthBar: {fileID: 3879999516290599496}
+  shieldBarContainer: {fileID: 602383973582595445}
   shieldBar: {fileID: 4968302140350979423}
   soulCountText: {fileID: 6245549995923870343}
   damageDelayTime: 0.35
   damageDelaySpeed: 2
+  normalShieldColor: {r: 0.7, g: 0.7, b: 1, a: 0.8}
+  absorptionShieldColor: {r: 0.7, g: 1, b: 0.7, a: 0.8}
+  reflectiveShieldColor: {r: 1, g: 0.7, b: 0.7, a: 0.8}
+  sharingShieldColor: {r: 1, g: 1, b: 0.7, a: 0.8}
   healthColor: {r: 0.3, g: 0.8, b: 0.3, a: 1}
-  shieldColor: {r: 1, g: 1, b: 1, a: 0.6862745}
   delayedColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6544764704617900815
 GameObject:
@@ -401,7 +405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.89433956, g: 0.89433956, b: 0.89433956, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

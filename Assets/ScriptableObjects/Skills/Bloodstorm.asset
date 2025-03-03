@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldown: 0
   duration: 0
   radius: 0
-  skillType: 3
+  skillType: 2
   targetType: 1
   ownerCard: {fileID: 0}
   damageBasePercent: 80
@@ -26,7 +26,7 @@ MonoBehaviour:
   healingStartPercent: 50
   healingDecreasePercent: 10
   healingDecreaseDuration: 4
-  effectRadius: 3
+  effectRadius: 1.5
   moveSpeedBonus: 2
   damageInterval: 0.5
   bloodstormEffectPrefab: {fileID: 3632261846723545084, guid: 75e2f81319a5fb548acbf8a7b20d22ef, type: 3}
