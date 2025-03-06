@@ -12,6 +12,7 @@ public enum StatusEffectType
     Bloodstorm,
     Burning,
     StealthOnKill,
+    Immortal,
 }
 
 public interface IStatusEffect
@@ -23,4 +24,4 @@ public interface IStatusEffect
     void Apply(Unit target);
     void Remove();
     void Tick();
-} 
+}

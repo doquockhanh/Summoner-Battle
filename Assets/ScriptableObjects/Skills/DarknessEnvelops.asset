@@ -17,7 +17,8 @@ MonoBehaviour:
   manaCost: 60
   duration: 0
   radius: 0
-  skillType: 2
+  hasPassive: 1
+  skillType: 0
   ownerCard: {fileID: 0}
   baseDamage: 30
   maxHealthDamagePercent: 2

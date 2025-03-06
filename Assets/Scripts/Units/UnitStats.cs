@@ -28,9 +28,6 @@ public class UnitStats : MonoBehaviour
     private bool isPhysicalDamageModified;
     private bool isMagicDamageModified;
 
-
-    private Coroutine removeShieldCoroutine;
-
     private float hpRegenTimer;
     private const float HP_REGEN_INTERVAL = 2f;
 
@@ -47,6 +44,7 @@ public class UnitStats : MonoBehaviour
     public event System.Action<float> OnHealthChanged;
     public event System.Action<float> OnShieldChanged;
     public event System.Action<float, Unit> OnTakeDamage;
+    public event System.Action<Unit> OnTakeLethalityDamage;
     public event System.Action OnDeath;
 
     private void Awake()
@@ -66,7 +64,6 @@ public class UnitStats : MonoBehaviour
         if (IsDead) return;
 
         float finalDamage = CalculateFinalDamage(rawDamage, damageType);
-        OnTakeDamage?.Invoke(finalDamage, source);
 
         // Xử lý shield trước
         float remainingDamage = ProcessShieldDamage(finalDamage);
@@ -74,12 +71,8 @@ public class UnitStats : MonoBehaviour
         // Xử lý HP
         if (remainingDamage > 0)
         {
-            float damageApplied = ProcessHealthDamage(remainingDamage);
-            FloatingTextManager.Instance.ShowFloatingText(
-               remainingDamage.ToString("F0"),
-               transform.position,
-               damageType == DamageType.Physical ? Color.red : Color.blue
-            );
+            float damageApplied = ProcessHealthDamage(remainingDamage, damageType);
+            OnTakeDamage?.Invoke(damageApplied, source);
 
             // Sửa lại phần xử lý hút máu
             if (source != null)
@@ -155,9 +148,17 @@ public class UnitStats : MonoBehaviour
         return remainingDamage;
     }
 
-    private float ProcessHealthDamage(float damage)
+    private float ProcessHealthDamage(float damage, DamageType damageType)
     {
         currentHp = Mathf.Max(0, currentHp - damage);
+        if (currentHp <= 0){
+            OnTakeLethalityDamage?.Invoke(GetComponent<Unit>());
+        }
+        FloatingTextManager.Instance.ShowFloatingText(
+          damage.ToString("F0"),
+          transform.position,
+          damageType == DamageType.Physical ? Color.red : Color.blue
+       );
         OnHealthChanged?.Invoke(currentHp);
         return Mathf.Min(damage, currentHp);
     }
@@ -206,6 +207,12 @@ public class UnitStats : MonoBehaviour
         {
             OnDeath?.Invoke();
         }
+    }
+
+    public void SetCurrentHp(float hp)
+    {
+        currentHp = hp;
+        OnHealthChanged?.Invoke(currentHp);
     }
 
     #region Stat Getters
@@ -351,7 +358,7 @@ public class UnitStats : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Xử lý hồi máu theo thời gian
+        // Heath Regen
         if (!IsDead && currentHp < MaxHp)
         {
             hpRegenTimer += Time.fixedDeltaTime;
@@ -366,6 +373,7 @@ public class UnitStats : MonoBehaviour
             }
         }
 
+        // Update shield duration
         for (int i = shieldLayers.Count - 1; i >= 0; i--)
         {
             var shield = shieldLayers[i];
@@ -400,7 +408,8 @@ public class StatModifier
         return (baseValue + flatBonus) * percentBonus;
     }
 
-    public float CalculateForPercentStat(float baseValue) {
+    public float CalculateForPercentStat(float baseValue)
+    {
         return baseValue + percentBonus;
     }
 }

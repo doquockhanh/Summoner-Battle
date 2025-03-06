@@ -129,7 +129,7 @@ public class CardController : MonoBehaviour
         
         unit.OnDeath += () => RemoveUnit(unit);
 
-        if(cardData.skill.hasPassive && cardData.skill.skillType == SkillType.Passive) {
+        if(cardData.skill.hasPassive || cardData.skill.skillType == SkillType.Passive) {
             cardData.skill.ApplyPassive(unit);
         }
         

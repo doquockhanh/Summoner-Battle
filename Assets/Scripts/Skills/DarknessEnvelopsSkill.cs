@@ -69,6 +69,13 @@ public class DarknessEnvelopsSkill : Skill
     {
         if (summonedUnit == null) return;
 
+        var existingBehavior = summonedUnit.gameObject
+          .GetComponent<GhostFormBehavior>();
+        if (existingBehavior != null)
+        {
+            Destroy(existingBehavior);
+        }
+
         // Thêm GhostFormBehavior để xử lý nội tại
         var ghostBehavior = summonedUnit.gameObject.AddComponent<GhostFormBehavior>();
         ghostBehavior.Initialize(summonedUnit, this);

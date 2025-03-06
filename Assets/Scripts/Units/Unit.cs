@@ -13,21 +13,7 @@ public class Unit : MonoBehaviour
     private Unit currentTarget;
     private Base currentBaseTarget;
     private bool isPlayerUnit;
-    private float hpLossTimer;
     private CardController ownerCard;
-
-    // Chuyển các property vào interface IUnit để dễ mở rộng
-    public interface IUnit
-    {
-        bool IsDead { get; }
-        bool IsPlayerUnit { get; }
-        Unit CurrentTarget { get; }
-        Base CurrentBaseTarget { get; }
-        UnitData UnitData { get; }
-        UnitStats Stats { get; }
-        float CurrentHP { get; }
-        CardController OwnerCard { get; }
-    }
 
     // Events được tổ chức lại
     public event System.Action OnDeath;
@@ -71,13 +57,11 @@ public class Unit : MonoBehaviour
         movement.Initialize(this);
         targeting.Initialize(this);
         view.Initialize(this);
-
-        hpLossTimer = 0;
     }
 
     private void Update()
     {
-        if (stats.IsDead) return;
+        if (IsDead) return;
 
         if (!targeting.IsPaused)
         {

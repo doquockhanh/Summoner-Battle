@@ -15,17 +15,13 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 0
-  cooldown: 0
   duration: 0
   radius: 0
+  hasPassive: 1
   skillType: 2
-  targetType: 1
   ownerCard: {fileID: 0}
   damageBasePercent: 80
   damagePerSoulPercent: 20
-  healingStartPercent: 50
-  healingDecreasePercent: 10
-  healingDecreaseDuration: 4
   effectRadius: 1.5
   moveSpeedBonus: 2
   damageInterval: 0.5
