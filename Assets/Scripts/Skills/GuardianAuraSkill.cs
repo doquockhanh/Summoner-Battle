@@ -91,4 +91,9 @@ public class GuardianAuraSkill : Skill
         }
         return count;
     }
+
+    public override void ApplyPassive(Unit summonedUnit)
+    {
+        throw new System.NotImplementedException();
+    }
 }

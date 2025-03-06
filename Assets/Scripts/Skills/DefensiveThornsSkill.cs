@@ -92,4 +92,9 @@ public class DefensiveThornsSkill : Skill
 
         return score;
     }
+
+    public override void ApplyPassive(Unit summonedUnit)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -9,6 +9,8 @@ public abstract class Skill : ScriptableObject
     public float duration;
     public float radius;
 
+    public bool hasPassive;
+
     [Header("Phân loại")]
     public SkillType skillType;
 
@@ -23,6 +25,8 @@ public abstract class Skill : ScriptableObject
 
     public abstract void ApplyToUnit(Unit target, Unit[] nearbyUnits = null);
     public abstract void ApplyToSummon(Unit summonedUnit);
+
+    public abstract void ApplyPassive(Unit summonedUnit);
 }
 
 public enum SkillType

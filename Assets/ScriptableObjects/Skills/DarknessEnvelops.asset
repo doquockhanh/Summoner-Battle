@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf43a1f14ece2b344a0daba9d2e8efe1, type: 3}
+  m_Name: DarknessEnvelops
+  m_EditorClassIdentifier: 
+  skillName: 
+  description: 
+  manaCost: 60
+  duration: 0
+  radius: 0
+  skillType: 2
+  ownerCard: {fileID: 0}
+  baseDamage: 30
+  maxHealthDamagePercent: 2
+  magicResistReduction: 0
+  activeDuration: 10
+  ghostDuration: 5
+  attackSpeedBonus: 100
+  bonusMagicDamage: 20
+  darknessPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 0}

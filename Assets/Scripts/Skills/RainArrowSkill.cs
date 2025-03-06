@@ -73,4 +73,9 @@ public class RainArrowSkill : Skill
 
         return AOETargetFinder.FindBestAOEPosition(searchParams);
     }
+
+    public override void ApplyPassive(Unit summonedUnit)
+    {
+        throw new System.NotImplementedException();
+    }
 }

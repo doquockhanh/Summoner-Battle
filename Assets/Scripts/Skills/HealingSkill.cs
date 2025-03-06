@@ -70,4 +70,9 @@ public class HealingSkill : Skill
 
         return weakest;
     }
+
+    public override void ApplyPassive(Unit summonedUnit)
+    {
+        throw new System.NotImplementedException();
+    }
 } 

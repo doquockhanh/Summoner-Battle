@@ -96,4 +96,9 @@ public class ForgeShieldSkill : Skill
             }
         }
     }
+
+    public override void ApplyPassive(Unit summonedUnit)
+    {
+        throw new System.NotImplementedException();
+    }
 }

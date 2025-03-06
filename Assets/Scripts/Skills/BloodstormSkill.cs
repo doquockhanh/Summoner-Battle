@@ -34,10 +34,25 @@ public class BloodstormSkill : Skill
 
     public override void ApplyToUnit(Unit target, Unit[] nearbyUnits = null)
     {
-        // Kỹ năng được kích hoạt qua BloodLordBehavior
+        // not used
     }
 
     public override void ApplyToSummon(Unit summonedUnit)
+    {
+        // not used
+    }
+
+    private void OnValidate()
+    {
+        // Đảm bảo các giá trị hợp lệ
+        damageBasePercent = Mathf.Max(0f, damageBasePercent);
+        damagePerSoulPercent = Mathf.Max(0f, damagePerSoulPercent);
+        effectRadius = Mathf.Max(1f, effectRadius);
+        moveSpeedBonus = Mathf.Max(0f, moveSpeedBonus);
+        damageInterval = Mathf.Max(0.1f, damageInterval);
+    }
+
+    public override void ApplyPassive(Unit summonedUnit)
     {
         if (summonedUnit == null)
             throw new System.ArgumentNullException(nameof(summonedUnit));
@@ -58,15 +73,5 @@ public class BloodstormSkill : Skill
         var bloodLord = summonedUnit.gameObject
             .AddComponent<BloodLordBehavior>();
         bloodLord.Initialize(this);
-    }
-
-    private void OnValidate()
-    {
-        // Đảm bảo các giá trị hợp lệ
-        damageBasePercent = Mathf.Max(0f, damageBasePercent);
-        damagePerSoulPercent = Mathf.Max(0f, damagePerSoulPercent);
-        effectRadius = Mathf.Max(1f, effectRadius);
-        moveSpeedBonus = Mathf.Max(0f, moveSpeedBonus);
-        damageInterval = Mathf.Max(0.1f, damageInterval);
     }
 } 

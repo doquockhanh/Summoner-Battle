@@ -20,6 +20,7 @@ public class UnitStats : MonoBehaviour
     private StatModifier healingReceivedModifier = new StatModifier();
     private StatModifier lifeStealModifier = new StatModifier();
     private StatModifier damageReductionModifier = new StatModifier();
+    private StatModifier attackSpeedModifier = new StatModifier();
 
     // Cached calculated values
     private float cachedPhysicalDamage;
@@ -230,7 +231,7 @@ public class UnitStats : MonoBehaviour
     public float GetArmor() => armorModifier.Calculate(data.armor);
     public float GetMagicResist() => magicResistModifier.Calculate(data.magicResist);
     public float GetMoveSpeed() => speedModifier.Calculate(data.moveSpeed);
-    public float GetAttackSpeed() => data.attackSpeed;
+    public float GetAttackSpeed() => attackSpeedModifier.Calculate(data.attackSpeed);
     public float GetRange() => data.range;
     public float GetDetectRange() => data.detectRange;
     public float GetLifesteal() => lifeStealModifier.Calculate(data.lifestealPercent);
@@ -291,6 +292,12 @@ public class UnitStats : MonoBehaviour
     public void ModifyDamageReduction(float percentBonus)
     {
         damageReductionModifier.AddPercent(percentBonus);
+    }
+
+    public void ModifyAttackSpeed(float flatBonus, float percentBonus = 0)
+    {
+        if (flatBonus != 0) attackSpeedModifier.AddFlat(flatBonus);
+        if (percentBonus != 0) attackSpeedModifier.AddPercent(percentBonus);
     }
 
     #endregion

@@ -110,4 +110,9 @@ public class AssassinateSkill : Skill
         ApplyAssassinateEffects(assassin, weakestTarget);
         ownerCard.OnSkillActivated();
     }
+
+    public override void ApplyPassive(Unit summonedUnit)
+    {
+        throw new System.NotImplementedException();
+    }
 }

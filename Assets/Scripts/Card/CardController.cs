@@ -81,7 +81,7 @@ public class CardController : MonoBehaviour
             {
                 cardData.skill.ApplyToSummon(null);
             }
-            else
+            if (cardData.skill.skillType == SkillType.Direct)
             {
                 cardData.skill.ApplyToUnit(null);
             }
@@ -128,10 +128,9 @@ public class CardController : MonoBehaviour
         activeUnits.Add(unit);
         
         unit.OnDeath += () => RemoveUnit(unit);
-        
-        if (unit.OwnerCard.cardData.skill is BloodstormSkill bloodstormSkill)
-        {
-            bloodstormSkill.ApplyToSummon(unit);
+
+        if(cardData.skill.hasPassive && cardData.skill.skillType == SkillType.Passive) {
+            cardData.skill.ApplyPassive(unit);
         }
         
         spawnTimer = cardData.spawnCooldown;
