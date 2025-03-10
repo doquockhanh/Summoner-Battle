@@ -22,6 +22,7 @@ public class UnitStats : MonoBehaviour
     private StatModifier damageReductionModifier = new StatModifier();
     private StatModifier attackSpeedModifier = new StatModifier();
     private StatModifier maxHpModifier = new StatModifier();
+    private StatModifier rangeModifier = new StatModifier();
 
     // Cached calculated values
     private float cachedPhysicalDamage;
@@ -243,7 +244,7 @@ public class UnitStats : MonoBehaviour
     public float GetMagicResist() => magicResistModifier.Calculate(data.magicResist);
     public float GetMoveSpeed() => speedModifier.Calculate(data.moveSpeed);
     public float GetAttackSpeed() => attackSpeedModifier.Calculate(data.attackSpeed);
-    public float GetRange() => data.range;
+    public float GetRange() => rangeModifier.Calculate(data.range);
     public float GetDetectRange() => data.detectRange;
     public float GetLifesteal() => lifeStealModifier.Calculate(data.lifestealPercent);
     public float GetCriticalChance() => data.criticalChance;

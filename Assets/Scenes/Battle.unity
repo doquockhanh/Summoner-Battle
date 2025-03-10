@@ -3928,13 +3928,12 @@ MonoBehaviour:
   playerBaseHP: 1000
   enemyBaseHP: 1000
   playerCards:
-  - {fileID: 11400000, guid: c36e546e9df72f8449f5f1163f9c8442, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: bffe7acec039e08439d8adafd1f63e65, type: 2}
+  - {fileID: 11400000, guid: badb9fa9e6c65fa4a9fd5e14b7bb8cbc, type: 2}
   enemyCards:
   - {fileID: 11400000, guid: badb9fa9e6c65fa4a9fd5e14b7bb8cbc, type: 2}
   - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
-  - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
-  spawnOnce: 1
+  spawnOnce: 0
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &2065520681
 Transform:

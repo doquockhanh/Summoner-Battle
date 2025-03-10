@@ -11,6 +11,7 @@ public abstract class BaseStatusEffect : IStatusEffect
     public float Duration => duration;
     public float RemainingTime => remainingTime;
     public bool IsExpired => remainingTime <= 0;
+    public event System.Action OnExpired;
 
     protected BaseStatusEffect(Unit target, float duration)
     {
@@ -26,6 +27,7 @@ public abstract class BaseStatusEffect : IStatusEffect
 
     public virtual void Remove()
     {
+        OnExpired?.Invoke();
         // Override để xử lý cleanup
     }
 

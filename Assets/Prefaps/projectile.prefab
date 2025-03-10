@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 078e018d6f5a291498aa64870c206e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 4
   maxLifetime: 5
   hitEffectPrefab: {fileID: 3632261846723545084, guid: b36fae90a6903dd469acc81348f93dbd, type: 3}
   spriteRenderer: {fileID: 1601465589062658755}

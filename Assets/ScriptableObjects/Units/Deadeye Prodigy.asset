@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ccc6c9290466a274280f4c5ab19d9469, type: 3}
-  m_Name: Elderwood Guardian
+  m_Name: Deadeye Prodigy
   m_EditorClassIdentifier: 
   unitName: 
   unitImage: {fileID: 0}
   description: 
-  maxHp: 2000
-  hpRegen: 10
-  armor: 30
-  magicResist: 20
+  maxHp: 700
+  hpRegen: 0
+  armor: 10
+  magicResist: 10
   damageReduction: 0
   tenacity: 0
-  physicalDamage: 50
-  magicDamage: 100
+  physicalDamage: 99
+  magicDamage: 0
   damageAmplification: 0
   armorPenetration: 0
   magicPenetration: 0
-  criticalChance: 0
+  criticalChance: 20
   criticalDamage: 150
   lifestealPercent: 0
   attackSpeed: 1
-  moveSpeed: 1.3
-  range: 1
+  moveSpeed: 1
+  range: 3.5
   detectRange: 4
   healingReceivedPercent: 100
-  unitPrefab: {fileID: 8505144159870094120, guid: b7954a8f3551b804fb489054da438cf4, type: 3}
+  unitPrefab: {fileID: 8505144159870094120, guid: 343516d08af899a4ab5d1d91619686b3, type: 3}
