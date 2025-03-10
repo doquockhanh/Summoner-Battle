@@ -25,12 +25,21 @@ public class UnitPoolManager : MonoBehaviour
         foreach (Card card in playerCards)
         {
             CreatePool(card.summonUnit);
+            CheckForMoreUnit(card);
         }
         
         // Tạo pool cho units của enemy
         foreach (Card card in enemyCards)
         {
             CreatePool(card.summonUnit);
+            CheckForMoreUnit(card);
+        }
+    }
+
+    private void CheckForMoreUnit(Card card) {
+        if(card != null && card is VoidSummonerCard) {
+            VoidSummonerCard voidSummonerCard = card as VoidSummonerCard;
+            CreatePool(voidSummonerCard.VoidGrub);
         }
     }
     
