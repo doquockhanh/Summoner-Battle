@@ -43,7 +43,7 @@ public class ForgeShieldSkill : Skill
         if (strongestSmith == null) return;
 
         // Tính lượng khiên dựa trên máu tối đa
-        float shieldAmount = strongestSmith.GetUnitStats().MaxHp * (shieldHealthPercent / 100f);
+        float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f);
 
         // Áp dụng khiên sharing
         if (SkillEffectHandler.Instance != null)
@@ -90,7 +90,7 @@ public class ForgeShieldSkill : Skill
             {
                 if (ally != null)
                 {
-                    float shieldAmount = strongestSmith.GetUnitStats().MaxHp * (shieldHealthPercent / 100f) * (sharedShieldPercent / 100f);
+                    float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f) * (sharedShieldPercent / 100f);
                     ally.GetUnitStats().AddShield(shieldAmount, duration);
                 }
             }

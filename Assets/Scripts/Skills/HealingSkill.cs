@@ -59,7 +59,7 @@ public class HealingSkill : Skill
         {
             if (unit != null && unit.IsPlayerUnit == ownerCard.IsPlayer)
             {
-                float healthPercent = unit.GetCurrentHP() / unit.GetUnitStats().MaxHp;
+                float healthPercent = unit.GetCurrentHP() / unit.GetUnitStats().GetMaxHp();
                 if (healthPercent < lowestHealthPercent)
                 {
                     lowestHealthPercent = healthPercent;

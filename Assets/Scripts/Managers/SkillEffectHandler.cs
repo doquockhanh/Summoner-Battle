@@ -229,7 +229,7 @@ public class SkillEffectHandler : MonoBehaviour
         if (target == null) return;
 
         // Tính lượng máu hồi phục
-        float healAmount = target.GetUnitStats().MaxHp * (skill.healPercent / 100f);
+        float healAmount = target.GetUnitStats().GetMaxHp() * (skill.healPercent / 100f);
         target.GetUnitStats().Heal(healAmount);
 
         // Hồi mana cho card sở hữu unit

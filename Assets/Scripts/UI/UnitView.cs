@@ -57,7 +57,7 @@ public class UnitView : MonoBehaviour
         spriteMaterial = unitSprite.material;
 
         var stats = unit.GetComponent<UnitStats>();
-        SetupHealthBar(stats.MaxHp);
+        SetupHealthBar(stats.GetMaxHp());
         SetupOutline();
 
         // Subscribe to events

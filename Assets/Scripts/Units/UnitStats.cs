@@ -21,6 +21,7 @@ public class UnitStats : MonoBehaviour
     private StatModifier lifeStealModifier = new StatModifier();
     private StatModifier damageReductionModifier = new StatModifier();
     private StatModifier attackSpeedModifier = new StatModifier();
+    private StatModifier maxHpModifier = new StatModifier();
 
     // Cached calculated values
     private float cachedPhysicalDamage;
@@ -35,9 +36,8 @@ public class UnitStats : MonoBehaviour
 
     // Properties
     public float CurrentHP => currentHp;
-    public float MaxHp => data.maxHp;
     public bool IsDead => currentHp <= 0;
-    public float CurrentHealthPercent => currentHp / MaxHp;
+    public float CurrentHealthPercent => currentHp / GetMaxHp();
     public UnitData Data => data;
 
     // Events
@@ -45,6 +45,7 @@ public class UnitStats : MonoBehaviour
     public event System.Action<float> OnShieldChanged;
     public event System.Action<float, Unit> OnTakeDamage;
     public event System.Action<Unit> OnTakeLethalityDamage;
+    public static event System.Func<float, Unit, Unit, DamageType, float> OnModifyRawDamage;
     public event System.Action OnDeath;
 
     private void Awake()
@@ -62,6 +63,8 @@ public class UnitStats : MonoBehaviour
     public void TakeDamage(float rawDamage, DamageType damageType, Unit source = null)
     {
         if (IsDead) return;
+
+        rawDamage = OnModifyRawDamage?.Invoke(rawDamage, source, GetComponent<Unit>(), damageType)?? rawDamage;
 
         float finalDamage = CalculateFinalDamage(rawDamage, damageType);
 
@@ -92,7 +95,7 @@ public class UnitStats : MonoBehaviour
         }
     }
 
-    private float CalculateFinalDamage(float rawDamage, DamageType damageType)
+    public float CalculateFinalDamage(float rawDamage, DamageType damageType)
     {
         float damage = rawDamage;
 
@@ -151,7 +154,8 @@ public class UnitStats : MonoBehaviour
     private float ProcessHealthDamage(float damage, DamageType damageType)
     {
         currentHp = Mathf.Max(0, currentHp - damage);
-        if (currentHp <= 0){
+        if (currentHp <= 0)
+        {
             OnTakeLethalityDamage?.Invoke(GetComponent<Unit>());
         }
         FloatingTextManager.Instance.ShowFloatingText(
@@ -251,6 +255,7 @@ public class UnitStats : MonoBehaviour
     public float GetHPRegen() => data.hpRegen;
     public float GetHealingReceived() => data.healingReceivedPercent;
     public float GetDamageReduction() => damageReductionModifier.CalculateForPercentStat(data.damageReduction);
+    public float GetMaxHp() => maxHpModifier.Calculate(data.maxHp);
     #endregion
 
     #region Stat Modifiers
@@ -307,6 +312,11 @@ public class UnitStats : MonoBehaviour
         if (percentBonus != 0) attackSpeedModifier.AddPercent(percentBonus);
     }
 
+    public void ModifyMaxHp(float flatBonus)
+    {
+        maxHpModifier.AddFlat(flatBonus);
+    }
+
     #endregion
 
     #region Reset Methods
@@ -359,7 +369,7 @@ public class UnitStats : MonoBehaviour
     private void FixedUpdate()
     {
         // Heath Regen
-        if (!IsDead && currentHp < MaxHp)
+        if (!IsDead && currentHp < GetMaxHp())
         {
             hpRegenTimer += Time.fixedDeltaTime;
             if (hpRegenTimer >= HP_REGEN_INTERVAL)

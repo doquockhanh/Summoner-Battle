@@ -112,7 +112,7 @@ public class UnitStatsPanel : MonoBehaviour
         UnitData data = stats.Data;
         
         unitNameText.text = data.unitName;
-        hpText.text = $"HP: {stats.CurrentHP}/{data.maxHp}";
+        hpText.text = $"HP: {stats.CurrentHP}/{stats.GetMaxHp()}";
         damageText.text = $"Physic: {stats.GetPhysicalDamage()}";
         attackSpeedText.text = $"Atk speed: {stats.GetAttackSpeed()}";
         moveSpeedText.text = $"move: {stats.GetMoveSpeed()}";

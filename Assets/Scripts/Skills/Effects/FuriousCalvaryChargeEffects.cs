@@ -40,7 +40,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
     private void ApplyInitialEffects()
     {
         // Áp dụng shield và lifesteal
-        float shieldAmount = caster.GetUnitStats().MaxHp * (skillData.shieldPercent / 100f);
+        float shieldAmount = caster.GetUnitStats().GetMaxHp() * (skillData.shieldPercent / 100f);
         caster.GetUnitStats().AddShield(shieldAmount, skillData.shieldDuration);
         caster.GetUnitStats().ModifyLifeSteal(skillData.lifestealPercent);
 

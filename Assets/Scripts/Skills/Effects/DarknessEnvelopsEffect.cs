@@ -54,7 +54,7 @@ public class DarknessEnvelopsEffect : MonoBehaviour, ISkillEffect
 
             // Gây sát thương cơ bản + % máu tối đa
             float damage = skillData.baseDamage + 
-                         (stats.MaxHp * skillData.maxHealthDamagePercent / 100f);
+                         (stats.GetMaxHp() * skillData.maxHealthDamagePercent / 100f);
             target.TakeDamage(damage, DamageType.Magic);
 
             elapsedTime += 1f;

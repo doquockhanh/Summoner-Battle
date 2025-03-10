@@ -59,7 +59,7 @@ public class ChargeAndSweepSkill : Skill
 
         // 2. Độ gần với 60% máu
         var stats = unit.GetUnitStats();
-        float healthPercent = stats.CurrentHP / stats.MaxHp;
+        float healthPercent = stats.CurrentHP / stats.GetMaxHp();
         float healthScore = 1 - Mathf.Abs(60f / 100f - healthPercent);
         score += healthScore;
 

@@ -91,7 +91,7 @@ public class FirestormSkill : Skill
 
         // 3. Độ gần với 60% máu
         var stats = unit.GetUnitStats();
-        float healthPercent = stats.CurrentHP / stats.MaxHp;
+        float healthPercent = stats.CurrentHP / stats.GetMaxHp();
         score += healthPercent;
 
         return score;

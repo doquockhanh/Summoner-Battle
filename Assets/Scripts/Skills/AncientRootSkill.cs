@@ -69,7 +69,7 @@ public class AncientRootSkill : Skill
 
         // Ưu tiên unit có nhiều máu
         var stats = unit.GetUnitStats();
-        float healthPercent = stats.CurrentHP / stats.MaxHp;
+        float healthPercent = stats.CurrentHP / stats.GetMaxHp();
         score += healthPercent;
 
         // 3. Đang tấn công đối phương

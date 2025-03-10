@@ -45,7 +45,7 @@ public class AncientRootEffect : MonoBehaviour, ISkillEffect
             {
                 float drainAmount = 
                     caster.GetUnitStats().GetMagicDamage() * (skillData.magicPercent / 100f) + 
-                    enemy.GetUnitStats().MaxHp * (skillData.maxHealthDrainPercent / 100f);
+                    enemy.GetUnitStats().GetMaxHp() * (skillData.maxHealthDrainPercent / 100f);
                 totalDrainAmount += drainAmount;
             }
         }
@@ -107,7 +107,7 @@ public class AncientRootEffect : MonoBehaviour, ISkillEffect
 
                     // Hồi máu cho caster
                     float currentHP = caster.GetUnitStats().CurrentHP;
-                    float maxHP = caster.GetUnitStats().MaxHp;
+                    float maxHP = caster.GetUnitStats().GetMaxHp();
                     float healing = drainPerUnit;
 
                     // Chuyển lượng máu dư thành khiên

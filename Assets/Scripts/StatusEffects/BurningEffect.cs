@@ -35,7 +35,7 @@ public class BurningEffect : BaseStatusEffect
         if (damageTimer <= 0)
         {
             // Gây sát thương theo % máu tối đa
-            float damage = stats.MaxHp * maxHealthPercent;
+            float damage = stats.GetMaxHp() * maxHealthPercent;
             target.TakeDamage(damage, DamageType.Magic);
             
             damageTimer = DAMAGE_INTERVAL;
