@@ -16,7 +16,8 @@ MonoBehaviour:
   description: 
   manaCost: 60
   duration: 5
-  radius: 2
+  radius: 3
+  hasPassive: 0
   skillType: 1
   ownerCard: {fileID: 0}
   chargeSpeed: 10

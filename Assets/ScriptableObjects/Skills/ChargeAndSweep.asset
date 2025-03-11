@@ -17,12 +17,13 @@ MonoBehaviour:
   manaCost: 50
   duration: 0
   radius: 0
+  hasPassive: 0
   skillType: 1
   ownerCard: {fileID: 0}
   chargeDamageMultiplier: 1.2
-  pullbackDistance: 1
+  pullbackDistance: 2
   sweepRadius: 1.5
   lifestealPercent: 20
-  sweepAttackCount: 2
+  sweepAttackCount: 4
   chargeEffectPrefab: {fileID: 0}
   sweepEffectPrefab: {fileID: 0}
