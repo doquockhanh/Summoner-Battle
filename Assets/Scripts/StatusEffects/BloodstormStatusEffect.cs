@@ -22,8 +22,7 @@ public class BloodstormStatusEffect : BaseStatusEffect
         
         if (movement != null)
         {
-            originalMoveSpeed = movement.GetMoveSpeed();
-            movement.SetMoveSpeed(originalMoveSpeed + skill.moveSpeedBonus);
+
         }
     }
 
@@ -33,7 +32,7 @@ public class BloodstormStatusEffect : BaseStatusEffect
         
         if (movement != null)
         {
-            movement.SetMoveSpeed(originalMoveSpeed);
+   
         }
     }
 } 

@@ -20,22 +20,13 @@ public class UnitTargeting : MonoBehaviour
     private bool isPaused = false;
     private float targetCheckTimer;
 
-    // Properties với XML documentation
-    /// <summary>Unit hiện đang được nhắm tới</summary>
     public Unit CurrentTarget => currentTarget;
-    /// <summary>Base hiện đang được nhắm tới</summary>
     public Base CurrentBaseTarget => currentBaseTarget;
 
     public bool IsPaused
     {
         get => isPaused;
-        private set
-        {
-            if (isPaused != value)
-            {
-                isPaused = value;
-            }
-        }
+        private set => isPaused = value;
     }
 
     public void Initialize(Unit unit)
@@ -50,7 +41,6 @@ public class UnitTargeting : MonoBehaviour
     {
         if (IsPaused) return;
 
-        // Kiểm tra target hiện tại
         if (!IsValidTarget(currentTarget) && !IsValidBaseTarget(currentBaseTarget))
         {
             FindNewTarget();
@@ -60,22 +50,53 @@ public class UnitTargeting : MonoBehaviour
     public bool IsInRange(Unit target)
     {
         if (target == null) return false;
-        return Vector2.Distance(transform.position, target.transform.position) <= stats.Data.range;
+        
+        var targetCell = HexGrid.Instance.GetCellAtPosition(target.transform.position);
+        var myCell = HexGrid.Instance.GetCellAtPosition(transform.position);
+        
+        if (targetCell == null || myCell == null) return false;
+        
+        int distance = targetCell.Coordinates.DistanceTo(myCell.Coordinates);
+        return distance <= Mathf.CeilToInt(stats.Data.range / HexMetrics.outerRadius);
     }
 
     public bool IsInRangeOfBase()
     {
         if (currentBaseTarget == null) return false;
 
-        Vector2 closestPoint = currentBaseTarget.GetComponent<Collider2D>()
-            .ClosestPoint(transform.position);
-        return Vector2.Distance(transform.position, closestPoint) <= stats.Data.range;
+        var myCell = HexGrid.Instance.GetCellAtPosition(transform.position);
+        var baseCell = HexGrid.Instance.GetCellAtPosition(currentBaseTarget.transform.position);
+        
+        if (baseCell == null || myCell == null) return false;
+
+        int distance = baseCell.Coordinates.DistanceTo(myCell.Coordinates);
+        return distance <= Mathf.CeilToInt(stats.Data.range / HexMetrics.outerRadius);
     }
 
     private void FindNewTarget()
     {
-        ScanForTargets();
-        (Unit bestTarget, Base nearestBase) = FindBestTargetsFromDetected();
+        var myCell = HexGrid.Instance.GetCellAtPosition(transform.position);
+        if (myCell == null) return;
+
+        int searchRange = Mathf.CeilToInt(stats.Data.detectRange / HexMetrics.outerRadius);
+        var cellsInRange = HexGrid.Instance.GetCellsInRange(myCell.Coordinates, searchRange);
+
+        Unit bestTarget = null;
+        float closestDistance = float.MaxValue;
+        Base nearestBase = null;
+
+        foreach (var cell in cellsInRange)
+        {
+            if (cell.OccupyingUnit != null && IsValidTarget(cell.OccupyingUnit))
+            {
+                float distance = Vector3.Distance(transform.position, cell.OccupyingUnit.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    bestTarget = cell.OccupyingUnit;
+                }
+            }
+        }
 
         if (bestTarget != null)
         {
@@ -84,103 +105,41 @@ public class UnitTargeting : MonoBehaviour
         else
         {
             currentTarget = null;
-            currentBaseTarget = nearestBase;
+            currentBaseTarget = FindNearestBase();
         }
     }
 
-    private void ScanForTargets()
+    private Base FindNearestBase()
     {
-        detectedCount = Physics2D.OverlapCircleNonAlloc(
-            transform.position,
-            stats.Data.detectRange,
-            detectedColliders
-        );
-    }
-
-    private (Unit unit, Base baseTarget) FindBestTargetsFromDetected()
-    {
-        Unit bestTarget = null;
-        float closestDistance = float.MaxValue;
+        // Logic tìm base gần nhất (giữ nguyên logic cũ vì base không nằm trong hex grid)
+        Base[] bases = GameObject.FindObjectsOfType<Base>();
         Base nearestBase = null;
+        float minDistance = float.MaxValue;
 
-        for (int i = 0; i < detectedCount; i++)
+        foreach (Base b in bases)
         {
-            var collider = detectedColliders[i];
-
-            Unit potentialTarget = TryGetValidUnit(collider);
-            if (potentialTarget != null)
+            if (b.IsPlayerBase != unit.IsPlayerUnit)
             {
-                float distance = GetDistanceTo(potentialTarget.transform.position);
-                if (distance < closestDistance)
+                float distance = Vector3.Distance(transform.position, b.transform.position);
+                if (distance < minDistance)
                 {
-                    closestDistance = distance;
-                    bestTarget = potentialTarget;
+                    minDistance = distance;
+                    nearestBase = b;
                 }
-                continue;
-            }
-
-            Base potentialBase = TryGetValidBase(collider);
-            if (potentialBase != null)
-            {
-                nearestBase = potentialBase;
             }
         }
 
-        return (bestTarget, nearestBase);
-    }
-
-    private Unit TryGetValidUnit(Collider2D collider)
-    {
-        Unit potentialTarget = collider.GetComponent<Unit>();
-        return IsValidTarget(potentialTarget) ? potentialTarget : null;
-    }
-
-    private Base TryGetValidBase(Collider2D collider)
-    {
-        Base potentialBase = collider.GetComponent<Base>();
-        return IsValidBaseTarget(potentialBase) ? potentialBase : null;
-    }
-
-    private float GetDistanceTo(Vector2 position)
-    {
-        return Vector2.Distance(transform.position, position);
-    }
-
-    public Unit FindNearestTarget() => FindTargetByDistance((d1, d2) => d1 < d2);
-    public Unit FindFurtherTarget() => FindTargetByDistance((d1, d2) => d1 > d2);
-
-    private Unit FindTargetByDistance(System.Func<float, float, bool> compareDistance)
-    {
-        float bestDistance = compareDistance(0, float.MaxValue) ? 0 : float.MaxValue;
-        Unit bestTarget = null;
-
-        foreach (var hit in Physics2D.OverlapCircleAll(transform.position, stats.Data.detectRange))
-        {
-            Unit potentialTarget = hit.GetComponent<Unit>();
-            if (!IsValidTarget(potentialTarget)) continue;
-
-            float distance = GetDistanceTo(potentialTarget.transform.position);
-            if (compareDistance(distance, bestDistance))
-            {
-                bestDistance = distance;
-                bestTarget = potentialTarget;
-            }
-        }
-
-        return bestTarget;
+        return nearestBase;
     }
 
     public bool IsValidTarget(Unit target)
     {
-        return target != null &&
-               !target.IsDead &&
-               target.IsPlayerUnit != unit.IsPlayerUnit;
+        return target != null && !target.IsDead && target.IsPlayerUnit != unit.IsPlayerUnit;
     }
 
     private bool IsValidBaseTarget(Base baseTarget)
     {
-        return baseTarget != null &&
-               baseTarget.IsPlayerBase != unit.IsPlayerUnit;
+        return baseTarget != null && baseTarget.IsPlayerBase != unit.IsPlayerUnit;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -230,7 +189,7 @@ public class UnitTargeting : MonoBehaviour
 
     public void SetTarget(Unit target)
     {
-        if (target != null && !target.IsDead)
+        if (IsValidTarget(target))
         {
             currentTarget = target;
             currentBaseTarget = null;
@@ -238,15 +197,8 @@ public class UnitTargeting : MonoBehaviour
     }
 
     // Thêm các phương thức điều khiển targeting
-    public void PauseTargeting()
-    {
-        IsPaused = true;
-    }
-
-    public void ResumeTargeting()
-    {
-        IsPaused = false;
-    }
+    public void PauseTargeting() => IsPaused = true;
+    public void ResumeTargeting() => IsPaused = false;
 
     public void ForceTargetUpdate()
     {

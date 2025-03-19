@@ -268,21 +268,7 @@ public class BloodLordBehavior : MonoBehaviour
 
     private void HandleBloodstormMovement()
     {
-        if (!isBloodstormActive) return;
-
-        if (movement.TargetPosition == Vector3.zero ||
-            Vector2.Distance(transform.position, movement.TargetPosition) < 0.1f)
-        {
-            Vector3 newPos = RandomMovementHandler.Instance.GetNextRandomPosition(
-                transform.position,
-                unit.IsPlayerUnit
-            );
-
-            movement.SetTargetPosition(newPos);
-        }
-
-        Vector3 direction = (movement.TargetPosition - transform.position).normalized;
-        movement.SetMoveDirection(direction);
+ 
     }
 
     private void OnDestroy()

@@ -107,20 +107,23 @@ public class BattleManager : MonoBehaviour
 
     public Vector3 GetSpawnPosition(bool isPlayer)
     {
+        HexGrid grid = HexGrid.Instance;
         if (isPlayer)
         {
-            return GetRandomPositionOnLine(playerSpawnStart.position, playerSpawnEnd.position);
+            // Spawn bên trái (q nhỏ)
+            int r = Random.Range(0, grid.Height);
+            int q = Random.Range(0, grid.Width / 4);
+            var coord = new HexCoord(q, r);
+            return HexMetrics.HexToWorld(coord);
         }
         else
         {
-            return GetRandomPositionOnLine(enemySpawnStart.position, enemySpawnEnd.position);
+            // Spawn bên phải (q lớn)
+            int r = Random.Range(0, grid.Height);
+            int q = Random.Range(3 * grid.Width / 4, grid.Width);
+            var coord = new HexCoord(q, r);
+            return HexMetrics.HexToWorld(coord);
         }
-    }
-
-    private Vector3 GetRandomPositionOnLine(Vector3 start, Vector3 end)
-    {
-        float randomT = Random.Range(0f, 1f);
-        return Vector3.Lerp(start, end, randomT);
     }
 
     public void EndGame(bool playerWon)

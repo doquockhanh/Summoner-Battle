@@ -109,8 +109,8 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         // Assign new target to caster
         UnitTargeting unitTargeting = caster.GetComponent<UnitTargeting>();
-        Unit unit = unitTargeting.FindNearestTarget();
-        unitTargeting.AssignTarget(unit);
+        // Unit unit = unitTargeting.FindNearestTarget();
+        // unitTargeting.AssignTarget(unit);
 
         // Resume targeting
         caster.GetComponent<UnitTargeting>().ResumeTargeting();

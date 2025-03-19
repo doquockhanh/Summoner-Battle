@@ -1,170 +1,123 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UnitMovement : MonoBehaviour
 {
     private Unit unit;
     private UnitStats stats;
-    private Vector3 originalPosition;
-    private bool isKnockedUp;
-    private Coroutine knockupCoroutine;
-    private UnitStatusEffects statusEffects;
-
-    private const float MIN_DISTANCE_BETWEEN_UNITS = 0.5f;
-    private const float SEPARATION_FORCE = 1.5f;
-    private LayerMask unitLayer;
-
-    [SerializeField] private float knockupHeight = 0.5f;
-
+    private HexCell currentCell;
+    private HexCell targetCell;
+    private bool isMoving;
     private float moveSpeed;
     private Vector3 moveDirection;
-    private Vector3 targetPosition;
     private UnitTargeting unitTargeting;
-
-    public float GetMoveSpeed() => moveSpeed;
-    public void SetMoveSpeed(float speed) => moveSpeed = speed;
-    public Vector3 TargetPosition => targetPosition;
-
-    private void OnDisable()
-    {
-        if (knockupCoroutine != null)
-        {
-            StopCoroutine(knockupCoroutine);
-            knockupCoroutine = null;
-        }
-
-        if (isKnockedUp)
-        {
-            transform.position = originalPosition;
-            isKnockedUp = false;
-        }
-    }
 
     public void Initialize(Unit unit)
     {
         this.unit = unit;
         this.stats = unit.GetComponent<UnitStats>();
-        this.statusEffects = unit.GetComponent<UnitStatusEffects>();
-        originalPosition = transform.position;
-        unitLayer = LayerMask.GetMask("Units");
+        this.unitTargeting = unit.GetComponent<UnitTargeting>();
         moveSpeed = unit.GetUnitStats().Data.moveSpeed;
-        targetPosition = Vector3.zero;
-        unitTargeting = unit.GetComponent<UnitTargeting>();
+        
+        // Đăng ký unit với hex grid
+        UpdateCurrentCell();
+    }
+
+    private void UpdateCurrentCell()
+    {
+        var newCell = HexGrid.Instance.GetCellAtPosition(transform.position);
+        if (newCell != currentCell)
+        {
+            if (currentCell != null)
+            {
+                currentCell.SetUnit(null);
+            }
+            currentCell = newCell;
+            if (currentCell != null)
+            {
+                currentCell.SetUnit(unit);
+            }
+        }
     }
 
     public void Move(Unit targetUnit, Base targetBase)
     {
-        if (unit.IsDead || statusEffects.IsKnockedUp) return;
+        if (unit.IsDead) return;
 
-        if (unitTargeting.IsInRange(targetUnit) || unitTargeting.IsInRangeOfBase())
+        if (targetUnit != null)
         {
-            unit.GetComponent<UnitView>().SetMoving(false);
+            MoveTowardsTarget(targetUnit);
+        }
+        else if (targetBase != null)
+        {
+            MoveTowardsBase(targetBase);
+        }
+    }
+
+    private void MoveTowardsTarget(Unit target)
+    {
+        if (unitTargeting.IsInRange(target)) 
+        {
+            StopMoving();
             return;
         }
 
-        Vector3 direction = CalculateDesiredDirection(targetUnit, targetBase);
-        Vector3 separation = CalculateSeparation();
-
-        Vector3 finalDirection = (direction + separation).normalized;
-        transform.position += finalDirection * stats.Data.moveSpeed * Time.deltaTime;
-
-        var view = unit.GetComponent<UnitView>();
-        view.SetMoving(true);
-        view.FlipSprite(finalDirection.x > 0);
-
-        originalPosition = new Vector3(transform.position.x, originalPosition.y, transform.position.z);
-    }
-
-    public void Knockup(float duration)
-    {
-        if (unit.IsDead) return;
-
-        if (knockupCoroutine != null)
+        HexCell targetHexCell = HexGrid.Instance.GetCellAtPosition(target.transform.position);
+        if (targetHexCell != currentCell)
         {
-            StopCoroutine(knockupCoroutine);
-        }
-
-        originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        knockupCoroutine = StartCoroutine(KnockupCoroutine(duration));
-    }
-
-    private IEnumerator KnockupCoroutine(float duration)
-    {
-        isKnockedUp = true;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration && !unit.IsDead)
-        {
-            float heightPercent = Mathf.Sin((elapsedTime / duration) * Mathf.PI);
-            float currentHeight = knockupHeight * heightPercent;
-
-            transform.position = new Vector3(
-                originalPosition.x,
-                originalPosition.y + currentHeight,
-                originalPosition.z
-            );
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.position = originalPosition;
-        isKnockedUp = false;
-        knockupCoroutine = null;
-    }
-
-    private Vector3 CalculateDesiredDirection(Unit targetUnit, Base targetBase)
-    {
-        if (targetUnit != null)
-        {
-            return (targetUnit.transform.position - transform.position).normalized;
-        }
-
-        if (targetBase != null)
-        {
-            Vector3 direction = (targetBase.transform.position - transform.position).normalized;
-            return new Vector3(Mathf.Sign(direction.x), 0, 0);
-        }
-
-        return unit.IsPlayerUnit ? Vector3.right : Vector3.left;
-    }
-
-    private Vector3 CalculateSeparation()
-    {
-        Vector3 separationForce = Vector3.zero;
-        Collider2D[] nearbyUnits = Physics2D.OverlapCircleAll(
-            transform.position,
-            MIN_DISTANCE_BETWEEN_UNITS,
-            unitLayer
-        );
-
-        foreach (Collider2D collider in nearbyUnits)
-        {
-            if (collider.gameObject == gameObject) continue;
-
-            Vector3 awayFromOther = transform.position - collider.transform.position;
-            float distance = awayFromOther.magnitude;
-
-            if (distance < MIN_DISTANCE_BETWEEN_UNITS)
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            Vector3 newPosition = transform.position + direction * moveSpeed * Time.deltaTime;
+            
+            // Kiểm tra cell mới trước khi di chuyển
+            var nextCell = HexGrid.Instance.GetCellAtPosition(newPosition);
+            if (nextCell != null && !nextCell.IsOccupied)
             {
-                float strength = 1 - (distance / MIN_DISTANCE_BETWEEN_UNITS);
-                separationForce += awayFromOther.normalized * strength * SEPARATION_FORCE;
+                transform.position = newPosition;
+                UpdateCurrentCell();
+                
+                // Cập nhật animation
+                var view = unit.GetComponent<UnitView>();
+                view.SetMoving(true);
+                view.FlipSprite(direction.x > 0);
             }
         }
-
-        return separationForce;
     }
 
-    public void SetMoveDirection(Vector3 direction)
+    private void MoveTowardsBase(Base targetBase)
     {
-        moveDirection = direction;
-        transform.position += direction * moveSpeed * Time.deltaTime;
-        var view = unit.GetComponent<UnitView>();
-        view.FlipSprite(direction.x > 0);
+        if (unitTargeting.IsInRangeOfBase())
+        {
+            StopMoving();
+            return;
+        }
+
+        Vector3 direction = (targetBase.transform.position - transform.position).normalized;
+        Vector3 newPosition = transform.position + direction * moveSpeed * Time.deltaTime;
+        
+        var nextCell = HexGrid.Instance.GetCellAtPosition(newPosition);
+        if (nextCell != null && !nextCell.IsOccupied)
+        {
+            transform.position = newPosition;
+            UpdateCurrentCell();
+            
+            var view = unit.GetComponent<UnitView>();
+            view.SetMoving(true);
+            view.FlipSprite(direction.x > 0);
+        }
     }
 
-    public void SetTargetPosition(Vector3 position)
+    private void StopMoving()
     {
-        targetPosition = position;
+        isMoving = false;
+        unit.GetComponent<UnitView>().SetMoving(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (currentCell != null)
+        {
+            currentCell.SetUnit(null);
+        }
     }
 }
