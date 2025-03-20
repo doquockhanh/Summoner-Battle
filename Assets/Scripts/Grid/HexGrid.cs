@@ -6,11 +6,12 @@ public class HexGrid : MonoBehaviour
 {
     public static HexGrid Instance { get; private set; }
 
+    [Header("Grid Settings")]
+    [SerializeField] private int width = 14;
+    [SerializeField] private int height = 28;
+
     private Dictionary<HexCoord, HexCell> cells;
     [SerializeField] private bool turnOnCoordinates = false;
-
-    private int width = 14;
-    private int height = 28;
 
     public int Width => width;
     public int Height => height;
@@ -32,12 +33,12 @@ public class HexGrid : MonoBehaviour
     {
         cells = new Dictionary<HexCoord, HexCell>();
 
-        // Tạo lưới hex
+        // Tạo grid 14x28
         for (int r = 0; r < height; r++)
         {
-            int qStart = -r / 2;
-            int qEnd = width - r / 2;
-
+            int qStart = -r/2;
+            int qEnd = width - r/2;
+            
             for (int q = qStart; q < qEnd; q++)
             {
                 var coord = new HexCoord(q, r);
@@ -53,7 +54,7 @@ public class HexGrid : MonoBehaviour
 
     public HexCell GetCellAtPosition(Vector3 worldPos)
     {
-        var coord = HexMetrics.WorldToHex(worldPos);
+        HexCoord coord = HexMetrics.WorldToHex(worldPos);
         return GetCell(coord);
     }
 
@@ -78,7 +79,40 @@ public class HexGrid : MonoBehaviour
         return results;
     }
 
-    private void OnDrawGizmos()
+    public IEnumerable<HexCell> GetAllCells()
+    {
+        return cells.Values;
+    }
+
+    public List<HexCell> GetNeighbors(HexCell cell)
+    {
+        if (cell == null) return new List<HexCell>();
+
+        var neighbors = new List<HexCell>();
+        var directions = new[]
+        {
+            new HexCoord(1, 0),   // Phải
+            new HexCoord(1, -1),  // Phải dưới
+            new HexCoord(0, -1),  // Dưới
+            new HexCoord(-1, 0),  // Trái
+            new HexCoord(-1, 1),  // Trái trên
+            new HexCoord(0, 1)    // Trên
+        };
+
+        foreach (var dir in directions)
+        {
+            var neighborCoord = cell.Coordinates + dir;
+            var neighbor = GetCell(neighborCoord);
+            if (neighbor != null)
+            {
+                neighbors.Add(neighbor);
+            }
+        }
+
+        return neighbors;
+    }
+
+   private void OnDrawGizmos()
     {
         if (cells == null) return;
 

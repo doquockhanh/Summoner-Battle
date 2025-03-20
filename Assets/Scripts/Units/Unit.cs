@@ -15,7 +15,6 @@ public class Unit : MonoBehaviour
     private bool isPlayerUnit;
     private CardController ownerCard;
 
-    // Events được tổ chức lại
     public event System.Action OnDeath;
 
     public bool IsDead => stats.IsDead;
@@ -26,6 +25,7 @@ public class Unit : MonoBehaviour
     public UnitStats GetUnitStats() => stats;
     public float GetCurrentHP() => stats.CurrentHP;
     public CardController OwnerCard => ownerCard;
+    public HexCell OccupiedCell => movement.OccupiedCell;
 
     private void Awake()
     {
@@ -54,18 +54,21 @@ public class Unit : MonoBehaviour
 
         stats.Initialize(data);
         combat.Initialize(this);
-        movement.Initialize(this);
+        // movement no need Initialize
         targeting.Initialize(this);
         view.Initialize(this);
+    }
+
+    void Start(){
+        targeting.autoTargeting = true;
     }
 
     private void Update()
     {
         if (IsDead) return;
 
-        if (!targeting.IsPaused)
+        if (targeting.CurrentTarget != null)
         {
-            targeting.UpdateTarget();
             HandleCombat();
             HandleMovement();
         }
@@ -74,19 +77,15 @@ public class Unit : MonoBehaviour
     private void HandleCombat()
     {
         currentTarget = targeting.CurrentTarget;
-        if (currentTarget != null && targeting.IsInRange(currentTarget))
+        if (currentTarget != null)
         {
             combat.TryAttack(currentTarget);
-        }
-        else if (targeting.CurrentBaseTarget != null && targeting.IsInRangeOfBase())
-        {
-            combat.AttackBase(targeting.CurrentBaseTarget);
         }
     }
 
     private void HandleMovement()
     {
-        movement.Move(targeting.CurrentTarget, targeting.CurrentBaseTarget);
+        movement.Move(targeting.CurrentTarget.OccupiedCell);
     }
 
     public void TakeDamage(float amount, DamageType damageType, Unit source = null)

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public struct HexCoord
 {
-    public readonly int q; // trục q (từ trái sang phải)
-    public readonly int r; // trục r (từ trên xuống dưới)
+    public int q { get; private set; } // trục q
+    public int r { get; private set; } // trục r
     
     public static readonly HexCoord[] Directions = new HexCoord[]
     {
@@ -24,19 +24,26 @@ public struct HexCoord
     // Tính tọa độ s (được sử dụng trong một số tính toán)
     public int S => -q - r;
 
-    // Cộng hai tọa độ hex
+    // Phép cộng hai tọa độ hex
     public static HexCoord operator +(HexCoord a, HexCoord b)
-        => new HexCoord(a.q + b.q, a.r + b.r);
+    {
+        return new HexCoord(a.q + b.q, a.r + b.r);
+    }
 
     // Trừ hai tọa độ hex
     public static HexCoord operator -(HexCoord a, HexCoord b)
         => new HexCoord(a.q - b.q, a.r - b.r);
 
-    // Tính khoảng cách giữa hai hex
+    // Tính khoảng cách Manhattan giữa hai tọa độ hex
     public int DistanceTo(HexCoord other)
     {
-        var vec = this - other;
-        return (Mathf.Abs(vec.q) + Mathf.Abs(vec.r) + Mathf.Abs(vec.S)) / 2;
+        // Trong hệ tọa độ offset, s = -q-r
+        int s1 = -q - r;
+        int s2 = -other.q - other.r;
+        
+        return (Mathf.Abs(q - other.q) + 
+                Mathf.Abs(r - other.r) + 
+                Mathf.Abs(s1 - s2)) / 2;
     }
 
     // Lấy các hex lân cận
@@ -51,4 +58,18 @@ public struct HexCoord
     }
 
     public override string ToString() => $"({q}, {r})";
+
+    public override bool Equals(object obj)
+    {
+        if (obj is HexCoord other)
+        {
+            return q == other.q && r == other.r;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return q.GetHashCode() ^ (r.GetHashCode() << 2);
+    }
 }

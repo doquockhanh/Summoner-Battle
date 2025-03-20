@@ -1,123 +1,131 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class UnitMovement : MonoBehaviour
 {
     private Unit unit;
-    private UnitStats stats;
-    private HexCell currentCell;
-    private HexCell targetCell;
-    private bool isMoving;
-    private float moveSpeed;
-    private Vector3 moveDirection;
-    private UnitTargeting unitTargeting;
+    private HexGrid hexGrid;
+    private HexPathFinder pathFinder;
+    private UnitStatusEffects statusEffects;
+    private List<HexCell> currentPath;
+    private int currentPathIndex;
+    
+    // Thêm biến lưu trữ ô hiện tại
+    private HexCell occupiedCell;
+    public HexCell OccupiedCell => occupiedCell;
 
-    public void Initialize(Unit unit)
+    private void Start()
     {
-        this.unit = unit;
-        this.stats = unit.GetComponent<UnitStats>();
-        this.unitTargeting = unit.GetComponent<UnitTargeting>();
-        moveSpeed = unit.GetUnitStats().Data.moveSpeed;
+        unit = GetComponent<Unit>();
+        hexGrid = HexGrid.Instance;
+        pathFinder = new HexPathFinder(hexGrid);
+        statusEffects = GetComponent<UnitStatusEffects>();
+        currentPath = null;
+        currentPathIndex = 0;
         
-        // Đăng ký unit với hex grid
-        UpdateCurrentCell();
-    }
-
-    private void UpdateCurrentCell()
-    {
-        var newCell = HexGrid.Instance.GetCellAtPosition(transform.position);
-        if (newCell != currentCell)
+        // Khởi tạo ô ban đầu
+        occupiedCell = hexGrid.GetCellAtPosition(transform.position);
+        if (occupiedCell != null)
         {
-            if (currentCell != null)
-            {
-                currentCell.SetUnit(null);
-            }
-            currentCell = newCell;
-            if (currentCell != null)
-            {
-                currentCell.SetUnit(unit);
-            }
+            occupiedCell.SetUnit(unit);
         }
-    }
-
-    public void Move(Unit targetUnit, Base targetBase)
-    {
-        if (unit.IsDead) return;
-
-        if (targetUnit != null)
-        {
-            MoveTowardsTarget(targetUnit);
-        }
-        else if (targetBase != null)
-        {
-            MoveTowardsBase(targetBase);
-        }
-    }
-
-    private void MoveTowardsTarget(Unit target)
-    {
-        if (unitTargeting.IsInRange(target)) 
-        {
-            StopMoving();
-            return;
-        }
-
-        HexCell targetHexCell = HexGrid.Instance.GetCellAtPosition(target.transform.position);
-        if (targetHexCell != currentCell)
-        {
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            Vector3 newPosition = transform.position + direction * moveSpeed * Time.deltaTime;
-            
-            // Kiểm tra cell mới trước khi di chuyển
-            var nextCell = HexGrid.Instance.GetCellAtPosition(newPosition);
-            if (nextCell != null && !nextCell.IsOccupied)
-            {
-                transform.position = newPosition;
-                UpdateCurrentCell();
-                
-                // Cập nhật animation
-                var view = unit.GetComponent<UnitView>();
-                view.SetMoving(true);
-                view.FlipSprite(direction.x > 0);
-            }
-        }
-    }
-
-    private void MoveTowardsBase(Base targetBase)
-    {
-        if (unitTargeting.IsInRangeOfBase())
-        {
-            StopMoving();
-            return;
-        }
-
-        Vector3 direction = (targetBase.transform.position - transform.position).normalized;
-        Vector3 newPosition = transform.position + direction * moveSpeed * Time.deltaTime;
-        
-        var nextCell = HexGrid.Instance.GetCellAtPosition(newPosition);
-        if (nextCell != null && !nextCell.IsOccupied)
-        {
-            transform.position = newPosition;
-            UpdateCurrentCell();
-            
-            var view = unit.GetComponent<UnitView>();
-            view.SetMoving(true);
-            view.FlipSprite(direction.x > 0);
-        }
-    }
-
-    private void StopMoving()
-    {
-        isMoving = false;
-        unit.GetComponent<UnitView>().SetMoving(false);
     }
 
     private void OnDestroy()
     {
-        if (currentCell != null)
+        // Giải phóng ô khi unit bị hủy
+        if (occupiedCell != null)
         {
-            currentCell.SetUnit(null);
+            occupiedCell.SetUnit(null);
         }
     }
-}
+
+    public void Move(HexCell target)
+    {
+        // Kiểm tra điều kiện di chuyển
+        if (!CanMove())
+        {
+            return;
+        }
+
+        // Nếu chưa có đường đi hoặc ô tiếp theo bị chiếm, tìm đường đi mới
+        if (currentPath == null || 
+            IsNextCellOccupied() || 
+            currentPathIndex >= currentPath.Count)
+        {
+            currentPath = pathFinder.FindPath(occupiedCell, target);
+            currentPathIndex = 0;
+
+            // Không tìm được đường đi
+            if (currentPath == null || currentPath.Count == 0)
+            {
+                return;
+            }
+        }
+
+        // Di chuyển đến ô tiếp theo trong path
+        MoveAlongPath();
+    }
+
+    private bool CanMove()
+    {
+        return statusEffects != null && statusEffects.CanAct();
+    }
+
+    private bool IsNextCellOccupied()
+    {
+        if (currentPath == null || 
+            currentPathIndex >= currentPath.Count || 
+            currentPathIndex < 0)
+        {
+            return false;
+        }
+
+        return currentPath[currentPathIndex].IsOccupied;
+    }
+
+    private void MoveAlongPath()
+    {
+        if (currentPath == null || currentPathIndex >= currentPath.Count)
+        {
+            return;
+        }
+
+        // Lấy ô tiếp theo
+        HexCell nextCell = currentPath[currentPathIndex];
+
+        // Nếu mới bắt đầu di chuyển đến ô tiếp theo
+        if (occupiedCell != nextCell && !nextCell.IsOccupied)
+        {
+            // Cập nhật trạng thái các ô
+            if (occupiedCell != null)
+            {
+                occupiedCell.SetUnit(null);
+            }
+            nextCell.SetUnit(unit);
+            occupiedCell = nextCell;
+        }
+        
+        // Di chuyển về phía ô tiếp theo
+        Vector3 targetPosition = nextCell.WorldPosition;
+        float moveSpeed = unit.GetUnitStats().Data.moveSpeed;
+        
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetPosition,
+            moveSpeed * Time.deltaTime
+        );
+
+        // Kiểm tra xem đã đến ô tiếp theo chưa
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            currentPathIndex++;
+        }
+    }
+
+    // Thêm getter cho ô hiện tại
+    public HexCell GetOccupiedCell()
+    {
+        return occupiedCell;
+    }
+} 
