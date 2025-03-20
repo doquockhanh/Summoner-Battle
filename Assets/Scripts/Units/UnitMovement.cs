@@ -9,10 +9,12 @@ public class UnitMovement : MonoBehaviour
     private UnitStatusEffects statusEffects;
     private List<HexCell> currentPath;
     private int currentPathIndex;
-    
+
     // Thêm biến lưu trữ ô hiện tại
     private HexCell occupiedCell;
     public HexCell OccupiedCell => occupiedCell;
+    private float speed => unit.GetUnitStats().GetMoveSpeed();
+    private int attackRange => unit.GetUnitStats().GetRange();
 
     private void Start()
     {
@@ -22,14 +24,12 @@ public class UnitMovement : MonoBehaviour
         statusEffects = GetComponent<UnitStatusEffects>();
         currentPath = null;
         currentPathIndex = 0;
-        
+
         // Khởi tạo ô ban đầu
         occupiedCell = hexGrid.GetCellAtPosition(transform.position);
         if (occupiedCell != null)
         {
             occupiedCell.SetUnit(unit);
-        }else {
-            Debug.Log("ko timf ra occupied cell");
         }
     }
 
@@ -51,11 +51,11 @@ public class UnitMovement : MonoBehaviour
         }
 
         // Nếu chưa có đường đi hoặc ô tiếp theo bị chiếm, tìm đường đi mới
-        if (currentPath == null || 
-            IsNextCellOccupied() || 
+        if (currentPath == null ||
+            IsNextCellOccupied() ||
             currentPathIndex >= currentPath.Count)
         {
-            currentPath = pathFinder.FindPath(occupiedCell, target);
+            currentPath = pathFinder.FindPath(occupiedCell, target, attackRange);
             currentPathIndex = 0;
 
             // Không tìm được đường đi
@@ -71,13 +71,15 @@ public class UnitMovement : MonoBehaviour
 
     private bool CanMove()
     {
-        return statusEffects != null && statusEffects.CanAct();
+        if (statusEffects == null) return true;
+
+        return statusEffects.CanAct();
     }
 
     private bool IsNextCellOccupied()
     {
-        if (currentPath == null || 
-            currentPathIndex >= currentPath.Count || 
+        if (currentPath == null ||
+            currentPathIndex >= currentPath.Count ||
             currentPathIndex < 0)
         {
             return false;
@@ -107,15 +109,14 @@ public class UnitMovement : MonoBehaviour
             nextCell.SetUnit(unit);
             occupiedCell = nextCell;
         }
-        
+
         // Di chuyển về phía ô tiếp theo
         Vector3 targetPosition = nextCell.WorldPosition;
-        float moveSpeed = unit.GetUnitStats().Data.moveSpeed;
-        
+
         transform.position = Vector3.MoveTowards(
             transform.position,
             targetPosition,
-            moveSpeed * Time.deltaTime
+            speed * Time.deltaTime
         );
 
         // Kiểm tra xem đã đến ô tiếp theo chưa
@@ -124,10 +125,4 @@ public class UnitMovement : MonoBehaviour
             currentPathIndex++;
         }
     }
-
-    // Thêm getter cho ô hiện tại
-    public HexCell GetOccupiedCell()
-    {
-        return occupiedCell;
-    }
-} 
+}

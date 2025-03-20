@@ -5,8 +5,8 @@ public class UnitTargeting : MonoBehaviour
 {
     public bool autoTargeting = true;
     private Unit currentTarget;
-    private int detectRange => GetComponent<UnitStats>().GetDetectRange();
-    private float attackRange => GetComponent<UnitStats>().GetRange();
+    private int detectRange => stats.GetDetectRange();
+    private int attackRange => stats.GetRange();
     private HexGrid hexGrid;
     private Unit unit;
     private UnitStats stats;
@@ -33,7 +33,6 @@ public class UnitTargeting : MonoBehaviour
 
     private void AutoTargeting()
     {
-        // Kiểm tra target hiện tại
         if (currentTarget == null ||
             currentTarget.IsDead ||
             !IsInDetectRange(currentTarget))
@@ -44,46 +43,33 @@ public class UnitTargeting : MonoBehaviour
 
     private void FindNewTarget()
     {
-        if(unit.OccupiedCell == null) return;
-        // Lấy các ô trong tầm phát hiện
-        var cellsInRange = hexGrid.GetCellsInRange(unit.OccupiedCell.Coordinates, detectRange);
+        if (unit.OccupiedCell == null) return;
+        List<HexCell> cellsInRange = hexGrid.GetCellsInRange(unit.OccupiedCell.Coordinates, detectRange);
 
-        // Dictionary để nhóm các unit theo khoảng cách
         var targetsByDistance = new Dictionary<int, List<Unit>>();
         int closestDistance = int.MaxValue;
 
-        // Phân loại các unit theo khoảng cách
-        foreach (var cell in cellsInRange)
+        foreach (HexCell cell in cellsInRange)
         {
             if (cell.OccupyingUnit != null &&
-                !cell.OccupyingUnit.IsDead &&
+                !cell.OccupyingUnit.GetUnitStats().IsDead &&
                 cell.OccupyingUnit.IsPlayerUnit != unit.IsPlayerUnit)
             {
                 int distance = cell.Coordinates.DistanceTo(unit.OccupiedCell.Coordinates);
+                closestDistance = Mathf.Min(closestDistance, distance);
 
-                // Chỉ quan tâm đến khoảng cách trong detect range
-                if (distance <= detectRange)
+                if (!targetsByDistance.ContainsKey(distance))
                 {
-                    // Cập nhật khoảng cách gần nhất
-                    closestDistance = Mathf.Min(closestDistance, distance);
-
-                    // Thêm unit vào nhóm cùng khoảng cách
-                    if (!targetsByDistance.ContainsKey(distance))
-                    {
-                        targetsByDistance[distance] = new List<Unit>();
-                    }
-                    targetsByDistance[distance].Add(cell.OccupyingUnit);
+                    targetsByDistance[distance] = new List<Unit>();
                 }
+                targetsByDistance[distance].Add(cell.OccupyingUnit);
             }
         }
 
-        // Nếu tìm thấy target
         if (targetsByDistance.Count > 0)
         {
-            // Lấy danh sách các unit ở khoảng cách gần nhất
-            var closestTargets = targetsByDistance[closestDistance];
+            List<Unit> closestTargets = targetsByDistance[closestDistance];
 
-            // Nếu có nhiều hơn 1 target ở cùng khoảng cách gần nhất
             if (closestTargets.Count > 1)
             {
                 int randomIndex = Random.Range(0, closestTargets.Count);
@@ -138,10 +124,10 @@ public class UnitTargeting : MonoBehaviour
     public bool IsValidAlly(Unit unit)
     {
         if (unit == null || unit.IsDead) return false;
-        
+
         // Kiểm tra cùng phe
         if (unit.IsPlayerUnit != unit.IsPlayerUnit) return false;
-        
+
         // Kiểm tra có thể target không
         var statusEffects = unit.GetComponent<UnitStatusEffects>();
         if (statusEffects != null && !statusEffects.IsTargetable) return false;
@@ -152,10 +138,10 @@ public class UnitTargeting : MonoBehaviour
     public bool IsValidEnemy(Unit unit)
     {
         if (unit == null || unit.IsDead) return false;
-        
+
         // Kiểm tra khác phe
         if (unit.IsPlayerUnit == unit.IsPlayerUnit) return false;
-        
+
         // Kiểm tra có thể target không
         var statusEffects = unit.GetComponent<UnitStatusEffects>();
         if (statusEffects != null && !statusEffects.IsTargetable) return false;

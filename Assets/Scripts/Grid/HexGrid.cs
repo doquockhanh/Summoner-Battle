@@ -7,8 +7,8 @@ public class HexGrid : MonoBehaviour
     public static HexGrid Instance { get; private set; }
 
     [Header("Grid Settings")]
-    [SerializeField] private int width = 14;
-    [SerializeField] private int height = 28;
+    [SerializeField] private int width = 28;
+    [SerializeField] private int height = 14;
 
     private Dictionary<HexCoord, HexCell> cells;
     [SerializeField] private bool turnOnCoordinates = false;
@@ -34,12 +34,12 @@ public class HexGrid : MonoBehaviour
         cells = new Dictionary<HexCoord, HexCell>();
 
         // Tạo grid 14x28
-        for (int r = 0; r < height; r++)
+        for (int q = 0; q < width; q++)
         {
-            int qStart = -r / 2;
-            int qEnd = width - r / 2;
+            int rStart = - q / 2;
+            int rEnd = height - q / 2;
 
-            for (int q = qStart; q < qEnd; q++)
+            for (int r = rStart; r < rEnd; r++)
             {
                 var coord = new HexCoord(q, r);
                 cells[coord] = new HexCell(coord);

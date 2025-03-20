@@ -11,7 +11,7 @@ public class HexPathFinder
         public float G { get; set; } // Chi phí từ điểm bắt đầu đến node hiện tại
         public float H { get; set; } // Chi phí ước tính từ node hiện tại đến đích
         public float F => G + H; // Tổng chi phí
-        
+
         public PathNode(HexCell cell, PathNode parent, float g, float h)
         {
             Cell = cell;
@@ -32,6 +32,28 @@ public class HexPathFinder
         this.random = new System.Random();
     }
 
+    public List<HexCell> FindPath(HexCell start, HexCell target, int range)
+    {
+        var fullPath = FindPath(start, target);
+        if (fullPath == null || fullPath.Count <= 1)
+        {
+            return null;
+        }
+
+        return fullPath.Skip(1).Take(fullPath.Count - 1 - range).ToList();
+    }
+
+    public List<HexCell> FindPathWithoutStart(HexCell start, HexCell target)
+    {
+        var fullPath = FindPath(start, target);
+        if (fullPath == null || fullPath.Count <= 1)
+        {
+            return null;
+        }
+
+        return fullPath.Skip(1).ToList();
+    }
+
     public List<HexCell> FindPath(HexCell start, HexCell target)
     {
         if (start == null || target == null) return null;
@@ -49,16 +71,15 @@ public class HexPathFinder
         {
             // Lấy node có F thấp nhất
             var currentNode = GetRandomBestNode(openSet);
-            
+
             if (currentNode.Cell == target)
             {
                 return ReconstructPath(currentNode);
             }
-
             RemoveFromOpenSet(openSet, currentNode);
             closedSet.Add(currentNode.Cell);
 
-            foreach (var neighbor in GetValidNeighbors(currentNode.Cell))
+            foreach (var neighbor in GetValidNeighbors(currentNode.Cell, start, target))
             {
                 if (closedSet.Contains(neighbor)) continue;
 
@@ -105,10 +126,10 @@ public class HexPathFinder
         }
     }
 
-    private List<HexCell> GetValidNeighbors(HexCell cell)
+    private List<HexCell> GetValidNeighbors(HexCell cell, HexCell start, HexCell target)
     {
         var neighbors = grid.GetNeighbors(cell);
-        return neighbors.Where(n => n != null && !occupiedCells.Contains(n)).ToList();
+        return neighbors.Where(n => n != null && (n == start || n == target || !occupiedCells.Contains(n))).ToList();
     }
 
     private void AddToOpenSet(SortedDictionary<float, List<PathNode>> openSet, PathNode node)
@@ -168,14 +189,14 @@ public class HexPathFinder
     {
         var path = new List<HexCell>();
         var current = endNode;
-        
+
         while (current != null)
         {
             path.Add(current.Cell);
             current = current.Parent;
         }
-        
+
         path.Reverse();
         return path;
     }
-} 
+}

@@ -6,6 +6,7 @@ public class UnitCombat : MonoBehaviour
     private UnitStats stats;
     private UnitView view;
     private float attackTimer;
+    private UnitTargeting targeting;
     private UnitStatusEffects statusEffects;
 
     private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
@@ -19,6 +20,7 @@ public class UnitCombat : MonoBehaviour
     private void Awake()
     {
         statusEffects = GetComponent<UnitStatusEffects>();
+        targeting = GetComponent<UnitTargeting>();
     }
 
     public void Initialize(Unit unit)
@@ -51,7 +53,7 @@ public class UnitCombat : MonoBehaviour
         // ... rest of skill logic
     }
 
-    private bool CanAttack() => attackTimer <= 0;
+    private bool CanAttack() => attackTimer <= 0 && targeting.IsInAttackRange(targeting.CurrentTarget);
 
     private void PerformAttack(Unit target)
     {

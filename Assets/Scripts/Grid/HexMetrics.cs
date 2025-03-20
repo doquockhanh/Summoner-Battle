@@ -18,17 +18,17 @@ public static class HexMetrics
     // Chuyển đổi từ world position sang hex coordinates
     public static HexCoord WorldToHex(Vector3 position)
     {
-        float q = (2f/3f * position.x) / outerRadius;
-        float r = (-1f/3f * position.x + 1f/3f * Mathf.Sqrt(3f) * position.y) / outerRadius;
-        
+        float q = (2f / 3f * position.x) / outerRadius;
+        float r = (-1f / 3f * position.x + 1f / 3f * Mathf.Sqrt(3f) * position.y) / outerRadius;
+
         return RoundToHex(q, r);
     }
 
     // Chuyển đổi từ hex coordinates sang world position
     public static Vector3 HexToWorld(HexCoord hexCoord)
     {
-        float x = (3f/2f * hexCoord.q) * outerRadius;
-        float y = (Mathf.Sqrt(3f)/2f * hexCoord.q + Mathf.Sqrt(3f) * hexCoord.r) * outerRadius;
+        float x = (3f / 2f * hexCoord.q) * outerRadius;
+        float y = (Mathf.Sqrt(3f) / 2f * hexCoord.q + Mathf.Sqrt(3f) * hexCoord.r) * outerRadius;
         return new Vector3(x, y, 0f); // Z luôn = 0 vì là game 2D
     }
 

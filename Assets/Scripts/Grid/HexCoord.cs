@@ -40,21 +40,10 @@ public struct HexCoord
         // Trong hệ tọa độ offset, s = -q-r
         int s1 = -q - r;
         int s2 = -other.q - other.r;
-        
-        return (Mathf.Abs(q - other.q) + 
-                Mathf.Abs(r - other.r) + 
-                Mathf.Abs(s1 - s2)) / 2;
-    }
 
-    // Lấy các hex lân cận
-    public HexCoord[] GetNeighbors()
-    {
-        var neighbors = new HexCoord[6];
-        for (int i = 0; i < 6; i++)
-        {
-            neighbors[i] = this + Directions[i];
-        }
-        return neighbors;
+        return (Mathf.Abs(q - other.q) +
+                Mathf.Abs(r - other.r) +
+                Mathf.Abs(s1 - s2)) / 2;
     }
 
     public override string ToString() => $"({q}, {r})";

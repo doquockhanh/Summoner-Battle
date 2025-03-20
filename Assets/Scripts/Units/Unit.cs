@@ -10,7 +10,6 @@ public class Unit : MonoBehaviour
     [SerializeField] private UnitTargeting targeting;
     [SerializeField] private UnitView view;
 
-    private Unit currentTarget;
     private Base currentBaseTarget;
     private bool isPlayerUnit;
     private CardController ownerCard;
@@ -19,7 +18,6 @@ public class Unit : MonoBehaviour
 
     public bool IsDead => stats.IsDead;
     public bool IsPlayerUnit => isPlayerUnit;
-    public Unit CurrentTarget => currentTarget;
     public Base CurrentBaseTarget => currentBaseTarget;
     public UnitData GetUnitData() => stats.Data;
     public UnitStats GetUnitStats() => stats;
@@ -27,6 +25,7 @@ public class Unit : MonoBehaviour
     public CardController OwnerCard => ownerCard;
     public HexCell OccupiedCell => movement.OccupiedCell;
     public UnitTargeting Targeting => targeting;
+    public Unit CurrentTarget => targeting.CurrentTarget;
 
     private void Awake()
     {
@@ -60,7 +59,8 @@ public class Unit : MonoBehaviour
         view.Initialize(this);
     }
 
-    void Start(){
+    void Start()
+    {
         targeting.autoTargeting = true;
     }
 
@@ -77,10 +77,9 @@ public class Unit : MonoBehaviour
 
     private void HandleCombat()
     {
-        currentTarget = targeting.CurrentTarget;
-        if (currentTarget != null)
+        if (targeting.IsInAttackRange(targeting.CurrentTarget))
         {
-            combat.TryAttack(currentTarget);
+            combat.TryAttack(targeting.CurrentTarget);
         }
     }
 
@@ -113,39 +112,6 @@ public class Unit : MonoBehaviour
             // Vẽ tầm phát hiện
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, stats.Data.detectRange);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Base enemyBase = other.GetComponent<Base>();
-        if (enemyBase != null && enemyBase.IsPlayerBase != isPlayerUnit)
-        {
-            currentBaseTarget = enemyBase;
-            currentTarget = null; // Reset current target khi chuyển sang tấn công base
-            Debug.Log($"Found enemy base: {enemyBase.name}");
-            return;
-        }
-
-        if (currentTarget != null) return;
-
-        Unit otherUnit = other.GetComponent<Unit>();
-        if (otherUnit != null && !otherUnit.IsDead && otherUnit.isPlayerUnit != isPlayerUnit)
-        {
-            currentTarget = otherUnit;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        // Thêm phát hiện trong trường hợp units đi qua nhau
-        if (currentTarget == null)
-        {
-            Unit otherUnit = other.GetComponent<Unit>();
-            if (otherUnit != null && !otherUnit.IsDead && otherUnit.isPlayerUnit != isPlayerUnit)
-            {
-                currentTarget = otherUnit;
-            }
         }
     }
 }
