@@ -26,6 +26,7 @@ public class Unit : MonoBehaviour
     public float GetCurrentHP() => stats.CurrentHP;
     public CardController OwnerCard => ownerCard;
     public HexCell OccupiedCell => movement.OccupiedCell;
+    public UnitTargeting Targeting => targeting;
 
     private void Awake()
     {

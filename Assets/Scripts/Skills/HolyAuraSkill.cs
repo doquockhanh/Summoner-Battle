@@ -17,8 +17,8 @@ public class HolyAuraSkill : Skill
     [Tooltip("Phần trăm sát thương nhận lại (30% = 30)")]
     public float damageSharePercent = 30f;
 
-    [Range(1f, 10f)]
-    public float auraRadius = 3f;
+    [Range(1, 10)]
+    public int auraRadius = 3;
 
     [Header("Hiệu ứng")]
     public GameObject auraEffectPrefab;

@@ -5,7 +5,8 @@ public class UnitTargeting : MonoBehaviour
 {
     public bool autoTargeting = true;
     private Unit currentTarget;
-    private float detectRange;
+    private int detectRange => GetComponent<UnitStats>().GetDetectRange();
+    private float attackRange => GetComponent<UnitStats>().GetRange();
     private HexGrid hexGrid;
     private Unit unit;
     private UnitStats stats;
@@ -20,7 +21,6 @@ public class UnitTargeting : MonoBehaviour
     private void Start()
     {
         hexGrid = HexGrid.Instance;
-        detectRange = GetComponent<UnitStats>().Data.detectRange;
     }
 
     private void FixedUpdate()
@@ -44,29 +44,29 @@ public class UnitTargeting : MonoBehaviour
 
     private void FindNewTarget()
     {
+        if(unit.OccupiedCell == null) return;
         // Lấy các ô trong tầm phát hiện
-        var currentCell = hexGrid.GetCellAtPosition(transform.position);
-        var cellsInRange = hexGrid.GetCellsInRange(currentCell.Coordinates, Mathf.RoundToInt(detectRange));
-        
+        var cellsInRange = hexGrid.GetCellsInRange(unit.OccupiedCell.Coordinates, detectRange);
+
         // Dictionary để nhóm các unit theo khoảng cách
         var targetsByDistance = new Dictionary<int, List<Unit>>();
         int closestDistance = int.MaxValue;
-        
+
         // Phân loại các unit theo khoảng cách
         foreach (var cell in cellsInRange)
         {
-            if (cell.OccupyingUnit != null && 
-                !cell.OccupyingUnit.IsDead && 
+            if (cell.OccupyingUnit != null &&
+                !cell.OccupyingUnit.IsDead &&
                 cell.OccupyingUnit.IsPlayerUnit != unit.IsPlayerUnit)
             {
-                int distance = cell.Coordinates.DistanceTo(currentCell.Coordinates);
-                
+                int distance = cell.Coordinates.DistanceTo(unit.OccupiedCell.Coordinates);
+
                 // Chỉ quan tâm đến khoảng cách trong detect range
                 if (distance <= detectRange)
                 {
                     // Cập nhật khoảng cách gần nhất
                     closestDistance = Mathf.Min(closestDistance, distance);
-                    
+
                     // Thêm unit vào nhóm cùng khoảng cách
                     if (!targetsByDistance.ContainsKey(distance))
                     {
@@ -82,7 +82,7 @@ public class UnitTargeting : MonoBehaviour
         {
             // Lấy danh sách các unit ở khoảng cách gần nhất
             var closestTargets = targetsByDistance[closestDistance];
-            
+
             // Nếu có nhiều hơn 1 target ở cùng khoảng cách gần nhất
             if (closestTargets.Count > 1)
             {
@@ -100,20 +100,25 @@ public class UnitTargeting : MonoBehaviour
         }
     }
 
-    private bool IsInDetectRange(Unit target)
+    public bool IsInDetectRange(Unit target)
     {
-        if (target == null) return false;
+        if (target == null && target.OccupiedCell == null) return false;
 
-        var targetCell = hexGrid.GetCellAtPosition(target.transform.position);
-        var currentCell = hexGrid.GetCellAtPosition(transform.position);
-
-        return targetCell.Coordinates.DistanceTo(currentCell.Coordinates) <= detectRange;
+        return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= detectRange;
     }
+
+    public bool IsInAttackRange(Unit target)
+    {
+        if (target == null && target.OccupiedCell == null) return false;
+
+        return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= attackRange;
+    }
+
 
     public void SetTarget(Unit newTarget)
     {
         // Kiểm tra target mới có hợp lệ không
-        if (newTarget == null || newTarget.IsDead || newTarget.IsPlayerUnit == unit.IsPlayerUnit)
+        if (IsValidEnemy(newTarget))
         {
             Debug.LogWarning("Cố gắng set target không hợp lệ");
             return;
@@ -128,5 +133,33 @@ public class UnitTargeting : MonoBehaviour
 
         // Set target mới
         currentTarget = newTarget;
+    }
+
+    public bool IsValidAlly(Unit unit)
+    {
+        if (unit == null || unit.IsDead) return false;
+        
+        // Kiểm tra cùng phe
+        if (unit.IsPlayerUnit != unit.IsPlayerUnit) return false;
+        
+        // Kiểm tra có thể target không
+        var statusEffects = unit.GetComponent<UnitStatusEffects>();
+        if (statusEffects != null && !statusEffects.IsTargetable) return false;
+
+        return true;
+    }
+
+    public bool IsValidEnemy(Unit unit)
+    {
+        if (unit == null || unit.IsDead) return false;
+        
+        // Kiểm tra khác phe
+        if (unit.IsPlayerUnit == unit.IsPlayerUnit) return false;
+        
+        // Kiểm tra có thể target không
+        var statusEffects = unit.GetComponent<UnitStatusEffects>();
+        if (statusEffects != null && !statusEffects.IsTargetable) return false;
+
+        return true;
     }
 }

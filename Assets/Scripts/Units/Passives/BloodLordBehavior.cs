@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Unit))]
@@ -243,7 +244,7 @@ public class BloodLordBehavior : MonoBehaviour
         float totalDamagePercent = CalculateTotalDamagePercent();
         float actualDamage = baseDamage * (totalDamagePercent / 100f);
 
-        Unit[] nearbyUnits = targeting.GetUnitsInRange(skill.effectRadius);
+        List<Unit> nearbyUnits = HexGrid.Instance.GetUnitsInRange(unit.OccupiedCell.Coordinates, skill.effectRadius, unit.IsPlayerUnit);
         foreach (var enemy in nearbyUnits)
         {
             if (IsValidTarget(enemy))

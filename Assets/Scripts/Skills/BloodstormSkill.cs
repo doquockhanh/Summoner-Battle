@@ -13,8 +13,8 @@ public class BloodstormSkill : Skill
     public float damagePerSoulPercent = 20f;
 
     [Header("Effect Settings")]
-    [Range(1f, 10f)]
-    public float effectRadius = 3f;
+    [Range(1, 10)]
+    public int effectRadius = 3;
 
     [Range(0f, 10f)]
     public float moveSpeedBonus = 5f;
@@ -47,7 +47,7 @@ public class BloodstormSkill : Skill
         // Đảm bảo các giá trị hợp lệ
         damageBasePercent = Mathf.Max(0f, damageBasePercent);
         damagePerSoulPercent = Mathf.Max(0f, damagePerSoulPercent);
-        effectRadius = Mathf.Max(1f, effectRadius);
+        effectRadius = Mathf.Max(1, effectRadius);
         moveSpeedBonus = Mathf.Max(0f, moveSpeedBonus);
         damageInterval = Mathf.Max(0.1f, damageInterval);
     }

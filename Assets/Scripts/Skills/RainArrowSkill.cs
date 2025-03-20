@@ -15,8 +15,8 @@ public class RainArrowSkill : Skill
     [Range(0.1f, 2f)]
     public float timeBetweenWaves = 0.3f;
 
-    [Range(1f, 5f)]
-    public float effectRadius = 2f;
+    [Range(1, 5)]
+    public int effectRadius = 2;
 
     [Header("Hiệu ứng")]
     public GameObject rainArrowEffectPrefab;
@@ -34,7 +34,7 @@ public class RainArrowSkill : Skill
             return;
         }
 
-        Vector3 bestTargetPos = FindBestTargetPosition();
+        HexCell bestTargetPos = HexGrid.Instance.GetCellAtPosition(FindBestTargetPosition());
 
         if (SkillEffectHandler.Instance != null)
         {

@@ -29,7 +29,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         FindFarthestTarget();
 
         // Tạm dừng targeting của caster
-        caster.GetComponent<UnitTargeting>().PauseTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = false;
 
         // Bắt đầu di chuyển bão
         isMoving = true;
@@ -83,7 +83,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         foreach (Collider2D hit in hits)
         {
             Unit enemy = hit.GetComponent<Unit>();
-            if (targeting.IsValidTarget(enemy))
+            if (targeting.IsValidEnemy(enemy))
             {
                 enemy.TakeDamage(damage, DamageType.Magic, caster);
 
@@ -115,7 +115,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         foreach (Collider2D hit in hits)
         {
             Unit enemy = hit.GetComponent<Unit>();
-            if (targeting.IsValidTarget(enemy))
+            if (targeting.IsValidEnemy(enemy))
             {
                 float distance = Vector3.Distance(currentPosition, enemy.transform.position);
                 if (distance > maxDistance)
@@ -143,7 +143,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
     {
         if (caster != null)
         {
-            caster.GetComponent<UnitTargeting>().ResumeTargeting();
+            caster.GetComponent<UnitTargeting>().autoTargeting = true;
         }
         Destroy(this);
     }

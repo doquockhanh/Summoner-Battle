@@ -36,9 +36,9 @@ public class HexGrid : MonoBehaviour
         // Tạo grid 14x28
         for (int r = 0; r < height; r++)
         {
-            int qStart = -r/2;
-            int qEnd = width - r/2;
-            
+            int qStart = -r / 2;
+            int qEnd = width - r / 2;
+
             for (int q = qStart; q < qEnd; q++)
             {
                 var coord = new HexCoord(q, r);
@@ -112,7 +112,38 @@ public class HexGrid : MonoBehaviour
         return neighbors;
     }
 
-   private void OnDrawGizmos()
+    public List<Unit> GetUnitsInRange(HexCoord center, int range, bool isPlayer)
+    {
+        var cellsInRange = GetCellsInRange(center, range);
+        var units = new List<Unit>();
+
+        foreach (var cell in cellsInRange)
+        {
+            Unit unitInCell = cell.OccupyingUnit;
+            if (IsValidTarget(unitInCell, isPlayer))
+            {
+                units.Add(unitInCell);
+            }
+        }
+
+        return units;
+    }
+
+    private bool IsValidTarget(Unit unit, bool isPlayerTeam)
+    {
+        if (unit == null || unit.IsDead) return false;
+
+        // Kiểm tra khác phe
+        if (unit.IsPlayerUnit != isPlayerTeam) return false;
+
+        // Kiểm tra có thể target không
+        var statusEffects = unit.GetComponent<UnitStatusEffects>();
+        if (statusEffects != null && !statusEffects.IsTargetable) return false;
+
+        return true;
+    }
+
+    private void OnDrawGizmos()
     {
         if (cells == null) return;
 
@@ -140,12 +171,5 @@ public class HexGrid : MonoBehaviour
             }
 
         }
-
-        // Vẽ đường phân chia giữa 2 phe
-        Gizmos.color = Color.yellow;
-        float midQ = width / 2f;
-        Vector3 topMid = HexMetrics.HexToWorld(new HexCoord((int)midQ, 0));
-        Vector3 bottomMid = HexMetrics.HexToWorld(new HexCoord((int)midQ, height - 1));
-        Gizmos.DrawLine(topMid, bottomMid);
     }
 }

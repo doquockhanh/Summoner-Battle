@@ -13,9 +13,9 @@ public class DeadlyFourthSkill : Skill
     public float executeThreshold = 15f;
 
     
-    [Range(0f, 30f)]
+    [Range(0, 30)]
     [Tooltip("Tầm đánh của đòn cường hóa")]
-    public float fourthShotRange = 8f;
+    public int fourthShotRange = 8;
 
     public override bool CanActivate(float currentMana)
     {

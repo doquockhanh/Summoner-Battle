@@ -31,7 +31,7 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
                 caster.transform.position, Quaternion.identity);
             Destroy(chargeEffect, 1f);
         } else if (SkillEffectHandler.Instance != null) {
-            SkillEffectHandler.Instance.ShowRangeIndicator(caster.transform.position, skillData.tauntRadius, Color.yellow, 0.2f);
+            SkillEffectHandler.Instance.ShowRangeIndicator(caster.OccupiedCell, skillData.tauntRadius, Color.yellow, 0.2f);
         }
     }
 
@@ -73,7 +73,7 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
                 var targeting = enemy.GetComponent<UnitTargeting>();
                 if (targeting != null)
                 {
-                    targeting.AssignTarget(caster);
+                    targeting.SetTarget(caster);
                 }
             }
         }

@@ -23,7 +23,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
         targetPosition = targetPos;
 
         ApplyInitialEffects();
-        caster.GetComponent<UnitTargeting>().PauseTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = false;
         this.StartCoroutineSafely(ChargeCoroutine());
     }
 
@@ -113,7 +113,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
         // unitTargeting.AssignTarget(unit);
 
         // Resume targeting
-        caster.GetComponent<UnitTargeting>().ResumeTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = true;
 
         // Cleanups
         Cleanup();

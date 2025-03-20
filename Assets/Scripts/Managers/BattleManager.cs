@@ -112,17 +112,19 @@ public class BattleManager : MonoBehaviour
         {
             // Spawn bên trái (q nhỏ)
             int r = Random.Range(0, grid.Height);
-            int q = Random.Range(0, grid.Width / 4);
-            var coord = new HexCoord(q, r);
-            return HexMetrics.HexToWorld(coord);
+            int q = Random.Range(0, grid.Width / 4 - 1);
+            HexCoord coord = new HexCoord(r, q);
+            HexCell cell = HexGrid.Instance.GetCell(coord);
+            return cell.WorldPosition;
         }
         else
         {
             // Spawn bên phải (q lớn)
             int r = Random.Range(0, grid.Height);
-            int q = Random.Range(3 * grid.Width / 4, grid.Width);
+            int q = Random.Range(3 * grid.Width / 4, grid.Width - 1);
             var coord = new HexCoord(q, r);
-            return HexMetrics.HexToWorld(coord);
+            HexCell cell = HexGrid.Instance.GetCell(coord);
+            return cell.WorldPosition;
         }
     }
 

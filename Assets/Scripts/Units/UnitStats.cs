@@ -245,7 +245,7 @@ public class UnitStats : MonoBehaviour
     public float GetMoveSpeed() => speedModifier.Calculate(data.moveSpeed);
     public float GetAttackSpeed() => attackSpeedModifier.Calculate(data.attackSpeed);
     public float GetRange() => rangeModifier.Calculate(data.range);
-    public float GetDetectRange() => data.detectRange;
+    public int GetDetectRange() => data.detectRange;
     public float GetLifesteal() => lifeStealModifier.Calculate(data.lifestealPercent);
     public float GetCriticalChance() => data.criticalChance;
     public float GetCriticalDamage() => data.criticalDamage;

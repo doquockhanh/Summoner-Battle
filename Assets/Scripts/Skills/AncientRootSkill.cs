@@ -75,7 +75,7 @@ public class AncientRootSkill : Skill
         // 3. Đang tấn công đối phương
         UnitTargeting targeting = unit.GetComponent<UnitTargeting>();
 
-        if (targeting != null && targeting.CurrentTarget != null && targeting.IsInRange(targeting.CurrentTarget))
+        if (targeting != null && targeting.CurrentTarget != null && targeting.IsInAttackRange(targeting.CurrentTarget))
         {
             score += 1;
         }

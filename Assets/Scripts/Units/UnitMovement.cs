@@ -28,6 +28,8 @@ public class UnitMovement : MonoBehaviour
         if (occupiedCell != null)
         {
             occupiedCell.SetUnit(unit);
+        }else {
+            Debug.Log("ko timf ra occupied cell");
         }
     }
 

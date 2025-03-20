@@ -3,15 +3,15 @@ using UnityEngine;
 public class RainArrowEffect : MonoBehaviour
 {
     private RainArrowSkill skillData;
-    private Vector3 targetPosition;
-    private System.Action<Vector3> onDamageCallback;
+    private HexCell targetPosition;
+    private System.Action onDamageCallback;
 
-    public void Initialize(RainArrowSkill skill, Vector3 position, System.Action<Vector3> damageCallback)
+    public void Initialize(RainArrowSkill skill, HexCell position, System.Action damageCallback)
     {
         skillData = skill;
         targetPosition = position;
         onDamageCallback = damageCallback;
-        transform.position = position;
+        transform.position = position.WorldPosition;
     }
 
     // Gọi từ Animation Event cho mỗi đợt tên
@@ -19,7 +19,7 @@ public class RainArrowEffect : MonoBehaviour
     {
         if (onDamageCallback != null)
         {
-            onDamageCallback.Invoke(targetPosition);
+            onDamageCallback.Invoke();
         }
     }
 

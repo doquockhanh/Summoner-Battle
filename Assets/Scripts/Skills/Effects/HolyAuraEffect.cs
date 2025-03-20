@@ -52,7 +52,7 @@ public class HolyAuraEffect : MonoBehaviour, ISkillEffect
         while (true)
         {
             protectedAllies.Clear();
-            protectedAllies = unitTargeting.GetUnitsInRange(skillData.auraRadius).ToHashSet();
+            protectedAllies = HexGrid.Instance.GetUnitsInRange(caster.OccupiedCell.Coordinates, skillData.auraRadius, caster.IsPlayerUnit).ToHashSet();
             yield return new WaitForSeconds(0.5f);
         }
     }
