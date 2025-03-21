@@ -13,10 +13,6 @@ public class BattleManager : MonoBehaviour
     public float MapWidth => mapWidth;
     public float MapHeight => mapHeight;
 
-    [SerializeField] private Transform playerSpawnStart;
-    [SerializeField] private Transform playerSpawnEnd;
-    [SerializeField] private Transform enemySpawnStart;
-    [SerializeField] private Transform enemySpawnEnd;
     [SerializeField] private Transform playerCardContainer;
     [SerializeField] private Transform enemyCardContainer;
     [Header("Card Prefabs")]
@@ -134,22 +130,4 @@ public class BattleManager : MonoBehaviour
         Debug.Log(playerWon ? "Player Won!" : "Enemy Won!");
     }
 
-    private void OnDrawGizmos()
-    {
-        if (playerSpawnStart != null && playerSpawnEnd != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(playerSpawnStart.position, playerSpawnEnd.position);
-            Gizmos.DrawSphere(playerSpawnStart.position, 0.2f);
-            Gizmos.DrawSphere(playerSpawnEnd.position, 0.2f);
-        }
-
-        if (enemySpawnStart != null && enemySpawnEnd != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(enemySpawnStart.position, enemySpawnEnd.position);
-            Gizmos.DrawSphere(enemySpawnStart.position, 0.2f);
-            Gizmos.DrawSphere(enemySpawnEnd.position, 0.2f);
-        }
-    }
 }

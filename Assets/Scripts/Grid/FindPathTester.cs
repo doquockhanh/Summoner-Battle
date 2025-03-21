@@ -26,6 +26,7 @@ public class PathTester : MonoBehaviour
         if (startCell != prevStartCell || targetCell != prevTargetCell)
         {
             TestFindPath();
+            TestDistanceTo();
             prevStartCell = startCell;
             prevTargetCell = targetCell;
         }
@@ -62,5 +63,23 @@ public class PathTester : MonoBehaviour
             pathStr += cell.Coordinates.ToString() + " ";
         }
         Debug.Log("Đường đi từ " + startCell + " đến " + targetCell + " : " + pathStr);
+    }
+
+    /// <summary>
+    /// Kiểm tra hàm DistanceTo của HexCoord.
+    /// </summary>
+    void TestDistanceTo()
+    {
+        if (startCell == null || targetCell == null)
+        {
+            Debug.LogWarning("StartCell hoặc TargetCell chưa được thiết lập.");
+            return;
+        }
+
+        HexCoord startCoord = new HexCoord((int)startCell.x, (int)startCell.y);
+        HexCoord targetCoord = new HexCoord((int)targetCell.x, (int)targetCell.y);
+
+        int distance = startCoord.DistanceTo(targetCoord);
+        Debug.Log("Khoảng cách từ " + startCoord + " đến " + targetCoord + " là: " + distance);
     }
 }

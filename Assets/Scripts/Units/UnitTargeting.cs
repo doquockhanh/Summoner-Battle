@@ -96,7 +96,7 @@ public class UnitTargeting : MonoBehaviour
     public bool IsInAttackRange(Unit target)
     {
         if (target == null && target.OccupiedCell == null) return false;
-
+        // Debug.Log(unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates));
         return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= attackRange;
     }
 

@@ -9,6 +9,8 @@ public class UnitMovement : MonoBehaviour
     private UnitStatusEffects statusEffects;
     private List<HexCell> currentPath;
     private int currentPathIndex;
+    private float pathUpdateTimer;
+    private const float PATH_UPDATE_INTERVAL = 1f;
 
     // Thêm biến lưu trữ ô hiện tại
     private HexCell occupiedCell;
@@ -24,6 +26,7 @@ public class UnitMovement : MonoBehaviour
         statusEffects = GetComponent<UnitStatusEffects>();
         currentPath = null;
         currentPathIndex = 0;
+        pathUpdateTimer = 0f;
 
         // Khởi tạo ô ban đầu
         occupiedCell = hexGrid.GetCellAtPosition(transform.position);
@@ -44,35 +47,79 @@ public class UnitMovement : MonoBehaviour
 
     public void Move(HexCell target)
     {
-        // Kiểm tra điều kiện di chuyển
-        if (!CanMove())
+        if (!CanMove() || target == null) return;
+
+        pathUpdateTimer += Time.deltaTime;
+        if (pathUpdateTimer >= PATH_UPDATE_INTERVAL || currentPath == null)
         {
-            return;
+            HandleFindPath(target);
+            pathUpdateTimer = 0f;
         }
 
-        // Nếu chưa có đường đi hoặc ô tiếp theo bị chiếm, tìm đường đi mới
+        MoveAlongPath();
+    }
+
+    public void HandleFindPath(HexCell target)
+    {
+        if (target == null || occupiedCell == null) return;
+
+        // Tìm đường đi mới nếu:
+        // - Chưa có đường đi
+        // - Ô tiếp theo bị chiếm
+        // - Đã đi hết đường
         if (currentPath == null ||
             IsNextCellOccupied() ||
             currentPathIndex >= currentPath.Count)
         {
             currentPath = pathFinder.FindPath(occupiedCell, target, attackRange);
             currentPathIndex = 0;
+        }
+    }
 
-            // Không tìm được đường đi
-            if (currentPath == null || currentPath.Count == 0)
+    private void MoveAlongPath()
+    {
+        if (currentPath == null || 
+            currentPathIndex >= currentPath.Count || 
+            !CanMove()) return;
+
+        HexCell nextCell = currentPath[currentPathIndex];
+        if (nextCell == null) return;
+
+        // Chiếm ô tiếp theo nếu chưa bị chiếm
+        if (occupiedCell != nextCell && !nextCell.IsOccupied)
+        {
+            if (occupiedCell != null)
             {
-                return;
+                occupiedCell.SetUnit(null);
             }
+            nextCell.SetUnit(unit);
+            occupiedCell = nextCell;
         }
 
-        // Di chuyển đến ô tiếp theo trong path
-        MoveAlongPath();
+        // Di chuyển đến vị trí tiếp theo
+        Vector2 targetPosition = nextCell.WorldPosition;
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            targetPosition,
+            speed * Time.deltaTime
+        );
+
+        // Cập nhật animation
+        var view = unit.GetComponent<UnitView>();
+        view.SetMoving(true);
+        view.FlipSprite(targetPosition.x - transform.position.x > 0);
+
+        // Kiểm tra đã đến ô tiếp theo chưa
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            currentPathIndex++;
+            view.SetMoving(false);
+        }
     }
 
     private bool CanMove()
     {
         if (statusEffects == null) return true;
-
         return statusEffects.CanAct();
     }
 
@@ -86,43 +133,5 @@ public class UnitMovement : MonoBehaviour
         }
 
         return currentPath[currentPathIndex].IsOccupied;
-    }
-
-    private void MoveAlongPath()
-    {
-        if (currentPath == null || currentPathIndex >= currentPath.Count)
-        {
-            return;
-        }
-
-        // Lấy ô tiếp theo
-        HexCell nextCell = currentPath[currentPathIndex];
-
-        // Nếu mới bắt đầu di chuyển đến ô tiếp theo
-        if (occupiedCell != nextCell && !nextCell.IsOccupied)
-        {
-            // Cập nhật trạng thái các ô
-            if (occupiedCell != null)
-            {
-                occupiedCell.SetUnit(null);
-            }
-            nextCell.SetUnit(unit);
-            occupiedCell = nextCell;
-        }
-
-        // Di chuyển về phía ô tiếp theo
-        Vector3 targetPosition = nextCell.WorldPosition;
-
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            speed * Time.deltaTime
-        );
-
-        // Kiểm tra xem đã đến ô tiếp theo chưa
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-        {
-            currentPathIndex++;
-        }
     }
 }

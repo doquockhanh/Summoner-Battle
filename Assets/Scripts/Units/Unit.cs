@@ -70,18 +70,11 @@ public class Unit : MonoBehaviour
 
         if (targeting.CurrentTarget != null)
         {
-            HandleCombat();
+            combat.TryAttack(targeting.CurrentTarget);
             HandleMovement();
         }
     }
 
-    private void HandleCombat()
-    {
-        if (targeting.IsInAttackRange(targeting.CurrentTarget))
-        {
-            combat.TryAttack(targeting.CurrentTarget);
-        }
-    }
 
     private void HandleMovement()
     {
