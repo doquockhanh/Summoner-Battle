@@ -60,7 +60,7 @@ public class FuriousCavalryCharge : Skill
 
         if (bestTargetPos == Vector3.zero)
         {
-            Debug.Log("FindBestTargetPosition can find target position!");
+            Debug.Log("FindBestTargetPosition cant find target position!");
             return;
         }
 
@@ -124,7 +124,7 @@ public class FuriousCavalryCharge : Skill
         // 3. Đang tấn công đối phương
         UnitTargeting targeting = unit.GetComponent<UnitTargeting>();
 
-        if (targeting != null && targeting.CurrentTarget != null && targeting.IsInRange(targeting.CurrentTarget))
+        if (targeting != null && targeting.CurrentTarget != null && targeting.IsInAttackRange(targeting.CurrentTarget))
         {
             score += 1;
         }

@@ -20,7 +20,7 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
         if (!ValidateExecution()) return;
 
         StartCoroutine(LifetimeCoroutine());
-        GetComponent<UnitTargeting>().AssignTarget(FindRandomEnenmy());
+        GetComponent<UnitTargeting>().SetTarget(FindRandomEnenmy());
     }
 
     private Unit FindRandomEnenmy()

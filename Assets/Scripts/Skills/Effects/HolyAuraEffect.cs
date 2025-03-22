@@ -52,7 +52,7 @@ public class HolyAuraEffect : MonoBehaviour, ISkillEffect
         while (true)
         {
             protectedAllies.Clear();
-            protectedAllies = unitTargeting.GetUnitsInRange(skillData.auraRadius).ToHashSet();
+            protectedAllies = HexGrid.Instance.GetUnitsInRange(caster.OccupiedCell.Coordinates, skillData.auraRadius, caster.IsPlayerUnit).ToHashSet();
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -85,12 +85,12 @@ public class HolyAuraEffect : MonoBehaviour, ISkillEffect
 
         // Tăng máu tối đa và hồi máu
         float maxHpIncrease = stats.GetMaxHp() * boost;
-        stats.ModifyMaxHp(maxHpIncrease);
+        stats.ModifyStat(StatType.MaxHp, maxHpIncrease);
         stats.Heal(maxHpIncrease);
 
         // Tăng giáp và kháng phép
-        stats.ModifyArmor(stats.GetArmor() * boost);
-        stats.ModifyMagicResist(stats.GetMagicResist() * boost);
+        stats.ModifyStat(StatType.Armor, stats.GetArmor() * boost);
+        stats.ModifyStat(StatType.MagicResist, stats.GetMagicResist() * boost);
     }
 
     private bool ValidateExecution()

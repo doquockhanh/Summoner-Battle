@@ -14,8 +14,8 @@ public class GuardianAuraSkill : Skill
     [Tooltip("Tăng kháng phép (20% = 20)")]
     public float magicResistBoost = 20f;
 
-    [Range(0f, 5f)]
-    public float auraRadius = 2f;
+    [Range(0, 5)]
+    public int auraRadius = 2;
 
     [Header("Hiệu ứng")]
     public GameObject auraEffectPrefab;

@@ -27,10 +27,10 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        caster.GetUnitStats().ModifyLifeSteal(skillData.lifestealPercent);
+        caster.GetUnitStats().ModifyStat(StatType.LifeSteal, skillData.lifestealPercent);
 
         // Tạm dừng targeting để thực hiện charge
-        caster.GetComponent<UnitTargeting>().PauseTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = false;
 
         // Bắt đầu charge
         StartChargeSequence();
@@ -104,7 +104,7 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
 
         // Kết thúc charge sequence
         isCharging = false;
-        caster.GetComponent<UnitTargeting>().ResumeTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = true;
     }
 
     private void HandleDamageDealt(Unit source, Unit target, float amount)
@@ -117,7 +117,7 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
 
         if (remainingSweepAttacks <= 0)
         {
-            caster.GetUnitStats().ModifyLifeSteal(-skillData.lifestealPercent);
+            caster.GetUnitStats().ModifyStat(StatType.LifeSteal, -skillData.lifestealPercent);
             Cleanup();
         }
     }

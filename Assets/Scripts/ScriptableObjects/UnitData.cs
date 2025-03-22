@@ -59,11 +59,11 @@ public class UnitData : ScriptableObject
     [Range(0f, 10f)]
     public float moveSpeed;
 
-    [Range(0f, 8f)]
-    public float range;        // Tầm đánh
+    [Range(0, 8)]
+    public int range;        // Tầm đánh
 
-    [Range(0f, 10f)]
-    public float detectRange;  // Tầm phát hiện kẻ địch
+    [Range(0, 10)]
+    public int detectRange;  // Tầm phát hiện kẻ địch
     public float healingReceivedPercent = 100f; // % Tăng lượng hồi máu nhận được
 
     // Thêm reference đến prefab
@@ -90,7 +90,7 @@ public class UnitData : ScriptableObject
 
         attackSpeed = Mathf.Max(0.1f, attackSpeed);
         moveSpeed = Mathf.Max(0, moveSpeed);
-        range = Mathf.Max(0.1f, range);
+        range = Mathf.Max(0, range);
         detectRange = Mathf.Max(range, detectRange);
         healingReceivedPercent = Mathf.Max(0, healingReceivedPercent);
     }

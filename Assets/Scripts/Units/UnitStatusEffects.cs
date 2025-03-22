@@ -9,6 +9,7 @@ public class UnitStatusEffects : MonoBehaviour
     public bool IsKnockedUp => HasEffect(StatusEffectType.Knockup);
     public bool IsStunned => HasEffect(StatusEffectType.Stun);
     public bool IsSlowed => HasEffect(StatusEffectType.Slow);
+    public bool IsTargetable => HasEffect(StatusEffectType.Untargetable);
 
     private void Awake()
     {

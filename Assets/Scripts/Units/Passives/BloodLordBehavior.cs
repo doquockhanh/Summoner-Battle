@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Unit))]
@@ -243,7 +244,7 @@ public class BloodLordBehavior : MonoBehaviour
         float totalDamagePercent = CalculateTotalDamagePercent();
         float actualDamage = baseDamage * (totalDamagePercent / 100f);
 
-        Unit[] nearbyUnits = targeting.GetUnitsInRange(skill.effectRadius);
+        List<Unit> nearbyUnits = HexGrid.Instance.GetUnitsInRange(unit.OccupiedCell.Coordinates, skill.effectRadius, unit.IsPlayerUnit);
         foreach (var enemy in nearbyUnits)
         {
             if (IsValidTarget(enemy))
@@ -268,21 +269,7 @@ public class BloodLordBehavior : MonoBehaviour
 
     private void HandleBloodstormMovement()
     {
-        if (!isBloodstormActive) return;
-
-        if (movement.TargetPosition == Vector3.zero ||
-            Vector2.Distance(transform.position, movement.TargetPosition) < 0.1f)
-        {
-            Vector3 newPos = RandomMovementHandler.Instance.GetNextRandomPosition(
-                transform.position,
-                unit.IsPlayerUnit
-            );
-
-            movement.SetTargetPosition(newPos);
-        }
-
-        Vector3 direction = (movement.TargetPosition - transform.position).normalized;
-        movement.SetMoveDirection(direction);
+ 
     }
 
     private void OnDestroy()

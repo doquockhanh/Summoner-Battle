@@ -8,8 +8,8 @@ public class FireballSkill : Skill
     [Tooltip("Phần trăm sát thương phép (100% = 100)")]
     public float magicDamagePercent = 100f;
     
-    [Range(0f, 5f)]
-    public float effectRadius = 2f;
+    [Range(0, 5)]
+    public int effectRadius = 2;
     
     [Header("Hiệu ứng thiêu đốt")]
     [Range(0f, 5f)]
@@ -39,7 +39,7 @@ public class FireballSkill : Skill
             return;
         }
 
-        Vector3 bestTargetPos = FindBestTargetPosition();
+        HexCell bestTargetPos = HexGrid.Instance.GetCellAtPosition(FindBestTargetPosition());
         
         if (SkillEffectHandler.Instance != null)
         {

@@ -13,6 +13,7 @@ public enum StatusEffectType
     Burning,
     StealthOnKill,
     Immortal,
+    Untargetable
 }
 
 public interface IStatusEffect

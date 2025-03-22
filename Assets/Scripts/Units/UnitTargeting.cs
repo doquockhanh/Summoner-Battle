@@ -3,254 +3,149 @@ using System.Collections.Generic;
 
 public class UnitTargeting : MonoBehaviour
 {
-    // Constants
-    private const int MAX_COLLIDERS = 20;
-
-    // Dependencies
+    public bool autoTargeting = true;
+    private Unit currentTarget;
+    private int detectRange => stats.GetDetectRange();
+    private int attackRange => stats.GetRange();
+    private HexGrid hexGrid;
     private Unit unit;
     private UnitStats stats;
-    private BloodstormStatusEffect bloodstormEffect;
-
-    // Target state
-    private Unit currentTarget;
-    private Base currentBaseTarget;
-    private readonly Collider2D[] detectedColliders = new Collider2D[MAX_COLLIDERS];
-    private int detectedCount;
-
-    private bool isPaused = false;
-    private float targetCheckTimer;
-
-    // Properties với XML documentation
-    /// <summary>Unit hiện đang được nhắm tới</summary>
     public Unit CurrentTarget => currentTarget;
-    /// <summary>Base hiện đang được nhắm tới</summary>
-    public Base CurrentBaseTarget => currentBaseTarget;
-
-    public bool IsPaused
-    {
-        get => isPaused;
-        private set
-        {
-            if (isPaused != value)
-            {
-                isPaused = value;
-            }
-        }
-    }
 
     public void Initialize(Unit unit)
     {
         this.unit = unit;
-        this.stats = unit.GetComponent<UnitStats>();
-        bloodstormEffect = unit.GetComponent<UnitStatusEffects>()
-            ?.GetEffect(StatusEffectType.Bloodstorm) as BloodstormStatusEffect;
+        stats = unit.GetComponent<UnitStats>();
     }
 
-    public void UpdateTarget()
+    private void Start()
     {
-        if (IsPaused) return;
+        hexGrid = HexGrid.Instance;
+    }
 
-        // Kiểm tra target hiện tại
-        if (!IsValidTarget(currentTarget) && !IsValidBaseTarget(currentBaseTarget))
+    private void FixedUpdate()
+    {
+        if (autoTargeting)
+        {
+            AutoTargeting();
+        }
+    }
+
+    private void AutoTargeting()
+    {
+        if (currentTarget == null ||
+            currentTarget.IsDead ||
+            !IsInDetectRange(currentTarget))
         {
             FindNewTarget();
         }
     }
 
-    public bool IsInRange(Unit target)
-    {
-        if (target == null) return false;
-        return Vector2.Distance(transform.position, target.transform.position) <= stats.Data.range;
-    }
-
-    public bool IsInRangeOfBase()
-    {
-        if (currentBaseTarget == null) return false;
-
-        Vector2 closestPoint = currentBaseTarget.GetComponent<Collider2D>()
-            .ClosestPoint(transform.position);
-        return Vector2.Distance(transform.position, closestPoint) <= stats.Data.range;
-    }
-
     private void FindNewTarget()
     {
-        ScanForTargets();
-        (Unit bestTarget, Base nearestBase) = FindBestTargetsFromDetected();
+        if (unit.OccupiedCell == null) return;
+        List<HexCell> cellsInRange = hexGrid.GetCellsInRange(unit.OccupiedCell.Coordinates, detectRange);
 
-        if (bestTarget != null)
+        var targetsByDistance = new Dictionary<int, List<Unit>>();
+        int closestDistance = int.MaxValue;
+
+        foreach (HexCell cell in cellsInRange)
         {
-            AssignTarget(bestTarget);
+            if (cell.OccupyingUnit != null &&
+                !cell.OccupyingUnit.GetUnitStats().IsDead &&
+                cell.OccupyingUnit.IsPlayerUnit != unit.IsPlayerUnit)
+            {
+                int distance = cell.Coordinates.DistanceTo(unit.OccupiedCell.Coordinates);
+                closestDistance = Mathf.Min(closestDistance, distance);
+
+                if (!targetsByDistance.ContainsKey(distance))
+                {
+                    targetsByDistance[distance] = new List<Unit>();
+                }
+                targetsByDistance[distance].Add(cell.OccupyingUnit);
+            }
+        }
+
+        if (targetsByDistance.Count > 0)
+        {
+            List<Unit> closestTargets = targetsByDistance[closestDistance];
+
+            if (closestTargets.Count > 1)
+            {
+                int randomIndex = Random.Range(0, closestTargets.Count);
+                currentTarget = closestTargets[randomIndex];
+            }
+            else
+            {
+                currentTarget = closestTargets[0];
+            }
         }
         else
         {
             currentTarget = null;
-            currentBaseTarget = nearestBase;
         }
     }
 
-    private void ScanForTargets()
+    public bool IsInDetectRange(Unit target)
     {
-        detectedCount = Physics2D.OverlapCircleNonAlloc(
-            transform.position,
-            stats.Data.detectRange,
-            detectedColliders
-        );
+        if (target == null && target.OccupiedCell == null) return false;
+
+        return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= detectRange;
     }
 
-    private (Unit unit, Base baseTarget) FindBestTargetsFromDetected()
+    public bool IsInAttackRange(Unit target)
     {
-        Unit bestTarget = null;
-        float closestDistance = float.MaxValue;
-        Base nearestBase = null;
+        if (target == null && target.OccupiedCell == null) return false;
+        // Debug.Log(unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates));
+        return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= attackRange;
+    }
 
-        for (int i = 0; i < detectedCount; i++)
+
+    public void SetTarget(Unit newTarget)
+    {
+        // Kiểm tra target mới có hợp lệ không
+        if (IsValidEnemy(newTarget))
         {
-            var collider = detectedColliders[i];
-
-            Unit potentialTarget = TryGetValidUnit(collider);
-            if (potentialTarget != null)
-            {
-                float distance = GetDistanceTo(potentialTarget.transform.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    bestTarget = potentialTarget;
-                }
-                continue;
-            }
-
-            Base potentialBase = TryGetValidBase(collider);
-            if (potentialBase != null)
-            {
-                nearestBase = potentialBase;
-            }
-        }
-
-        return (bestTarget, nearestBase);
-    }
-
-    private Unit TryGetValidUnit(Collider2D collider)
-    {
-        Unit potentialTarget = collider.GetComponent<Unit>();
-        return IsValidTarget(potentialTarget) ? potentialTarget : null;
-    }
-
-    private Base TryGetValidBase(Collider2D collider)
-    {
-        Base potentialBase = collider.GetComponent<Base>();
-        return IsValidBaseTarget(potentialBase) ? potentialBase : null;
-    }
-
-    private float GetDistanceTo(Vector2 position)
-    {
-        return Vector2.Distance(transform.position, position);
-    }
-
-    public Unit FindNearestTarget() => FindTargetByDistance((d1, d2) => d1 < d2);
-    public Unit FindFurtherTarget() => FindTargetByDistance((d1, d2) => d1 > d2);
-
-    private Unit FindTargetByDistance(System.Func<float, float, bool> compareDistance)
-    {
-        float bestDistance = compareDistance(0, float.MaxValue) ? 0 : float.MaxValue;
-        Unit bestTarget = null;
-
-        foreach (var hit in Physics2D.OverlapCircleAll(transform.position, stats.Data.detectRange))
-        {
-            Unit potentialTarget = hit.GetComponent<Unit>();
-            if (!IsValidTarget(potentialTarget)) continue;
-
-            float distance = GetDistanceTo(potentialTarget.transform.position);
-            if (compareDistance(distance, bestDistance))
-            {
-                bestDistance = distance;
-                bestTarget = potentialTarget;
-            }
-        }
-
-        return bestTarget;
-    }
-
-    public bool IsValidTarget(Unit target)
-    {
-        return target != null &&
-               !target.IsDead &&
-               target.IsPlayerUnit != unit.IsPlayerUnit;
-    }
-
-    private bool IsValidBaseTarget(Base baseTarget)
-    {
-        return baseTarget != null &&
-               baseTarget.IsPlayerBase != unit.IsPlayerUnit;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (currentTarget != null) return;
-
-        Base enemyBase = other.GetComponent<Base>();
-        if (IsValidBaseTarget(enemyBase))
-        {
-            currentTarget = null;
-            currentBaseTarget = enemyBase;
+            Debug.LogWarning("Cố gắng set target không hợp lệ");
             return;
         }
 
-        Unit otherUnit = other.GetComponent<Unit>();
-        if (IsValidTarget(otherUnit))
+        // Kiểm tra target có trong tầm detect không
+        if (!IsInDetectRange(newTarget))
         {
-            AssignTarget(otherUnit);
-        }
-    }
-
-    public Unit[] GetUnitsInRange(float range)
-    {
-        List<Unit> units = new List<Unit>();
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
-
-        foreach (var hit in hits)
-        {
-            Unit unit = hit.GetComponent<Unit>();
-            if (unit != null && unit != this.unit)
-            {
-                units.Add(unit);
-            }
+            Debug.LogWarning("Target được chỉ định nằm ngoài tầm phát hiện");
+            return;
         }
 
-        return units.ToArray();
-    }
-
-    public void AssignTarget(Unit newTarget)
-    {
+        // Set target mới
         currentTarget = newTarget;
-        if (newTarget != null)
-        {
-            currentBaseTarget = null;
-        }
     }
 
-    public void SetTarget(Unit target)
+    public bool IsValidAlly(Unit unit)
     {
-        if (target != null && !target.IsDead)
-        {
-            currentTarget = target;
-            currentBaseTarget = null;
-        }
+        if (unit == null || unit.IsDead) return false;
+
+        // Kiểm tra cùng phe
+        if (unit.IsPlayerUnit != unit.IsPlayerUnit) return false;
+
+        // Kiểm tra có thể target không
+        var statusEffects = unit.GetComponent<UnitStatusEffects>();
+        if (statusEffects != null && !statusEffects.IsTargetable) return false;
+
+        return true;
     }
 
-    // Thêm các phương thức điều khiển targeting
-    public void PauseTargeting()
+    public bool IsValidEnemy(Unit unit)
     {
-        IsPaused = true;
-    }
+        if (unit == null || unit.IsDead) return false;
 
-    public void ResumeTargeting()
-    {
-        IsPaused = false;
-    }
+        // Kiểm tra khác phe
+        if (unit.IsPlayerUnit == unit.IsPlayerUnit) return false;
 
-    public void ForceTargetUpdate()
-    {
-        targetCheckTimer = 0;
-        UpdateTarget();
+        // Kiểm tra có thể target không
+        var statusEffects = unit.GetComponent<UnitStatusEffects>();
+        if (statusEffects != null && !statusEffects.IsTargetable) return false;
+
+        return true;
     }
 }

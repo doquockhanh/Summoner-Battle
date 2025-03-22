@@ -23,7 +23,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
         targetPosition = targetPos;
 
         ApplyInitialEffects();
-        caster.GetComponent<UnitTargeting>().PauseTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = false;
         this.StartCoroutineSafely(ChargeCoroutine());
     }
 
@@ -42,7 +42,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
         // Áp dụng shield và lifesteal
         float shieldAmount = caster.GetUnitStats().GetMaxHp() * (skillData.shieldPercent / 100f);
         caster.GetUnitStats().AddShield(shieldAmount, skillData.shieldDuration);
-        caster.GetUnitStats().ModifyLifeSteal(skillData.lifestealPercent);
+        caster.GetUnitStats().ModifyStat(StatType.LifeSteal, skillData.lifestealPercent);
 
         // Hiệu ứng bắt đầu lao
         if (skillData.chargeEffectPrefab != null)
@@ -109,11 +109,11 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         // Assign new target to caster
         UnitTargeting unitTargeting = caster.GetComponent<UnitTargeting>();
-        Unit unit = unitTargeting.FindNearestTarget();
-        unitTargeting.AssignTarget(unit);
+        // Unit unit = unitTargeting.FindNearestTarget();
+        // unitTargeting.AssignTarget(unit);
 
         // Resume targeting
-        caster.GetComponent<UnitTargeting>().ResumeTargeting();
+        caster.GetComponent<UnitTargeting>().autoTargeting = true;
 
         // Cleanups
         Cleanup();

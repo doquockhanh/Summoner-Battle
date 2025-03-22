@@ -1,30 +1,23 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class HexCell
 {
-    public HexCoordinates Coordinates { get; private set; }
-    public bool IsWalkable { get; set; } = true;
-    public HashSet<Unit> OccupyingUnits { get; private set; }
+    public HexCoord Coordinates { get; private set; }
+    public Vector3 WorldPosition { get; private set; }
+    public bool IsOccupied { get; set; }
+    public Unit OccupyingUnit { get; set; }
 
-    public HexCell(HexCoordinates coordinates)
+    public HexCell(HexCoord coordinates)
     {
         Coordinates = coordinates;
-        OccupyingUnits = new HashSet<Unit>();
+        WorldPosition = HexMetrics.HexToWorld(coordinates);
+        IsOccupied = false;
+        OccupyingUnit = null;
     }
 
-    public void AddUnit(Unit unit)
+    public void SetUnit(Unit unit)
     {
-        OccupyingUnits.Add(unit);
+        OccupyingUnit = unit;
+        IsOccupied = unit != null;
     }
-
-    public void RemoveUnit(Unit unit)
-    {
-        OccupyingUnits.Remove(unit);
-    }
-
-    public bool IsOccupied()
-    {
-        return OccupyingUnits.Count > 0;
-    }
-} 
+}

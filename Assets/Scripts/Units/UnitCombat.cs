@@ -6,6 +6,7 @@ public class UnitCombat : MonoBehaviour
     private UnitStats stats;
     private UnitView view;
     private float attackTimer;
+    private UnitTargeting targeting;
     private UnitStatusEffects statusEffects;
 
     private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
@@ -19,6 +20,7 @@ public class UnitCombat : MonoBehaviour
     private void Awake()
     {
         statusEffects = GetComponent<UnitStatusEffects>();
+        targeting = GetComponent<UnitTargeting>();
     }
 
     public void Initialize(Unit unit)
@@ -31,7 +33,10 @@ public class UnitCombat : MonoBehaviour
 
     public void TryAttack(Unit target)
     {
-        if (!CanAttack() || !statusEffects.CanAct() || target == null || target.IsDead) return;
+        if (!CanAttack() || !statusEffects.CanAct()
+            || target == null || target.IsDead
+            || !targeting.IsInAttackRange(targeting.CurrentTarget)
+        ) return;
 
         PerformAttack(target);
         ResetAttackTimer();
@@ -56,7 +61,7 @@ public class UnitCombat : MonoBehaviour
     private void PerformAttack(Unit target)
     {
         float damage = stats.GetPhysicalDamage();
-        
+
         if (stats.RollForCritical())
         {
             damage = stats.CalculateCriticalDamage(damage);
@@ -65,12 +70,12 @@ public class UnitCombat : MonoBehaviour
         bool faceRight = target.transform.position.x > transform.position.x;
         view.FlipSprite(faceRight);
         view.PlayAttackAnimation();
-        
+
         if (useProjectile && projectilePrefab != null)
         {
-            Vector3 spawnPos = projectileSpawnPoint != null ? 
+            Vector3 spawnPos = projectileSpawnPoint != null ?
                 projectileSpawnPoint.position : transform.position;
-            
+
             GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
             var projectile = proj.GetComponent<Projectile>();
             projectile.Initialize(target, damage, projectileColor, unit);
@@ -88,10 +93,10 @@ public class UnitCombat : MonoBehaviour
     {
         float damage = stats.GetPhysicalDamage();
         baseTarget.TakeDamage(damage);
-        
+
         bool faceRight = baseTarget.transform.position.x > transform.position.x;
         view.FlipSprite(faceRight);
-        
+
         view.PlayAttackAnimation();
         view.PlayAttackEffect();
     }

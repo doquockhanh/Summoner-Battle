@@ -32,7 +32,7 @@ public class GhostFormBehavior : MonoBehaviour
 
         // Tăng tốc đánh
         float currentAttackSpeed = stats.GetAttackSpeed() * (skillData.attackSpeedBonus / 100f);
-        stats.ModifyAttackSpeed(currentAttackSpeed);
+        stats.ModifyStat(StatType.AttackSpeed, currentAttackSpeed);
 
         // Immortal
         var statusEffects = unit.GetComponent<UnitStatusEffects>();

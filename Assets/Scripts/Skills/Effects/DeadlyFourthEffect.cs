@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -45,10 +46,9 @@ public class DeadlyFourthEffect : MonoBehaviour, ISkillEffect
 
         float lowestHealthPercent = float.MaxValue;
 
-        var enemiesInRange = targeting.GetUnitsInRange(skillData.fourthShotRange)
-                                        .Where(unit => unit.IsPlayerUnit != caster.IsPlayerUnit)
-                                        .ToArray();
-        foreach (var enemy in enemiesInRange)
+        List<Unit> enemiesInRange = HexGrid.Instance.GetUnitsInRange(caster.OccupiedCell.Coordinates, skillData.fourthShotRange, !caster.IsPlayerUnit);
+                                        
+        foreach (Unit enemy in enemiesInRange)
         {
             float healthPercent = enemy.GetCurrentHP() / enemy.GetUnitStats().GetMaxHp();
             if (healthPercent < lowestHealthPercent)
@@ -77,15 +77,15 @@ public class DeadlyFourthEffect : MonoBehaviour, ISkillEffect
             {
                 if (currentTarget != null)
                 {
-                    targeting.AssignTarget(currentTarget);
+                    targeting.SetTarget(currentTarget);
                 };
             };
 
             // Tạm dừng targeting để tấn công mục tiêu yếu nhất
-            targeting.PauseTargeting();
+            targeting.autoTargeting = false;
             currentTarget = targeting.CurrentTarget;
-            targeting.AssignTarget(weakestEnemy);
-            targeting.ResumeTargeting();
+            targeting.SetTarget(weakestEnemy);
+            targeting.autoTargeting = true;
         }
     }
 

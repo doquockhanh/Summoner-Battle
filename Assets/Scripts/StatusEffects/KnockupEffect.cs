@@ -13,7 +13,7 @@ public class KnockupEffect : BaseStatusEffect
         base.Apply(target);
         if (movement != null)
         {
-            movement.Knockup(duration);
+            // movement.Knockup(duration);
         }
     }
 

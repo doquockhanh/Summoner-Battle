@@ -25,8 +25,8 @@ public class GuardianAuraEffect : BaseStatusEffect
         base.Apply(target);
         if (stats != null)
         {
-            stats.ModifyArmor(armorBoost);
-            stats.ModifyMagicResist(magicResistBoost);
+            stats.ModifyStat(StatType.Armor, armorBoost);
+            stats.ModifyStat(StatType.MagicResist, magicResistBoost);
         }
     }
 
@@ -35,8 +35,8 @@ public class GuardianAuraEffect : BaseStatusEffect
         base.Remove();
         if (stats != null)
         {
-            stats.ModifyArmor(-armorBoost);
-            stats.ModifyMagicResist(-magicResistBoost);
+            stats.ModifyStat(StatType.Armor, -armorBoost);
+            stats.ModifyStat(StatType.MagicResist, -magicResistBoost);
         }
     }
 }

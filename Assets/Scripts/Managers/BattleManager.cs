@@ -13,10 +13,6 @@ public class BattleManager : MonoBehaviour
     public float MapWidth => mapWidth;
     public float MapHeight => mapHeight;
 
-    [SerializeField] private Transform playerSpawnStart;
-    [SerializeField] private Transform playerSpawnEnd;
-    [SerializeField] private Transform enemySpawnStart;
-    [SerializeField] private Transform enemySpawnEnd;
     [SerializeField] private Transform playerCardContainer;
     [SerializeField] private Transform enemyCardContainer;
     [Header("Card Prefabs")]
@@ -107,20 +103,25 @@ public class BattleManager : MonoBehaviour
 
     public Vector3 GetSpawnPosition(bool isPlayer)
     {
+        HexGrid grid = HexGrid.Instance;
         if (isPlayer)
         {
-            return GetRandomPositionOnLine(playerSpawnStart.position, playerSpawnEnd.position);
+            // Spawn bên trái (q nhỏ)
+            int q = Random.Range(0, grid.Width / 4 - 1);
+            int r = Random.Range(0 - q / 2, grid.Height - q / 2);
+            HexCoord coord = new HexCoord(q, r);
+            HexCell cell = HexGrid.Instance.GetCell(coord);
+            return cell.WorldPosition;
         }
         else
         {
-            return GetRandomPositionOnLine(enemySpawnStart.position, enemySpawnEnd.position);
+            // Spawn bên phải (q lớn)
+            int q = Random.Range(3 * grid.Width / 4, grid.Width - 1);
+            int r = Random.Range(0 - q / 2, grid.Height - q / 2);
+            HexCoord coord = new HexCoord(q, r);
+            HexCell cell = HexGrid.Instance.GetCell(coord);
+            return cell.WorldPosition;
         }
-    }
-
-    private Vector3 GetRandomPositionOnLine(Vector3 start, Vector3 end)
-    {
-        float randomT = Random.Range(0f, 1f);
-        return Vector3.Lerp(start, end, randomT);
     }
 
     public void EndGame(bool playerWon)
@@ -129,22 +130,4 @@ public class BattleManager : MonoBehaviour
         Debug.Log(playerWon ? "Player Won!" : "Enemy Won!");
     }
 
-    private void OnDrawGizmos()
-    {
-        if (playerSpawnStart != null && playerSpawnEnd != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(playerSpawnStart.position, playerSpawnEnd.position);
-            Gizmos.DrawSphere(playerSpawnStart.position, 0.2f);
-            Gizmos.DrawSphere(playerSpawnEnd.position, 0.2f);
-        }
-
-        if (enemySpawnStart != null && enemySpawnEnd != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(enemySpawnStart.position, enemySpawnEnd.position);
-            Gizmos.DrawSphere(enemySpawnStart.position, 0.2f);
-            Gizmos.DrawSphere(enemySpawnEnd.position, 0.2f);
-        }
-    }
 }

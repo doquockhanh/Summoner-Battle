@@ -28,31 +28,31 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public void HandleRainArrowSkill(Vector3 targetPos, RainArrowSkill skill, bool isFromPlayer)
+    public void HandleRainArrowSkill(HexCell targetCell, RainArrowSkill skill, bool isPlayer)
     {
-        StartCoroutine(RainArrowCoroutine(targetPos, skill, isFromPlayer));
+        StartCoroutine(RainArrowCoroutine(targetCell, skill, isPlayer));
     }
 
-    private IEnumerator RainArrowCoroutine(Vector3 targetPos, RainArrowSkill skill, bool isFromPlayer)
+    private IEnumerator RainArrowCoroutine(HexCell targetCell, RainArrowSkill skill, bool isPlayer)
     {
         // Hiển thị vòng tròn AOE và lưu ID
-        int indicatorId = ShowRangeIndicator(targetPos, skill.effectRadius);
+        int indicatorId = ShowRangeIndicator(targetCell, skill.effectRadius);
 
         // Tạo hiệu ứng mưa tên với callback
         GameObject effectObj = Instantiate(rainArrowEffectPrefab);
         RainArrowEffect effect = effectObj.GetComponent<RainArrowEffect>();
         if (effect != null)
         {
-            effect.Initialize(skill, targetPos, (hitPos) =>
+            effect.Initialize(skill, targetCell, () =>
             {
-                Collider2D[] hits = Physics2D.OverlapCircleAll(hitPos, skill.effectRadius);
+                List<Unit> hits = HexGrid.Instance.GetUnitsInRange(targetCell.Coordinates, skill.effectRadius, !isPlayer);
 
-                foreach (Collider2D hit in hits)
+                foreach (Unit hit in hits)
                 {
                     if (hit == null) continue;
 
                     Unit enemy = hit.GetComponent<Unit>();
-                    if (enemy != null && enemy.IsPlayerUnit != isFromPlayer)
+                    if (enemy != null)
                     {
                         float damage = skill.ownerCard.Unit.physicalDamage *
                                      (skill.damagePerWavePercent / 100f);
@@ -68,15 +68,16 @@ public class SkillEffectHandler : MonoBehaviour
     }
 
 
-    public void HandleFireballSkill(Vector3 targetPos, FireballSkill skill, bool isFromPlayer)
+    public void HandleFireballSkill(HexCell targetCell, FireballSkill skill, bool isFromPlayer)
     {
-        StartCoroutine(FireballCoroutine(targetPos, skill, isFromPlayer));
+        StartCoroutine(FireballCoroutine(targetCell, skill, isFromPlayer));
     }
 
-    private IEnumerator FireballCoroutine(Vector3 targetPos, FireballSkill skill, bool isFromPlayer)
+    private IEnumerator FireballCoroutine(HexCell targetCell, FireballSkill skill, bool isFromPlayer)
     {
+        Vector2 position = targetCell.WorldPosition;
         // Hiển thị vòng tròn AOE và lưu ID
-        int indicatorId = ShowRangeIndicator(targetPos, skill.effectRadius);
+        int indicatorId = ShowRangeIndicator(targetCell, skill.effectRadius);
 
         // Tạo hiệu ứng cầu lửa bay đến
         if (skill.fireballEffectPrefab != null)
@@ -91,12 +92,11 @@ public class SkillEffectHandler : MonoBehaviour
             float flightTime = 0.5f;
             float elapsedTime = 0f;
             Vector3 startPos = fireballEffect.transform.position;
-
             while (elapsedTime < flightTime)
             {
                 fireballEffect.transform.position = Vector3.Lerp(
                     startPos,
-                    targetPos,
+                    position,
                     elapsedTime / flightTime
                 );
                 elapsedTime += Time.deltaTime;
@@ -107,11 +107,11 @@ public class SkillEffectHandler : MonoBehaviour
         }
 
         // Gây sát thương và áp dụng hiệu ứng thiêu đốt
-        Collider2D[] hits = Physics2D.OverlapCircleAll(targetPos, skill.effectRadius);
-        foreach (Collider2D hit in hits)
+        List<Unit> hits = HexGrid.Instance.GetUnitsInRange(targetCell.Coordinates, skill.effectRadius, !isFromPlayer);
+        foreach (Unit hit in hits)
         {
             Unit enemy = hit.GetComponent<Unit>();
-            if (enemy != null && enemy.IsPlayerUnit != isFromPlayer)
+            if (enemy != null)
             {
                 // Gây sát thương phép
                 float magicDamage = skill.ownerCard.Unit.magicDamage *
@@ -146,7 +146,7 @@ public class SkillEffectHandler : MonoBehaviour
     private IEnumerator GuardianAuraCoroutine(Unit caster, GuardianAuraSkill skill)
     {
         // Hiển thị vòng tròn AOE
-        int indicatorId = ShowRangeIndicator(caster.transform.position, skill.auraRadius, Color.cyan);
+        int indicatorId = ShowRangeIndicator(caster.OccupiedCell, skill.auraRadius, Color.cyan);
 
         // Tạo hiệu ứng visual
         if (skill.auraEffectPrefab != null)
@@ -161,11 +161,10 @@ public class SkillEffectHandler : MonoBehaviour
         }
 
         // Áp dụng buff cho caster và allies
-        Collider2D[] hits = Physics2D.OverlapCircleAll(caster.transform.position, skill.auraRadius);
-        foreach (Collider2D hit in hits)
+        List<Unit> hits = HexGrid.Instance.GetUnitsInRange(caster.OccupiedCell.Coordinates, skill.auraRadius, caster.IsPlayerUnit);
+        foreach (Unit ally in hits)
         {
-            Unit ally = hit.GetComponent<Unit>();
-            if (ally != null && ally.IsPlayerUnit == caster.IsPlayerUnit)
+            if (ally != null)
             {
                 var statusEffects = ally.GetComponent<UnitStatusEffects>();
                 if (statusEffects != null)
@@ -197,30 +196,30 @@ public class SkillEffectHandler : MonoBehaviour
         // Lưu vị trí ban đầu
         Vector3 startPos = assassin.transform.position;
         Vector3 targetPos = target.transform.position;
-        
+
         // Animation nhảy
         float jumpTime = 0.3f;
         float elapsedTime = 0f;
-        
+
         while (elapsedTime < jumpTime)
         {
             float t = elapsedTime / jumpTime;
             // Thêm đường cong cho animation nhảy
             float height = Mathf.Sin(t * Mathf.PI) * 2f;
             assassin.transform.position = Vector3.Lerp(startPos, targetPos, t) + Vector3.up * height;
-            
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         // Đảm bảo đến đúng vị trí
         assassin.transform.position = targetPos;
-        
+
         // Gán target mới cho assassin
         var targeting = assassin.GetComponent<UnitTargeting>();
         if (targeting != null)
         {
-            targeting.AssignTarget(target);
+            targeting.SetTarget(target);
         }
     }
 
@@ -250,9 +249,10 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public int ShowRangeIndicator(Vector3 position, float radius, Color? color = null, float? duration = 0f)
+    public int ShowRangeIndicator(HexCell cell, float radius, Color? color = null, float? duration = 0f)
     {
-        GameObject indicator = Instantiate(rangeIndicatorPrefab, position, Quaternion.identity);
+        Vector2 pos2 = cell.WorldPosition;
+        GameObject indicator = Instantiate(rangeIndicatorPrefab, pos2, Quaternion.identity);
         SkillRangeIndicator rangeIndicator = indicator.GetComponent<SkillRangeIndicator>();
 
         if (rangeIndicator != null)

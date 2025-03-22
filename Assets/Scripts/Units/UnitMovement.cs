@@ -1,170 +1,137 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class UnitMovement : MonoBehaviour
 {
     private Unit unit;
-    private UnitStats stats;
-    private Vector3 originalPosition;
-    private bool isKnockedUp;
-    private Coroutine knockupCoroutine;
+    private HexGrid hexGrid;
+    private HexPathFinder pathFinder;
     private UnitStatusEffects statusEffects;
+    private List<HexCell> currentPath;
+    private int currentPathIndex;
+    private float pathUpdateTimer;
+    private const float PATH_UPDATE_INTERVAL = 1f;
 
-    private const float MIN_DISTANCE_BETWEEN_UNITS = 0.5f;
-    private const float SEPARATION_FORCE = 1.5f;
-    private LayerMask unitLayer;
+    // Thêm biến lưu trữ ô hiện tại
+    private HexCell occupiedCell;
+    public HexCell OccupiedCell => occupiedCell;
+    private float speed => unit.GetUnitStats().GetMoveSpeed();
+    private int attackRange => unit.GetUnitStats().GetRange();
 
-    [SerializeField] private float knockupHeight = 0.5f;
-
-    private float moveSpeed;
-    private Vector3 moveDirection;
-    private Vector3 targetPosition;
-    private UnitTargeting unitTargeting;
-
-    public float GetMoveSpeed() => moveSpeed;
-    public void SetMoveSpeed(float speed) => moveSpeed = speed;
-    public Vector3 TargetPosition => targetPosition;
-
-    private void OnDisable()
+    private void Start()
     {
-        if (knockupCoroutine != null)
-        {
-            StopCoroutine(knockupCoroutine);
-            knockupCoroutine = null;
-        }
+        unit = GetComponent<Unit>();
+        hexGrid = HexGrid.Instance;
+        pathFinder = new HexPathFinder(hexGrid);
+        statusEffects = GetComponent<UnitStatusEffects>();
+        currentPath = null;
+        currentPathIndex = 0;
+        pathUpdateTimer = 0f;
 
-        if (isKnockedUp)
+        // Khởi tạo ô ban đầu
+        occupiedCell = hexGrid.GetCellAtPosition(transform.position);
+        if (occupiedCell != null)
         {
-            transform.position = originalPosition;
-            isKnockedUp = false;
+            occupiedCell.SetUnit(unit);
         }
     }
 
-    public void Initialize(Unit unit)
+    private void OnDestroy()
     {
-        this.unit = unit;
-        this.stats = unit.GetComponent<UnitStats>();
-        this.statusEffects = unit.GetComponent<UnitStatusEffects>();
-        originalPosition = transform.position;
-        unitLayer = LayerMask.GetMask("Units");
-        moveSpeed = unit.GetUnitStats().Data.moveSpeed;
-        targetPosition = Vector3.zero;
-        unitTargeting = unit.GetComponent<UnitTargeting>();
+        // Giải phóng ô khi unit bị hủy
+        if (occupiedCell != null)
+        {
+            occupiedCell.SetUnit(null);
+        }
     }
 
-    public void Move(Unit targetUnit, Base targetBase)
+    public void Move(HexCell target)
     {
-        if (unit.IsDead || statusEffects.IsKnockedUp) return;
+        if (!CanMove() || target == null) return;
 
-        if (unitTargeting.IsInRange(targetUnit) || unitTargeting.IsInRangeOfBase())
+        pathUpdateTimer += Time.deltaTime;
+        if (pathUpdateTimer >= PATH_UPDATE_INTERVAL || currentPath == null)
         {
-            unit.GetComponent<UnitView>().SetMoving(false);
-            return;
+            HandleFindPath(target);
+            pathUpdateTimer = 0f;
         }
 
-        Vector3 direction = CalculateDesiredDirection(targetUnit, targetBase);
-        Vector3 separation = CalculateSeparation();
-
-        Vector3 finalDirection = (direction + separation).normalized;
-        transform.position += finalDirection * stats.Data.moveSpeed * Time.deltaTime;
-
-        var view = unit.GetComponent<UnitView>();
-        view.SetMoving(true);
-        view.FlipSprite(finalDirection.x > 0);
-
-        originalPosition = new Vector3(transform.position.x, originalPosition.y, transform.position.z);
+        MoveAlongPath();
     }
 
-    public void Knockup(float duration)
+    public void HandleFindPath(HexCell target)
     {
-        if (unit.IsDead) return;
+        if (target == null || occupiedCell == null) return;
 
-        if (knockupCoroutine != null)
+        // Tìm đường đi mới nếu:
+        // - Chưa có đường đi
+        // - Ô tiếp theo bị chiếm
+        // - Đã đi hết đường
+        if (currentPath == null ||
+            IsNextCellOccupied() ||
+            currentPathIndex >= currentPath.Count)
         {
-            StopCoroutine(knockupCoroutine);
+            currentPath = pathFinder.FindPath(occupiedCell, target, attackRange);
+            currentPathIndex = 0;
         }
-
-        originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        knockupCoroutine = StartCoroutine(KnockupCoroutine(duration));
     }
 
-    private IEnumerator KnockupCoroutine(float duration)
+    private void MoveAlongPath()
     {
-        isKnockedUp = true;
-        float elapsedTime = 0f;
+        if (currentPath == null || 
+            currentPathIndex >= currentPath.Count || 
+            !CanMove()) return;
 
-        while (elapsedTime < duration && !unit.IsDead)
+        HexCell nextCell = currentPath[currentPathIndex];
+        if (nextCell == null) return;
+
+        // Chiếm ô tiếp theo nếu chưa bị chiếm
+        if (occupiedCell != nextCell && !nextCell.IsOccupied)
         {
-            float heightPercent = Mathf.Sin((elapsedTime / duration) * Mathf.PI);
-            float currentHeight = knockupHeight * heightPercent;
-
-            transform.position = new Vector3(
-                originalPosition.x,
-                originalPosition.y + currentHeight,
-                originalPosition.z
-            );
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            if (occupiedCell != null)
+            {
+                occupiedCell.SetUnit(null);
+            }
+            nextCell.SetUnit(unit);
+            occupiedCell = nextCell;
         }
 
-        transform.position = originalPosition;
-        isKnockedUp = false;
-        knockupCoroutine = null;
-    }
-
-    private Vector3 CalculateDesiredDirection(Unit targetUnit, Base targetBase)
-    {
-        if (targetUnit != null)
-        {
-            return (targetUnit.transform.position - transform.position).normalized;
-        }
-
-        if (targetBase != null)
-        {
-            Vector3 direction = (targetBase.transform.position - transform.position).normalized;
-            return new Vector3(Mathf.Sign(direction.x), 0, 0);
-        }
-
-        return unit.IsPlayerUnit ? Vector3.right : Vector3.left;
-    }
-
-    private Vector3 CalculateSeparation()
-    {
-        Vector3 separationForce = Vector3.zero;
-        Collider2D[] nearbyUnits = Physics2D.OverlapCircleAll(
+        // Di chuyển đến vị trí tiếp theo
+        Vector2 targetPosition = nextCell.WorldPosition;
+        transform.position = Vector2.MoveTowards(
             transform.position,
-            MIN_DISTANCE_BETWEEN_UNITS,
-            unitLayer
+            targetPosition,
+            speed * Time.deltaTime
         );
 
-        foreach (Collider2D collider in nearbyUnits)
+        // Cập nhật animation
+        var view = unit.GetComponent<UnitView>();
+        view.SetMoving(true);
+        view.FlipSprite(targetPosition.x - transform.position.x > 0);
+
+        // Kiểm tra đã đến ô tiếp theo chưa
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
-            if (collider.gameObject == gameObject) continue;
+            currentPathIndex++;
+            view.SetMoving(false);
+        }
+    }
 
-            Vector3 awayFromOther = transform.position - collider.transform.position;
-            float distance = awayFromOther.magnitude;
+    private bool CanMove()
+    {
+        if (statusEffects == null) return true;
+        return statusEffects.CanAct();
+    }
 
-            if (distance < MIN_DISTANCE_BETWEEN_UNITS)
-            {
-                float strength = 1 - (distance / MIN_DISTANCE_BETWEEN_UNITS);
-                separationForce += awayFromOther.normalized * strength * SEPARATION_FORCE;
-            }
+    private bool IsNextCellOccupied()
+    {
+        if (currentPath == null ||
+            currentPathIndex >= currentPath.Count ||
+            currentPathIndex < 0)
+        {
+            return false;
         }
 
-        return separationForce;
-    }
-
-    public void SetMoveDirection(Vector3 direction)
-    {
-        moveDirection = direction;
-        transform.position += direction * moveSpeed * Time.deltaTime;
-        var view = unit.GetComponent<UnitView>();
-        view.FlipSprite(direction.x > 0);
-    }
-
-    public void SetTargetPosition(Vector3 position)
-    {
-        targetPosition = position;
+        return currentPath[currentPathIndex].IsOccupied;
     }
 }
