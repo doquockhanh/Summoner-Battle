@@ -8,6 +8,8 @@ public class CardInventoryUI : MonoBehaviour
     [SerializeField] private Transform cardContainer;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Button closeButton;
+    [SerializeField] private float sizePerRow = 40f;
+    private const float cardPerRow = 5;
     
     private void Start()
     {
@@ -40,5 +42,10 @@ public class CardInventoryUI : MonoBehaviour
             CardInventoryView cardView = cardObj.GetComponent<CardInventoryView>();
             cardView.Setup(card);
         }
+
+        int row = Mathf.CeilToInt(cardInventory.availableCards.Count / cardPerRow);
+        float cardContainerHeight = row * sizePerRow;
+        float cardContainerWidth = cardContainer.GetComponent<RectTransform>().rect.width;
+        cardContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(cardContainerWidth, cardContainerHeight);
     }
 } 
