@@ -2789,10 +2789,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 20
   mapHeight: 10
-  playerSpawnStart: {fileID: 0}
-  playerSpawnEnd: {fileID: 0}
-  enemySpawnStart: {fileID: 0}
-  enemySpawnEnd: {fileID: 0}
   playerCardContainer: {fileID: 209089114}
   enemyCardContainer: {fileID: 56616365}
   cardPrefab: {fileID: 2048700552773762805, guid: 80e58fc53643b224a950e0605bf0be82, type: 3}
@@ -2804,7 +2800,7 @@ MonoBehaviour:
   enemyCards:
   - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  spawnOnce: 1
+  spawnOnce: 0
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &1873421962
 Transform:
@@ -2853,10 +2849,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 20
   mapHeight: 10
-  playerSpawnStart: {fileID: 0}
-  playerSpawnEnd: {fileID: 0}
-  enemySpawnStart: {fileID: 0}
-  enemySpawnEnd: {fileID: 0}
   playerCardContainer: {fileID: 209089114}
   enemyCardContainer: {fileID: 56616365}
   cardPrefab: {fileID: 2048700552773762805, guid: 80e58fc53643b224a950e0605bf0be82, type: 3}
