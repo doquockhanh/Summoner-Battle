@@ -18,7 +18,7 @@ public class DefensiveThornsEffect : BaseStatusEffect
         base.Apply(target);
         if (stats != null)
         {
-            stats.ModifyDamageReduction(damageReduction);
+            stats.ModifyStat(StatType.DamageReduction, damageReduction);
             stats.OnTakeDamage += HandleDamageTaken;
         }
     }
@@ -35,7 +35,7 @@ public class DefensiveThornsEffect : BaseStatusEffect
         base.Remove();
         if (stats != null)
         {
-            stats.ModifyDamageReduction(-damageReduction);
+            stats.ModifyStat(StatType.DamageReduction, damageReduction);
             stats.OnTakeDamage -= HandleDamageTaken;
         }
     }

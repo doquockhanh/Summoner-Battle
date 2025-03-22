@@ -27,7 +27,7 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        caster.GetUnitStats().ModifyLifeSteal(skillData.lifestealPercent);
+        caster.GetUnitStats().ModifyStat(StatType.LifeSteal, skillData.lifestealPercent);
 
         // Tạm dừng targeting để thực hiện charge
         caster.GetComponent<UnitTargeting>().autoTargeting = false;
@@ -117,7 +117,7 @@ public class ChargeAndSweepEffect : MonoBehaviour, ISkillEffect
 
         if (remainingSweepAttacks <= 0)
         {
-            caster.GetUnitStats().ModifyLifeSteal(-skillData.lifestealPercent);
+            caster.GetUnitStats().ModifyStat(StatType.LifeSteal, -skillData.lifestealPercent);
             Cleanup();
         }
     }

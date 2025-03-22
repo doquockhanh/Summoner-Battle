@@ -22,7 +22,7 @@ public class EmpoweredAttacksEffect : BaseStatusEffect
         if (combat != null)
         {
             UnitEvents.Combat.OnDamageDealt += HandleAttack;
-            target.GetUnitStats().ModifyPhysicalDamage(0, damageMultiplier);
+            target.GetUnitStats().ModifyStat(StatType.PhysicalDamage, 0, damageMultiplier);
         }
     }
 
@@ -44,7 +44,7 @@ public class EmpoweredAttacksEffect : BaseStatusEffect
         if (combat != null)
         {
             UnitEvents.Combat.OnDamageDealt -= HandleAttack;
-            target.GetUnitStats().ModifyPhysicalDamage(0, -damageMultiplier);
+            target.GetUnitStats().ModifyStat(StatType.PhysicalDamage, 0, -damageMultiplier);
         }
         base.Remove();
     }

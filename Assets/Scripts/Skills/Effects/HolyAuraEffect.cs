@@ -85,12 +85,12 @@ public class HolyAuraEffect : MonoBehaviour, ISkillEffect
 
         // Tăng máu tối đa và hồi máu
         float maxHpIncrease = stats.GetMaxHp() * boost;
-        stats.ModifyMaxHp(maxHpIncrease);
+        stats.ModifyStat(StatType.MaxHp, maxHpIncrease);
         stats.Heal(maxHpIncrease);
 
         // Tăng giáp và kháng phép
-        stats.ModifyArmor(stats.GetArmor() * boost);
-        stats.ModifyMagicResist(stats.GetMagicResist() * boost);
+        stats.ModifyStat(StatType.Armor, stats.GetArmor() * boost);
+        stats.ModifyStat(StatType.MagicResist, stats.GetMagicResist() * boost);
     }
 
     private bool ValidateExecution()

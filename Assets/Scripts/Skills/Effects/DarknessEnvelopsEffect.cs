@@ -20,7 +20,7 @@ public class DarknessEnvelopsEffect : MonoBehaviour, ISkillEffect
         {
             originalMagicResist = stats.GetMagicResist();
             // Giảm kháng phép
-            stats.ModifyMagicResist(-skillData.magicResistReduction);
+            stats.ModifyStat(StatType.MagicResist, -skillData.magicResistReduction);
         }
     }
 
@@ -79,7 +79,7 @@ public class DarknessEnvelopsEffect : MonoBehaviour, ISkillEffect
         if (stats != null)
         {
             // Khôi phục kháng phép
-            stats.ModifyMagicResist(originalMagicResist);
+            stats.ModifyStat(StatType.MagicResist, originalMagicResist);
         }
         Destroy(this);
     }

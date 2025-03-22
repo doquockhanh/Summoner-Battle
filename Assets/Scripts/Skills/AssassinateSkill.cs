@@ -28,7 +28,7 @@ public class AssassinateSkill : Skill
         var statusEffects = assassin.GetComponent<UnitStatusEffects>();
         if (statusEffects != null)
         {
-            assassin.GetUnitStats().ModifyLifeSteal(lifestealPercent);
+            assassin.GetUnitStats().ModifyStat(StatType.LifeSteal, lifestealPercent);
             var stealthEffect = new AssassinStealthEffect(assassin);
 
             statusEffects.AddEffect(stealthEffect);
