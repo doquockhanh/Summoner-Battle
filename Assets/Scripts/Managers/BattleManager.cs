@@ -13,21 +13,14 @@ public class BattleManager : MonoBehaviour
     public float MapWidth => mapWidth;
     public float MapHeight => mapHeight;
 
-    [SerializeField] private Transform playerCardContainer;
-    [SerializeField] private Transform enemyCardContainer;
-    [Header("Card Prefabs")]
-    [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private float playerBaseHP = 1000f;
-    [SerializeField] private float enemyBaseHP = 1000f;
-
     [Header("Player Cards")]
     [SerializeField] private List<Card> playerCards;
+    [SerializeField] private List<Vector2> playerSpawnPositions;
     [SerializeField] private List<Card> enemyCards;
+    [SerializeField] private List<Vector2> enemiesSpawnPositions;
     public bool spawnOnce = false;
 
     private List<CardController> activeCards = new List<CardController>();
-    private float currentPlayerHP;
-    private float currentEnemyHP;
 
     [SerializeField] private UnitPoolManager unitPoolManager;
 
@@ -59,40 +52,25 @@ public class BattleManager : MonoBehaviour
     {
         // Khởi tạo pools trước khi bắt đầu trận đấu
         unitPoolManager.InitializePools(playerCards, enemyCards);
-        StartBattle(playerCards, enemyCards);
-        currentPlayerHP = playerBaseHP;
-        currentEnemyHP = enemyBaseHP;
+        StartBattle();
     }
 
-    public void StartBattle(List<Card> playerCards, List<Card> enemyCards)
+    public void StartBattle()
     {
-        SpawnPlayerCards();
-        SpawnEnemyCards();
+        SpawnCards(playerCards, playerSpawnPositions);
+        SpawnCards(enemyCards, enemiesSpawnPositions);
     }
 
-    private void SpawnPlayerCards()
+    private void SpawnCards(List<Card> card, List<Vector2> spawnPoss)
     {
-        foreach (Card card in playerCards)
+        for (int i = 0; i < playerCards.Count; i++)
         {
-            GameObject cardObj = Instantiate(cardPrefab, playerCardContainer);
+            HexCoord toCoord = new HexCoord((int)spawnPoss[i].x, (int) spawnPoss[i].y);
+            Vector3 spawnPos = HexGrid.Instance.GetCell(toCoord).WorldPosition;
+            GameObject cardObj = Instantiate(card[i].SummonerPrefab, spawnPos, Quaternion.identity);
             CardController controller = cardObj.GetComponent<CardController>();
             // Khởi tạo card với skill
-            controller.Initialize(card, true);
-
-            if (spawnOnce)
-            {
-                controller.spawnCooldown = 1000f;
-            }
-        }
-    }
-
-    private void SpawnEnemyCards()
-    {
-        foreach (Card card in enemyCards)
-        {
-            GameObject cardObj = Instantiate(cardPrefab, enemyCardContainer);
-            CardController controller = cardObj.GetComponent<CardController>();
-            controller.Initialize(card, false);
+            controller.Initialize(card[i], true);
 
             if (spawnOnce)
             {

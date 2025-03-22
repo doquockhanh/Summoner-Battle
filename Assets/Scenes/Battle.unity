@@ -1780,8 +1780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d4b352feb48a345b9eeeffe23bd4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 7
-  height: 7
+  width: 28
+  height: 14
   turnOnCoordinates: 0
 --- !u!4 &1176152746
 Transform:
@@ -2789,18 +2789,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 20
   mapHeight: 10
-  playerCardContainer: {fileID: 209089114}
-  enemyCardContainer: {fileID: 56616365}
-  cardPrefab: {fileID: 2048700552773762805, guid: 80e58fc53643b224a950e0605bf0be82, type: 3}
-  playerBaseHP: 1000
-  enemyBaseHP: 1000
   playerCards:
   - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
-  - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
-  enemyCards:
-  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
-  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  spawnOnce: 0
+  playerSpawnPositions:
+  - {x: 6, y: 4}
+  - {x: 5, y: 7}
+  - {x: 5, y: 2}
+  - {x: 2, y: 10}
+  - {x: 2, y: 1}
+  enemyCards: []
+  enemiesSpawnPositions:
+  - {x: 21, y: -4}
+  - {x: 22, y: -7}
+  - {x: 22, y: -2}
+  - {x: 25, y: -10}
+  - {x: 25, y: -1}
+  spawnOnce: 1
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &1873421962
 Transform:
@@ -2849,13 +2853,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 20
   mapHeight: 10
-  playerCardContainer: {fileID: 209089114}
-  enemyCardContainer: {fileID: 56616365}
-  cardPrefab: {fileID: 2048700552773762805, guid: 80e58fc53643b224a950e0605bf0be82, type: 3}
-  playerBaseHP: 1000
-  enemyBaseHP: 1000
   playerCards: []
+  playerSpawnPositions: []
   enemyCards: []
+  enemiesSpawnPositions: []
   spawnOnce: 0
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &2065520681

@@ -4,8 +4,7 @@ using System.Linq;
 
 public class CardController : MonoBehaviour
 {
-    [SerializeField] private GameObject unitPrefab;
-    [SerializeField] private CardView cardView;
+    [SerializeField] private CardCombat cardCombat;
 
     private Card cardData;
     private float currentMana;
@@ -19,6 +18,7 @@ public class CardController : MonoBehaviour
     public UnitData Unit => cardData.summonUnit;
 
     private List<Unit> activeUnits = new List<Unit>();
+    public HexCell occupiedHex;
 
     public void Initialize(Card card, bool isPlayer = true)
     {
@@ -34,7 +34,7 @@ public class CardController : MonoBehaviour
             cardData.skill.ownerCard = this;
         }
 
-        cardView.Setup(cardData, this);
+        if (cardCombat != null) cardCombat.Initialize(this);
     }
 
     private void Start()
@@ -70,8 +70,6 @@ public class CardController : MonoBehaviour
         {
             TryActivateSkill();
         }
-
-        cardView.UpdateUI(currentMana / cardData.maxMana, spawnTimer / cardData.spawnCooldown);
     }
 
     private void TryActivateSkill()

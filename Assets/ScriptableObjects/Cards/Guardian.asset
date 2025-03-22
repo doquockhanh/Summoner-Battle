@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Guardian
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Guardian Summoner
   cardImage: {fileID: 3073021464058892558, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: c60860bcf60c08747a47a99c6dabc3d3, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 12
+  maxHp: 0
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
   summonUnit: {fileID: 11400000, guid: 6767715c5db31da439232aedb74140f0, type: 2}
   skill: {fileID: 11400000, guid: e3a609adad07d2a4996c45cc9711e45f, type: 2}
