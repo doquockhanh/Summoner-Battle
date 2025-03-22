@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10c2c1b2bd0bc142b3f93c234997001, type: 3}
   m_Name: Bloodstorm
   m_EditorClassIdentifier: 
-  skillName: 
-  description: 
+  skillName: "V\u0169ng M\xE1u"
+  description: "G\xE2y dame xung quanh"
   manaCost: 0
   duration: 0
   radius: 0
+  skillIcon: {fileID: -1776989474, guid: 64a537d2c6b8fd44d8a21e195e7329a1, type: 3}
   hasPassive: 1
   skillType: 2
   ownerCard: {fileID: 0}
