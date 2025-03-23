@@ -21,6 +21,7 @@ public class BattleManager : MonoBehaviour
     public bool spawnOnce = false;
 
     private List<CardController> activeCards = new List<CardController>();
+    public List<CardController> ActiveCards => activeCards;
 
     [SerializeField] private UnitPoolManager unitPoolManager;
 
@@ -84,6 +85,7 @@ public class BattleManager : MonoBehaviour
 
             // Khởi tạo card với skill
             controller.Initialize(card[i], isPlayer);
+            activeCards.Add(controller);
 
             if (spawnOnce)
             {
@@ -121,4 +123,11 @@ public class BattleManager : MonoBehaviour
         Debug.Log(playerWon ? "Player Won!" : "Enemy Won!");
     }
 
+    public void RemoveFromActiveCards(CardController card)
+    {
+        if (activeCards.Contains(card))
+        {
+            activeCards.Remove(card);
+        }
+    }
 }

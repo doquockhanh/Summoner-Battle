@@ -166,4 +166,12 @@ public class CardController : MonoBehaviour
     {
         currentMana = Mathf.Min(currentMana + amount, cardData.maxMana);
     }
+
+    private void OnDestroy()
+    {
+        if (BattleManager.Instance != null)
+        {
+            BattleManager.Instance.RemoveFromActiveCards(this);
+        }
+    }
 }

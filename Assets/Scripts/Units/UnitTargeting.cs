@@ -18,10 +18,6 @@ public class UnitTargeting : MonoBehaviour
     {
         this.unit = unit;
         stats = unit.GetComponent<UnitStats>();
-    }
-
-    private void Start()
-    {
         hexGrid = HexGrid.Instance;
     }
 
@@ -36,30 +32,40 @@ public class UnitTargeting : MonoBehaviour
     private void AutoTargeting()
     {
         // Kiểm tra unit target
-        if (currentTarget == null ||
-            currentTarget.IsDead ||
-            !IsInDetectRange(currentTarget))
+        if (!IsUnitValidToTargeted(currentTarget))
         {
+            currentTarget = null;
             FindNewTarget();
         }
 
-        HandleFindCard();
-    }
 
-    private void HandleFindCard()
-    {
-        if (currentCardTarget != null)
+        if (!IsCardValidToTarget(currentCardTarget))
         {
-            var cardStats = currentCardTarget.GetComponent<CardStats>();
-            if (cardStats == null &&
-                cardStats.CurrentHp > 0 &&
-                currentCardTarget.occupiedHex != null)
-            {
-                return;
-            }
+            currentCardTarget = null;
+            FindNearestEnemyCard();
         }
 
-        FindNearestEnemyCard();
+    }
+
+    private bool IsUnitValidToTargeted(Unit unit)
+    {
+        if (unit == null) return false;
+        if (unit.IsPlayerUnit == this.unit.IsPlayerUnit) return false;
+        if (unit.IsDead) return false;
+        if (!IsInDetectRange(unit)) return false;
+        return true;
+    }
+
+    private bool IsCardValidToTarget(CardController card)
+    {
+        if (card == null) return false;
+        if (card.IsPlayer == unit.IsPlayerUnit) return false;
+
+        var cardStats = card.GetComponent<CardStats>();
+        if (cardStats == null || (cardStats != null && cardStats.CurrentHp <= 0)) return false;
+        if (card.occupiedHex == null) return false;
+
+        return true;
     }
 
     private void FindNewTarget()
@@ -110,23 +116,17 @@ public class UnitTargeting : MonoBehaviour
         CardController nearestCard = null;
         float minDistance = float.MaxValue;
 
-        // Tìm tất cả card trong scene
-        var allCards = GameObject.FindObjectsOfType<CardController>();
+        List<CardController> allCards = BattleManager.Instance.ActiveCards;
 
-        foreach (var card in allCards)
+        foreach (CardController card in allCards)
         {
-            // Kiểm tra card còn tồn tại và là của đối phương
-            if (card != null && card.IsPlayer != unit.IsPlayerUnit)
+            if (IsCardValidToTarget(card))
             {
-                var cardStats = card.GetComponent<CardStats>();
-                if (cardStats != null && cardStats.CurrentHp > 0 && card.occupiedHex != null)
+                float distance = unit.OccupiedCell.Coordinates.DistanceTo(card.occupiedHex.Coordinates);
+                if (distance < minDistance)
                 {
-                    float distance = unit.OccupiedCell.Coordinates.DistanceTo(card.occupiedHex.Coordinates);
-                    if (distance < minDistance)
-                    {
-                        minDistance = distance;
-                        nearestCard = card;
-                    }
+                    minDistance = distance;
+                    nearestCard = card;
                 }
             }
         }
@@ -136,14 +136,14 @@ public class UnitTargeting : MonoBehaviour
 
     public bool IsInDetectRange(Unit target)
     {
-        if (target == null && target.OccupiedCell == null) return false;
+        if (target == null || target.OccupiedCell == null) return false;
 
         return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= detectRange;
     }
 
     public bool IsInAttackRange(Unit target)
     {
-        if (target == null && target.OccupiedCell == null) return false;
+        if (target == null || target.OccupiedCell == null) return false;
         return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= attackRange;
     }
 
@@ -151,7 +151,7 @@ public class UnitTargeting : MonoBehaviour
     public void SetTarget(Unit newTarget)
     {
         // Kiểm tra target mới có hợp lệ không
-        if (IsValidEnemy(newTarget))
+        if (!IsValidEnemy(newTarget))
         {
             Debug.LogWarning("Cố gắng set target không hợp lệ");
             return;
@@ -173,7 +173,7 @@ public class UnitTargeting : MonoBehaviour
         if (unit == null || unit.IsDead) return false;
 
         // Kiểm tra cùng phe
-        if (unit.IsPlayerUnit != unit.IsPlayerUnit) return false;
+        if (this.unit.IsPlayerUnit != unit.IsPlayerUnit) return false;
 
         // Kiểm tra có thể target không
         var statusEffects = unit.GetComponent<UnitStatusEffects>();
@@ -187,7 +187,7 @@ public class UnitTargeting : MonoBehaviour
         if (unit == null || unit.IsDead) return false;
 
         // Kiểm tra khác phe
-        if (unit.IsPlayerUnit == unit.IsPlayerUnit) return false;
+        if (this.unit.IsPlayerUnit == unit.IsPlayerUnit) return false;
 
         // Kiểm tra có thể target không
         var statusEffects = unit.GetComponent<UnitStatusEffects>();
