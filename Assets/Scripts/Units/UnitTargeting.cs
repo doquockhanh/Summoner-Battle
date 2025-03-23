@@ -5,12 +5,14 @@ public class UnitTargeting : MonoBehaviour
 {
     public bool autoTargeting = true;
     private Unit currentTarget;
+    private CardController currentCardTarget;
     private int detectRange => stats.GetDetectRange();
     private int attackRange => stats.GetRange();
     private HexGrid hexGrid;
     private Unit unit;
     private UnitStats stats;
     public Unit CurrentTarget => currentTarget;
+    public CardController CurrentCardTarget => currentCardTarget;
 
     public void Initialize(Unit unit)
     {
@@ -33,19 +35,39 @@ public class UnitTargeting : MonoBehaviour
 
     private void AutoTargeting()
     {
+        // Kiểm tra unit target
         if (currentTarget == null ||
             currentTarget.IsDead ||
             !IsInDetectRange(currentTarget))
         {
             FindNewTarget();
         }
+
+        HandleFindCard();
+    }
+
+    private void HandleFindCard()
+    {
+        if (currentCardTarget != null)
+        {
+            var cardStats = currentCardTarget.GetComponent<CardStats>();
+            if (cardStats == null &&
+                cardStats.CurrentHp > 0 &&
+                currentCardTarget.occupiedHex != null)
+            {
+                return;
+            }
+        }
+
+        FindNearestEnemyCard();
     }
 
     private void FindNewTarget()
     {
         if (unit.OccupiedCell == null) return;
-        List<HexCell> cellsInRange = hexGrid.GetCellsInRange(unit.OccupiedCell.Coordinates, detectRange);
 
+        // Tìm unit trong tầm detect như cũ
+        List<HexCell> cellsInRange = hexGrid.GetCellsInRange(unit.OccupiedCell.Coordinates, detectRange);
         var targetsByDistance = new Dictionary<int, List<Unit>>();
         int closestDistance = int.MaxValue;
 
@@ -66,10 +88,10 @@ public class UnitTargeting : MonoBehaviour
             }
         }
 
+        // Nếu tìm thấy unit trong tầm
         if (targetsByDistance.Count > 0)
         {
             List<Unit> closestTargets = targetsByDistance[closestDistance];
-
             if (closestTargets.Count > 1)
             {
                 int randomIndex = Random.Range(0, closestTargets.Count);
@@ -79,11 +101,37 @@ public class UnitTargeting : MonoBehaviour
             {
                 currentTarget = closestTargets[0];
             }
+            return;
         }
-        else
+    }
+
+    private void FindNearestEnemyCard()
+    {
+        CardController nearestCard = null;
+        float minDistance = float.MaxValue;
+
+        // Tìm tất cả card trong scene
+        var allCards = GameObject.FindObjectsOfType<CardController>();
+
+        foreach (var card in allCards)
         {
-            currentTarget = null;
+            // Kiểm tra card còn tồn tại và là của đối phương
+            if (card != null && card.IsPlayer != unit.IsPlayerUnit)
+            {
+                var cardStats = card.GetComponent<CardStats>();
+                if (cardStats != null && cardStats.CurrentHp > 0 && card.occupiedHex != null)
+                {
+                    float distance = unit.OccupiedCell.Coordinates.DistanceTo(card.occupiedHex.Coordinates);
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        nearestCard = card;
+                    }
+                }
+            }
         }
+
+        currentCardTarget = nearestCard;
     }
 
     public bool IsInDetectRange(Unit target)
@@ -96,7 +144,6 @@ public class UnitTargeting : MonoBehaviour
     public bool IsInAttackRange(Unit target)
     {
         if (target == null && target.OccupiedCell == null) return false;
-        // Debug.Log(unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates));
         return unit.OccupiedCell.Coordinates.DistanceTo(target.OccupiedCell.Coordinates) <= attackRange;
     }
 

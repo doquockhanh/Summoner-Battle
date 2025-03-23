@@ -4,6 +4,14 @@ using System.Collections.Generic;
 public class CardStats : BaseStats, IStats
 {
     [SerializeField] private Card data; // Tạm thời dùng chung UnitData
+    public float CurrentHp => currentHp;
+
+    public void Initialize(Card cardData)
+    {
+        data = cardData;
+        currentHp = cardData.maxHp;
+        currentShield = 0;
+    }
 
     public void TakeDamage(float amount, DamageType damageType)
     {
@@ -43,4 +51,5 @@ public class CardStats : BaseStats, IStats
     {
         throw new System.NotImplementedException();
     }
+
 }

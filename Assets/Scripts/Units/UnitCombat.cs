@@ -23,40 +23,62 @@ public class UnitCombat : MonoBehaviour
         targeting = GetComponent<UnitTargeting>();
     }
 
-    public void Initialize(Unit unit)
+    private void Start()
     {
-        this.unit = unit;
-        this.stats = unit.GetComponent<UnitStats>();
-        this.view = unit.GetComponent<UnitView>();
-        ResetAttackTimer();
+        unit = GetComponent<Unit>();
+        stats = unit.GetComponent<UnitStats>();
+        view = unit.GetComponent<UnitView>();
+        attackTimer = 0f;
     }
 
-    public void TryAttack(Unit target)
+    private void Update()
     {
-        if (!CanAttack() || !statusEffects.CanAct()
-            || target == null || target.IsDead
-            || !targeting.IsInAttackRange(targeting.CurrentTarget)
-        ) return;
+        if (unit.IsDead) return;
+        
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+        }
 
-        PerformAttack(target);
-        ResetAttackTimer();
+        if (CanAttack())
+        {
+            TryAttackTarget();
+        }
     }
 
-    public void AttackBase(Base baseTarget)
+    private void TryAttackTarget()
     {
-        if (!CanAttack() || !statusEffects.CanAct() || baseTarget == null) return;
+        // Ưu tiên tấn công Unit target
+        if (targeting.CurrentTarget != null && !targeting.CurrentTarget.IsDead)
+        {
+            if (IsInAttackRange(targeting.CurrentTarget.OccupiedCell))
+            {
+                PerformAttack(targeting.CurrentTarget);
+                ResetAttackTimer();
+                return;
+            }
+        }
 
-        PerformBaseAttack(baseTarget);
-        ResetAttackTimer();
+        // Nếu không có Unit target hoặc Unit target không hợp lệ, kiểm tra Card target
+        if (targeting.CurrentCardTarget != null)
+        {
+            var cardStats = targeting.CurrentCardTarget.GetComponent<CardStats>();
+            if (cardStats != null && cardStats.CurrentHp > 0)
+            {
+                if (IsInAttackRange(targeting.CurrentCardTarget.occupiedHex))
+                {
+                    PerformAttackOnCard(targeting.CurrentCardTarget);
+                    ResetAttackTimer();
+                }
+            }
+        }
     }
 
-    public void TryUseSkill()
+    private bool IsInAttackRange(HexCell targetCell)
     {
-        if (!statusEffects.CanAct()) return;
-        // ... rest of skill logic
+        if (targetCell == null || unit.OccupiedCell == null) return false;
+        return unit.OccupiedCell.Coordinates.DistanceTo(targetCell.Coordinates) <= stats.GetRange();
     }
-
-    private bool CanAttack() => attackTimer <= 0;
 
     private void PerformAttack(Unit target)
     {
@@ -78,7 +100,7 @@ public class UnitCombat : MonoBehaviour
 
             GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
             var projectile = proj.GetComponent<Projectile>();
-            projectile.Initialize(target, damage, projectileColor, unit);
+            projectile.Initialize(target, damage, projectileColor, null);
         }
         else
         {
@@ -89,28 +111,36 @@ public class UnitCombat : MonoBehaviour
         UnitEvents.Combat.RaiseDamageDealt(unit, target, damage);
     }
 
-    private void PerformBaseAttack(Base baseTarget)
+    private void PerformAttackOnCard(CardController card)
     {
         float damage = stats.GetPhysicalDamage();
-        baseTarget.TakeDamage(damage);
 
-        bool faceRight = baseTarget.transform.position.x > transform.position.x;
-        view.FlipSprite(faceRight);
+        if (useProjectile && projectilePrefab != null)
+        {
+            Vector3 spawnPos = projectileSpawnPoint != null ? 
+                projectileSpawnPoint.position : transform.position;
+
+            GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+            var projectile = proj.GetComponent<Projectile>();
+            projectile.InitializeCardTarget(card, damage, projectileColor);
+        }
+        else
+        {
+            var cardStats = card.GetComponent<CardStats>();
+            if (cardStats != null)
+            {
+                cardStats.TakeDamage(damage, DamageType.Physical);
+            }
+        }
 
         view.PlayAttackAnimation();
-        view.PlayAttackEffect();
+        view.FlipSprite(card.transform.position.x > transform.position.x);
     }
+
+    private bool CanAttack() => attackTimer <= 0;
 
     private void ResetAttackTimer()
     {
         attackTimer = (1f / stats.GetAttackSpeed()) + ATTACK_COOLDOWN_BUFFER;
-    }
-
-    private void Update()
-    {
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-        }
     }
 }

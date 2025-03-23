@@ -23,9 +23,10 @@ public class CardCombat : MonoBehaviour
 
     public void Initialize(CardController cardController)
     {
+        this.cardController = cardController;
+        cardStats = GetComponent<CardStats>();
         StartCoroutine(StartCombat());
         ResetAttackTimer();
-        this.cardController = cardController;
     }
 
     public IEnumerator StartCombat()
@@ -50,7 +51,10 @@ public class CardCombat : MonoBehaviour
 
     private Unit SearchingTarget()
     {
+        if (HexGrid.Instance == null) return null;
+
         Unit target = null;
+
         List<HexCell> cellHasEms = HexGrid.Instance
                                 .GetCellsInRange(cardController.occupiedHex.Coordinates, cardStats.GetRange())
                                 .Where(cell => cell.IsOccupied && cell.OccupyingUnit.IsPlayerUnit != cardController.IsPlayer)

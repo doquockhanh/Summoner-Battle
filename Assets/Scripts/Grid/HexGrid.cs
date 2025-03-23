@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
+using System.Linq;
 
 public class HexGrid : MonoBehaviour
 {
@@ -171,5 +172,37 @@ public class HexGrid : MonoBehaviour
             }
 
         }
+    }
+
+    public bool OccupyCell(HexCell newCell, Unit unit)
+    {
+        if (newCell == null || unit == null || newCell.IsOccupied) return false;
+
+        // Giải phóng ô cũ
+        var currentCell = unit.OccupiedCell;
+        if (currentCell != null)
+        {
+            currentCell.SetUnit(null);
+        }
+
+        // Chiếm ô mới
+        newCell.SetUnit(unit);
+        return true;
+    }
+
+    public bool OccupyCell(HexCell newCell, CardController card) 
+    {
+        if (newCell == null || card == null || newCell.IsOccupied) return false;
+
+        // Giải phóng ô cũ nếu có
+        if (card.occupiedHex != null)
+        {
+            card.occupiedHex.SetUnit(null);
+        }
+
+        // Chiếm ô mới
+        newCell.SetUnit(card.GetActiveUnits().FirstOrDefault());
+        card.occupiedHex = newCell;
+        return true;
     }
 }

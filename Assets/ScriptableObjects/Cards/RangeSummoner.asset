@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: RangeSummoner
   cardImage: {fileID: 333382803326201578, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: Hahahah
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 54d35ec8554c0cd48a503a96bc4e3d75, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 1
+  range: 4
   summonUnit: {fileID: 11400000, guid: 8fac5f475b2d61b47ab3dd93a7c0111c, type: 2}
   skill: {fileID: 11400000, guid: e3057551f54b08143ae90d6f6a48ff62, type: 2}

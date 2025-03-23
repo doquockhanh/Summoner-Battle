@@ -57,20 +57,33 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
-        SpawnCards(playerCards, playerSpawnPositions);
-        SpawnCards(enemyCards, enemiesSpawnPositions);
+        SpawnCards(playerCards, playerSpawnPositions, true);
+        SpawnCards(enemyCards, enemiesSpawnPositions, false);
     }
 
-    private void SpawnCards(List<Card> card, List<Vector2> spawnPoss)
+    private void SpawnCards(List<Card> card, List<Vector2> spawnPoss, bool isPlayer)
     {
-        for (int i = 0; i < playerCards.Count; i++)
+        for (int i = 0; i < card.Count; i++)
         {
-            HexCoord toCoord = new HexCoord((int)spawnPoss[i].x, (int) spawnPoss[i].y);
-            Vector3 spawnPos = HexGrid.Instance.GetCell(toCoord).WorldPosition;
+            HexCoord toCoord = new HexCoord((int)spawnPoss[i].x, (int)spawnPoss[i].y);
+            HexCell hexCell = HexGrid.Instance.GetCell(toCoord);
+            Vector3 spawnPos = hexCell.WorldPosition;
             GameObject cardObj = Instantiate(card[i].SummonerPrefab, spawnPos, Quaternion.identity);
             CardController controller = cardObj.GetComponent<CardController>();
+
+            // chiếm hexcell ở hexgrid
+            if (HexGrid.Instance.OccupyCell(hexCell, controller))
+            {
+                controller.occupiedHex = hexCell;
+            }
+            else
+            {
+                Debug.LogError("Summoner ko thể chiếm ô hiện tại, xin kiểm tra lại");
+            }
+
+
             // Khởi tạo card với skill
-            controller.Initialize(card[i], true);
+            controller.Initialize(card[i], isPlayer);
 
             if (spawnOnce)
             {

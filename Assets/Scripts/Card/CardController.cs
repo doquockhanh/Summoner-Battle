@@ -7,6 +7,7 @@ public class CardController : MonoBehaviour
     [SerializeField] private CardCombat cardCombat;
 
     private Card cardData;
+    private CardStats cardStats;
     private float currentMana;
     public float spawnCooldown = 0;
     private float spawnTimer;
@@ -34,6 +35,8 @@ public class CardController : MonoBehaviour
             cardData.skill.ownerCard = this;
         }
 
+        cardStats = GetComponent<CardStats>();
+        if (cardStats != null) cardStats.Initialize(cardData);
         if (cardCombat != null) cardCombat.Initialize(this);
     }
 

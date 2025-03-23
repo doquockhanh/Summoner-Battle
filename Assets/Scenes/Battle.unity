@@ -2797,14 +2797,16 @@ MonoBehaviour:
   - {x: 5, y: 2}
   - {x: 2, y: 10}
   - {x: 2, y: 1}
-  enemyCards: []
+  enemyCards:
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
   enemiesSpawnPositions:
   - {x: 21, y: -4}
   - {x: 22, y: -7}
   - {x: 22, y: -2}
   - {x: 25, y: -10}
   - {x: 25, y: -1}
-  spawnOnce: 1
+  spawnOnce: 0
   unitPoolManager: {fileID: 2146580296}
 --- !u!4 &1873421962
 Transform:

@@ -53,8 +53,6 @@ public class Unit : MonoBehaviour
         isPlayerUnit = isPlayer;
 
         stats.Initialize(data);
-        combat.Initialize(this);
-        // movement no need Initialize
         targeting.Initialize(this);
         view.Initialize(this);
     }
@@ -62,23 +60,6 @@ public class Unit : MonoBehaviour
     void Start()
     {
         targeting.autoTargeting = true;
-    }
-
-    private void Update()
-    {
-        if (IsDead) return;
-
-        if (targeting.CurrentTarget != null)
-        {
-            combat.TryAttack(targeting.CurrentTarget);
-            HandleMovement();
-        }
-    }
-
-
-    private void HandleMovement()
-    {
-        movement.Move(targeting.CurrentTarget.OccupiedCell);
     }
 
     public void TakeDamage(float amount, DamageType damageType, Unit source = null)

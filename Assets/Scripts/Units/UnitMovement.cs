@@ -7,6 +7,7 @@ public class UnitMovement : MonoBehaviour
     private HexGrid hexGrid;
     private HexPathFinder pathFinder;
     private UnitStatusEffects statusEffects;
+    private UnitTargeting targeting;
     private List<HexCell> currentPath;
     private int currentPathIndex;
     private float pathUpdateTimer;
@@ -24,6 +25,7 @@ public class UnitMovement : MonoBehaviour
         hexGrid = HexGrid.Instance;
         pathFinder = new HexPathFinder(hexGrid);
         statusEffects = GetComponent<UnitStatusEffects>();
+        targeting = GetComponent<UnitTargeting>();
         currentPath = null;
         currentPathIndex = 0;
         pathUpdateTimer = 0f;
@@ -34,6 +36,35 @@ public class UnitMovement : MonoBehaviour
         {
             occupiedCell.SetUnit(unit);
         }
+    }
+
+    private void Update()
+    {
+        if (unit.IsDead) return;
+        if (!CanMove()) return;
+
+        HexCell targetCell = GetTargetCell();
+        if (targetCell != null)
+        {
+            Move(targetCell);
+        }
+    }
+
+    private HexCell GetTargetCell()
+    {
+        // Ưu tiên unit target
+        if (targeting.CurrentTarget != null && targeting.CurrentTarget.OccupiedCell != null)
+        {
+            return targeting.CurrentTarget.OccupiedCell;
+        }
+
+        // Nếu không có unit target, kiểm tra card target
+        if (targeting.CurrentCardTarget != null && targeting.CurrentCardTarget.occupiedHex != null)
+        {
+            return targeting.CurrentCardTarget.occupiedHex;
+        }
+
+        return null;
     }
 
     private void OnDestroy()
@@ -78,22 +109,21 @@ public class UnitMovement : MonoBehaviour
 
     private void MoveAlongPath()
     {
-        if (currentPath == null || 
-            currentPathIndex >= currentPath.Count || 
+        if (currentPath == null ||
+            currentPathIndex >= currentPath.Count ||
             !CanMove()) return;
 
         HexCell nextCell = currentPath[currentPathIndex];
         if (nextCell == null) return;
 
         // Chiếm ô tiếp theo nếu chưa bị chiếm
-        if (occupiedCell != nextCell && !nextCell.IsOccupied)
+        if (occupiedCell != nextCell)
         {
-            if (occupiedCell != null)
+            bool occupied = HexGrid.Instance.OccupyCell(nextCell, unit);
+            if (occupied)
             {
-                occupiedCell.SetUnit(null);
+                occupiedCell = nextCell;
             }
-            nextCell.SetUnit(unit);
-            occupiedCell = nextCell;
         }
 
         // Di chuyển đến vị trí tiếp theo

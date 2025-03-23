@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Material projectileMaterial;
 
     private Unit target;
+    private CardController cardTarget;
     private Unit source;
     private float damage;
     private bool isInitialized;
@@ -21,10 +22,29 @@ public class Projectile : MonoBehaviour
     public void Initialize(Unit target, float damage, Color projectileColor, Unit source)
     {
         this.target = target;
+        this.cardTarget = null;
         this.damage = damage;
         this.source = source;
         this.lifetime = 0f;
 
+        SetupVisuals(projectileColor);
+        isInitialized = true;
+    }
+
+    public void InitializeCardTarget(CardController target, float damage, Color projectileColor)
+    {
+        this.cardTarget = target;
+        this.target = null;
+        this.damage = damage;
+        this.source = null;
+        this.lifetime = 0f;
+
+        SetupVisuals(projectileColor);
+        isInitialized = true;
+    }
+
+    private void SetupVisuals(Color projectileColor)
+    {
         if (projectileMaterial != null)
         {
             // Gán material instance mới để tránh ảnh hưởng tới prefab
@@ -51,8 +71,6 @@ public class Projectile : MonoBehaviour
             gradient.SetKeys(colorKeys, alphaKeys);
             trailRenderer.colorGradient = gradient;
         }
-
-        isInitialized = true;
     }
 
     private void Update()
@@ -66,13 +84,34 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        if (target == null || target.IsDead)
+        // Xử lý di chuyển và va chạm với Unit target
+        if (target != null)
         {
-            Destroy(gameObject);
-            return;
-        }
+            if (target.IsDead)
+            {
+                Destroy(gameObject);
+                return;
+            }
 
-        // Di chuyển đến target
+            HandleUnitTargetMovement();
+        }
+        // Xử lý di chuyển và va chạm với Card target
+        else if (cardTarget != null)
+        {
+            var cardStats = cardTarget.GetComponent<CardStats>();
+            if (cardStats == null || cardStats.CurrentHp <= 0)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            HandleCardTargetMovement();
+        }
+    }
+
+    private void HandleUnitTargetMovement()
+    {
+        // Di chuyển đến unit target
         Vector3 direction = (target.transform.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
 
@@ -83,22 +122,58 @@ public class Projectile : MonoBehaviour
         // Kiểm tra va chạm
         if (Vector3.Distance(transform.position, target.transform.position) < 0.1f)
         {
-            OnHitTarget();
+            OnHitUnit();
         }
     }
 
-    private void OnHitTarget()
+    private void HandleCardTargetMovement()
+    {
+        // Di chuyển đến card target
+        Vector3 direction = (cardTarget.transform.position - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
+
+        // Xoay projectile theo hướng di chuyển
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        // Kiểm tra va chạm
+        if (Vector3.Distance(transform.position, cardTarget.transform.position) < 0.1f)
+        {
+            OnHitCard();
+        }
+    }
+
+    private void OnHitUnit()
     {
         if (target != null)
         {
             target.TakeDamage(damage, DamageType.Physical, source);
         }
 
+        CreateHitEffect();
+        Destroy(gameObject);
+    }
+
+    private void OnHitCard()
+    {
+        if (cardTarget != null)
+        {
+            var cardStats = cardTarget.GetComponent<CardStats>();
+            if (cardStats != null)
+            {
+                cardStats.TakeDamage(damage, DamageType.Physical);
+            }
+        }
+
+        CreateHitEffect();
+        Destroy(gameObject);
+    }
+
+    private void CreateHitEffect()
+    {
         if (hitEffectPrefab != null)
         {
             Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
         }
-
-        Destroy(gameObject);
     }
 }
