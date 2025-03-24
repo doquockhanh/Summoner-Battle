@@ -20,6 +20,8 @@ public class GuardianAuraSkill : Skill
     [Header("Hiệu ứng")]
     public GameObject auraEffectPrefab;
 
+    private List<Unit> alliesNearBy;
+
     public override bool CanActivate(float currentMana)
     {
         return currentMana >= manaCost;
@@ -32,64 +34,65 @@ public class GuardianAuraSkill : Skill
 
     public override void ApplyToSummon(Unit summonedUnit)
     {
-        if (ownerCard == null) return;
+        if (ownerCard == null || ownerCard.GetActiveUnits().Count <= 0) return;
 
-        // Tìm unit mạnh nhất dựa trên chỉ số phòng thủ
+        // Tìm unit mạnh nhất dựa vào số lượng allies trong tầm kỹ năng
         Unit strongestUnit = FindStrongestDefender();
         if (strongestUnit == null) return;
 
-        // Áp dụng hiệu ứng
-        if (SkillEffectHandler.Instance != null)
-        {
-            SkillEffectHandler.Instance.HandleGuardianAuraSkill(
-                strongestUnit,
-                this
-            );
-            ownerCard.OnSkillActivated();
-        }
-        else
-        {
-            ownerCard.OnSkillFailed();
-        }
+        // Thêm effect xử lý kỹ năng
+        var effect = strongestUnit.gameObject.AddComponent<GuardianAuraSkillEffect>();
+        effect.Initialize(strongestUnit, alliesNearBy, this);
+        effect.Execute(Vector3.zero);
+        ownerCard.OnSkillActivated();
     }
 
     private Unit FindStrongestDefender()
     {
         Unit bestUnit = null;
-        int maxAlliesNearby = 0;
+        int maxAlliesNearby = -1;
 
-        // Lấy tất cả unit của phe ta
-        Unit[] allUnits = GameObject.FindObjectsOfType<Unit>();
-        var allyUnits = allUnits.Where(u => u != null && u.OwnerCard == ownerCard).ToList();
+        // Lấy tất cả AllyUnit
+        List<Unit> allyUnits = BattleManager.Instance.ActiveCards
+                    .Where(c => c.IsPlayer == ownerCard.IsPlayer)
+                    .SelectMany(c => c.GetActiveUnits())
+                    .ToList();
 
-        // Kiểm tra từng unit
-        foreach (Unit unit in allyUnits)
+        List<Unit> activeUnit = ownerCard.GetActiveUnits();
+
+        foreach (Unit unit in activeUnit)
         {
+            if (unit.OccupiedCell == null) continue;
             // Tìm số lượng đồng minh trong bán kính
-            int alliesCount = CountNearbyAllies(unit.transform.position, auraRadius, allyUnits);
-            
+            List<Unit> allies = CountNearbyAllies(unit.OccupiedCell, auraRadius, allyUnits);
+
             // Cập nhật unit tốt nhất nếu có nhiều đồng minh hơn
-            if (alliesCount > maxAlliesNearby)
+            if (allies.Count > maxAlliesNearby)
             {
-                maxAlliesNearby = alliesCount;
+                maxAlliesNearby = allies.Count;
                 bestUnit = unit;
+                alliesNearBy = allies;
             }
         }
 
         return bestUnit;
     }
 
-    private int CountNearbyAllies(Vector3 center, float radius, List<Unit> allyUnits)
+    private List<Unit> CountNearbyAllies(HexCell center, int radius, List<Unit> allyUnits)
     {
         int count = 0;
+        List<Unit> allies = new List<Unit>();
         foreach (Unit ally in allyUnits)
         {
-            if (Vector2.Distance(center, ally.transform.position) <= radius)
+            if (ally == null || ally.OccupiedCell == null) continue;
+
+            if (center.Coordinates.DistanceTo(ally.OccupiedCell.Coordinates) <= radius)
             {
                 count++;
+                allies.Add(ally);
             }
         }
-        return count;
+        return allies;
     }
 
     public override void ApplyPassive(Unit summonedUnit)

@@ -3,6 +3,7 @@ using UnityEngine;
 public static class HexMetrics
 {
     public const float outerRadius = 1f;
+    public const float gridToWorldRatio = 1.732f;
     public const float innerRadius = outerRadius * 0.866025404f; // sqrt(3)/2
 
     // Các điểm góc của hex trong không gian 2D, bắt đầu từ góc phải
@@ -55,5 +56,9 @@ public static class HexMetrics
         }
 
         return new HexCoord(qi, ri);
+    }
+
+    public static float GridToWorldRadius(int radius) {
+        return radius * gridToWorldRatio;
     }
 }
