@@ -23,7 +23,8 @@ public class Unit : MonoBehaviour
     public UnitStats GetUnitStats() => stats;
     public float GetCurrentHP() => stats.CurrentHP;
     public CardController OwnerCard => ownerCard;
-    public HexCell OccupiedCell => movement.OccupiedCell;
+    private HexCell occupiedCell;
+    public HexCell OccupiedCell => occupiedCell;
     public UnitTargeting Targeting => targeting;
     public Unit CurrentTarget => targeting.CurrentTarget;
 
@@ -55,6 +56,12 @@ public class Unit : MonoBehaviour
         stats.Initialize(data);
         targeting.Initialize(this);
         view.Initialize(this);
+
+        occupiedCell = HexGrid.Instance.GetCellAtPosition(transform.position);
+        if (occupiedCell != null)
+        {
+            occupiedCell.SetUnit(this);
+        }
     }
 
     void Start()
@@ -87,5 +94,9 @@ public class Unit : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, stats.Data.detectRange);
         }
+    }
+
+    public void SetOccupiedCell(HexCell cell) {
+        occupiedCell = cell;
     }
 }

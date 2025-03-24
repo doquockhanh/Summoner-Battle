@@ -129,7 +129,11 @@ public class HexPathFinder
     private List<HexCell> GetValidNeighbors(HexCell cell, HexCell start, HexCell target)
     {
         var neighbors = grid.GetNeighbors(cell);
-        return neighbors.Where(n => n != null && (n == start || n == target || !occupiedCells.Contains(n))).ToList();
+        return neighbors.Where(n => n != null && 
+            (n == start || 
+             n == target || 
+             (!n.IsOccupied))
+        ).ToList();
     }
 
     private void AddToOpenSet(SortedDictionary<float, List<PathNode>> openSet, PathNode node)

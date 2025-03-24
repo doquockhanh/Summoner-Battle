@@ -42,10 +42,7 @@ public class CardStats : BaseStats, IStats
         throw new System.NotImplementedException();
     }
 
-    public override float GetDamageReduction()
-    {
-        throw new System.NotImplementedException();
-    }
+    public override float GetDamageReduction() => 1f;
 
     public override float GetHealingReceived()
     {

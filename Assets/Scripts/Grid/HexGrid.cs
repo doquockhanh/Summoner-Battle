@@ -155,6 +155,7 @@ public class HexGrid : MonoBehaviour
 
             // Vẽ viền hex
             Gizmos.color = cell.IsOccupied ? Color.red : Color.white;
+            Gizmos.color = cell.IsRegistered ? Color.green : Gizmos.color;
             for (int i = 0; i < 6; i++)
             {
                 Vector2 currentCorner = center + (Vector3)HexMetrics.Corners[i];

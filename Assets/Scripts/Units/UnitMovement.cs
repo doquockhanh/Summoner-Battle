@@ -10,14 +10,12 @@ public class UnitMovement : MonoBehaviour
     private UnitTargeting targeting;
     private List<HexCell> currentPath;
     private int currentPathIndex;
-    private float pathUpdateTimer;
-    private const float PATH_UPDATE_INTERVAL = 1f;
-
-    // Thêm biến lưu trữ ô hiện tại
-    private HexCell occupiedCell;
-    public HexCell OccupiedCell => occupiedCell;
+    // private HexCell occupiedCell;
+    private HexCell occupiedCell => unit.OccupiedCell;
+    private HexCell registeredCell;
     private float speed => unit.GetUnitStats().GetMoveSpeed();
     private int attackRange => unit.GetUnitStats().GetRange();
+    private HexCell lastTarget;
 
     private void Start()
     {
@@ -28,26 +26,21 @@ public class UnitMovement : MonoBehaviour
         targeting = GetComponent<UnitTargeting>();
         currentPath = null;
         currentPathIndex = 0;
-        pathUpdateTimer = 0f;
 
-        // Khởi tạo ô ban đầu
-        occupiedCell = hexGrid.GetCellAtPosition(transform.position);
-        if (occupiedCell != null)
-        {
-            occupiedCell.SetUnit(unit);
-        }
+        unit.GetUnitStats().OnDeath += Reset;
     }
 
     private void Update()
     {
-        if (unit.IsDead) return;
+        if (unit.IsDead)
+        {
+            Reset();
+            return;
+        }
+
         if (!CanMove()) return;
 
-        HexCell targetCell = GetTargetCell();
-        if (targetCell != null)
-        {
-            Move(targetCell);
-        }
+        Move(GetTargetCell());
     }
 
     private HexCell GetTargetCell()
@@ -67,72 +60,61 @@ public class UnitMovement : MonoBehaviour
         return null;
     }
 
-    private void OnDestroy()
-    {
-        // Giải phóng ô khi unit bị hủy
-        if (occupiedCell != null)
-        {
-            occupiedCell.SetUnit(null);
-        }
-    }
-
     public void Move(HexCell target)
     {
         if (!CanMove() || target == null) return;
 
-        pathUpdateTimer += Time.deltaTime;
-        if (pathUpdateTimer >= PATH_UPDATE_INTERVAL || currentPath == null)
+        List<HexCell> newPath = HandleFindPath(target);
+        if (newPath != null)
         {
-            HandleFindPath(target);
-            pathUpdateTimer = 0f;
+            currentPath = newPath;
+            registeredCell?.UnregisterUnit();
+            registeredCell = null;
         }
 
-        MoveAlongPath();
+        MoveAlongPath(currentPath, currentPathIndex);
     }
 
-    public void HandleFindPath(HexCell target)
+    public List<HexCell> HandleFindPath(HexCell target)
     {
-        if (target == null || occupiedCell == null) return;
-
-        // Tìm đường đi mới nếu:
-        // - Chưa có đường đi
-        // - Ô tiếp theo bị chiếm
-        // - Đã đi hết đường
-        if (currentPath == null ||
-            IsNextCellOccupied() ||
-            currentPathIndex >= currentPath.Count)
+        if (target != lastTarget)
         {
-            currentPath = pathFinder.FindPath(occupiedCell, target, attackRange);
+            lastTarget = target;
             currentPathIndex = 0;
+            return pathFinder.FindPath(unit.OccupiedCell, target, attackRange);
         }
+
+
+        if (currentPath == null || targeting.IsCurrentTargetMoved() || targeting.IsTargetChanged() || IsPathBlocked())
+        {
+            currentPathIndex = 0;
+            return pathFinder.FindPath(unit.OccupiedCell, target, attackRange);
+        }
+
+        return null;
     }
 
-    private void MoveAlongPath()
+    private void MoveAlongPath(List<HexCell> path, int index)
     {
-        if (currentPath == null ||
-            currentPathIndex >= currentPath.Count ||
-            !CanMove()) return;
+        if (path == null || index >= path.Count || !CanMove()) return;
 
-        HexCell nextCell = currentPath[currentPathIndex];
+        HexCell nextCell = path[index];
         if (nextCell == null) return;
 
-        // Chiếm ô tiếp theo nếu chưa bị chiếm
-        if (occupiedCell != nextCell)
-        {
-            bool occupied = HexGrid.Instance.OccupyCell(nextCell, unit);
-            if (occupied)
-            {
-                occupiedCell = nextCell;
-            }
-        }
+        // Đăng ký ô tiếp theo
+        registeredCell = nextCell;
+        registeredCell.RegisterUnit(unit);
 
         // Di chuyển đến vị trí tiếp theo
-        Vector2 targetPosition = nextCell.WorldPosition;
+        Vector2 targetPosition = registeredCell.WorldPosition;
         transform.position = Vector2.MoveTowards(
             transform.position,
             targetPosition,
             speed * Time.deltaTime
         );
+
+        // Tự động cập nhật occupiedCell
+        UpdateOccupiedCell();
 
         // Cập nhật animation
         var view = unit.GetComponent<UnitView>();
@@ -143,7 +125,24 @@ public class UnitMovement : MonoBehaviour
         if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             currentPathIndex++;
-            view.SetMoving(false);
+            registeredCell.UnregisterUnit();
+        }
+    }
+
+    private void UpdateOccupiedCell()
+    {
+        HexCell newCell = hexGrid.GetCellAtPosition(transform.position);
+        if (newCell != null && newCell != unit.OccupiedCell)
+        {
+            // Hủy occupied ô cũ
+            if (unit.OccupiedCell != null)
+            {
+                unit.OccupiedCell.SetUnit(null);
+            }
+            // Cập nhật ô mới
+
+            unit.SetOccupiedCell(newCell);
+            unit.OccupiedCell.SetUnit(unit);
         }
     }
 
@@ -153,15 +152,23 @@ public class UnitMovement : MonoBehaviour
         return statusEffects.CanAct();
     }
 
-    private bool IsNextCellOccupied()
+    private bool IsPathBlocked()
     {
-        if (currentPath == null ||
-            currentPathIndex >= currentPath.Count ||
-            currentPathIndex < 0)
+        if (currentPath == null) return false;
+
+        foreach (HexCell hexCell in currentPath)
         {
-            return false;
+            if (hexCell.IsOccupied) return true;
         }
 
-        return currentPath[currentPathIndex].IsOccupied;
+        return false;
+    }
+
+    private void Reset()
+    {
+        unit.OccupiedCell?.SetUnit(null);
+        registeredCell?.UnregisterUnit();
+        unit.SetOccupiedCell(null);
+        registeredCell = null;
     }
 }

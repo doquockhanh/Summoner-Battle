@@ -5,6 +5,8 @@ public class UnitTargeting : MonoBehaviour
 {
     public bool autoTargeting = true;
     private Unit currentTarget;
+    private HexCell currentTargetHex;
+    private bool targetChanged = false;
     private CardController currentCardTarget;
     private int detectRange => stats.GetDetectRange();
     private int attackRange => stats.GetRange();
@@ -13,6 +15,7 @@ public class UnitTargeting : MonoBehaviour
     private UnitStats stats;
     public Unit CurrentTarget => currentTarget;
     public CardController CurrentCardTarget => currentCardTarget;
+    private HexCell occupiedCell => unit.OccupiedCell;
 
     public void Initialize(Unit unit)
     {
@@ -23,6 +26,8 @@ public class UnitTargeting : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (unit.IsDead) return;
+
         if (autoTargeting)
         {
             AutoTargeting();
@@ -36,6 +41,11 @@ public class UnitTargeting : MonoBehaviour
         {
             currentTarget = null;
             FindNewTarget();
+            if (currentTarget != null)
+            {
+                currentTargetHex = currentTarget.OccupiedCell;
+                targetChanged = true;
+            }
         }
 
 
@@ -132,6 +142,30 @@ public class UnitTargeting : MonoBehaviour
         }
 
         currentCardTarget = nearestCard;
+    }
+
+    public bool IsCurrentTargetMoved()
+    {
+        if (currentTarget == null || currentTargetHex == null) return false;
+
+        if (currentTarget.OccupiedCell.WorldPosition != currentTargetHex.WorldPosition)
+        {
+            currentTargetHex = currentTarget.OccupiedCell;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsTargetChanged()
+    {
+        if (targetChanged)
+        {
+            targetChanged = false;
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsInDetectRange(Unit target)

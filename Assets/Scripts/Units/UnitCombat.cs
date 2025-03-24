@@ -59,7 +59,6 @@ public class UnitCombat : MonoBehaviour
             }
         }
 
-        // Nếu không có Unit target hoặc Unit target không hợp lệ, kiểm tra Card target
         if (targeting.CurrentCardTarget != null)
         {
             var cardStats = targeting.CurrentCardTarget.GetComponent<CardStats>();
@@ -129,7 +128,7 @@ public class UnitCombat : MonoBehaviour
             var cardStats = card.GetComponent<CardStats>();
             if (cardStats != null)
             {
-                cardStats.TakeDamage(damage, DamageType.Physical);
+                // cardStats.TakeDamage(damage, DamageType.Physical);
             }
         }
 
