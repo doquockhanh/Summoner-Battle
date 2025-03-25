@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Healing", menuName = "Game/Skills/Healing")]
@@ -7,7 +8,7 @@ public class HealingSkill : Skill
     [Range(0f, 100f)]
     [Tooltip("Phần trăm máu hồi phục (50% = 50)")]
     public float healPercent = 50f;
-    
+
     [Range(0f, 100f)]
     [Tooltip("Lượng mana hồi phục cho card (5 = 5)")]
     public float manaRestore = 5f;
@@ -22,7 +23,7 @@ public class HealingSkill : Skill
 
     public override void ApplyToUnit(Unit target, Unit[] nearbyUnits = null)
     {
-        if (ownerCard == null) return;
+        if (ownerCard == null || ownerCard.GetActiveUnits().Count <= 0) return;
 
         // Tìm đồng minh yếu nhất
         Unit weakestAlly = FindWeakestAlly();
@@ -32,16 +33,11 @@ public class HealingSkill : Skill
             return;
         }
 
-        // Áp dụng hồi phục
-        if (SkillEffectHandler.Instance != null)
-        {
-            SkillEffectHandler.Instance.HandleHealingSkill(weakestAlly, this);
-            ownerCard.OnSkillActivated();
-        }
-        else
-        {
-            ownerCard.OnSkillFailed();
-        }
+        // Thêm effect xử lý kỹ năng
+        var effect = ownerCard.gameObject.AddComponent<HealingSkillEffect>();
+        effect.Initialize(weakestAlly, this);
+        effect.Execute(Vector3.zero);
+        ownerCard.OnSkillActivated();
     }
 
     public override void ApplyToSummon(Unit summonedUnit)
@@ -54,10 +50,10 @@ public class HealingSkill : Skill
         Unit weakest = null;
         float lowestHealthPercent = float.MaxValue;
 
-        Unit[] allUnits = GameObject.FindObjectsOfType<Unit>();
-        foreach (Unit unit in allUnits)
+        List<Unit> allies = BattleManager.Instance.GetAllUnitInteam(ownerCard.IsPlayer);
+        foreach (Unit unit in allies)
         {
-            if (unit != null && unit.IsPlayerUnit == ownerCard.IsPlayer)
+            if (unit != null)
             {
                 float healthPercent = unit.GetCurrentHP() / unit.GetUnitStats().GetMaxHp();
                 if (healthPercent < lowestHealthPercent)
@@ -75,4 +71,4 @@ public class HealingSkill : Skill
     {
         throw new System.NotImplementedException();
     }
-} 
+}

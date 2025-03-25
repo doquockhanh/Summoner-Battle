@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Mage
   cardImage: {fileID: 6347813038107732699, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: f8de41f63c36ea04cad884c4fc06416e, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 33
+  attackSpeed: 1
+  range: 3
   summonUnit: {fileID: 11400000, guid: da2ced7b7764b6645959dc0791612bfe, type: 2}
   skill: {fileID: 11400000, guid: 67494cc01ed1440429cc859163030c7f, type: 2}

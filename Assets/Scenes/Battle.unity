@@ -2787,10 +2787,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff1f19347c4e9f439b68ada98656c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidth: 20
-  mapHeight: 10
   playerCards:
   - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
+  - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}
@@ -2799,6 +2798,7 @@ MonoBehaviour:
   - {x: 2, y: 1}
   enemyCards:
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
+  - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
   enemiesSpawnPositions:
   - {x: 21, y: -4}
   - {x: 22, y: -7}
@@ -2852,8 +2852,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff1f19347c4e9f439b68ada98656c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidth: 20
-  mapHeight: 10
   playerCards: []
   playerSpawnPositions: []
   enemyCards: []

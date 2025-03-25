@@ -6,14 +6,6 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
 
-    [Header("Map Settings")]
-    [SerializeField] private float mapWidth = 20f;
-    [SerializeField] private float mapHeight = 10f;
-
-    // Property để các class khác có thể truy cập
-    public float MapWidth => mapWidth;
-    public float MapHeight => mapHeight;
-
     [Header("Player Cards")]
     [SerializeField] private List<Card> playerCards;
     [SerializeField] private List<Vector2> playerSpawnPositions;

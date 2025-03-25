@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Healer
   cardImage: {fileID: 4988752278279130801, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: c9241e6bdcfb13b459d74fef53f33ef4, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 10
+  magicResist: 0
+  physicalDamage: 30
+  attackSpeed: 1
+  range: 4
   summonUnit: {fileID: 11400000, guid: 14a137856e159cd4992e346c29710f84, type: 2}
   skill: {fileID: 11400000, guid: 35c909e2be74f9b4ababbffa78b998a7, type: 2}

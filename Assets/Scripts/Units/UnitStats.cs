@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitStats : BaseStats
@@ -31,7 +33,8 @@ public class UnitStats : BaseStats
         OnModifyRawDamage?.Invoke(finalDamage, source, GetComponent<Unit>(), damageType);
 
         float remainingDamage = ProcessShieldDamage(finalDamage);
-        ProcessHealthDamage(remainingDamage);
+        float healthDamage = ProcessHealthDamage(remainingDamage);
+        ShowHeathDamage(healthDamage, damageType);
 
         OnTakeDamage?.Invoke(finalDamage, source);
     }
@@ -44,15 +47,29 @@ public class UnitStats : BaseStats
             OnTakeLethalityDamage?.Invoke(GetComponent<Unit>());
         }
 
-        FloatingTextManager.Instance.ShowFloatingText(
-            damage.ToString("F0"),
-            transform.position,
-            Color.red
-        );
-
         OnHealthChanged?.Invoke(currentHp);
         CheckDeath();
         return damage;
+    }
+
+    private void ShowHeathDamage(float healthDame, DamageType damageType)
+    {
+        Color color = Color.white;
+        switch (damageType)
+        {
+            case DamageType.Magic:
+                color = Color.cyan;
+                break;
+            case DamageType.Physical:
+                color = Color.red;
+                break;
+        }
+
+        FloatingTextManager.Instance.ShowFloatingText(
+            healthDame.ToString("F0"),
+            transform.position,
+            color
+        );
     }
 
     private void CheckDeath()

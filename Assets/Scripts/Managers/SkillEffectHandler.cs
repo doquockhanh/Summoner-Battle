@@ -28,77 +28,6 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-
-    public void HandleFireballSkill(HexCell targetCell, FireballSkill skill, bool isFromPlayer)
-    {
-        StartCoroutine(FireballCoroutine(targetCell, skill, isFromPlayer));
-    }
-
-    private IEnumerator FireballCoroutine(HexCell targetCell, FireballSkill skill, bool isFromPlayer)
-    {
-        Vector2 position = targetCell.WorldPosition;
-        // Hiển thị vòng tròn AOE và lưu ID
-        int indicatorId = ShowRangeIndicator(targetCell, skill.effectRadius);
-
-        // Tạo hiệu ứng cầu lửa bay đến
-        if (skill.fireballEffectPrefab != null)
-        {
-            GameObject fireballEffect = Instantiate(
-                skill.fireballEffectPrefab,
-                skill.ownerCard.transform.position,
-                Quaternion.identity
-            );
-
-            // Animation cầu lửa bay đến mục tiêu
-            float flightTime = 0.5f;
-            float elapsedTime = 0f;
-            Vector3 startPos = fireballEffect.transform.position;
-            while (elapsedTime < flightTime)
-            {
-                fireballEffect.transform.position = Vector3.Lerp(
-                    startPos,
-                    position,
-                    elapsedTime / flightTime
-                );
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            Destroy(fireballEffect);
-        }
-
-        // Gây sát thương và áp dụng hiệu ứng thiêu đốt
-        List<Unit> hits = HexGrid.Instance.GetUnitsInRange(targetCell.Coordinates, skill.effectRadius, !isFromPlayer);
-        foreach (Unit hit in hits)
-        {
-            Unit enemy = hit.GetComponent<Unit>();
-            if (enemy != null)
-            {
-                // Gây sát thương phép
-                float magicDamage = skill.ownerCard.Unit.magicDamage *
-                                  (skill.magicDamagePercent / 100f);
-                enemy.TakeDamage(magicDamage, DamageType.Magic);
-
-                // Áp dụng hiệu ứng thiêu đốt
-                var statusEffects = enemy.GetComponent<UnitStatusEffects>();
-                if (statusEffects != null)
-                {
-                    var burningEffect = new BurningEffect(
-                        enemy,
-                        skill.burnDuration,
-                        skill.burnDamagePercent,
-                        skill.healingReduction
-                    );
-                    statusEffects.AddEffect(burningEffect);
-                }
-            }
-        }
-
-        yield return new WaitForSeconds(0.5f);
-        // Xóa đúng vòng tròn AOE theo ID
-        HideRangeIndicator(indicatorId);
-    }
-
     public void HandleAssassinateSkill(Unit assassin, Unit target, AssassinateSkill skill)
     {
         if (assassin == null || target == null) return;
@@ -138,31 +67,6 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public void HandleHealingSkill(Unit target, HealingSkill skill)
-    {
-        if (target == null) return;
-
-        // Tính lượng máu hồi phục
-        float healAmount = target.GetUnitStats().GetMaxHp() * (skill.healPercent / 100f);
-        target.GetUnitStats().Heal(healAmount);
-
-        // Hồi mana cho card sở hữu unit
-        if (target.OwnerCard != null)
-        {
-            target.OwnerCard.AddMana(skill.manaRestore);
-        }
-
-        // Hiệu ứng hồi máu
-        if (skill.healEffectPrefab != null)
-        {
-            GameObject healEffect = Instantiate(
-                skill.healEffectPrefab,
-                target.transform.position,
-                Quaternion.identity
-            );
-            Destroy(healEffect, 1f);
-        }
-    }
 
     public int ShowRangeIndicator(HexCell cell, float radius, Color? color = null, float? duration = 0f)
     {
