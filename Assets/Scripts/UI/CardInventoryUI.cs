@@ -13,22 +13,14 @@ public class CardInventoryUI : MonoBehaviour
     
     private void Start()
     {
-        gameObject.SetActive(false);
         closeButton.onClick.AddListener(Hide);
     }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-        LoadCards();
-    }
-
     public void Hide() 
     {
-        gameObject.SetActive(false);
+        gameObject.GetComponentInParent<HouseInteraction>().ToggleCardInventory();
     }
 
-    private void LoadCards()
+    public void LoadCards()
     {
         // Xóa các card cũ
         foreach (Transform child in cardContainer) {
