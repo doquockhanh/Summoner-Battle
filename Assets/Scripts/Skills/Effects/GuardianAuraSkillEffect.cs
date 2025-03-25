@@ -35,7 +35,7 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
     private IEnumerator GuardianAuraCoroutine(Unit caster, List<Unit> allies, GuardianAuraSkill skill)
     {
         // Hiển thị vòng tròn AOE
-        int indicatorId = 
+        int indicatorId =
                 SkillEffectHandler.Instance
                 .ShowRangeIndicator(caster.OccupiedCell, HexMetrics.GridToWorldRadius(skill.auraRadius), Color.cyan);
 
@@ -49,8 +49,8 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
         }
 
         yield return new WaitForSeconds(0.5f);
-        Cleanup();
         SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
+        Cleanup();
     }
 
     private void ApplySkillEffects(Unit unit, GuardianAuraSkill skill)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "RainArrow", menuName = "Game/Skills/RainArrow")]
 public class RainArrowSkill : Skill
@@ -34,44 +35,20 @@ public class RainArrowSkill : Skill
             return;
         }
 
-        HexCell bestTargetPos = HexGrid.Instance.GetCellAtPosition(FindBestTargetPosition());
+        List<Unit> enemies = BattleManager.Instance.GetAllUnitInteam(!ownerCard.IsPlayer);
+        if (enemies.Count <= 0) return;
 
-        if (SkillEffectHandler.Instance != null)
-        {
-            SkillEffectHandler.Instance.HandleRainArrowSkill(bestTargetPos, this, ownerCard.IsPlayer);
-            ownerCard.OnSkillActivated();
-        }
-        else
-        {
-            Debug.LogError("SkillEffectHandler.Instance is null!");
-            ownerCard.OnSkillFailed();
-        }
+        HexCell bestTargetPos = HexGrid.Instance.FindSpotForAOESkill(effectRadius, !ownerCard.IsPlayer);
+        // Thêm effect xử lý kỹ năng
+        var effect = ownerCard.gameObject.AddComponent<RainArrowSkillEffect>();
+        effect.Initialize(bestTargetPos, this, rainArrowEffectPrefab, ownerCard.IsPlayer);
+        effect.Execute(Vector3.zero);
+        ownerCard.OnSkillActivated();
     }
 
     public override void ApplyToSummon(Unit summonedUnit)
     {
         // Không sử dụng vì đây không phải kỹ năng liên quan đến summon
-    }
-
-    private Vector3 FindBestTargetPosition()
-    {
-        if (BattleManager.Instance == null)
-        {
-            Debug.LogError("RainArrowSkill: BattleManager.Instance is null!");
-            return Vector3.zero;
-        }
-
-        var searchParams = new AOETargetFinder.AOESearchParams
-        {
-            searchWidth = BattleManager.Instance.MapWidth,
-            searchHeight = BattleManager.Instance.MapHeight,
-            effectRadius = effectRadius,
-            gridSize = 1f,
-            isPlayerTeam = ownerCard.IsPlayer,
-            customFilter = (unit) => !unit.IsDead
-        };
-
-        return AOETargetFinder.FindBestAOEPosition(searchParams);
     }
 
     public override void ApplyPassive(Unit summonedUnit)

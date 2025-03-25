@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BattleManager : MonoBehaviour
 {
@@ -129,5 +130,20 @@ public class BattleManager : MonoBehaviour
         {
             activeCards.Remove(card);
         }
+    }
+
+    public List<Unit> GetAllUnits()
+    {
+        return activeCards.SelectMany(card => card.GetActiveUnits()).ToList();
+    }
+
+    public List<Unit> GetAllUnitInteam(bool isPlayer)
+    {
+        List<Unit> units = activeCards
+             .Where(c => c.IsPlayer == isPlayer)
+             .SelectMany(c => c.GetActiveUnits())
+             .ToList();
+
+        return units;
     }
 }

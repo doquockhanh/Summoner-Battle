@@ -206,4 +206,58 @@ public class HexGrid : MonoBehaviour
         card.occupiedHex = newCell;
         return true;
     }
+
+    public HexCell FindSpotForAOESkill(int radius, bool isPlayer)
+    {
+        // Cache danh sách units cần check
+        var validUnits = new Dictionary<HexCell, Unit>();
+        foreach (var cell in cells.Values)
+        {
+            Unit unit = cell.OccupyingUnit;
+            if (IsValidTarget(unit, isPlayer))
+            {
+                validUnits.Add(cell, unit);
+            }
+        }
+
+        // Nếu không có units hợp lệ
+        if (validUnits.Count == 0) return null;
+
+        HexCell bestCell = null;
+        int maxUnitsAffected = 0;
+        var checkedCells = new HashSet<HexCell>();
+
+        // Chỉ kiểm tra các ô xung quanh units
+        foreach (var unitCell in validUnits.Keys)
+        {
+            // Lấy các ô có thể làm tâm AOE (bao gồm các ô xung quanh unit)
+            var potentialCenters = GetCellsInRange(unitCell.Coordinates, radius);
+            
+            foreach (var centerCell in potentialCenters)
+            {
+                // Skip nếu đã check
+                if (!checkedCells.Add(centerCell)) continue;
+
+                // Đếm số unit bị ảnh hưởng
+                var affectedCells = GetCellsInRange(centerCell.Coordinates, radius);
+                int unitsAffected = affectedCells.Count(cell => validUnits.ContainsKey(cell));
+
+                // Cập nhật vị trí tốt nhất
+                if (unitsAffected > maxUnitsAffected)
+                {
+                    maxUnitsAffected = unitsAffected;
+                    bestCell = centerCell;
+                }
+                else if (unitsAffected == maxUnitsAffected && unitsAffected > 0)
+                {
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        bestCell = centerCell;
+                    }
+                }
+            }
+        }
+
+        return bestCell;
+    }
 }

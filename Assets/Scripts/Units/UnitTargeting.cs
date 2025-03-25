@@ -146,7 +146,7 @@ public class UnitTargeting : MonoBehaviour
 
     public bool IsCurrentTargetMoved()
     {
-        if (currentTarget == null || currentTargetHex == null) return false;
+        if (currentTarget == null || currentTarget.OccupiedCell == null || currentTargetHex == null) return false;
 
         if (currentTarget.OccupiedCell.WorldPosition != currentTargetHex.WorldPosition)
         {

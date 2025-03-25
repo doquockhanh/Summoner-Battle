@@ -53,11 +53,7 @@ public class GuardianAuraSkill : Skill
         int maxAlliesNearby = -1;
 
         // Lấy tất cả AllyUnit
-        List<Unit> allyUnits = BattleManager.Instance.ActiveCards
-                    .Where(c => c.IsPlayer == ownerCard.IsPlayer)
-                    .SelectMany(c => c.GetActiveUnits())
-                    .ToList();
-
+        List<Unit> allyUnits = BattleManager.Instance.GetAllUnitInteam(ownerCard.IsPlayer);
         List<Unit> activeUnit = ownerCard.GetActiveUnits();
 
         foreach (Unit unit in activeUnit)

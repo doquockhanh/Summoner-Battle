@@ -28,45 +28,6 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public void HandleRainArrowSkill(HexCell targetCell, RainArrowSkill skill, bool isPlayer)
-    {
-        StartCoroutine(RainArrowCoroutine(targetCell, skill, isPlayer));
-    }
-
-    private IEnumerator RainArrowCoroutine(HexCell targetCell, RainArrowSkill skill, bool isPlayer)
-    {
-        // Hiển thị vòng tròn AOE và lưu ID
-        int indicatorId = ShowRangeIndicator(targetCell, skill.effectRadius);
-
-        // Tạo hiệu ứng mưa tên với callback
-        GameObject effectObj = Instantiate(rainArrowEffectPrefab);
-        RainArrowEffect effect = effectObj.GetComponent<RainArrowEffect>();
-        if (effect != null)
-        {
-            effect.Initialize(skill, targetCell, () =>
-            {
-                List<Unit> hits = HexGrid.Instance.GetUnitsInRange(targetCell.Coordinates, skill.effectRadius, !isPlayer);
-
-                foreach (Unit hit in hits)
-                {
-                    if (hit == null) continue;
-
-                    Unit enemy = hit.GetComponent<Unit>();
-                    if (enemy != null)
-                    {
-                        float damage = skill.ownerCard.Unit.physicalDamage *
-                                     (skill.damagePerWavePercent / 100f);
-                        enemy.TakeDamage(damage, DamageType.Physical);
-                    }
-                }
-            });
-        }
-
-        yield return new WaitForSeconds(1.1f);
-        // Xóa đúng vòng tròn AOE theo ID
-        HideRangeIndicator(indicatorId);
-    }
-
 
     public void HandleFireballSkill(HexCell targetCell, FireballSkill skill, bool isFromPlayer)
     {
@@ -135,52 +96,6 @@ public class SkillEffectHandler : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         // Xóa đúng vòng tròn AOE theo ID
-        HideRangeIndicator(indicatorId);
-    }
-
-    public void HandleGuardianAuraSkill(Unit caster, GuardianAuraSkill skill)
-    {
-        StartCoroutine(GuardianAuraCoroutine(caster, skill));
-    }
-
-    private IEnumerator GuardianAuraCoroutine(Unit caster, GuardianAuraSkill skill)
-    {
-        // Hiển thị vòng tròn AOE
-        int indicatorId = ShowRangeIndicator(caster.OccupiedCell, skill.auraRadius, Color.cyan);
-
-        // Tạo hiệu ứng visual
-        if (skill.auraEffectPrefab != null)
-        {
-            GameObject auraEffect = Instantiate(
-                skill.auraEffectPrefab,
-                caster.transform.position,
-                Quaternion.identity,
-                caster.transform
-            );
-            Destroy(auraEffect, skill.duration);
-        }
-
-        // Áp dụng buff cho caster và allies
-        List<Unit> hits = HexGrid.Instance.GetUnitsInRange(caster.OccupiedCell.Coordinates, skill.auraRadius, caster.IsPlayerUnit);
-        foreach (Unit ally in hits)
-        {
-            if (ally != null)
-            {
-                var statusEffects = ally.GetComponent<UnitStatusEffects>();
-                if (statusEffects != null)
-                {
-                    var auraEffect = new GuardianAuraEffect(
-                        ally,
-                        skill.duration,
-                        skill.armorBoost,
-                        skill.magicResistBoost
-                    );
-                    statusEffects.AddEffect(auraEffect);
-                }
-            }
-        }
-
-        yield return new WaitForSeconds(0.5f);
         HideRangeIndicator(indicatorId);
     }
 

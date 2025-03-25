@@ -2799,7 +2799,6 @@ MonoBehaviour:
   - {x: 2, y: 1}
   enemyCards:
   - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
-  - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
   enemiesSpawnPositions:
   - {x: 21, y: -4}
   - {x: 22, y: -7}
