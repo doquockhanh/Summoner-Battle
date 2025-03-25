@@ -45,7 +45,7 @@ public class CardDetailPanel : MonoBehaviour
     private void Start()
     {
         gameObject.SetActive(false);
-        closeButton.SetActive(false);   
+        closeButton.SetActive(false);
     }
     
     public void Show(Card card)
