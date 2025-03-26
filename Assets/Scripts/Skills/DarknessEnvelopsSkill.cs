@@ -1,5 +1,7 @@
 using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
+
 
 [CreateAssetMenu(fileName = "DarknessEnvelops", menuName = "Game/Skills/DarknessEnvelops")]
 public class DarknessEnvelopsSkill : Skill
@@ -44,8 +46,8 @@ public class DarknessEnvelopsSkill : Skill
     {
         if (ownerCard == null) return;
 
-        Unit[] enemies = GameObject.FindObjectsOfType<Unit>()
-                            .Where(u => u.IsPlayerUnit != ownerCard.IsPlayer).ToArray();
+        List<Unit> enemies = BattleManager.Instance.GetAllUnitInteam(!ownerCard.IsPlayer);
+        if (enemies.Count <= 0) return;
 
         foreach (Unit enemy in enemies)
         {

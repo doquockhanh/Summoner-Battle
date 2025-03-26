@@ -90,6 +90,21 @@ public class SkillEffectHandler : MonoBehaviour
         return indicatorId;
     }
 
+    public GameObject CreateRangeIndicator(HexCell cell, float radius, Color? color = null)
+    {
+        Vector2 pos2 = cell.WorldPosition;
+        GameObject indicator = Instantiate(rangeIndicatorPrefab, pos2, Quaternion.identity);
+        SkillRangeIndicator rangeIndicator = indicator.GetComponent<SkillRangeIndicator>();
+
+        if (rangeIndicator != null)
+        {
+            rangeIndicator.SetRadius(radius);
+            rangeIndicator.SetColor(color ?? Color.red);
+        }
+
+        return indicator;
+    }
+
     public IEnumerator HideRangeIndicator(int indicatorId, float duration)
     {
         yield return new WaitForSeconds(duration);

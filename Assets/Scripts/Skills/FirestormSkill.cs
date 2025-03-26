@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Firestorm", menuName = "Game/Skills/Firestorm")]
 public class FirestormSkill : Skill
@@ -20,7 +21,7 @@ public class FirestormSkill : Skill
     public float stormSpeed = 5f;
 
     [Range(1f, 5f)]
-    public float stormRadius = 2f;
+    public int stormRadius = 2;
 
     [Range(1f, 5f)]
     public float stormDuration = 2f;
@@ -50,7 +51,7 @@ public class FirestormSkill : Skill
                 Score = CalculateUnitScore(unit)
             })
             .OrderByDescending(x => x.Score)
-            .First()
+            .FirstOrDefault()
             .Unit;
             
         if (strongestUnit == null)
@@ -70,6 +71,7 @@ public class FirestormSkill : Skill
         effect.Execute(Vector3.zero);
         ownerCard.OnSkillActivated();
     }
+    
 
 
     private float CalculateUnitScore(Unit unit)
