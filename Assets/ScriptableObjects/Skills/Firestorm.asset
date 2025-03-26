@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 
   description: 
-  manaCost: 40
+  manaCost: 70
   duration: 4
   radius: 10
+  skillIcon: {fileID: 0}
+  hasPassive: 0
   skillType: 1
   ownerCard: {fileID: 0}
   initialDamagePercent: 80

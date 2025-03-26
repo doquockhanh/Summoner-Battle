@@ -2789,7 +2789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCards:
   - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
-  - {fileID: 11400000, guid: bf608896bd3d4fc47ad880d8df7104f7, type: 2}
+  - {fileID: 11400000, guid: f3ffa16489e1b5c488fdce55c4772a5e, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}

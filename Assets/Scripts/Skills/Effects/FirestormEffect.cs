@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FirestormEffect : MonoBehaviour, ISkillEffect
@@ -10,9 +13,11 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
     private float damageTimer;
     private bool isMoving;
     private UnitTargeting targeting;
+    private GameObject indicator;
 
-    public void Initialize(Unit caster, FirestormSkill skillData)
+    public void Initialize( Unit caster, FirestormSkill skillData)
     {
+       
         this.caster = caster;
         this.skillData = skillData;
         this.elapsedTime = 0f;
@@ -44,6 +49,11 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
             );
             stormEffect.transform.parent = transform;
         }
+        else
+        {
+            indicator = SkillEffectHandler.Instance
+                                            .CreateRangeIndicator(targeting.CurrentTarget.OccupiedCell, HexMetrics.GridToWorldRadius(skillData.stormRadius), new Color(1.0f, 0.41f, 0.71f, 1.0f));
+        }
     }
 
     private void FixedUpdate()
@@ -60,6 +70,8 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
             skillData.stormSpeed * Time.fixedDeltaTime
         );
 
+        indicator.transform.position = currentPosition;
+
         // Gây sát thương theo tick
         if (damageTimer >= skillData.tickInterval)
         {
@@ -71,6 +83,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         if (elapsedTime >= skillData.stormDuration)
         {
             Cleanup();
+            Destroy(indicator);
         }
     }
 
@@ -79,10 +92,15 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         float baseDamage = caster.GetUnitStats().GetMagicDamage();
         float damage = baseDamage * (damagePercent / 100f);
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(currentPosition, skillData.stormRadius);
-        foreach (Collider2D hit in hits)
+        List<Unit> enemies = BattleManager.Instance
+                                .GetAllUnitInteam(!caster.IsPlayerUnit)
+                                .Where(em => 
+                                        em.OccupiedCell.Coordinates
+                                        .DistanceTo(HexGrid.Instance.GetCellAtPosition(currentPosition).Coordinates) <= skillData.stormRadius)
+                                .ToList();
+        
+        foreach (Unit enemy in enemies)
         {
-            Unit enemy = hit.GetComponent<Unit>();
             if (targeting.IsValidEnemy(enemy))
             {
                 enemy.TakeDamage(damage, DamageType.Magic, caster);
@@ -110,11 +128,11 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
     {
         float maxDistance = 0f;
         Vector3 farthestPos = currentPosition;
+        List<Unit> enemies = BattleManager.Instance
+                                .GetAllUnitInteam(!caster.IsPlayerUnit);
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(currentPosition, skillData.radius);
-        foreach (Collider2D hit in hits)
+        foreach (Unit enemy in enemies)
         {
-            Unit enemy = hit.GetComponent<Unit>();
             if (targeting.IsValidEnemy(enemy))
             {
                 float distance = Vector3.Distance(currentPosition, enemy.transform.position);
@@ -145,6 +163,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         {
             caster.GetComponent<UnitTargeting>().autoTargeting = true;
         }
+        StopAllCoroutines();
         Destroy(this);
     }
 }

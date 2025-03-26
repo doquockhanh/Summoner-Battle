@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Flame Sorcerer
   cardImage: {fileID: -761581998088165820, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 1ed44b16bb3555a48bbd66c02e0a408c, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 0
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
   summonUnit: {fileID: 11400000, guid: e10f42031aa359d47af31a1e0d43bcb9, type: 2}
   skill: {fileID: 11400000, guid: 1972c13ae8d05714ba11d28b547ceb5a, type: 2}

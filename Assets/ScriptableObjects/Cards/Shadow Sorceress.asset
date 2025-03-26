@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Shadow Sorceress
   cardImage: {fileID: 6521732419647995193, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: e07ab032a909b4243bb2c2436a7fdb17, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 9
+  maxHp: 10000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 76
+  attackSpeed: 3
+  range: 2
   summonUnit: {fileID: 11400000, guid: 1cbf4ef894bde354491fd78d63ecf7ca, type: 2}
   skill: {fileID: 11400000, guid: 57a2dfade24a8544191515d0c4c2fae1, type: 2}
