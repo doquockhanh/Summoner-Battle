@@ -15,18 +15,18 @@ public class DarknessEnvelopsEffect : MonoBehaviour, ISkillEffect
         this.skillData = skillData;
         this.stats = target.GetUnitStats();
         this.damageTimer = 0f;
-        
+    }
+
+    public void Execute(Vector3 targetPos)
+    {
+        if (!ValidateExecution()) return;
+
         if (stats != null)
         {
             originalMagicResist = stats.GetMagicResist();
             // Giảm kháng phép
             stats.ModifyStat(StatType.MagicResist, -skillData.magicResistReduction);
         }
-    }
-
-    public void Execute(Vector3 targetPos)
-    {
-        if (!ValidateExecution()) return;
 
         // Tạo hiệu ứng visual
         if (skillData.darknessPrefab != null)
@@ -53,7 +53,7 @@ public class DarknessEnvelopsEffect : MonoBehaviour, ISkillEffect
             if (target == null || target.IsDead) break;
 
             // Gây sát thương cơ bản + % máu tối đa
-            float damage = skillData.baseDamage + 
+            float damage = skillData.baseDamage +
                          (stats.GetMaxHp() * skillData.maxHealthDamagePercent / 100f);
             target.TakeDamage(damage, DamageType.Magic);
 
@@ -83,4 +83,4 @@ public class DarknessEnvelopsEffect : MonoBehaviour, ISkillEffect
         }
         Destroy(this);
     }
-} 
+}
