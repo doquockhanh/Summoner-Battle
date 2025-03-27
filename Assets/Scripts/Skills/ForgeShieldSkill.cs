@@ -18,7 +18,6 @@ public class ForgeShieldSkill : Skill
     public float shareRadius = 3f;
 
     [Header("Hiệu ứng")]
-    public GameObject forgeEffectPrefab;
     public GameObject shieldEffectPrefab;
 
     private int shieldID;
@@ -37,39 +36,34 @@ public class ForgeShieldSkill : Skill
 
     public override void ApplyToSummon(Unit summonedUnit)
     {
-        if (ownerCard == null) return;
+        if (ownerCard == null || ownerCard.GetActiveUnits().Count <= 0)
+        {
+            ownerCard.OnSkillFailed();
+            return;
+        }
 
-        // Tìm thợ rèn mạnh nhất dựa trên chỉ số phòng thủ
-        strongestSmith = ownerCard.GetActiveUnits().OrderBy(unit => CalculateUnitScore(unit)).FirstOrDefault();
+        strongestSmith = ownerCard.GetActiveUnits().OrderByDescending(unit => CalculateUnitScore(unit)).FirstOrDefault();
         if (strongestSmith == null) return;
-        strongestSmith.GetComponent<UnitView>().PlaySkillAnimation();
 
+        // b1: chạy animation skill
+        // b2: animation gọi về unitMovement để dừng di chuyển
+        // b3: animation gọi về đây để cast skill
+        // b4: animation gọi về unitMovement để tiếp tục di chuyển
+        // strongestSmith.transform.localScale = new Vector3(2, 2, 0);
+        strongestSmith.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
+        ownerCard.OnSkillActivated();
+    }
+
+    public void CastSkill()
+    {
         // Tính lượng khiên dựa trên máu tối đa
         float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f);
 
-        // Áp dụng khiên sharing
-        if (SkillEffectHandler.Instance != null)
-        {
-            shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
-            strongestSmith.GetUnitStats().AddShield(shield);
-            shield.OnShieldBroken += HandleShareShield;
-            shield.OnShieldExpired += HandleShareShield;
-            shieldID = shield.GetOwnerSkillID();
-            ownerCard.OnSkillActivated();
-
-            // Tạo hiệu ứng rèn
-            if (forgeEffectPrefab != null)
-            {
-                GameObject effect = Instantiate(forgeEffectPrefab,
-                    strongestSmith.transform.position,
-                    Quaternion.identity);
-                Destroy(effect, 2f);
-            }
-        }
-        else
-        {
-            ownerCard.OnSkillFailed();
-        }
+        shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
+        strongestSmith.GetUnitStats().AddShield(shield);
+        shield.OnShieldBroken += HandleShareShield;
+        shield.OnShieldExpired += HandleShareShield;
+        shieldID = shield.GetOwnerSkillID();
     }
 
     private void HandleShareShield(int id)

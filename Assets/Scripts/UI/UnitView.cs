@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class UnitView : MonoBehaviour
     private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
     private static readonly int AttackParam = Animator.StringToHash("attack");
     private static readonly int skillAnimParam = Animator.StringToHash("runSkill");
+    private Action skillAction;
 
     private Unit unit;
 
@@ -84,11 +86,16 @@ public class UnitView : MonoBehaviour
     }
 
 
-    public void PlaySkillAnimation()
+    public void PlaySkillAnimation(Action castSkill)
     {
         if (animator == null) return;
 
         animator.SetTrigger(skillAnimParam);
+        skillAction = castSkill;
+    }
+
+    public void DoSkillAction() {
+        skillAction?.Invoke();
     }
 
     public void FlipSprite(bool faceRight)
