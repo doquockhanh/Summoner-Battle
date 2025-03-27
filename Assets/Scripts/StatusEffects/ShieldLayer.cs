@@ -26,6 +26,10 @@ public class ShieldLayer
         return OwnerSkillID;
     }
 
+    void FixedUpdate() {
+        UpdateDuration(Time.fixedDeltaTime);
+    }
+
     public float AbsorbDamage(float damage)
     {
         float absorbed = Mathf.Min(RemainingValue, damage);

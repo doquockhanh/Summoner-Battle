@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6cddab06e2e8a934db4e4b2e7826aa8a
+guid: 8de501b65481fcf4984074a0ee5c1ae8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -131,14 +131,14 @@ TextureImporter:
         width: 62
         height: 58
       alignment: 9
-      pivot: {x: 0.43, y: 0}
+      pivot: {x: 0.42, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da37b335ec4f98b45b9c053c39464217
-      internalID: 1427949189
+      spriteID: 3807eaa65598d534eb7b4a973c014a3b
+      internalID: 1448348711
       vertices: []
       indices: 
       edges: []
@@ -152,14 +152,14 @@ TextureImporter:
         width: 60
         height: 58
       alignment: 9
-      pivot: {x: 0.43, y: 0}
+      pivot: {x: 0.4, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e241f4133b3b82a4f85e74501a85bb1f
-      internalID: 1352190839
+      spriteID: 5448573b95eabe54582fec919e811428
+      internalID: 694389680
       vertices: []
       indices: 
       edges: []
@@ -168,19 +168,19 @@ TextureImporter:
       name: BlackSmith.run_2
       rect:
         serializedVersion: 2
-        x: 3
+        x: 1
         y: 0
-        width: 60
+        width: 62
         height: 59
       alignment: 9
-      pivot: {x: 0.43, y: 0}
+      pivot: {x: 0.42, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f81a38466d2fac4282336e5ca7e0c69
-      internalID: -893729526
+      spriteID: e20f6b082ab62bb438dc15db9b3cb786
+      internalID: -479799678
       vertices: []
       indices: 
       edges: []
@@ -194,14 +194,14 @@ TextureImporter:
         width: 61
         height: 59
       alignment: 9
-      pivot: {x: 0.43, y: 0}
+      pivot: {x: 0.41, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 19fccf93532e01843b27f3e6f361457a
-      internalID: 277912192
+      spriteID: 2b1962c9220c43d499cc683e2b2ce755
+      internalID: 483797359
       vertices: []
       indices: 
       edges: []
@@ -217,10 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BlackSmith.run_0: 1427949189
-      BlackSmith.run_1: 1352190839
-      BlackSmith.run_2: -893729526
-      BlackSmith.run_3: 277912192
+      BlackSmith.run_0: 1448348711
+      BlackSmith.run_1: 694389680
+      BlackSmith.run_2: -479799678
+      BlackSmith.run_3: 483797359
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
