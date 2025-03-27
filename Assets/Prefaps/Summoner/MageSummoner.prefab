@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: -5550928645432154189}
   - component: {fileID: 6000535133270558605}
   m_Layer: 8
-  m_Name: Mage
+  m_Name: MageSummoner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -16,6 +16,7 @@ public class UnitCombat : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Color projectileColor = Color.white;
     [SerializeField] private Transform projectileSpawnPoint;
+    private bool autoCombat = true;
 
     private void Awake()
     {
@@ -34,11 +35,13 @@ public class UnitCombat : MonoBehaviour
     private void Update()
     {
         if (unit.IsDead) return;
-        
+
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
         }
+
+        if (!autoCombat) return;
 
         if (CanAttack())
         {
@@ -116,7 +119,7 @@ public class UnitCombat : MonoBehaviour
 
         if (useProjectile && projectilePrefab != null)
         {
-            Vector3 spawnPos = projectileSpawnPoint != null ? 
+            Vector3 spawnPos = projectileSpawnPoint != null ?
                 projectileSpawnPoint.position : transform.position;
 
             GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
@@ -142,4 +145,15 @@ public class UnitCombat : MonoBehaviour
     {
         attackTimer = (1f / stats.GetAttackSpeed()) + ATTACK_COOLDOWN_BUFFER;
     }
+
+    public void TurnOnAutoCombat()
+    {
+        autoCombat = true;
+    }
+
+    public void TurnOffAutoCombat()
+    {
+        autoCombat = false;
+    }
+
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -17,7 +18,6 @@ public class ForgeShieldSkill : Skill
     public float shareRadius = 3f;
 
     [Header("Hiệu ứng")]
-    public GameObject forgeEffectPrefab;
     public GameObject shieldEffectPrefab;
 
     private int shieldID;
@@ -36,57 +36,55 @@ public class ForgeShieldSkill : Skill
 
     public override void ApplyToSummon(Unit summonedUnit)
     {
-        if (ownerCard == null) return;
+        if (ownerCard == null || ownerCard.GetActiveUnits().Count <= 0)
+        {
+            ownerCard.OnSkillFailed();
+            return;
+        }
 
-        // Tìm thợ rèn mạnh nhất dựa trên chỉ số phòng thủ
-        strongestSmith = ownerCard.GetStrongestUnit(unit => unit.GetUnitStats().GetArmor());
+        strongestSmith = ownerCard.GetActiveUnits().OrderByDescending(unit => CalculateUnitScore(unit)).FirstOrDefault();
         if (strongestSmith == null) return;
 
+        // b1: chạy animation skill
+        // b2: animation gọi về unitMovement để dừng di chuyển
+        // b3: animation gọi về đây để cast skill
+        // b4: animation gọi về unitMovement để tiếp tục di chuyển
+        // strongestSmith.transform.localScale = new Vector3(2, 2, 0);
+        GrowSizeEffect growSizeEffect = new(strongestSmith, 5f, 1.3f);
+
+        strongestSmith.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
+        strongestSmith.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        ownerCard.OnSkillActivated();
+    }
+
+    public void CastSkill()
+    {
         // Tính lượng khiên dựa trên máu tối đa
         float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f);
 
-        // Áp dụng khiên sharing
-        if (SkillEffectHandler.Instance != null)
-        {
-            shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
-            strongestSmith.GetUnitStats().AddShield(shield);
-            shield.OnShieldBroken += HandleShareShield;
-            shield.OnShieldExpired += HandleShareShield;
-            shieldID = shield.GetOwnerSkillID();
-            ownerCard.OnSkillActivated();
-
-            // Tạo hiệu ứng rèn
-            if (forgeEffectPrefab != null)
-            {
-                GameObject effect = Instantiate(forgeEffectPrefab,
-                    strongestSmith.transform.position,
-                    Quaternion.identity);
-                Destroy(effect, 2f);
-            }
-        }
-        else
-        {
-            ownerCard.OnSkillFailed();
-        }
+        shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
+        strongestSmith.GetUnitStats().AddShield(shield);
+        shield.OnShieldBroken += HandleShareShield;
+        shield.OnShieldExpired += HandleShareShield;
+        shieldID = shield.GetOwnerSkillID();
     }
 
     private void HandleShareShield(int id)
     {
         shield.OnShieldBroken -= HandleShareShield;
         shield.OnShieldExpired -= HandleShareShield;
+
         if (id == shieldID)
         {
-            Unit[] allUnits = GameObject.FindObjectsOfType<Unit>();
-            var nearbyAllies = allUnits
-                .Where(u => u != null &&
-                           !u.IsDead &&
-                           u.IsPlayerUnit == strongestSmith.IsPlayerUnit &&
-                           u != strongestSmith)
-                .OrderBy(u => Vector3.Distance(strongestSmith.transform.position, u.transform.position))
-                .Take(2)
-                .ToArray();
+            List<Unit> allies = BattleManager.Instance
+                                .GetAllUnitInteam(ownerCard.IsPlayer)
+                                .Where(ally => strongestSmith.GetComponent<UnitTargeting>().IsValidAlly(ally)
+                                                    && ally != strongestSmith)
+                                .OrderBy(ally => strongestSmith.OccupiedCell.Coordinates.DistanceTo(ally.OccupiedCell.Coordinates))
+                                .Take(2)
+                                .ToList();
 
-            foreach (var ally in nearbyAllies)
+            foreach (var ally in allies)
             {
                 if (ally != null)
                 {
@@ -95,6 +93,32 @@ public class ForgeShieldSkill : Skill
                 }
             }
         }
+    }
+
+    private float CalculateUnitScore(Unit unit)
+    {
+        if (unit == null || unit.IsDead) return -1;
+
+        float score = 0;
+
+        // 1. Unit còn sống (điều kiện bắt buộc, đã check ở trên)
+        score += 1;
+
+        // 2. Độ gần với 60% máu
+        var stats = unit.GetUnitStats();
+        float healthPercent = stats.CurrentHP / stats.GetMaxHp();
+        float healthScore = 1 - Mathf.Abs(60f / 100f - healthPercent);
+        score += healthScore;
+
+        // 3. Đang tấn công đối phương
+        UnitTargeting targeting = unit.GetComponent<UnitTargeting>();
+
+        if (targeting != null && targeting.CurrentTarget != null && targeting.IsInAttackRange(targeting.CurrentTarget))
+        {
+            score += 1;
+        }
+
+        return score;
     }
 
     public override void ApplyPassive(Unit summonedUnit)

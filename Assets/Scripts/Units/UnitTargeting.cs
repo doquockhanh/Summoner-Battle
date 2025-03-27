@@ -26,7 +26,7 @@ public class UnitTargeting : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (unit.IsDead) return;
+        if (unit == null || unit.IsDead) return;
 
         if (autoTargeting)
         {

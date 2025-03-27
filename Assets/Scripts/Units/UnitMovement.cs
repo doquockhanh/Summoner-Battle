@@ -11,11 +11,12 @@ public class UnitMovement : MonoBehaviour
     private List<HexCell> currentPath;
     private int currentPathIndex;
     // private HexCell occupiedCell;
-    private HexCell occupiedCell => unit.OccupiedCell;
     private HexCell registeredCell;
     private float speed => unit.GetUnitStats().GetMoveSpeed();
     private int attackRange => unit.GetUnitStats().GetRange();
     private HexCell lastTarget;
+    private UnitView view;
+    private bool autoMoving = true;
 
     private void Start()
     {
@@ -26,6 +27,7 @@ public class UnitMovement : MonoBehaviour
         targeting = GetComponent<UnitTargeting>();
         currentPath = null;
         currentPathIndex = 0;
+        view = unit.GetComponent<UnitView>();
 
         unit.GetUnitStats().OnDeath += Reset;
     }
@@ -37,6 +39,8 @@ public class UnitMovement : MonoBehaviour
             Reset();
             return;
         }
+
+        if (!autoMoving) return;
 
         if (!CanMove()) return;
 
@@ -96,10 +100,18 @@ public class UnitMovement : MonoBehaviour
 
     private void MoveAlongPath(List<HexCell> path, int index)
     {
-        if (path == null || index >= path.Count || !CanMove()) return;
+        if (path == null || index >= path.Count || !CanMove())
+        {
+            view.SetMoving(false);
+            return;
+        }
 
         HexCell nextCell = path[index];
-        if (nextCell == null) return;
+        if (nextCell == null)
+        {
+            view.SetMoving(false);
+            return;
+        }
 
         // Đăng ký ô tiếp theo
         registeredCell = nextCell;
@@ -117,7 +129,6 @@ public class UnitMovement : MonoBehaviour
         UpdateOccupiedCell();
 
         // Cập nhật animation
-        var view = unit.GetComponent<UnitView>();
         view.SetMoving(true);
         view.FlipSprite(targetPosition.x - transform.position.x > 0);
 
@@ -151,6 +162,17 @@ public class UnitMovement : MonoBehaviour
         if (statusEffects == null) return true;
         return statusEffects.CanAct();
     }
+
+    public void TurnOnAutoMoving()
+    {
+        autoMoving = true;
+    }
+
+    public void TurnOffAutoMoving()
+    {
+        autoMoving = false;
+    }
+
 
     private bool IsPathBlocked()
     {
