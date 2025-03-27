@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Furious Cavalry
   cardImage: {fileID: -2052561053, guid: 09918634292a6034a903f1facea95597, type: 3}
   description: "K\u1EF5 S\u0129 Phong Ba, c\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 1260f0baa646f464fa45c2ad89091258, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 104
+  attackSpeed: 1
+  range: 3
   summonUnit: {fileID: 11400000, guid: 14d57373e757ee44ca14e1dd862f047f, type: 2}
   skill: {fileID: 11400000, guid: 846be4996af3f68419af65cfbd4d2a28, type: 2}

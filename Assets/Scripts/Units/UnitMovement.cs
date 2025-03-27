@@ -125,8 +125,9 @@ public class UnitMovement : MonoBehaviour
             speed * Time.deltaTime
         );
 
-        // Tự động cập nhật occupiedCell
-        UpdateOccupiedCell();
+        HexCell newCell = hexGrid.GetCellAtPosition(transform.position);
+        // Cập nhật occupied cell
+        HexGrid.Instance.OccupyCell(newCell, unit);
 
         // Cập nhật animation
         view.SetMoving(true);
@@ -137,23 +138,6 @@ public class UnitMovement : MonoBehaviour
         {
             currentPathIndex++;
             registeredCell.UnregisterUnit();
-        }
-    }
-
-    private void UpdateOccupiedCell()
-    {
-        HexCell newCell = hexGrid.GetCellAtPosition(transform.position);
-        if (newCell != null && newCell != unit.OccupiedCell)
-        {
-            // Hủy occupied ô cũ
-            if (unit.OccupiedCell != null)
-            {
-                unit.OccupiedCell.SetUnit(null);
-            }
-            // Cập nhật ô mới
-
-            unit.SetOccupiedCell(newCell);
-            unit.OccupiedCell.SetUnit(unit);
         }
     }
 

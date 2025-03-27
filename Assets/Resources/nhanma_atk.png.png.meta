@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e0b1a92aee50fea41a204a546840a1cf
+guid: d28b30c7ccf64524e80623a0ac02a02d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,64 +123,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: nhanma-1.png_0
+      name: nhanma_atk.png_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 129
+        x: 2
+        y: 258
         width: 86
         height: 66
       alignment: 9
-      pivot: {x: 0.13, y: 0}
+      pivot: {x: 0.48, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3054f37503b70e84b8c28d1299377175
-      internalID: 1151088569
+      spriteID: abd44224312971441af4b7a63b6dae7b
+      internalID: 1829763311
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: nhanma-1.png_1
+      name: nhanma_atk.png_1
       rect:
         serializedVersion: 2
         x: 128
-        y: 129
-        width: 94
+        y: 258
+        width: 88
         height: 66
       alignment: 9
-      pivot: {x: 0.2, y: 0}
+      pivot: {x: 0.49, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89715ddee59ab8a4ca7019a4707067aa
-      internalID: 979817501
+      spriteID: c37fd6de695e84f41894485ac5cd4289
+      internalID: -263251221
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: nhanma-1.png_2
+      name: nhanma_atk.png_2
       rect:
         serializedVersion: 2
-        x: 8
-        y: 1
-        width: 120
+        x: 0
+        y: 130
+        width: 88
         height: 66
       alignment: 9
-      pivot: {x: 0.09, y: 0}
+      pivot: {x: 0.49, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b485fc52419ba84e9395cd93d36a6a8
-      internalID: -830899430
+      spriteID: b6483611ba65eba48814889688c6dba6
+      internalID: -132947132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_atk.png_3
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 131
+        width: 120
+        height: 66
+      alignment: 9
+      pivot: {x: 0.32, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a21cd3c2ebf8bc41815602130279ca1
+      internalID: -1308108031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_atk.png_4
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 97
+        height: 63
+      alignment: 9
+      pivot: {x: 0.4, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e8c78f75a03832428bd4b2ebdae3edf
+      internalID: 1012658051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_atk.png_5
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 31
+        width: 13
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45a7b648a5532b44ab1b552f84aff4c4
+      internalID: 167421252
       vertices: []
       indices: 
       edges: []
@@ -196,9 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      nhanma-1.png_0: 1151088569
-      nhanma-1.png_1: 979817501
-      nhanma-1.png_2: -830899430
+      nhanma_atk.png_0: 1829763311
+      nhanma_atk.png_1: -263251221
+      nhanma_atk.png_2: -132947132
+      nhanma_atk.png_3: -1308108031
+      nhanma_atk.png_4: 1012658051
+      nhanma_atk.png_5: 167421252
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

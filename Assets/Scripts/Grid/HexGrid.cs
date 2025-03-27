@@ -37,7 +37,7 @@ public class HexGrid : MonoBehaviour
         // Tạo grid 14x28
         for (int q = 0; q < width; q++)
         {
-            int rStart = - q / 2;
+            int rStart = -q / 2;
             int rEnd = height - q / 2;
 
             for (int r = rStart; r < rEnd; r++)
@@ -181,25 +181,36 @@ public class HexGrid : MonoBehaviour
 
         // Giải phóng ô cũ
         var currentCell = unit.OccupiedCell;
-        if (currentCell != null)
-        {
-            currentCell.SetUnit(null);
-        }
+        currentCell?.SetUnit(null);
 
         // Chiếm ô mới
         newCell.SetUnit(unit);
+        unit.SetOccupiedCell(newCell);
         return true;
     }
 
-    public bool OccupyCell(HexCell newCell, CardController card) 
+    public bool AssertOccupyCell(Vector3 worldPosition, Unit unit, int maxRange)
+    {
+        if (unit == null) return false;
+
+        HexCoord targetCoord = HexMetrics.WorldToHex(worldPosition);
+
+        HexCell nearestEmptyCell = FindNearestEmptyCell(targetCoord, maxRange);
+
+        if (nearestEmptyCell != null)
+        {
+            return OccupyCell(nearestEmptyCell, unit);
+        }
+
+        return false;
+    }
+
+    public bool OccupyCell(HexCell newCell, CardController card)
     {
         if (newCell == null || card == null || newCell.IsOccupied) return false;
 
         // Giải phóng ô cũ nếu có
-        if (card.occupiedHex != null)
-        {
-            card.occupiedHex.SetUnit(null);
-        }
+        card.occupiedHex?.SetUnit(null);
 
         // Chiếm ô mới
         newCell.SetUnit(card.GetActiveUnits().FirstOrDefault());
@@ -232,7 +243,7 @@ public class HexGrid : MonoBehaviour
         {
             // Lấy các ô có thể làm tâm AOE (bao gồm các ô xung quanh unit)
             var potentialCenters = GetCellsInRange(unitCell.Coordinates, radius);
-            
+
             foreach (var centerCell in potentialCenters)
             {
                 // Skip nếu đã check
@@ -259,5 +270,30 @@ public class HexGrid : MonoBehaviour
         }
 
         return bestCell;
+    }
+
+    private HexCell FindNearestEmptyCell(HexCoord center, int maxRange)
+    {
+        // Kiểm tra ô trung tâm trước
+        var centerCell = GetCell(center);
+        if (centerCell != null && !centerCell.IsOccupied)
+        {
+            return centerCell;
+        }
+
+        // Tìm kiếm theo vòng tròn, từ gần đến xa
+        for (int radius = 1; radius <= maxRange; radius++) // Giới hạn bán kính tìm kiếm là 5
+        {
+            var cellsInRange = GetCellsInRange(center, radius);
+            foreach (var cell in cellsInRange)
+            {
+                if (!cell.IsOccupied)
+                {
+                    return cell;
+                }
+            }
+        }
+
+        return null; // Không tìm thấy ô trống nào
     }
 }

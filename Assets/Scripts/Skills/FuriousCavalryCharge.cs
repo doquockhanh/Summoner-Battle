@@ -56,6 +56,19 @@ public class FuriousCavalryCharge : Skill
             return;
         }
 
+        // b1: chạy animation skill
+        // b2: animation gọi về unitMovement để dừng di chuyển
+        // b3: animation gọi về đây để cast skill
+        // b4: animation gọi về unitMovement để tiếp tục di chuyển
+        GrowSizeEffect growSizeEffect = new(strongestUnit, 5f, 1.3f);
+
+        strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
+        strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        ownerCard.OnSkillActivated();
+    }
+
+    public void CastSkill()
+    {
         Vector3 bestTargetPos = FindBestTargetPosition(strongestUnit);
 
         if (bestTargetPos == Vector3.zero)
@@ -67,7 +80,6 @@ public class FuriousCavalryCharge : Skill
         var effect = strongestUnit.gameObject.AddComponent<FuriousCavalryChargeEffect>();
         effect.Initialize(strongestUnit, this);
         effect.Execute(bestTargetPos);
-        ownerCard.OnSkillActivated();
     }
 
     private Vector3 FindBestTargetPosition(Unit caster)
@@ -77,15 +89,13 @@ public class FuriousCavalryCharge : Skill
         try
         {
             // Tìm tất cả enemy trong tầm radius
-            Collider2D[] hits = Physics2D.OverlapCircleAll(caster.transform.position, radius);
+            List<Unit> enemies = HexGrid.Instance
+                                    .GetUnitsInRange(caster.OccupiedCell.Coordinates, radius, !caster.IsPlayerUnit);
             float maxDistance = 0f;
             Vector3 targetPos = Vector3.zero;
 
-            foreach (Collider2D hit in hits)
+            foreach (Unit enemy in enemies)
             {
-                if (hit == null) continue;
-
-                Unit enemy = hit.GetComponent<Unit>();
                 if (enemy != null && enemy.IsPlayerUnit != caster.IsPlayerUnit)
                 {
                     float distance = Vector3.Distance(caster.transform.position, enemy.transform.position);

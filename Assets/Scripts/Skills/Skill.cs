@@ -7,7 +7,7 @@ public abstract class Skill : ScriptableObject
     public string description;
     public float manaCost;
     public float duration;
-    public float radius;
+    public int radius;
     public Sprite skillIcon;
 
     public bool hasPassive;

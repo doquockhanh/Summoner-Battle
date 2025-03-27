@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 09918634292a6034a903f1facea95597
+guid: 15b3b95e5a96a9b4a9d1c76577a04a7a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,22 +123,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: nhanma-1.png-1.png_0
+      name: nhanma_skilling_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 1
-        width: 94
-        height: 71
-      alignment: 9
-      pivot: {x: 0.44, y: 0}
+        x: 25
+        y: 259
+        width: 126
+        height: 73
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98ba877a8212a9040b878f1861937128
-      internalID: -2052561053
+      spriteID: 4baad1cedd250c844a113f25f0c4d298
+      internalID: -541301758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_skilling_1
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 263
+        width: 152
+        height: 75
+      alignment: 9
+      pivot: {x: 0.6000002, y: -0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38887e4612498cc47819172511fbb660
+      internalID: -1848936540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_skilling_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 138
+        width: 152
+        height: 73
+      alignment: 9
+      pivot: {x: 0.62, y: -0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 746fc310e3b42a74296ddfc5d5201325
+      internalID: 282325130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_skilling_3
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 133
+        width: 152
+        height: 74
+      alignment: 9
+      pivot: {x: 0.62, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bf0223111db69e4bbaee9969537ae7c
+      internalID: -219263481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_skilling_4
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 6
+        width: 110
+        height: 66
+      alignment: 9
+      pivot: {x: 0.5, y: -0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddb6cf9bd1131914f813825a3464d331
+      internalID: -1599353636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhanma_skilling_5
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 5
+        width: 109
+        height: 67
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cfc5899225041049af77888620f0dd5
+      internalID: -1093629776
       vertices: []
       indices: 
       edges: []
@@ -154,7 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      nhanma-1.png-1.png_0: -2052561053
+      nhanma_skilling_0: -541301758
+      nhanma_skilling_1: -1848936540
+      nhanma_skilling_2: 282325130
+      nhanma_skilling_3: -219263481
+      nhanma_skilling_4: -1599353636
+      nhanma_skilling_5: -1093629776
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

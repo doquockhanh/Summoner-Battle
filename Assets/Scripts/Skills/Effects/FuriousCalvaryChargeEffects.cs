@@ -70,36 +70,32 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
         {
             caster.transform.position += direction * skillData.chargeSpeed * Time.deltaTime;
 
-            Collider2D[] hits = Physics2D.OverlapCircleAll(caster.transform.position, 0.3f);
-            foreach (Collider2D hit in hits)
+            HexCell cell = HexGrid.Instance.GetCellAtPosition(caster.transform.position);
+            Unit hit = cell.OccupyingUnit;
+
+            if (hit != null && hit.IsPlayerUnit != caster.IsPlayerUnit && !hitUnits.Contains(hit))
             {
-                if (hit == null) continue;
+                hitUnits.Add(hit);
+                // Gây sát thương
+                float damage = caster.GetUnitStats().GetPhysicalDamage() * skillData.damageMultiplier;
+                hit.TakeDamage(damage, DamageType.Physical, caster);
 
-                Unit enemy = hit.GetComponent<Unit>();
-                if (enemy != null && enemy.IsPlayerUnit != caster.IsPlayerUnit && !hitUnits.Contains(enemy))
+                // Hiệu ứng va chạm
+                if (skillData.hitEffectPrefab != null)
                 {
-                    hitUnits.Add(enemy);
+                    GameObject hitEffect = Instantiate(skillData.hitEffectPrefab, hit.transform.position, Quaternion.identity);
+                    Destroy(hitEffect, 0.5f);
+                }
 
-                    // Gây sát thương
-                    float damage = caster.GetUnitStats().GetPhysicalDamage() * skillData.damageMultiplier;
-                    enemy.TakeDamage(damage, DamageType.Physical, caster);
-
-                    // Hiệu ứng va chạm
-                    if (skillData.hitEffectPrefab != null)
-                    {
-                        GameObject hitEffect = Instantiate(skillData.hitEffectPrefab, enemy.transform.position, Quaternion.identity);
-                        Destroy(hitEffect, 0.5f);
-                    }
-
-                    // Áp dụng hiệu ứng knockup thông qua status effect system
-                    var statusEffects = enemy.GetComponent<UnitStatusEffects>();
-                    if (statusEffects != null)
-                    {
-                        var knockupEffect = new KnockupEffect(enemy, skillData.knockupDuration);
-                        statusEffects.AddEffect(knockupEffect);
-                    }
+                // Áp dụng hiệu ứng knockup thông qua status effect system
+                var statusEffects = hit.GetComponent<UnitStatusEffects>();
+                if (statusEffects != null)
+                {
+                    var knockupEffect = new KnockupEffect(hit, skillData.knockupDuration);
+                    statusEffects.AddEffect(knockupEffect);
                 }
             }
+
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -107,13 +103,10 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         yield return new WaitForSeconds(0.2f);
 
-        // Assign new target to caster
-        UnitTargeting unitTargeting = caster.GetComponent<UnitTargeting>();
-        // Unit unit = unitTargeting.FindNearestTarget();
-        // unitTargeting.AssignTarget(unit);
-
         // Resume targeting
         caster.GetComponent<UnitTargeting>().autoTargeting = true;
+        HexGrid.Instance.OccupyCell(HexGrid.Instance.GetCellAtPosition(caster.transform.position), caster);
+        //    HexGrid.Instance.AssertOccupyCell(caster.transform.position, caster, 3);
 
         // Cleanups
         Cleanup();
