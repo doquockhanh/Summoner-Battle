@@ -19,6 +19,7 @@ public class UnitView : MonoBehaviour
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
     private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
     private static readonly int AttackParam = Animator.StringToHash("attack");
+    private static readonly int skillAnimParam = Animator.StringToHash("runSkill");
 
     private Unit unit;
 
@@ -80,6 +81,14 @@ public class UnitView : MonoBehaviour
         {
             animator.SetTrigger(AttackParam);
         }
+    }
+
+
+    public void PlaySkillAnimation()
+    {
+        if (animator == null) return;
+
+        animator.SetTrigger(skillAnimParam);
     }
 
     public void FlipSprite(bool faceRight)

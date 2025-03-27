@@ -11,7 +11,6 @@ public class UnitMovement : MonoBehaviour
     private List<HexCell> currentPath;
     private int currentPathIndex;
     // private HexCell occupiedCell;
-    private HexCell occupiedCell => unit.OccupiedCell;
     private HexCell registeredCell;
     private float speed => unit.GetUnitStats().GetMoveSpeed();
     private int attackRange => unit.GetUnitStats().GetRange();
