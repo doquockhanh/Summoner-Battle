@@ -1,0 +1,432 @@
+fileFormatVersion: 2
+guid: a296a5e8a4e2a404eb17f20ad55e9c39
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Guardian-Skill_0
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 1652
+        width: 80
+        height: 249
+      alignment: 9
+      pivot: {x: 0.49, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c45c677446555142b654ac77a032ec7
+      internalID: 12752304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_2
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 1652
+        width: 87
+        height: 249
+      alignment: 9
+      pivot: {x: 0.485, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92fa34d3d56b2254cbb032289ad567ee
+      internalID: -1265516755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_4
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 1652
+        width: 101
+        height: 249
+      alignment: 9
+      pivot: {x: 0.477, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbddb6e8c6fd82e44b74d408484fb21e
+      internalID: -1799579037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_9
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 1140
+        width: 109
+        height: 249
+      alignment: 9
+      pivot: {x: 0.47, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8133cebf35996d41a9537ca4b485b5b
+      internalID: -1302315587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_11
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 1140
+        width: 109
+        height: 249
+      alignment: 9
+      pivot: {x: 0.47, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 474659e4ebf384646a9e6317ceeeef2b
+      internalID: 2088664136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_13
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 1140
+        width: 109
+        height: 249
+      alignment: 9
+      pivot: {x: 0.47, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1eab797d304161a4a8b49a6290e95002
+      internalID: -1659467803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_18
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 628
+        width: 109
+        height: 249
+      alignment: 9
+      pivot: {x: 0.47, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f55cf7c3062c8284c8c5e7f2036d3bcc
+      internalID: -183698577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_20
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 628
+        width: 109
+        height: 249
+      alignment: 9
+      pivot: {x: 0.47, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79a453334230bc9448e52e9c8a555780
+      internalID: -21209805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_22
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 628
+        width: 109
+        height: 249
+      alignment: 9
+      pivot: {x: 0.47, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8dba81320444bf4aa37d048bcffc1e1
+      internalID: -241879414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_27
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 111
+        width: 109
+        height: 254
+      alignment: 9
+      pivot: {x: 0.47, y: 0.098}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e34de8d314c3354a9fc3b16fee97bd7
+      internalID: 548717676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_28
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 106
+        width: 119
+        height: 259
+      alignment: 9
+      pivot: {x: 0.515, y: 0.1155}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fd5234d60607f44daff0e9f2b32a7f5
+      internalID: 1158601948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guardian-Skill_30
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 92
+        width: 173
+        height: 273
+      alignment: 9
+      pivot: {x: 0.4583, y: 0.1608}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e122b0383b2bfc4885cd7955003c404
+      internalID: -332249547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Guardian-Skill_0: 12752304
+      Guardian-Skill_1: -1454793353
+      Guardian-Skill_10: 1294206585
+      Guardian-Skill_11: 2088664136
+      Guardian-Skill_12: 597127343
+      Guardian-Skill_13: -1659467803
+      Guardian-Skill_14: 249150249
+      Guardian-Skill_15: -239455614
+      Guardian-Skill_16: 2125153300
+      Guardian-Skill_17: -1416019240
+      Guardian-Skill_18: -183698577
+      Guardian-Skill_19: -392613348
+      Guardian-Skill_2: -1265516755
+      Guardian-Skill_20: -21209805
+      Guardian-Skill_21: 325331664
+      Guardian-Skill_22: -241879414
+      Guardian-Skill_23: -1054187
+      Guardian-Skill_24: 1688315429
+      Guardian-Skill_25: -1576367891
+      Guardian-Skill_26: 1553821947
+      Guardian-Skill_27: 548717676
+      Guardian-Skill_28: 1158601948
+      Guardian-Skill_29: -1311629233
+      Guardian-Skill_3: 34862903
+      Guardian-Skill_30: -332249547
+      Guardian-Skill_31: -934345809
+      Guardian-Skill_32: 475582194
+      Guardian-Skill_33: 580879780
+      Guardian-Skill_34: -1149164799
+      Guardian-Skill_35: 1342879592
+      Guardian-Skill_36: -578755540
+      Guardian-Skill_37: 593481946
+      Guardian-Skill_38: -1681349736
+      Guardian-Skill_39: -575368671
+      Guardian-Skill_4: -1799579037
+      Guardian-Skill_5: 198905693
+      Guardian-Skill_6: -1351042923
+      Guardian-Skill_7: 2011863225
+      Guardian-Skill_8: -729031625
+      Guardian-Skill_9: -1302315587
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

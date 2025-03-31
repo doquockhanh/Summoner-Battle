@@ -1970,7 +1970,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 465639b9bddb4c84cbc256762dc959d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 72e54f70b8d67eb4bb512b214114392e, type: 3}
   m_Color: {r: 0.78867924, g: 0.78867924, b: 0.78867924, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2595,8 +2595,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1666147978}
   - component: {fileID: 1666147977}
-  - component: {fileID: 1666147976}
   - component: {fileID: 1666147975}
+  - component: {fileID: 1666147979}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -2623,20 +2623,6 @@ MonoBehaviour:
   maxBounceAngle: 30
   bounceForce: 3
   scale: 10
---- !u!114 &1666147976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666147974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d478362f6ddf235439937a95bbf0fb3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allyOutlineMaterial: {fileID: 2100000, guid: ee6532154c03eac49be77952d8381ef2, type: 2}
-  enemyOutlineMaterial: {fileID: 2100000, guid: 7e2578d73920fd244a4b9065e39a5cc4, type: 2}
 --- !u!114 &1666147977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2668,6 +2654,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1666147979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666147974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d478362f6ddf235439937a95bbf0fb3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allyOutlineMaterial: {fileID: 2100000, guid: ee6532154c03eac49be77952d8381ef2, type: 2}
+  enemyOutlineMaterial: {fileID: 2100000, guid: 7e2578d73920fd244a4b9065e39a5cc4, type: 2}
 --- !u!1 &1873101194
 GameObject:
   m_ObjectHideFlags: 0
@@ -2789,6 +2789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCards:
   - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
+  - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}
@@ -2797,6 +2798,7 @@ MonoBehaviour:
   - {x: 2, y: 1}
   enemyCards:
   - {fileID: 11400000, guid: badb9fa9e6c65fa4a9fd5e14b7bb8cbc, type: 2}
+  - {fileID: 11400000, guid: 318225b538b3f7f4999d0d50f2281698, type: 2}
   enemiesSpawnPositions:
   - {x: 21, y: -4}
   - {x: 22, y: -7}
@@ -2946,7 +2948,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 354077450769762411, guid: 678375a4f9ca3d34c843e60791f15d45, type: 3}
       propertyPath: orthographic size
-      value: 16
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1070570618189701522, guid: 678375a4f9ca3d34c843e60791f15d45, type: 3}
       propertyPath: m_LocalPosition.x
