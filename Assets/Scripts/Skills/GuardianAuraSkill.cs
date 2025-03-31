@@ -21,6 +21,7 @@ public class GuardianAuraSkill : Skill
     public GameObject auraEffectPrefab;
 
     private List<Unit> alliesNearBy;
+    private Unit strongestUnit;
 
     public override bool CanActivate(float currentMana)
     {
@@ -37,14 +38,21 @@ public class GuardianAuraSkill : Skill
         if (ownerCard == null || ownerCard.GetActiveUnits().Count <= 0) return;
 
         // Tìm unit mạnh nhất dựa vào số lượng allies trong tầm kỹ năng
-        Unit strongestUnit = FindStrongestDefender();
+        strongestUnit = FindStrongestDefender();
         if (strongestUnit == null) return;
 
+        GrowSizeEffect growSizeEffect = new(strongestUnit, 5f, 1.3f);
+        strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
+        strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        ownerCard.OnSkillActivated();
+    }
+
+    public void CastSkill()
+    {
         // Thêm effect xử lý kỹ năng
         var effect = strongestUnit.gameObject.AddComponent<GuardianAuraSkillEffect>();
         effect.Initialize(strongestUnit, alliesNearBy, this);
         effect.Execute(Vector3.zero);
-        ownerCard.OnSkillActivated();
     }
 
     private Unit FindStrongestDefender()

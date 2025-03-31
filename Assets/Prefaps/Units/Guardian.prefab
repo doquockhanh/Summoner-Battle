@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 1817729600305747794}
   - component: {fileID: -7956776128962548195}
   - component: {fileID: -2685971491302013229}
+  - component: {fileID: 484049269125476044}
   m_Layer: 8
   m_Name: Guardian
   m_TagString: Untagged
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 2061747461
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3073021464058892558, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  m_Sprite: {fileID: -2135313584, guid: 997ac6ce36c9cea4b95e5480a52cb827, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -267,3 +268,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc1eacf80580634984d08070bf3dba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &484049269125476044
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505144159870094120}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9aaf50209daf2e24a9bde215c47c9d84, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
