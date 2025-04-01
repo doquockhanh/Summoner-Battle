@@ -1751,67 +1751,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1006890268}
   m_CullTransparentMesh: 1
---- !u!1001 &1149307313
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 17.750525
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.901226
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8505144159870094120, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_Name
-      value: Assassin
-      objectReference: {fileID: 0}
-    - target: {fileID: 8505144159870094120, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9c52f04f8f455f540b6940b1792fba90, type: 3}
 --- !u!1 &1176152744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2849,9 +2788,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCards:
+  - {fileID: 11400000, guid: c9d0d035aac22214cb08336b87382a33, type: 2}
   - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
   - {fileID: 11400000, guid: b93af612089353f4998f25403ca9331d, type: 2}
-  - {fileID: 11400000, guid: c9d0d035aac22214cb08336b87382a33, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}
@@ -3077,4 +3016,3 @@ SceneRoots:
   - {fileID: 1666147978}
   - {fileID: 1176152746}
   - {fileID: 482829573}
-  - {fileID: 1149307313}

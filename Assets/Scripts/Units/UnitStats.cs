@@ -17,6 +17,7 @@ public class UnitStats : BaseStats
     public event System.Action<float, Unit> OnTakeDamage;
     public event System.Action OnDeath;
     public event System.Action<float> OnHealthChanged;
+    private Unit lastSource;
 
     public void Initialize(UnitData unitData)
     {
@@ -33,6 +34,8 @@ public class UnitStats : BaseStats
         OnModifyRawDamage?.Invoke(finalDamage, source, GetComponent<Unit>(), damageType);
 
         float remainingDamage = ProcessShieldDamage(finalDamage);
+
+        lastSource = source;
         float healthDamage = ProcessHealthDamage(remainingDamage);
         ShowHeathDamage(healthDamage, damageType);
 
@@ -77,6 +80,7 @@ public class UnitStats : BaseStats
         if (currentHp <= 0)
         {
             OnDeath?.Invoke();
+            UnitEvents.Combat.RaiseDeath(lastSource, GetComponent<Unit>());
         }
     }
 

@@ -59,9 +59,7 @@ public class UnitTargeting : MonoBehaviour
 
     private bool IsUnitValidToTargeted(Unit unit)
     {
-        if (unit == null) return false;
-        if (unit.IsPlayerUnit == this.unit.IsPlayerUnit) return false;
-        if (unit.IsDead) return false;
+        if (!IsValidEnemy(unit)) return false;
         if (!IsInDetectRange(unit)) return false;
         return true;
     }
@@ -78,7 +76,7 @@ public class UnitTargeting : MonoBehaviour
         return true;
     }
 
-    private void FindNewTarget()
+    public void FindNewTarget()
     {
         if (unit.OccupiedCell == null) return;
 
@@ -89,9 +87,7 @@ public class UnitTargeting : MonoBehaviour
 
         foreach (HexCell cell in cellsInRange)
         {
-            if (cell.OccupyingUnit != null &&
-                !cell.OccupyingUnit.GetUnitStats().IsDead &&
-                cell.OccupyingUnit.IsPlayerUnit != unit.IsPlayerUnit)
+            if (cell.OccupyingUnit != null && IsValidEnemy(cell.OccupyingUnit))
             {
                 int distance = cell.Coordinates.DistanceTo(unit.OccupiedCell.Coordinates);
                 closestDistance = Mathf.Min(closestDistance, distance);

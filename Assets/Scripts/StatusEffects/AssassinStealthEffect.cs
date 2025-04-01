@@ -2,29 +2,33 @@ using UnityEngine;
 
 public class AssassinStealthEffect : BaseStatusEffect
 {
-    private const float STEALTH_DURATION = 2f;
+    private float untargetableDuration = 1f;
+    private Unit caster;
 
-    public AssassinStealthEffect(Unit target) 
-        : base(target, float.PositiveInfinity)
+    public AssassinStealthEffect(Unit caster, float untargetableDuration)
+        : base(caster, float.PositiveInfinity)
     {
         type = StatusEffectType.StealthOnKill;
+        this.caster = caster;
+        this.untargetableDuration = untargetableDuration;
     }
 
     public override void Apply(Unit target)
     {
         base.Apply(target);
-        UnitEvents.Combat.OnDamageDealt += HandleKill;
+        UnitEvents.Combat.OnDeath += HandleKill;
     }
 
-    private void HandleKill(Unit source, Unit target, float amount)
+    private void HandleKill(Unit source, Unit target)
     {
-        if (source == this.target && target.IsDead)
+        if (source == caster)
         {
             var statusEffects = source.GetComponent<UnitStatusEffects>();
             if (statusEffects != null)
             {
-                var tempStealth = new TemporaryStealthEffect(source, STEALTH_DURATION);
-                statusEffects.AddEffect(tempStealth);
+                Debug.Log("apply untargetable");
+                UntargetableEffect untargetable = new UntargetableEffect(source, untargetableDuration);
+                statusEffects.AddEffect(untargetable);
             }
         }
     }
@@ -32,6 +36,6 @@ public class AssassinStealthEffect : BaseStatusEffect
     public override void Remove()
     {
         base.Remove();
-        UnitEvents.Combat.OnDamageDealt -= HandleKill;
+        UnitEvents.Combat.OnDeath -= HandleKill;
     }
-} 
+}

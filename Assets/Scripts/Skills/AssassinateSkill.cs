@@ -1,16 +1,16 @@
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Assassinate", menuName = "Game/Skills/Assassinate")]
 public class AssassinateSkill : Skill
 {
     [Header("Cài đặt Assassinate")]
-    public float jumpRange = 3f;
-    public float lifestealPercent = 20f;
-    public float firstHitCritMultiplier = 2f;
+    public int jumpRange = 4;
+    public float untargetableDuration = 1f;
 
     private Unit assassin;
-    private bool hasUsedFirstHit = false;
+    private Unit target;
 
     public override bool CanActivate(float currentMana)
     {
@@ -22,76 +22,21 @@ public class AssassinateSkill : Skill
 
     }
 
-    private void ApplyAssassinateEffects(Unit assassin, Unit target)
-    {
-        // Thêm hiệu ứng hút máu
-        var statusEffects = assassin.GetComponent<UnitStatusEffects>();
-        if (statusEffects != null)
-        {
-            assassin.GetUnitStats().ModifyStat(StatType.LifeSteal, lifestealPercent);
-            var stealthEffect = new AssassinStealthEffect(assassin);
-
-            statusEffects.AddEffect(stealthEffect);
-        }
-
-        // Di chuyển đến mục tiêu
-        if (SkillEffectHandler.Instance != null)
-        {
-            SkillEffectHandler.Instance.HandleAssassinateSkill(assassin, target, this);
-        }
-    }
-
-    private Unit FindStrongestAssassin()
-    {
-        Unit strongest = null;
-        float highestDamage = 0;
-
-        Unit[] allUnits = GameObject.FindObjectsOfType<Unit>();
-        foreach (Unit unit in allUnits)
-        {
-            if (unit.OwnerCard == ownerCard)
-            {
-                float damage = unit.GetUnitStats().GetPhysicalDamage();
-                if (damage > highestDamage)
-                {
-                    highestDamage = damage;
-                    strongest = unit;
-                }
-            }
-        }
-
-        return strongest;
-    }
-
-    private Unit FindWeakestTargetInRange(Vector3 center, float range)
-    {
-        Unit weakest = null;
-        float lowestHealth = float.MaxValue;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(center, range);
-        foreach (Collider2D col in colliders)
-        {
-            Unit unit = col.GetComponent<Unit>();
-            if (unit != null && unit.IsPlayerUnit != ownerCard.IsPlayer)
-            {
-                float health = unit.GetCurrentHP();
-                if (health < lowestHealth)
-                {
-                    lowestHealth = health;
-                    weakest = unit;
-                }
-            }
-        }
-
-        return weakest;
-    }
-
     public override void ApplyToSummon(Unit summonedUnit)
     {
-        if (ownerCard == null) return;
+        if (ownerCard == null || ownerCard.GetActiveUnits().Count <= 0) return;
 
         // Tìm assassin mạnh nhất
-        assassin = FindStrongestAssassin();
+        assassin = ownerCard.GetActiveUnits()
+            .Select(unit => new
+            {
+                Unit = unit,
+                Score = CalculateUnitScore(unit)
+            })
+            .OrderByDescending(x => x.Score)
+            .First()
+            .Unit;
+
         if (assassin == null)
         {
             ownerCard.OnSkillFailed();
@@ -99,16 +44,78 @@ public class AssassinateSkill : Skill
         }
 
         // Tìm mục tiêu yếu nhất trong tầm
-        Unit weakestTarget = FindWeakestTargetInRange(assassin.transform.position, jumpRange);
-        if (weakestTarget == null)
+        target = FindWeakestTargetInRange(assassin.OccupiedCell.Coordinates, jumpRange);
+        if (target
+         == null)
         {
             ownerCard.OnSkillFailed();
             return;
         }
 
-        // Áp dụng các hiệu ứng
-        ApplyAssassinateEffects(assassin, weakestTarget);
+        // b1: chạy animation skill
+        // b2: animation gọi về unitMovement để dừng di chuyển
+        // b3: animation gọi về đây để cast skill
+        // b4: animation gọi về unitMovement để tiếp tục di chuyển
+        GrowSizeEffect growSizeEffect = new(assassin, 5f, 1.3f);
+        assassin.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+
+        assassin.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
         ownerCard.OnSkillActivated();
+    }
+
+    public void CastSkill()
+    {
+        var effect = assassin.gameObject.AddComponent<AssassinateSkillEffect>();
+        effect.Initialize(assassin, target, this);
+        effect.Execute(Vector3.zero);
+    }
+
+    private Unit FindWeakestTargetInRange(HexCoord center, int range)
+    {
+        Unit weakest = null;
+        float lowestHealth = 10000;
+
+        List<Unit> enemies = HexGrid.Instance.GetUnitsInRange(center, range, !ownerCard.IsPlayer);
+        foreach (Unit enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                float health = enemy.GetCurrentHP();
+                if (health < lowestHealth)
+                {
+                    lowestHealth = health;
+                    weakest = enemy;
+                }
+            }
+        }
+
+        return weakest;
+    }
+
+    private float CalculateUnitScore(Unit unit)
+    {
+        if (unit == null || unit.IsDead) return -1;
+
+        float score = 0;
+
+        // 1. Unit còn sống (điều kiện bắt buộc, đã check ở trên)
+        score += 1;
+
+        // 2. Độ gần với 60% máu
+        var stats = unit.GetUnitStats();
+        float healthPercent = stats.CurrentHP / stats.GetMaxHp();
+        float healthScore = 1 - Mathf.Abs(60f / 100f - healthPercent);
+        score += healthScore;
+
+        // 3. Đang tấn công đối phương
+        UnitTargeting targeting = unit.GetComponent<UnitTargeting>();
+
+        if (targeting != null && targeting.CurrentTarget != null && targeting.IsInAttackRange(targeting.CurrentTarget))
+        {
+            score += 1;
+        }
+
+        return score;
     }
 
     public override void ApplyPassive(Unit summonedUnit)

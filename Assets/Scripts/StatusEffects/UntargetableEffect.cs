@@ -1,18 +1,19 @@
 using UnityEngine;
 
-public class TemporaryStealthEffect : BaseStatusEffect
+public class UntargetableEffect : BaseStatusEffect
 {
-    public TemporaryStealthEffect(Unit target, float duration) 
+    private Unit caster;
+    public UntargetableEffect(Unit target, float duration) 
         : base(target, duration)
     {
-        type = StatusEffectType.StealthOnKill;
+        type = StatusEffectType.Untargetable;
+        caster = target;
     }
 
     public override void Apply(Unit target)
     {
         base.Apply(target);
-        // Thêm logic ẩn unit ở đây (ví dụ: đổi alpha)
-        var view = target.GetComponent<UnitView>();
+        var view = caster.GetComponent<UnitView>();
         if (view != null)
         {
             view.SetAlpha(0.2f);
@@ -23,7 +24,7 @@ public class TemporaryStealthEffect : BaseStatusEffect
     {
         base.Remove();
         // Khôi phục hiển thị unit
-        var view = target.GetComponent<UnitView>();
+        var view = caster.GetComponent<UnitView>();
         if (view != null)
         {
             view.SetAlpha(1f);

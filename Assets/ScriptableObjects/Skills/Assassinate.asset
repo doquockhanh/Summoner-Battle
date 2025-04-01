@@ -17,8 +17,9 @@ MonoBehaviour:
   manaCost: 30
   duration: 0
   radius: 0
+  skillIcon: {fileID: 0}
+  hasPassive: 0
   skillType: 1
   ownerCard: {fileID: 0}
   jumpRange: 6
-  lifestealPercent: 20
-  firstHitCritMultiplier: 3
+  untargetableDuration: 1

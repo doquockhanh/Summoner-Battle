@@ -4,10 +4,16 @@ public static class UnitEvents
     {
         public delegate void DamageHandler(Unit source, Unit target, float amount);
         public static event DamageHandler OnDamageDealt;
+
+        public static event System.Action<Unit, Unit> OnDeath;
         
         public static void RaiseDamageDealt(Unit source, Unit target, float amount)
         {
             OnDamageDealt?.Invoke(source, target, amount);
+        }
+
+        public static void RaiseDeath(Unit source, Unit target) {
+            OnDeath?.Invoke(source, target);
         }
     }
     
