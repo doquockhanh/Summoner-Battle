@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: AssassinCard
   cardImage: {fileID: 7594536691759110762, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 32ac93a05c1e11e45b18b04ac693c7b9, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 1
+  range: 4
   summonUnit: {fileID: 11400000, guid: a83f0f4068352104297dd981da09ea82, type: 2}
   skill: {fileID: 11400000, guid: 091cd3c966dd55e458739605dc632f52, type: 2}

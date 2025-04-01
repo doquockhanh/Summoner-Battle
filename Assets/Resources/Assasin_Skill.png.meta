@@ -1,0 +1,656 @@
+fileFormatVersion: 2
+guid: 38271f7dd7a1f4c40bbc0c72e85eaad0
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Assasin_Skill_0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 546
+        width: 36
+        height: 59
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 209ccd54119a99d4e8c7c9e9b6d61120
+      internalID: -918691994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_1
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 546
+        width: 36
+        height: 59
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e18985edfdfbc584088b2a7ea49d326e
+      internalID: 1858781195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_2
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 546
+        width: 36
+        height: 59
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73d7a26b98943124ebb638b091b0a7ef
+      internalID: 1268497421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_3
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 546
+        width: 36
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34a960256e161224a8bdfc5f99eedad6
+      internalID: -438851006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_4
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 546
+        width: 36
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 092278cdf99ab8c48848515bd6424a77
+      internalID: 1000484066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_5
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 418
+        width: 36
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e98bff8da08ad9c48b971625f5b728a2
+      internalID: -520453493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_6
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 418
+        width: 36
+        height: 59
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 100dd13753b7ff6499772460f6f2b132
+      internalID: 282475554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_7
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 418
+        width: 36
+        height: 59
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ebc43c04716299448d26d17180836f9
+      internalID: -749523711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_8
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 418
+        width: 37
+        height: 57
+      alignment: 9
+      pivot: {x: 0.505, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5815ff71488d99e4596ae33a2950dfd9
+      internalID: -948457322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_9
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 416
+        width: 50
+        height: 60
+      alignment: 9
+      pivot: {x: 0.35, y: 0.033}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29bfe94efac1b8642a83340ae62127cd
+      internalID: -2073128407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_10
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 285
+        width: 60
+        height: 63
+      alignment: 9
+      pivot: {x: 0.289, y: 0.082}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70cee6b342d54ba4b8f4d220421f43e7
+      internalID: -1339076420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_11
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 285
+        width: 74
+        height: 63
+      alignment: 9
+      pivot: {x: 0.34918377, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3117989c6782494fae9f24cbebc20a8
+      internalID: 1302714984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_12
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 286
+        width: 81
+        height: 71
+      alignment: 9
+      pivot: {x: 0.35, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b77023ea6f95e23418ace53411a665f6
+      internalID: -1790493643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_13
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 286
+        width: 81
+        height: 75
+      alignment: 9
+      pivot: {x: 0.44403377, y: 0.0782194}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9de1eea7458d0e44b8b1e7e21e425cc3
+      internalID: -451415681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_15
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 287
+        width: 84
+        height: 71
+      alignment: 9
+      pivot: {x: 0.35, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 518ffd43397050042a770c5e16a66172
+      internalID: 1072005177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_21
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 158
+        width: 81
+        height: 75
+      alignment: 9
+      pivot: {x: 0.49436292, y: 0.08846436}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14f91477cb80772479a59e91772a5df9
+      internalID: -1776960043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_22
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 157
+        width: 92
+        height: 74
+      alignment: 9
+      pivot: {x: 0.35, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f07600c1e1ad8e409e27e9fe043bfcf
+      internalID: 539864851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_24
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 158
+        width: 55
+        height: 36
+      alignment: 9
+      pivot: {x: 0.36262596, y: 0.057866838}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9e797ee5127d58438294aea8c901e8d
+      internalID: 260055301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_25
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 157
+        width: 74
+        height: 54
+      alignment: 9
+      pivot: {x: 0.45146468, y: 0.025052954}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8767a4ea50ae70445a1af22fdf9248d5
+      internalID: -1656377263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_28
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 161
+        width: 42
+        height: 25
+      alignment: 9
+      pivot: {x: 0.24, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea32df3ceef1022418425ec1ededfea2
+      internalID: 2084194779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_29
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 30
+        width: 81
+        height: 71
+      alignment: 9
+      pivot: {x: 0.4538497, y: 0.074325666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4873143a16f1e3f45991135aa73f322f
+      internalID: 1098296718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_30
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 31
+        width: 84
+        height: 71
+      alignment: 9
+      pivot: {x: 0.31, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cf6e6f120fd7b74384fe791a8a2e1e7
+      internalID: 1099500085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assasin_Skill_14
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 34
+        width: 81
+        height: 70
+      alignment: 9
+      pivot: {x: 0.37089482, y: 0.15141536}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6911b3f6e393c840bb7c95a399bec1d
+      internalID: 852633145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Assasin_Skill_0: -918691994
+      Assasin_Skill_1: 1858781195
+      Assasin_Skill_10: -1339076420
+      Assasin_Skill_11: 1302714984
+      Assasin_Skill_12: -1790493643
+      Assasin_Skill_13: -451415681
+      Assasin_Skill_14: 852633145
+      Assasin_Skill_15: 1072005177
+      Assasin_Skill_16: 276483238
+      Assasin_Skill_17: 938449728
+      Assasin_Skill_18: -32469878
+      Assasin_Skill_19: -677305801
+      Assasin_Skill_2: 1268497421
+      Assasin_Skill_20: 998102994
+      Assasin_Skill_21: -1776960043
+      Assasin_Skill_22: 539864851
+      Assasin_Skill_23: -1819396876
+      Assasin_Skill_24: 260055301
+      Assasin_Skill_25: -1656377263
+      Assasin_Skill_26: -870550491
+      Assasin_Skill_27: 1967839399
+      Assasin_Skill_28: 2084194779
+      Assasin_Skill_29: 1098296718
+      Assasin_Skill_3: -438851006
+      Assasin_Skill_30: 1099500085
+      Assasin_Skill_31: 1527068362
+      Assasin_Skill_32: -2021309080
+      Assasin_Skill_4: 1000484066
+      Assasin_Skill_5: -520453493
+      Assasin_Skill_6: 282475554
+      Assasin_Skill_7: -749523711
+      Assasin_Skill_8: -948457322
+      Assasin_Skill_9: -2073128407
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
