@@ -54,6 +54,7 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
         var statusEffects = caster.GetComponent<UnitStatusEffects>();
         if (statusEffects != null)
         {
+            // status này cho giảm sát thương và phản sát thương trong vài giây
             var thornsEffect = new DefensiveThornsEffect(
                 caster,
                 skillData.thornsDuration,
@@ -64,11 +65,10 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
         }
 
         // Tìm và khiêu khích kẻ địch xung quanh
-        Collider2D[] hits = Physics2D.OverlapCircleAll(caster.transform.position, skillData.tauntRadius);
-        foreach (Collider2D hit in hits)
+        List<Unit> enemies = HexGrid.Instance.GetUnitsInRange(caster.OccupiedCell.Coordinates, skillData.tauntRadius, !caster.IsPlayerUnit);
+        foreach (Unit enemy in enemies)
         {
-            Unit enemy = hit.GetComponent<Unit>();
-            if (enemy != null && enemy.IsPlayerUnit != caster.IsPlayerUnit)
+            if (enemy != null)
             {
                 var targeting = enemy.GetComponent<UnitTargeting>();
                 if (targeting != null)

@@ -17,11 +17,13 @@ MonoBehaviour:
   manaCost: 30
   duration: 0
   radius: 0
+  skillIcon: {fileID: 0}
+  hasPassive: 0
   skillType: 1
   ownerCard: {fileID: 0}
-  damageReduction: 50
+  damageReduction: 70
   thornsDamagePercent: 50
   tauntRadius: 3
-  thornsDuration: 3
+  thornsDuration: 5
   thornsEffectPrefab: {fileID: 0}
   tauntEffectPrefab: {fileID: 0}

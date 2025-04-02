@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class StatsCalculator
 {
     public static float CalculateFinalDamage(float rawDamage, DamageType damageType, IStats stats)
@@ -17,7 +19,8 @@ public class StatsCalculator
 
         // Áp dụng giảm sát thương chung
         float reduction = stats.GetDamageReduction();
-        damage *= (100f - reduction) / 100f;
+
+        damage *= 1 - reduction / 100;
 
         return damage;
     }

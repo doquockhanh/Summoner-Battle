@@ -14,7 +14,7 @@ public class DefensiveThornsSkill : Skill
     public float thornsDamagePercent = 50f;
 
     [Range(0f, 10f)]
-    public float tauntRadius = 3f;
+    public int tauntRadius = 3;
 
     [Range(0f, 10f)]
     public float thornsDuration = 3f;
@@ -54,17 +54,10 @@ public class DefensiveThornsSkill : Skill
             return;
         }
 
-        if (SkillEffectHandler.Instance != null)
-        {
-            var effect = strongestUnit.gameObject.AddComponent<DefensiveThornsSkillEffect>();
-            effect.Initialize(strongestUnit, this);
-            effect.Execute(Vector3.zero);
-            ownerCard.OnSkillActivated();
-        }
-        else
-        {
-            ownerCard.OnSkillFailed();
-        }
+        var effect = strongestUnit.gameObject.AddComponent<DefensiveThornsSkillEffect>();
+        effect.Initialize(strongestUnit, this);
+        effect.Execute(Vector3.zero);
+        ownerCard.OnSkillActivated();
     }
 
     private float CalculateUnitScore(Unit unit)
