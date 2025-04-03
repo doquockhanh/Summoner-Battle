@@ -32,6 +32,6 @@ MonoBehaviour:
   attackSpeed: 1
   moveSpeed: 1
   range: 3
-  detectRange: 3
+  detectRange: 10
   healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: 8a5eb21d3e1e7c341a4bc8c1b55b3f76, type: 3}

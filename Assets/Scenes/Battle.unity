@@ -2789,6 +2789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCards:
   - {fileID: 11400000, guid: ae8ec91cb06627a4a97ce8b3780dafd9, type: 2}
+  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}

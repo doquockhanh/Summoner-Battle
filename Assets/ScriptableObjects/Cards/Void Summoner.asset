@@ -15,9 +15,17 @@ MonoBehaviour:
   cardName: Void Summoner
   cardImage: {fileID: -977627134430890721, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 487a7c93ae336d04f8e6c17f4c6554a7, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 0
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
   summonUnit: {fileID: 11400000, guid: 7084f94a6eb84dc43803d4ec835c7ebd, type: 2}
   skill: {fileID: 11400000, guid: d9f47b43f6b0b7c48b1c65879f319e0c, type: 2}
   VoidGrub: {fileID: 11400000, guid: f58dbaba1373a864d8583031458e7dab, type: 2}
