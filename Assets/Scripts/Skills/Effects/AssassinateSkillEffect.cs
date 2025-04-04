@@ -26,12 +26,12 @@ public class AssassinateSkillEffect : MonoBehaviour, ISkillEffect
     {
         bool isOccupied = HexGrid.Instance.AssertOccupyCell(target.transform.position, assassin, 2);
         if (isOccupied == false) return;
+        assassin.GetComponent<UnitCombat>().SetRegisteredCell(null);
 
         // Thêm hiệu ứng tàng hình onKill
         UnitStatusEffects statusEffects = assassin.GetComponent<UnitStatusEffects>();
         if (statusEffects != null)
         {
-            Debug.Log("apply untargetable");
             UntargetableEffect untargetable = new UntargetableEffect(assassin, 5);
             statusEffects.AddEffect(untargetable);
 

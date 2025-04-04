@@ -15,11 +15,11 @@ MonoBehaviour:
   cardName: Void Summoner
   cardImage: {fileID: -977627134430890721, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
-  SummonerPrefab: {fileID: 0}
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 487a7c93ae336d04f8e6c17f4c6554a7, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
-  maxHp: 0
+  maxHp: 1000
   hpRegen: 0
   armor: 0
   magicResist: 0

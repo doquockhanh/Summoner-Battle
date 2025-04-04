@@ -1,0 +1,326 @@
+fileFormatVersion: 2
+guid: a6e5e49eb02ae1c459c8c69567739adf
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_0
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 419
+        width: 45
+        height: 67
+      alignment: 9
+      pivot: {x: 0.48, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: badc7459a06d832469b8ea7557ba67f3
+      internalID: -1281956226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_1
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 419
+        width: 43
+        height: 82
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec77c5d114d7ce747a534c46aaa6331c
+      internalID: -826174378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_2
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 277
+        width: 85
+        height: 80
+      alignment: 9
+      pivot: {x: 0.255, y: 0.176}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d44da4470e4a3224e8174f7e87b731f5
+      internalID: -1021192121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_4
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 277
+        width: 104
+        height: 80
+      alignment: 9
+      pivot: {x: 0.21, y: 0.176}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 463ffce72b10825438827a8700479a98
+      internalID: 1511418761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_6
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 149
+        width: 111
+        height: 81
+      alignment: 9
+      pivot: {x: 0.19875917, y: 0.17047326}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd764601b1d11214ba66768f27907fc0
+      internalID: -464415569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_7
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 146
+        width: 153
+        height: 84
+      alignment: 9
+      pivot: {x: 0.14330326, y: 0.20099077}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31210873c5b8b9e43823b51af9fc49f5
+      internalID: -1176629341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_14
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 17
+        width: 121
+        height: 86
+      alignment: 9
+      pivot: {x: 0.18119739, y: 0.20842268}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a62196841f728c40af89ac862a63455
+      internalID: 907920966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JungleGuardian_Attack_16
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 21
+        width: 104
+        height: 80
+      alignment: 9
+      pivot: {x: 0.21022224, y: 0.17104134}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7cfe8d5eef87a34d91f482572fd2728
+      internalID: -66395302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      JungleGuardian_Attack_0: -1281956226
+      JungleGuardian_Attack_1: -826174378
+      JungleGuardian_Attack_10: 694940641
+      JungleGuardian_Attack_11: 121578708
+      JungleGuardian_Attack_12: 2057286416
+      JungleGuardian_Attack_13: -1002825850
+      JungleGuardian_Attack_14: 907920966
+      JungleGuardian_Attack_15: -1513735926
+      JungleGuardian_Attack_16: -66395302
+      JungleGuardian_Attack_17: -344498364
+      JungleGuardian_Attack_2: -1021192121
+      JungleGuardian_Attack_3: -2126498473
+      JungleGuardian_Attack_4: 1511418761
+      JungleGuardian_Attack_5: 75433013
+      JungleGuardian_Attack_6: -464415569
+      JungleGuardian_Attack_7: -1176629341
+      JungleGuardian_Attack_8: -1799560781
+      JungleGuardian_Attack_9: -1561495399
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

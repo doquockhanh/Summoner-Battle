@@ -34,6 +34,7 @@ public class HexPathFinder
 
     public List<HexCell> FindPath(HexCell start, HexCell target, int range)
     {
+        Debug.Log("FindPath");
         var fullPath = FindPath(start, target);
         if (fullPath == null || fullPath.Count <= 1)
         {
@@ -129,10 +130,10 @@ public class HexPathFinder
     private List<HexCell> GetValidNeighbors(HexCell cell, HexCell start, HexCell target)
     {
         var neighbors = grid.GetNeighbors(cell);
-        return neighbors.Where(n => n != null && 
-            (n == start || 
-             n == target || 
-             (!n.IsOccupied))
+        return neighbors.Where(n => n != null &&
+            (n == start ||
+             n == target ||
+             (!n.IsOccupied && !n.IsRegistered))
         ).ToList();
     }
 

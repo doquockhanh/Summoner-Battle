@@ -1,10 +1,13 @@
+
+using UnityEngine;
+
 public class DefensiveThornsEffect : BaseStatusEffect
 {
     private readonly float damageReduction;
     private readonly float thornsDamagePercent;
     private readonly UnitStats stats;
 
-    public DefensiveThornsEffect(Unit target, float duration, float damageReduction, float thornsDamagePercent) 
+    public DefensiveThornsEffect(Unit target, float duration, float damageReduction, float thornsDamagePercent)
         : base(target, duration)
     {
         this.damageReduction = damageReduction;
@@ -18,16 +21,19 @@ public class DefensiveThornsEffect : BaseStatusEffect
         base.Apply(target);
         if (stats != null)
         {
-            stats.ModifyStat(StatType.DamageReduction, damageReduction);
-            stats.OnTakeDamage += HandleDamageTaken;
+            stats.ModifyStat(StatType.DamageReduction, 0, damageReduction);
+            UnitEvents.Combat.OnTakeRawDamage += HandleDamageTaken;
         }
     }
 
-    private void HandleDamageTaken(float damage, Unit source)
+    private void HandleDamageTaken(Unit source, Unit target, float damage)
     {
-        if (source == null) return;
+        // source là kẻ tấn công
+        // target là kẻ chịu đòn
+        // target != this.target loại bỏ kẻ chịu đòn ko phải chủ sở hữu trạng thái
+        if (source == null || target == null || target != this.target) return;
         float thornsDamage = damage * (thornsDamagePercent / 100f);
-        source.TakeDamage(thornsDamage, DamageType.Magic);
+        source.TakeDamage(thornsDamage, DamageType.ThornsDamage);
     }
 
     public override void Remove()
@@ -35,8 +41,8 @@ public class DefensiveThornsEffect : BaseStatusEffect
         base.Remove();
         if (stats != null)
         {
-            stats.ModifyStat(StatType.DamageReduction, damageReduction);
-            stats.OnTakeDamage -= HandleDamageTaken;
+            stats.ModifyStat(StatType.DamageReduction, 0, -damageReduction);
         }
+        UnitEvents.Combat.OnTakeRawDamage -= HandleDamageTaken;
     }
-} 
+}

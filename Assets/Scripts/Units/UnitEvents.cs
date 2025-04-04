@@ -6,6 +6,7 @@ public static class UnitEvents
         public static event DamageHandler OnDamageDealt;
 
         public static event System.Action<Unit, Unit> OnDeath;
+        public static event System.Action<Unit, Unit, float> OnTakeRawDamage;
         
         public static void RaiseDamageDealt(Unit source, Unit target, float amount)
         {
@@ -14,6 +15,10 @@ public static class UnitEvents
 
         public static void RaiseDeath(Unit source, Unit target) {
             OnDeath?.Invoke(source, target);
+        }
+
+        public static void RaiseRawDamageReceived(Unit source, Unit target, float amount) {
+            OnTakeRawDamage?.Invoke(source, target, amount);
         }
     }
     

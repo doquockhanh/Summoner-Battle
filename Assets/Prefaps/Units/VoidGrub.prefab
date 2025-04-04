@@ -48,9 +48,9 @@ GameObject:
   - component: {fileID: 2569714632955878430}
   - component: {fileID: -962738524164599171}
   - component: {fileID: 2644694188224282508}
-  - component: {fileID: 1817729600305747794}
   - component: {fileID: -7956776128962548195}
   - component: {fileID: -2685971491302013229}
+  - component: {fileID: 4609845988919509694}
   m_Layer: 8
   m_Name: VoidGrub
   m_TagString: Untagged
@@ -68,7 +68,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3660773201594949553}
@@ -115,7 +115,7 @@ SpriteRenderer:
   m_SortingLayerID: 2061747461
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2488325042269146774, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  m_Sprite: {fileID: 814227511, guid: 5c3ab36951138224185934d2df38ab79, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -202,7 +202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: -962738524164599171}
   combat: {fileID: 2644694188224282508}
-  movement: {fileID: 1817729600305747794}
   targeting: {fileID: -7956776128962548195}
   view: {fileID: 281707964024161012}
 --- !u!114 &281707964024161012
@@ -258,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4655a58c970c29b4ba31cac6ae8c95b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useProjectile: 1
+  useProjectile: 0
   projectilePrefab: {fileID: 7079476164047036491, guid: ec4e1c1b6659f7140b820b0a68d5c9f6, type: 3}
   projectileColor: {r: 0.019753337, g: 1, b: 0, a: 1}
   projectileSpawnPoint: {fileID: 3660773201594949553}
@@ -274,7 +273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793c3a77d674f3b40b8d2a37126d84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockupHeight: 0.5
 --- !u!114 &-7956776128962548195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31f80cd46a7d5994ebbb30c2099a53f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoTargeting: 1
 --- !u!114 &-2685971491302013229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,3 +298,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc1eacf80580634984d08070bf3dba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4609845988919509694
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505144159870094120}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b00638927d7a12b4e9311924d9a7924d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

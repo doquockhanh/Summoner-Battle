@@ -48,7 +48,6 @@ GameObject:
   - component: {fileID: 2569714632955878430}
   - component: {fileID: -962738524164599171}
   - component: {fileID: 2644694188224282508}
-  - component: {fileID: 1817729600305747794}
   - component: {fileID: -7956776128962548195}
   - component: {fileID: -2685971491302013229}
   - component: {fileID: 1080480362392520567}
@@ -203,7 +202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: -962738524164599171}
   combat: {fileID: 2644694188224282508}
-  movement: {fileID: 1817729600305747794}
   targeting: {fileID: -7956776128962548195}
   view: {fileID: 281707964024161012}
 --- !u!114 &281707964024161012
@@ -263,18 +261,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7079476164047036491, guid: ec4e1c1b6659f7140b820b0a68d5c9f6, type: 3}
   projectileColor: {r: 0.019753337, g: 1, b: 0, a: 1}
   projectileSpawnPoint: {fileID: 3660773201594949553}
---- !u!114 &1817729600305747794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8505144159870094120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 793c3a77d674f3b40b8d2a37126d84cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-7956776128962548195
 MonoBehaviour:
   m_ObjectHideFlags: 0

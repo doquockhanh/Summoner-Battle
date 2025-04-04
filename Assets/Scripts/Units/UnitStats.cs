@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitStats : BaseStats
@@ -29,6 +27,7 @@ public class UnitStats : BaseStats
 
     public void TakeDamage(float amount, DamageType damageType, Unit source = null)
     {
+        UnitEvents.Combat.RaiseRawDamageReceived(source, GetComponent<Unit>(), amount);
         float finalDamage = CalculateFinalDamage(amount, damageType);
 
         OnModifyRawDamage?.Invoke(finalDamage, source, GetComponent<Unit>(), damageType);
@@ -65,6 +64,9 @@ public class UnitStats : BaseStats
                 break;
             case DamageType.Physical:
                 color = Color.red;
+                break;
+            case DamageType.ThornsDamage:
+                color = Color.yellow;
                 break;
         }
 
@@ -119,8 +121,8 @@ public class UnitStats : BaseStats
     public override float GetAttackSpeed() => GetModifiedStat(StatType.AttackSpeed, data.attackSpeed);
     public override int GetRange() => (int)GetModifiedStat(StatType.Range, data.range);
     public override float GetLifeSteal() => GetModifiedStat(StatType.LifeSteal, data.lifestealPercent);
-    public override float GetDamageReduction() => GetModifiedPercentStat(StatType.DamageReduction, data.damageReduction);
-    public override float GetHealingReceived() => GetModifiedPercentStat(StatType.HealingReceived, data.healingReceivedPercent);
+    public override float GetDamageReduction() => Mathf.Min(100, GetModifiedPercentStat(StatType.DamageReduction, data.damageReduction));
+    public override float GetHealingReceived() => Mathf.Max(0, GetModifiedPercentStat(StatType.HealingReceived, data.healingReceivedPercent));
 
     // Additional Unit specific stats
     public float GetCriticalChance() => data.criticalChance;
@@ -137,5 +139,6 @@ public enum DamageType
 {
     Physical,
     Magic,
-    True
+    True,
+    ThornsDamage
 }

@@ -17,10 +17,11 @@ MonoBehaviour:
   manaCost: 40
   duration: 0
   radius: 2
+  skillIcon: {fileID: 0}
   hasPassive: 0
   skillType: 0
   ownerCard: {fileID: 0}
   monsterCount: 3
-  monsterLifetime: 2
+  monsterLifetime: 6
   monsterData: {fileID: 11400000, guid: f58dbaba1373a864d8583031458e7dab, type: 2}
   summonEffectPrefab: {fileID: 0}

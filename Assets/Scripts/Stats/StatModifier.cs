@@ -1,7 +1,8 @@
 public class StatModifier
 {
+    private const int fixedPercentBonus = 1;
     private float flatBonus;
-    private float percentBonus = 1;
+    private float percentBonus = fixedPercentBonus;
 
     public void AddFlat(float value) => flatBonus += value;
     public void AddPercent(float value) => percentBonus += value;
@@ -14,6 +15,6 @@ public class StatModifier
 
     public float CalculateForPercentStat(float baseValue)
     {
-        return baseValue + percentBonus;
+        return baseValue + percentBonus - fixedPercentBonus;
     }
 } 

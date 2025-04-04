@@ -30,8 +30,8 @@ MonoBehaviour:
   criticalDamage: 150
   lifestealPercent: 0
   attackSpeed: 0.1
-  moveSpeed: 3
-  range: 0.1
+  moveSpeed: 5
+  range: 0
   detectRange: 5
   healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: 00561e619d1376846a47d8dc82085a57, type: 3}

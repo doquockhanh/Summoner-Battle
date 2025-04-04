@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: 
   cardImage: {fileID: 0}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 031a27b9e84b7ff4b924e7cb7fc574b8, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 11
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 100
+  attackSpeed: 1
+  range: 3
   summonUnit: {fileID: 11400000, guid: d2a2259808b32934ab72624c8b01a6f4, type: 2}
   skill: {fileID: 11400000, guid: 49cff896079785b4c9fcf7b03c576126, type: 2}

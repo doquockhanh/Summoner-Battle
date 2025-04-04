@@ -6,7 +6,6 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] private UnitStats stats;
     [SerializeField] private UnitCombat combat;
-    [SerializeField] private UnitMovement movement;
     [SerializeField] private UnitTargeting targeting;
     [SerializeField] private UnitView view;
 
@@ -37,11 +36,10 @@ public class Unit : MonoBehaviour
     {
         stats = stats ?? GetComponent<UnitStats>();
         combat = combat ?? GetComponent<UnitCombat>();
-        movement = movement ?? GetComponent<UnitMovement>();
         targeting = targeting ?? GetComponent<UnitTargeting>();
         view = view ?? GetComponent<UnitView>();
 
-        if (stats == null || combat == null || movement == null ||
+        if (stats == null || combat == null ||
             targeting == null || view == null)
         {
             Debug.LogError($"Missing required components on {gameObject.name}");
