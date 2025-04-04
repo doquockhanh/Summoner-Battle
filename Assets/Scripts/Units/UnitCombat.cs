@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(UnitTargeting))]
 public class UnitCombat : MonoBehaviour
 {
     private Unit unit;
@@ -8,49 +10,145 @@ public class UnitCombat : MonoBehaviour
     private float attackTimer;
     private UnitTargeting targeting;
     private UnitStatusEffects statusEffects;
+    private HexGrid hexGrid;
+    private HexPathFinder pathFinder;
+    private List<HexCell> currentPath;
+    private int currentPathIndex;
+
+    private HexCell registeredCell;
+    private float Speed => unit.GetUnitStats().GetMoveSpeed();
+    private int AttackRange => unit.GetUnitStats().GetRange();
+    private HexCell lastTarget;
+    private bool autoCombat = true;
 
     private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
+    private const float centerHexOffset = 0.1f;
 
     [Header("Projectile Settings")]
     [SerializeField] private bool useProjectile;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Color projectileColor = Color.white;
     [SerializeField] private Transform projectileSpawnPoint;
-    private bool autoCombat = true;
 
     private void Awake()
     {
         statusEffects = GetComponent<UnitStatusEffects>();
         targeting = GetComponent<UnitTargeting>();
+        unit = GetComponent<Unit>();
+        stats = unit.GetComponent<UnitStats>();
+        view = unit.GetComponent<UnitView>();
     }
 
     private void Start()
     {
-        unit = GetComponent<Unit>();
-        stats = unit.GetComponent<UnitStats>();
-        view = unit.GetComponent<UnitView>();
         attackTimer = 0f;
+        hexGrid = HexGrid.Instance;
+        pathFinder = new HexPathFinder(hexGrid);
+        currentPath = null;
+        currentPathIndex = 0;
+        unit.GetUnitStats().OnDeath += Reset;
+
+        if (targeting == null)
+        {
+            Debug.LogError("Ko thể thiếu targeting cho Unitcombat");
+        }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (unit.IsDead) return;
+        if (unit.IsDead || autoCombat == false) return;
 
         if (attackTimer > 0)
+            attackTimer -= Time.fixedDeltaTime;
+
+        if (targeting.CurrentTarget == null && targeting.CurrentCardTarget == null)
+            return;
+
+        if (IsInCenterOfHex())
         {
-            attackTimer -= Time.deltaTime;
+            UnitTryDeciding();
         }
-
-        if (!autoCombat) return;
-
-        if (CanAttack())
+        else
         {
-            TryAttackTarget();
+            if (!CanMove()) return;
+            Move();
         }
     }
 
-    private void TryAttackTarget()
+    private void UnitTryDeciding()
     {
+        // Kiểm tra xem đang có target trong tầm đánh không.
+        bool canAttack = false;
+
+        if (targeting.CurrentTarget != null && !targeting.CurrentTarget.IsDead)
+        {
+            canAttack = targeting.IsInAttackRange(targeting.CurrentTarget);
+        }
+        else if (targeting.CurrentCardTarget != null)
+        {
+            canAttack = IsInAttackRange(targeting.CurrentCardTarget.occupiedHex);
+        }
+
+        if (canAttack)
+        {
+            TryAttackTarget();
+            return;
+        }
+        else
+        {
+            // Nếu ko thể tấn công thì đi tiếp
+            HexCell targetCell = GetTargetCell();
+            if (targetCell == null) return;
+
+            List<HexCell> newPath = HandleFindPath(targetCell);
+            if (newPath != null)
+            {
+                currentPath = newPath;
+                registeredCell?.UnregisterUnit();
+                registeredCell = null;
+            }
+
+            // Đăng ký ô tiếp theo
+            if (currentPath == null || currentPathIndex >= currentPath.Count) return;
+            HexCell nextCell = currentPath[currentPathIndex];
+            registeredCell = nextCell;
+            registeredCell.RegisterUnit(unit);
+            currentPathIndex++;
+        }
+    }
+
+    private bool IsInCenterOfHex()
+    {
+        // Kiểm tra xem unit đã đến được trung tâm ô cần đến chưa
+        // Nếu có ô đăng ký thì kiểm tra xem đã đến ô đăng ký chưa
+        if (registeredCell != null)
+            return Vector3.Distance(transform.position, registeredCell.WorldPosition) <= centerHexOffset;
+        return Vector3.Distance(transform.position, unit.OccupiedCell.WorldPosition) <= centerHexOffset;
+    }
+
+    private void Move()
+    {
+        // Di chuyển đến vị trí tiếp theo
+        HexCell hexToMove = registeredCell ?? unit.OccupiedCell;
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            hexToMove.WorldPosition,
+            Speed * Time.fixedDeltaTime
+        );
+
+        HexCell newCell = hexGrid.GetCellAtPosition(transform.position);
+        // Cập nhật occupied cell
+        HexGrid.Instance.OccupyCell(newCell, unit);
+
+        // Cập nhật animation
+        view.SetMoving(true);
+        view.FlipSprite(hexToMove.WorldPosition.x - transform.position.x > 0);
+    }
+
+    private bool TryAttackTarget()
+    {
+        if (!CanAttack()) return false;
+
         // Ưu tiên tấn công Unit target
         if (targeting.CurrentTarget != null && !targeting.CurrentTarget.IsDead)
         {
@@ -58,7 +156,7 @@ public class UnitCombat : MonoBehaviour
             {
                 PerformAttack(targeting.CurrentTarget);
                 ResetAttackTimer();
-                return;
+                return true;
             }
         }
 
@@ -71,9 +169,12 @@ public class UnitCombat : MonoBehaviour
                 {
                     PerformAttackOnCard(targeting.CurrentCardTarget);
                     ResetAttackTimer();
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     private bool IsInAttackRange(HexCell targetCell)
@@ -128,8 +229,7 @@ public class UnitCombat : MonoBehaviour
         }
         else
         {
-            var cardStats = card.GetComponent<CardStats>();
-            if (cardStats != null)
+            if (card.TryGetComponent<CardStats>(out var cardStats))
             {
                 // cardStats.TakeDamage(damage, DamageType.Physical);
             }
@@ -146,6 +246,61 @@ public class UnitCombat : MonoBehaviour
         attackTimer = (1f / stats.GetAttackSpeed()) + ATTACK_COOLDOWN_BUFFER;
     }
 
+    private HexCell GetTargetCell()
+    {
+        // Ưu tiên unit target
+        if (targeting.CurrentTarget != null && targeting.CurrentTarget.OccupiedCell != null)
+        {
+            return targeting.CurrentTarget.OccupiedCell;
+        }
+
+        // Nếu không có unit target, kiểm tra card target
+        if (targeting.CurrentCardTarget != null && targeting.CurrentCardTarget.occupiedHex != null)
+        {
+            return targeting.CurrentCardTarget.occupiedHex;
+        }
+
+        return null;
+    }
+
+    public List<HexCell> HandleFindPath(HexCell target)
+    {
+        if (target != lastTarget)
+        {
+            lastTarget = target;
+            currentPathIndex = 0;
+            return pathFinder.FindPath(unit.OccupiedCell, target, AttackRange);
+        }
+
+
+        if (targeting.IsInAttackRange(targeting.CurrentTarget) || targeting.IsCurrentTargetMoved() || targeting.IsTargetChanged() || IsPathBlocked())
+        {
+            currentPathIndex = 0;
+            return pathFinder.FindPath(unit.OccupiedCell, target, AttackRange);
+        }
+
+        return null;
+    }
+
+    private bool CanMove()
+    {
+        if (statusEffects == null) return true;
+        return statusEffects.CanAct();
+    }
+
+
+    private bool IsPathBlocked()
+    {
+        if (currentPathIndex < currentPath.Count - 1)
+        {
+            HexCell hexCell = currentPath[currentPathIndex + 1];
+            if (hexCell.IsOccupied && hexCell.OccupyingUnit != unit) return true;
+        }
+
+        return false;
+    }
+
+
     public void TurnOnAutoCombat()
     {
         autoCombat = true;
@@ -156,4 +311,18 @@ public class UnitCombat : MonoBehaviour
         autoCombat = false;
     }
 
+    public void Reset()
+    {
+        unit.OccupiedCell?.SetUnit(null);
+        registeredCell?.UnregisterUnit();
+        unit.SetOccupiedCell(null);
+        registeredCell = null;
+    }
+
+    public void SetRegisteredCell(HexCell cell)
+    {
+        registeredCell?.UnregisterUnit();
+        registeredCell = cell;
+        registeredCell?.RegisterUnit(unit);
+    }
 }

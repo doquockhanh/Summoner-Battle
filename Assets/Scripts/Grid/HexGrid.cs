@@ -276,7 +276,7 @@ public class HexGrid : MonoBehaviour
     {
         // Kiểm tra ô trung tâm trước
         var centerCell = GetCell(center);
-        if (centerCell != null && !centerCell.IsOccupied)
+        if (centerCell != null && !centerCell.IsOccupied && !centerCell.IsRegistered)
         {
             return centerCell;
         }
@@ -287,7 +287,7 @@ public class HexGrid : MonoBehaviour
             var cellsInRange = GetCellsInRange(center, radius);
             foreach (var cell in cellsInRange)
             {
-                if (!cell.IsOccupied)
+                if (!cell.IsOccupied && !cell.IsRegistered)
                 {
                     return cell;
                 }

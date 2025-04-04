@@ -4,7 +4,6 @@ public class BloodstormStatusEffect : BaseStatusEffect
 {
     private readonly BloodstormSkill skill;
     private readonly int absorbedSouls;
-    private readonly UnitMovement movement;
     private float originalMoveSpeed;
 
     public BloodstormStatusEffect(Unit target, BloodstormSkill skill, int souls) 
@@ -12,7 +11,6 @@ public class BloodstormStatusEffect : BaseStatusEffect
     {
         this.skill = skill;
         this.absorbedSouls = souls;
-        this.movement = target.GetComponent<UnitMovement>();
         type = StatusEffectType.Bloodstorm;
     }
 
@@ -20,19 +18,11 @@ public class BloodstormStatusEffect : BaseStatusEffect
     {
         base.Apply(target);
         
-        if (movement != null)
-        {
-
-        }
     }
 
     public override void Remove()
     {
         base.Remove();
         
-        if (movement != null)
-        {
-   
-        }
     }
 } 

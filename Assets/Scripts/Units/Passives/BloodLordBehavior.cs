@@ -16,7 +16,6 @@ public class BloodLordBehavior : MonoBehaviour
     private UnitCombat combat;
     private UnitTargeting targeting;
     private UnitStatusEffects statusEffects;
-    private UnitMovement movement;
     private UnitView view;
     private HealthBarUI healthBar;
     private Animator animator;
@@ -53,7 +52,6 @@ public class BloodLordBehavior : MonoBehaviour
         combat = GetComponent<UnitCombat>();
         targeting = GetComponent<UnitTargeting>();
         statusEffects = GetComponent<UnitStatusEffects>();
-        movement = GetComponent<UnitMovement>();
         view = GetComponent<UnitView>();
         healthBar = view?.GetHealthBar();
         animator = GetComponent<Animator>();
@@ -65,7 +63,7 @@ public class BloodLordBehavior : MonoBehaviour
     {
         if (unit == null || stats == null || combat == null ||
             targeting == null || statusEffects == null ||
-            movement == null || view == null || healthBar == null || animator == null)
+            view == null || healthBar == null || animator == null)
         {
             throw new MissingComponentException("Required components not found on BloodLord");
         }
