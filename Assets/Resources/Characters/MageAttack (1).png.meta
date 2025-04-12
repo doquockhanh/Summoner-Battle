@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2073c16efe2ab384aae5949575bbc74e
+guid: 1d8ee0914dfaffe4281c7f1742e71d57
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 28
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -82,6 +82,19 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,127 +123,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: knight_run (1)_0
+      name: MageAttack (1)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 320
-        width: 64
-        height: 64
+        x: 11
+        y: 134
+        width: 36
+        height: 49
       alignment: 9
-      pivot: {x: 0.421875, y: 0.203125}
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c601c5f9af473345a4365600ce1a7ad
-      internalID: 222412937
+      spriteID: 1b7d2a9678f6fe64081f551eec4cf8f0
+      internalID: -2062222012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_run (1)_1
+      name: MageAttack (1)_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 256
-        width: 64
-        height: 64
+        x: 74
+        y: 135
+        width: 37
+        height: 49
       alignment: 9
-      pivot: {x: 0.421875, y: 0.203125}
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 515fd75e3812b30468f3eafaaa70b80c
-      internalID: -679031594
+      spriteID: 27a9a8e4b63d12b4cb7740f35f295e51
+      internalID: -1472555608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_run (1)_2
+      name: MageAttack (1)_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
-        width: 64
-        height: 64
+        x: 140
+        y: 135
+        width: 35
+        height: 46
       alignment: 9
-      pivot: {x: 0.421875, y: 0.203125}
+      pivot: {x: 0.475, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a250641919b718b4fa6dae0fc7955300
-      internalID: 1365609380
+      spriteID: 195b1f816809220489ca4ce8c5d68abe
+      internalID: 1778213383
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_run (1)_3
+      name: MageAttack (1)_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 64
-        height: 64
+        x: 9
+        y: 70
+        width: 38
+        height: 49
       alignment: 9
-      pivot: {x: 0.421875, y: 0.203125}
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de9d1f33eba36ed4d9b5d41c93c70dac
-      internalID: 443738087
+      spriteID: 80d7bd2422e66744da331bcc8160ae6e
+      internalID: 1887645755
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_run (1)_4
+      name: MageAttack (1)_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
-        width: 64
-        height: 64
+        x: 81
+        y: 70
+        width: 30
+        height: 47
       alignment: 9
-      pivot: {x: 0.421875, y: 0.203125}
+      pivot: {x: 0.33, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 06a36e3643ce6b24c9519698c43f08f4
-      internalID: 1449281588
+      spriteID: b92ed5f8866fee24a939d46b0e94506f
+      internalID: 1532667901
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_run (1)_5
+      name: MageAttack (1)_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 137
+        y: 71
+        width: 38
+        height: 48
       alignment: 9
-      pivot: {x: 0.421875, y: 0.203125}
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 484cf63c91ebd6b4ba1b2deebcff4b37
-      internalID: -491570511
+      spriteID: e9f3c4a8eb699324bb8f8b5361b6d64f
+      internalID: 28980241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageAttack (1)_6
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 6
+        width: 35
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce8dd1c0a10b6b74f868b66ffe5a4a91
+      internalID: -1476071486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageAttack (1)_7
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 6
+        width: 36
+        height: 51
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a7b440a6e4413a46b769a5ed69feaff
+      internalID: 1751322317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageAttack (1)_8
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 6
+        width: 34
+        height: 47
+      alignment: 9
+      pivot: {x: 0.48, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6fb2cf00912e7343b219fd95df6d059
+      internalID: -1259844468
       vertices: []
       indices: 
       edges: []
@@ -246,12 +322,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      knight_run (1)_0: 222412937
-      knight_run (1)_1: -679031594
-      knight_run (1)_2: 1365609380
-      knight_run (1)_3: 443738087
-      knight_run (1)_4: 1449281588
-      knight_run (1)_5: -491570511
+      MageAttack (1)_0: -2062222012
+      MageAttack (1)_1: -1472555608
+      MageAttack (1)_2: 1778213383
+      MageAttack (1)_3: 1887645755
+      MageAttack (1)_4: 1532667901
+      MageAttack (1)_5: 28980241
+      MageAttack (1)_6: -1476071486
+      MageAttack (1)_7: 1751322317
+      MageAttack (1)_8: -1259844468
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
