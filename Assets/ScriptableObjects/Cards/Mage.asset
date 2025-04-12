@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mage
   m_EditorClassIdentifier: 
   cardName: Mage
-  cardImage: {fileID: 6347813038107732699, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  cardImage: {fileID: 76158817, guid: df7c0da3d3044d54b80980242fe2311e, type: 3}
   description: 
   SummonerPrefab: {fileID: 8505144159870094120, guid: f8de41f63c36ea04cad884c4fc06416e, type: 3}
   maxMana: 100
