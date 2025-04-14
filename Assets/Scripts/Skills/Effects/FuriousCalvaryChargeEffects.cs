@@ -91,7 +91,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
                 var statusEffects = hit.GetComponent<UnitStatusEffects>();
                 if (statusEffects != null)
                 {
-                    var knockupEffect = new KnockupEffect(hit, skillData.knockupDuration);
+                    var knockupEffect = new KnockupEffect(skillData.knockupDuration);
                     statusEffects.AddEffect(knockupEffect);
                 }
             }

@@ -7,7 +7,7 @@ public class BloodstormStatusEffect : BaseStatusEffect
     private float originalMoveSpeed;
 
     public BloodstormStatusEffect(Unit target, BloodstormSkill skill, int souls) 
-        : base(target, float.PositiveInfinity) // Vĩnh viễn cho đến khi chết
+        : base(float.PositiveInfinity) // Vĩnh viễn cho đến khi chết
     {
         this.skill = skill;
         this.absorbedSouls = souls;

@@ -59,7 +59,6 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
         if (statusEffects != null)
         {
             var auraEffect = new GuardianAuraEffect(
-                unit,
                 skill.duration,
                 skill.armorBoost,
                 skill.magicResistBoost

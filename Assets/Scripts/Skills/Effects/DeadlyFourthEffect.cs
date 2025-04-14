@@ -63,7 +63,6 @@ public class DeadlyFourthEffect : MonoBehaviour, ISkillEffect
         if (weakestEnemy != null)
         {
             EmpoweredAttacksEffect empoweredEffect = new EmpoweredAttacksEffect(
-                target: caster,
                 duration: 5f,
                 damageMultiplier: 1f,
                 attackCount: 1

@@ -6,16 +6,15 @@ public class ImmortalEffect : BaseStatusEffect
 
     private UnitStats stats;
 
-    public ImmortalEffect(Unit target, float duration) : base(target, duration)
+    public ImmortalEffect(float duration) : base(duration)
     {
         type = StatusEffectType.Immortal;
-        stats = target.GetComponent<UnitStats>();
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
-        
+        base.Apply(owner);
+        stats = this.owner.GetComponent<UnitStats>();
         if (stats != null)
         {
             // Đăng ký sự kiện trước khi nhận sát thương kết liễu
@@ -27,7 +26,8 @@ public class ImmortalEffect : BaseStatusEffect
     {
         if (stats == null) return;
 
-        if (unit.GetComponent<UnitStats>().CurrentHP <= 0) {
+        if (unit.GetComponent<UnitStats>().CurrentHP <= 0)
+        {
             unit.GetComponent<UnitStats>().SetCurrentHp(1);
         }
     }
@@ -44,4 +44,4 @@ public class ImmortalEffect : BaseStatusEffect
 
         base.Remove();
     }
-} 
+}

@@ -38,7 +38,7 @@ public class GhostFormBehavior : MonoBehaviour
         var statusEffects = unit.GetComponent<UnitStatusEffects>();
         if (statusEffects != null)
         {
-            immortalEffect = new ImmortalEffect(unit, skillData.ghostDuration);
+            immortalEffect = new ImmortalEffect(skillData.ghostDuration);
             statusEffects.AddEffect(immortalEffect);
         }
         immortalEffect.OnImmortalEffectEnded += ImmortalEffectEnded;

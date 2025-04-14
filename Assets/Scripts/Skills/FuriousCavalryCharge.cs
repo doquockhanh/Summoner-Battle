@@ -60,7 +60,7 @@ public class FuriousCavalryCharge : Skill
         // b2: animation gọi về unitMovement để dừng di chuyển
         // b3: animation gọi về đây để cast skill
         // b4: animation gọi về unitMovement để tiếp tục di chuyển
-        GrowSizeEffect growSizeEffect = new(strongestUnit, 5f, 1.3f);
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
 
         strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
         strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);

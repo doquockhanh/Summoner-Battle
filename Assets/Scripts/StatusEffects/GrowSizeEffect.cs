@@ -6,25 +6,24 @@ public class GrowSizeEffect : BaseStatusEffect
     private Vector3 originalScale; // Lưu scale ban đầu
 
     public GrowSizeEffect(
-      Unit target,
       float duration,
-      float sizeMultiplier) : base(target, duration)
+      float sizeMultiplier) : base(duration)
     {
         this.sizeMultiplier = sizeMultiplier;
         type = StatusEffectType.GrowSize;
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
-        originalScale = target.transform.localScale;
+        base.Apply(owner);
+        originalScale = this.owner.transform.localScale;
         // Tăng kích thước lên theo hệ số
-        target.transform.localScale = originalScale * sizeMultiplier;
+        this.owner.transform.localScale = originalScale * sizeMultiplier;
     }
 
     public override void Remove()
     {
         base.Remove();
-        target.transform.localScale = originalScale;
+        owner.transform.localScale = originalScale;
     }
 }

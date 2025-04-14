@@ -3,11 +3,10 @@ using UnityEngine;
 public class UntargetableEffect : BaseStatusEffect
 {
     private Unit caster;
-    public UntargetableEffect(Unit target, float duration) 
-        : base(target, duration)
+    public UntargetableEffect(float duration) 
+        : base(duration)
     {
         type = StatusEffectType.Untargetable;
-        caster = target;
     }
 
     public override void Apply(Unit target)

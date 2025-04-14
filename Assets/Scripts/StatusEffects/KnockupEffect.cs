@@ -1,14 +1,14 @@
 public class KnockupEffect : BaseStatusEffect
 {
 
-    public KnockupEffect(Unit target, float duration) : base(target, duration)
+    public KnockupEffect(float duration) : base(duration)
     {
         type = StatusEffectType.Knockup;
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
+        base.Apply(owner);
     }
 
     public override void Remove()

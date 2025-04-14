@@ -51,7 +51,6 @@ public class FireBallSkillEffect : MonoBehaviour, ISkillEffect
                 if (statusEffects != null)
                 {
                     var burningEffect = new BurningEffect(
-                        enemy,
                         skill.burnDuration,
                         skill.burnDamagePercent,
                         skill.healingReduction
