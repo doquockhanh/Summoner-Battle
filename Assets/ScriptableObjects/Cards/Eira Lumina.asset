@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
+  m_Name: Eira Lumina
+  m_EditorClassIdentifier: 
+  cardName: Eira lumina
+  cardImage: {fileID: 483837048, guid: 6afb98fc69b4f6c44ab0ebdd43d13149, type: 3}
+  description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 5b7e24cc6988caf458444ede63e3a0fe, type: 3}
+  maxMana: 100
+  manaRegen: 0
+  spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
+  summonUnit: {fileID: 11400000, guid: 853541896cb6d754e855edcba155c0de, type: 2}
+  skill: {fileID: 11400000, guid: 35c909e2be74f9b4ababbffa78b998a7, type: 2}

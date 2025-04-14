@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5a9d60d2ca852814c9b837ddef9aab7e
+guid: af29a27ec1b8a044fbd44815a878109e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 96
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -82,6 +82,19 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,316 +123,211 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: knight_SKILL_0
+      name: Eira Lumina_Run_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 896
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 70
+        y: 847
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5fdf8286a22e42b45b9a1a90af39864f
-      internalID: -1536161064
+      spriteID: d46d71a4b6ab0234dab345f0e150141d
+      internalID: -1540845099
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_1
+      name: Eira Lumina_Run_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 896
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 327
+        y: 844
+        width: 100
+        height: 155
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5435973a8285a294099d95fd6d516ea5
-      internalID: 1508022807
+      spriteID: c8de947637c530b459cb3d123ba4c066
+      internalID: -2052523379
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_2
+      name: Eira Lumina_Run_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 768
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 583
+        y: 846
+        width: 100
+        height: 147
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3654890774fc3b4c969318ea49b03b3
-      internalID: 1974579143
+      spriteID: 02a812a5a48e2a14d8fb242aaa8e69d5
+      internalID: -1781792119
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_3
+      name: Eira Lumina_Run_3
       rect:
         serializedVersion: 2
-        x: 128
-        y: 768
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 583
+        y: 590
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 975167d66c7dbd14585dd102078be6e1
-      internalID: 1694790762
+      spriteID: 5c4e2ace043d6c548b1b2453d5d57c2d
+      internalID: -1890955604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_4
+      name: Eira Lumina_Run_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 640
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 70
+        y: 590
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2217a98a09e4364b8201c6fc454440c
-      internalID: 1995683127
+      spriteID: d9e5178604e2ece40bea7a5f43938622
+      internalID: 247409253
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_5
+      name: Eira Lumina_Run_5
       rect:
         serializedVersion: 2
-        x: 128
-        y: 640
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 327
+        y: 590
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ca163b9a67a20d4d99f69667c48218f
-      internalID: -421079961
+      spriteID: 3ed4a82a133282840b24fdcaec8b116b
+      internalID: 23795832
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_6
+      name: Eira Lumina_Run_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 512
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 583
+        y: 334
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8a39ce97ce2ba514dacf2473a5c33492
-      internalID: -72259905
+      spriteID: 9e2e6833576b2d0409c4379821673f4d
+      internalID: 1272854114
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_7
+      name: Eira Lumina_Run_7
       rect:
         serializedVersion: 2
-        x: 128
-        y: 512
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 327
+        y: 333
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 212706d788f85ff48a6957fa008699b8
-      internalID: 1736821290
+      spriteID: 170776cc91ee6e44482a5bf3d49b7596
+      internalID: -480959651
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_8
+      name: Eira Lumina_Run_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 384
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 70
+        y: 331
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8778c844a4c92894282c24dde2e7b85f
-      internalID: 1555414182
+      spriteID: 8f75cf02201549a44a3195d0831bd2c2
+      internalID: -1555219258
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_SKILL_9
+      name: Eira Lumina_Run_9
       rect:
         serializedVersion: 2
-        x: 128
-        y: 384
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
+        x: 70
+        y: 78
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb5e92e1a775fb7448a667d4a800c246
-      internalID: -1172665353
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: knight_SKILL_10
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d88f233085a9dd14791b4cfe8c99b9f4
-      internalID: -1734621974
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: knight_SKILL_11
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 256
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 849f1e925de869e4cbcb5266213e193e
-      internalID: 477043891
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: knight_SKILL_12
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b1276f78e609b174bae86607f35b1206
-      internalID: 1951155169
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: knight_SKILL_13
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc40116d75781264f96278aba2d55d8e
-      internalID: -66426699
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: knight_SKILL_14
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.4453125, y: 0.1171875}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 951e209f241006045afc1dc0b39dc176
-      internalID: 1619539101
+      spriteID: 183e27836348ba6488b7a7231d418c6a
+      internalID: 38570202
       vertices: []
       indices: 
       edges: []
@@ -435,21 +343,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      knight_SKILL_0: -1536161064
-      knight_SKILL_1: 1508022807
-      knight_SKILL_10: -1734621974
-      knight_SKILL_11: 477043891
-      knight_SKILL_12: 1951155169
-      knight_SKILL_13: -66426699
-      knight_SKILL_14: 1619539101
-      knight_SKILL_2: 1974579143
-      knight_SKILL_3: 1694790762
-      knight_SKILL_4: 1995683127
-      knight_SKILL_5: -421079961
-      knight_SKILL_6: -72259905
-      knight_SKILL_7: 1736821290
-      knight_SKILL_8: 1555414182
-      knight_SKILL_9: -1172665353
+      Eira Lumina_Run_0: -1540845099
+      Eira Lumina_Run_1: 495040899
+      Eira Lumina_Run_2: -1781792119
+      Eira Lumina_Run_3: -1890955604
+      Eira Lumina_Run_4: 247409253
+      Eira Lumina_Run_5: 23795832
+      Eira Lumina_Run_6: 1272854114
+      Eira Lumina_Run_7: -480959651
+      Eira Lumina_Run_8: -1555219258
+      Eira Lumina_Run_9: 38570202
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

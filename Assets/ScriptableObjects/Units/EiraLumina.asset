@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc6c9290466a274280f4c5ab19d9469, type: 3}
+  m_Name: EiraLumina
+  m_EditorClassIdentifier: 
+  unitName: Eira Lumina
+  unitImage: {fileID: -603402749, guid: 6afb98fc69b4f6c44ab0ebdd43d13149, type: 3}
+  description: 
+  maxHp: 1000
+  hpRegen: 0
+  armor: 20
+  magicResist: 20
+  damageReduction: 0
+  tenacity: 0
+  physicalDamage: 50
+  magicDamage: 100
+  damageAmplification: 0
+  armorPenetration: 0
+  magicPenetration: 0
+  criticalChance: 0
+  criticalDamage: 150
+  lifestealPercent: 0
+  attackSpeed: 1
+  moveSpeed: 1.3
+  range: 4
+  detectRange: 6
+  healingReceivedPercent: 100
+  unitPrefab: {fileID: 8505144159870094120, guid: bcc5174b6030d4348afd5d3c78ed7118, type: 3}

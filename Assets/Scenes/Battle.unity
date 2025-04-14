@@ -286,63 +286,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1001 &127527419
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343516724881931010, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8505144159870094120, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
-      propertyPath: m_Name
-      value: UndeadSword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cb64cbe24f11ff4438f4ace7f8b7b44e, type: 3}
 --- !u!1 &171079110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2871,8 +2814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCards:
-  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
-  - {fileID: 11400000, guid: dd592c4213b11014e88656249acf6e59, type: 2}
+  - {fileID: 11400000, guid: 636d295c374785c45bfa1bbcd4b05075, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}
@@ -2880,8 +2822,7 @@ MonoBehaviour:
   - {x: 2, y: 10}
   - {x: 2, y: 1}
   enemyCards:
-  - {fileID: 11400000, guid: c9d0d035aac22214cb08336b87382a33, type: 2}
-  - {fileID: 11400000, guid: fcba7c37e2216c0408a312f2499d8d41, type: 2}
+  - {fileID: 11400000, guid: badb9fa9e6c65fa4a9fd5e14b7bb8cbc, type: 2}
   enemiesSpawnPositions:
   - {x: 21, y: -4}
   - {x: 22, y: -7}
@@ -3101,4 +3042,3 @@ SceneRoots:
   - {fileID: 1666147978}
   - {fileID: 1176152746}
   - {fileID: 482829573}
-  - {fileID: 127527419}

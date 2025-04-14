@@ -1,0 +1,386 @@
+fileFormatVersion: 2
+guid: 6afb98fc69b4f6c44ab0ebdd43d13149
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 96
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_0
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 846
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c5cdd02b192b8d449895393088a2b8e
+      internalID: 483837048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_8
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 846
+        width: 100
+        height: 136
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19efdc0c576873c4e9afc2088699e526
+      internalID: -1714138762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_10
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 846
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 918f902a3b7446049a9e7e4a8eede27a
+      internalID: -603402749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_13
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 590
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0b6e4b35fa6f2640a798823f92734a5
+      internalID: -1126169808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_15
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 590
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12995c00499b5114f82396c44bcfd460
+      internalID: 1516852694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_18
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 590
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ae8750e40115c84a8a4c7efdd722cb7
+      internalID: -1998650546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_28
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 334
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edd815972773cb9439095a9116e76c6f
+      internalID: 1180902698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_30
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 334
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 338552633eff54848902c5b34a85742f
+      internalID: -1021507480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_32
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 334
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 803fc15bb5163f6419df9efd1319defb
+      internalID: 544555775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eira Lumina_Idle_34
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 78
+        width: 100
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1af04946a8167e841b51b3dba0fbbb37
+      internalID: -1295931832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Eira Lumina_Idle_0: 483837048
+      Eira Lumina_Idle_1: -1370517591
+      Eira Lumina_Idle_10: -603402749
+      Eira Lumina_Idle_11: 715417869
+      Eira Lumina_Idle_12: 811247758
+      Eira Lumina_Idle_13: -1126169808
+      Eira Lumina_Idle_14: 1674114083
+      Eira Lumina_Idle_15: 1516852694
+      Eira Lumina_Idle_16: 1152137595
+      Eira Lumina_Idle_17: -643695396
+      Eira Lumina_Idle_18: -1998650546
+      Eira Lumina_Idle_19: 115451892
+      Eira Lumina_Idle_2: -812132072
+      Eira Lumina_Idle_20: -1810141527
+      Eira Lumina_Idle_21: -1526537639
+      Eira Lumina_Idle_22: -965048454
+      Eira Lumina_Idle_23: 1286870163
+      Eira Lumina_Idle_24: -172385449
+      Eira Lumina_Idle_25: -1300701607
+      Eira Lumina_Idle_26: 503966634
+      Eira Lumina_Idle_27: 552642361
+      Eira Lumina_Idle_28: 1180902698
+      Eira Lumina_Idle_29: 921543120
+      Eira Lumina_Idle_3: 1694775797
+      Eira Lumina_Idle_30: -1021507480
+      Eira Lumina_Idle_31: -945203940
+      Eira Lumina_Idle_32: 544555775
+      Eira Lumina_Idle_33: -583128844
+      Eira Lumina_Idle_34: -1295931832
+      Eira Lumina_Idle_35: 149235803
+      Eira Lumina_Idle_4: 327179091
+      Eira Lumina_Idle_5: -1637777863
+      Eira Lumina_Idle_6: 1093439069
+      Eira Lumina_Idle_7: 477560633
+      Eira Lumina_Idle_8: -1714138762
+      Eira Lumina_Idle_9: 1713704114
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
