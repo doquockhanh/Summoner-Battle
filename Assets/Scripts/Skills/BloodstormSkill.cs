@@ -56,22 +56,5 @@ public class BloodstormSkill : Skill
     {
         if (summonedUnit == null)
             throw new System.ArgumentNullException(nameof(summonedUnit));
-
-        // Xóa behavior cũ nếu có
-        var existingBehavior = summonedUnit.gameObject
-            .GetComponent<BloodLordBehavior>();
-        if (existingBehavior != null)
-        {
-            Destroy(existingBehavior);
-        }
-
-        // Di chuyển unit đến vị trí ngẫu nhiên
-        Vector3 randomPosition = RandomMovementHandler.Instance.GetRandomSpawnPosition();
-        summonedUnit.transform.position = randomPosition;
-
-        // Thêm behavior mới
-        var bloodLord = summonedUnit.gameObject
-            .AddComponent<BloodLordBehavior>();
-        bloodLord.Initialize(this);
     }
 } 

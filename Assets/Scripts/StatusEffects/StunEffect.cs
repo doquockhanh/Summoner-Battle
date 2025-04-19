@@ -13,12 +13,12 @@ public class StunEffect : BaseStatusEffect
     {
         base.Apply(owner);
         combat = this.owner.GetComponent<UnitCombat>();
-        if (combat != null) combat.enabled = false;;
+        if (combat != null) combat.TurnOffAutoCombat();
     }
 
     public override void Remove()
     {
         base.Remove();
-        if (combat != null) combat.enabled = true;
+        if (combat != null) combat.TurnOnAutoCombat();
     }
 } 

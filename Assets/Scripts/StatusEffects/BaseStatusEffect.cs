@@ -32,6 +32,6 @@ public abstract class BaseStatusEffect : IStatusEffect
 
     public virtual void Tick()
     {
-        remainingTime -= Time.deltaTime;
+        remainingTime -= Time.fixedDeltaTime;
     }
 } 

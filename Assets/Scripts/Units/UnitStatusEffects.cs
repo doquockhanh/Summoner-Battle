@@ -16,7 +16,7 @@ public class UnitStatusEffects : MonoBehaviour
         unit = GetComponent<Unit>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         var expiredEffects = new List<StatusEffectType>();
         
