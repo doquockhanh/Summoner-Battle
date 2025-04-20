@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UntargetableEffect : BaseStatusEffect
 {
-    public UntargetableEffect(float duration) 
+    public UntargetableEffect(float duration)
         : base(duration)
     {
         type = StatusEffectType.Untargetable;
@@ -28,4 +28,4 @@ public class UntargetableEffect : BaseStatusEffect
             view.SetAlpha(1f);
         }
     }
-} 
+}

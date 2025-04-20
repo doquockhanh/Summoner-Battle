@@ -120,20 +120,4 @@ public class HealthBarUI : MonoBehaviour
 
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
-
-    public void ShowSoulCounter(bool show)
-    {
-        if (soulCountText != null)
-        {
-            soulCountText.gameObject.SetActive(show);
-        }
-    }
-    
-    public void UpdateSoulCount(int count)
-    {
-        if (soulCountText != null)
-        {
-            soulCountText.text = $"{count}";
-        }
-    }
 } 

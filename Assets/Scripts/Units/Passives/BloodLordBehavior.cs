@@ -84,8 +84,6 @@ public class BloodLordBehavior : MonoBehaviour
 
     private void InitializeHealthBar()
     {
-        healthBar.ShowSoulCounter(true);
-        healthBar.UpdateSoulCount(absorbedSouls);
     }
 
     private void RegisterEvents()
@@ -131,9 +129,6 @@ public class BloodLordBehavior : MonoBehaviour
     private void TryAbsorbSoul(Unit deadUnit)
     {
         if (absorbedSouls >= MAX_SOULS) return;
-
-        absorbedSouls++;
-        healthBar.UpdateSoulCount(absorbedSouls);
         OnSoulCountChanged?.Invoke(absorbedSouls);
 
         SpawnSoulAbsorbEffect(deadUnit.transform.position);

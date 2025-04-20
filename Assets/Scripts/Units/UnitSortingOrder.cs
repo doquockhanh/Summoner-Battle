@@ -4,7 +4,7 @@ using UnityEngine;
 public class UnitSortingOrder : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private const string SORTING_Y_LAYER = "Sorting Y";
+    public const string SORTING_Y_LAYER = "Sorting Y";
     
     private void Start()
     {
