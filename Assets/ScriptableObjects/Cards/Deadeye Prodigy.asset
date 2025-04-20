@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Deadeye Prodigy
   cardImage: {fileID: -5000947539443308099, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: 49033d0cd3747804b9e272cc502fee71, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 0
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
   summonUnit: {fileID: 11400000, guid: 683d843f48d62c841aeb81d21b29bcbc, type: 2}
   skill: {fileID: 11400000, guid: 55cd7516e104a494b9e854823bab5046, type: 2}
