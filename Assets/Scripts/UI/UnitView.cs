@@ -11,9 +11,6 @@ public class UnitView : MonoBehaviour
     [SerializeField] private ParticleSystem attackEffect;
     [SerializeField] private Animator animator;
 
-    [Header("Health Bar Settings")]
-    [SerializeField] private Vector3 healthBarOffset = new Vector3(0f, 0.5f, 0f);
-
     private HealthBarUI healthBarUI;
     private Material spriteMaterial;
     private Coroutine flashCoroutine;
@@ -123,9 +120,26 @@ public class UnitView : MonoBehaviour
     {
         if (healthBarUI != null)
         {
-            Vector3 worldPosition = transform.position + healthBarOffset;
+            Vector3 worldPosition = GetHealthBarPosition();
             healthBarUI.transform.position = worldPosition;
         }
+    }
+
+    private Vector3 GetHealthBarPosition()
+    {
+        if (unitSprite == null) return transform.position;
+
+        // Lấy bounds của sprite trong không gian world
+        Bounds spriteBounds = unitSprite.bounds;
+        
+        // Tính toán vị trí trên cùng của sprite
+        Vector3 topPosition = transform.position;
+        topPosition.y += spriteBounds.extents.y * 2;
+        
+        // Thêm một khoảng nhỏ để health bar không bị dính vào sprite
+        topPosition.y += 0.1f;
+        
+        return topPosition;
     }
 
     private void UpdateHealth(float newHp)
