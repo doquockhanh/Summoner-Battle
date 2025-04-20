@@ -30,4 +30,9 @@ public class HealthBarManager : MonoBehaviour
     {
         return worldSpaceCanvas.transform;
     }
+    
+    public Canvas GetCanvas()
+    {
+        return worldSpaceCanvas;
+    }
 } 

@@ -4,21 +4,21 @@ public class StunEffect : BaseStatusEffect
 {
     private UnitCombat combat;
 
-    public StunEffect(Unit target, float duration) : base(target, duration)
+    public StunEffect(float duration) : base(duration)
     {
         type = StatusEffectType.Stun;
-        combat = target.GetComponent<UnitCombat>();
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
-        if (combat != null) combat.enabled = false;;
+        base.Apply(owner);
+        combat = this.owner.GetComponent<UnitCombat>();
+        if (combat != null) combat.TurnOffAutoCombat();
     }
 
     public override void Remove()
     {
         base.Remove();
-        if (combat != null) combat.enabled = true;
+        if (combat != null) combat.TurnOnAutoCombat();
     }
 } 

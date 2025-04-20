@@ -28,17 +28,21 @@ public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
     {
         Unit target = targetPos.OccupyingUnit;
 
-        if (target != null) {
+        if (target != null)
+        {
             target.TakeDamage(
                 caster.GetUnitStats().GetPhysicalDamage() * (skillData.mainTargetPercent / 100),
                 DamageType.Physical,
                 caster
             );
+            var knockupEffect = new KnockupEffect(skillData.duration, 2);
+            target.GetComponent<UnitStatusEffects>().AddEffect(knockupEffect);
         }
 
-    
+
         List<Unit> enemiesNearBy = HexGrid.Instance.GetUnitsInRange(targetPos.Coordinates, skillData.skillRange, !caster.IsPlayerUnit);
-        foreach(Unit enemy in enemiesNearBy) {
+        foreach (Unit enemy in enemiesNearBy)
+        {
             if (enemy == null || enemy == target) continue;
 
             enemy.TakeDamage(

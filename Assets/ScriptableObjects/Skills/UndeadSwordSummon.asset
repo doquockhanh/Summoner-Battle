@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 35
-  duration: 0
+  duration: 2
   radius: 0
   skillIcon: {fileID: 0}
   hasPassive: 0

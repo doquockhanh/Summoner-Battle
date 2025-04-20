@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class BaseStatusEffect : IStatusEffect
 {
-    protected Unit target;
+    protected Unit owner;
     protected float duration;
     protected float remainingTime;
     protected StatusEffectType type;
@@ -13,16 +13,15 @@ public abstract class BaseStatusEffect : IStatusEffect
     public bool IsExpired => remainingTime <= 0;
     public event System.Action OnExpired;
 
-    protected BaseStatusEffect(Unit target, float duration)
+    protected BaseStatusEffect(float duration)
     {
-        this.target = target;
         this.duration = duration;
         this.remainingTime = duration;
     }
 
-    public virtual void Apply(Unit target)
+    public virtual void Apply(Unit owner)
     {
-        this.target = target;
+        this.owner = owner;
     }
 
     public virtual void Remove()
@@ -33,6 +32,6 @@ public abstract class BaseStatusEffect : IStatusEffect
 
     public virtual void Tick()
     {
-        remainingTime -= Time.deltaTime;
+        remainingTime -= Time.fixedDeltaTime;
     }
 } 

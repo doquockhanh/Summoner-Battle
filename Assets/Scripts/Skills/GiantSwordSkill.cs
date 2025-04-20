@@ -58,7 +58,7 @@ public class GiantSwordSkill : Skill
           targetPos = targeting.CurrentTarget.transform.position;
       }
 
-      GrowSizeEffect growSizeEffect = new(strongestUnit, 5f, 1.3f);
+      GrowSizeEffect growSizeEffect = new(5f, 1.3f);
       strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
       strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
       ownerCard.OnSkillActivated();

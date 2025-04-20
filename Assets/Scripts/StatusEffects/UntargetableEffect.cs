@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class UntargetableEffect : BaseStatusEffect
 {
-    private Unit caster;
-    public UntargetableEffect(Unit target, float duration) 
-        : base(target, duration)
+    public UntargetableEffect(float duration)
+        : base(duration)
     {
         type = StatusEffectType.Untargetable;
-        caster = target;
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
-        var view = caster.GetComponent<UnitView>();
+        base.Apply(owner);
+        var view = this.owner.GetComponent<UnitView>();
         if (view != null)
         {
             view.SetAlpha(0.2f);
@@ -24,10 +22,10 @@ public class UntargetableEffect : BaseStatusEffect
     {
         base.Remove();
         // Khôi phục hiển thị unit
-        var view = caster.GetComponent<UnitView>();
+        var view = this.owner.GetComponent<UnitView>();
         if (view != null)
         {
             view.SetAlpha(1f);
         }
     }
-} 
+}

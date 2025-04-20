@@ -5,20 +5,20 @@ public class DefensiveThornsEffect : BaseStatusEffect
 {
     private readonly float damageReduction;
     private readonly float thornsDamagePercent;
-    private readonly UnitStats stats;
+    private UnitStats stats;
 
-    public DefensiveThornsEffect(Unit target, float duration, float damageReduction, float thornsDamagePercent)
-        : base(target, duration)
+    public DefensiveThornsEffect(float duration, float damageReduction, float thornsDamagePercent)
+        : base(duration)
     {
         this.damageReduction = damageReduction;
         this.thornsDamagePercent = thornsDamagePercent;
-        this.stats = target.GetComponent<UnitStats>();
         type = StatusEffectType.DefenseBuff;
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
+        base.Apply(owner);
+        this.stats = this.owner.GetComponent<UnitStats>();
         if (stats != null)
         {
             stats.ModifyStat(StatType.DamageReduction, 0, damageReduction);
@@ -30,8 +30,8 @@ public class DefensiveThornsEffect : BaseStatusEffect
     {
         // source là kẻ tấn công
         // target là kẻ chịu đòn
-        // target != this.target loại bỏ kẻ chịu đòn ko phải chủ sở hữu trạng thái
-        if (source == null || target == null || target != this.target) return;
+        // target != this.owner loại bỏ kẻ chịu đòn ko phải chủ sở hữu trạng thái
+        if (source == null || target == null || target != this.owner) return;
         float thornsDamage = damage * (thornsDamagePercent / 100f);
         source.TakeDamage(thornsDamage, DamageType.ThornsDamage);
     }

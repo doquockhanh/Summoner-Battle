@@ -70,7 +70,7 @@ public class AncientRootEffect : MonoBehaviour, ISkillEffect
                 var statusEffects = enemy.GetComponent<UnitStatusEffects>();
                 if (statusEffects != null)
                 {
-                    var stunEffect = new KnockupEffect(enemy, skillData.stunDuration);
+                    var stunEffect = new KnockupEffect(skillData.stunDuration);
                     statusEffects.AddEffect(stunEffect);
                 }
 

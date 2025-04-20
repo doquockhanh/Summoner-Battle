@@ -50,7 +50,7 @@ public class ForgeShieldSkill : Skill
         // b3: animation gọi về đây để cast skill
         // b4: animation gọi về unitMovement để tiếp tục di chuyển
         // strongestSmith.transform.localScale = new Vector3(2, 2, 0);
-        GrowSizeEffect growSizeEffect = new(strongestSmith, 5f, 1.3f);
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
 
         strongestSmith.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
         strongestSmith.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);

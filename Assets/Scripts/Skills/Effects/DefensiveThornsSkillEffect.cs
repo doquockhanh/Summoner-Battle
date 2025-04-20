@@ -56,7 +56,6 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
         {
             // status này cho giảm sát thương và phản sát thương trong vài giây
             var thornsEffect = new DefensiveThornsEffect(
-                caster,
                 skillData.thornsDuration,
                 skillData.damageReduction,
                 skillData.thornsDamagePercent

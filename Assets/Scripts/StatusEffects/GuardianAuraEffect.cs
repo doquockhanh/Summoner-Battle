@@ -5,24 +5,24 @@ public class GuardianAuraEffect : BaseStatusEffect
 {
     private readonly float armorBoost;
     private readonly float magicResistBoost;
-    private readonly UnitStats stats;
+    private UnitStats stats;
 
     public GuardianAuraEffect(
-        Unit target,
         float duration,
         float armorBoost,
         float magicResistBoost
-    ) : base(target, duration)
+    ) : base(duration)
     {
         this.armorBoost = armorBoost;
         this.magicResistBoost = magicResistBoost;
-        this.stats = target.GetComponent<UnitStats>();
         type = StatusEffectType.DefenseBuff;
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
+        base.Apply(owner);
+        
+        stats = this.owner.GetComponent<UnitStats>();
         if (stats != null)
         {
             stats.ModifyStat(StatType.Armor, armorBoost);

@@ -56,7 +56,7 @@ public class AssassinateSkill : Skill
         // b2: animation gọi về unitMovement để dừng di chuyển
         // b3: animation gọi về đây để cast skill
         // b4: animation gọi về unitMovement để tiếp tục di chuyển
-        GrowSizeEffect growSizeEffect = new(assassin, 5f, 1.3f);
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
         assassin.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
 
         assassin.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);

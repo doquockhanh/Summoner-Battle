@@ -41,7 +41,7 @@ public class GuardianAuraSkill : Skill
         strongestUnit = FindStrongestDefender();
         if (strongestUnit == null) return;
 
-        GrowSizeEffect growSizeEffect = new(strongestUnit, 5f, 1.3f);
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
         strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
         strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
         ownerCard.OnSkillActivated();

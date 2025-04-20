@@ -32,12 +32,12 @@ public class AssassinateSkillEffect : MonoBehaviour, ISkillEffect
         UnitStatusEffects statusEffects = assassin.GetComponent<UnitStatusEffects>();
         if (statusEffects != null)
         {
-            UntargetableEffect untargetable = new UntargetableEffect(assassin, 5);
+            UntargetableEffect untargetable = new UntargetableEffect(5);
             statusEffects.AddEffect(untargetable);
 
             if (!statusEffects.HasEffect(StatusEffectType.StealthOnKill))
             {
-                AssassinStealthEffect stealthEffect = new AssassinStealthEffect(assassin, skillData.untargetableDuration);
+                AssassinStealthEffect stealthEffect = new AssassinStealthEffect(skillData.untargetableDuration);
                 statusEffects.AddEffect(stealthEffect);
             }
         }

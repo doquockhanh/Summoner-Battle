@@ -8,19 +8,19 @@ public class BurningEffect : BaseStatusEffect
     private const float DAMAGE_INTERVAL = 1f;
     private UnitStats stats;
 
-    public BurningEffect(Unit target, float duration, float maxHealthPercent, float healingReduction)
-        : base(target, duration)
+    public BurningEffect(float duration, float maxHealthPercent, float healingReduction)
+        : base(duration)
     {
         this.maxHealthPercent = maxHealthPercent;
         this.healingReduction = healingReduction;
-        this.stats = target.GetComponent<UnitStats>();
         type = StatusEffectType.Burning;
         damageTimer = DAMAGE_INTERVAL;
     }
 
-    public override void Apply(Unit target)
+    public override void Apply(Unit owner)
     {
-        base.Apply(target);
+        base.Apply(owner);
+        this.stats = this.owner.GetComponent<UnitStats>();
         if (stats != null)
         {
             stats.ModifyStat(StatType.HealingReceived, -healingReduction);
@@ -36,7 +36,7 @@ public class BurningEffect : BaseStatusEffect
         {
             // Gây sát thương theo % máu tối đa
             float damage = stats.GetMaxHp() * maxHealthPercent;
-            target.TakeDamage(damage, DamageType.Magic);
+            owner.TakeDamage(damage, DamageType.Magic);
 
             damageTimer = DAMAGE_INTERVAL;
         }
