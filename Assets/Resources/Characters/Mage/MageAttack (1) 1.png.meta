@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5c3ab36951138224185934d2df38ab79
+guid: 0ff8d8d0510798542959b78c73239f55
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 28
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Void_0
+      name: MageAttack (1)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 214
-        width: 17
-        height: 18
+        x: 11
+        y: 134
+        width: 36
+        height: 49
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,83 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8cc6478fc16deab4d80f55192a3ed6d3
-      internalID: 814227511
+      spriteID: 1b7d2a9678f6fe64081f551eec4cf8f0
+      internalID: -2062222012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Void_1
+      name: MageAttack (1)_1
       rect:
         serializedVersion: 2
-        x: 72
-        y: 225
-        width: 17
-        height: 18
-      alignment: 9
-      pivot: {x: 0.5, y: -0.54}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 34b1af1f4df16ab4e97c89991135b3d8
-      internalID: -2071750556
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Void_2
-      rect:
-        serializedVersion: 2
-        x: 143
-        y: 227
-        width: 17
-        height: 18
-      alignment: 9
-      pivot: {x: 0.5, y: -0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4e90bf83ceda5ea4c82976454bc15de0
-      internalID: 973654064
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Void_3
-      rect:
-        serializedVersion: 2
-        x: 22
-        y: 163
-        width: 17
-        height: 18
-      alignment: 9
-      pivot: {x: 0.5, y: -0.54}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 42fac244dd44ba44493d9e3c25579027
-      internalID: 242049855
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Void_4
-      rect:
-        serializedVersion: 2
-        x: 94
-        y: 161
-        width: 17
-        height: 18
+        x: 74
+        y: 135
+        width: 37
+        height: 49
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,20 +158,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94fca52510869884abbbfa9ffe661288
-      internalID: -1949012119
+      spriteID: 27a9a8e4b63d12b4cb7740f35f295e51
+      internalID: -1472555608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Void_5
+      name: MageAttack (1)_2
       rect:
         serializedVersion: 2
-        x: 163
-        y: 158
-        width: 17
-        height: 18
+        x: 140
+        y: 135
+        width: 35
+        height: 46
+      alignment: 9
+      pivot: {x: 0.475, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 195b1f816809220489ca4ce8c5d68abe
+      internalID: 1778213383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageAttack (1)_3
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 70
+        width: 38
+        height: 49
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -242,20 +200,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 99fde54da1a218b48a0a0c7c434d0feb
-      internalID: -827129333
+      spriteID: 80d7bd2422e66744da331bcc8160ae6e
+      internalID: 1887645755
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Void_6
+      name: MageAttack (1)_4
       rect:
         serializedVersion: 2
-        x: 38
-        y: 85
-        width: 18
-        height: 17
+        x: 81
+        y: 70
+        width: 30
+        height: 47
+      alignment: 9
+      pivot: {x: 0.33, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b92ed5f8866fee24a939d46b0e94506f
+      internalID: 1532667901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageAttack (1)_5
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 71
+        width: 38
+        height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -263,20 +242,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 558111947abad6c43a582707b5c7a2f5
-      internalID: 1263618914
+      spriteID: e9f3c4a8eb699324bb8f8b5361b6d64f
+      internalID: 28980241
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Void_7
+      name: MageAttack (1)_6
       rect:
         serializedVersion: 2
-        x: 102
-        y: 85
-        width: 18
-        height: 17
+        x: 11
+        y: 6
+        width: 35
+        height: 49
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,20 +263,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96d0169aa777cce4d8ea0fa5217d2e93
-      internalID: 281965828
+      spriteID: ce8dd1c0a10b6b74f868b66ffe5a4a91
+      internalID: -1476071486
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Void_8
+      name: MageAttack (1)_7
       rect:
         serializedVersion: 2
-        x: 166
-        y: 85
-        width: 18
-        height: 15
+        x: 73
+        y: 6
+        width: 36
+        height: 51
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -305,29 +284,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54ad466c22a49d4439cba4faaff4f38f
-      internalID: -234443202
+      spriteID: 8a7b440a6e4413a46b769a5ed69feaff
+      internalID: 1751322317
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Void_9
+      name: MageAttack (1)_8
       rect:
         serializedVersion: 2
-        x: 38
-        y: 22
-        width: 18
-        height: 13
+        x: 139
+        y: 6
+        width: 34
+        height: 47
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.48, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 70c65d6fa1ed7e34db85ca29f7d649a4
-      internalID: 1583537743
+      spriteID: e6fb2cf00912e7343b219fd95df6d059
+      internalID: -1259844468
       vertices: []
       indices: 
       edges: []
@@ -343,16 +322,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Void_0: 814227511
-      Void_1: -2071750556
-      Void_2: 973654064
-      Void_3: 242049855
-      Void_4: -1949012119
-      Void_5: -827129333
-      Void_6: 1263618914
-      Void_7: 281965828
-      Void_8: -234443202
-      Void_9: 1583537743
+      MageAttack (1)_0: -2062222012
+      MageAttack (1)_1: -1472555608
+      MageAttack (1)_2: 1778213383
+      MageAttack (1)_3: 1887645755
+      MageAttack (1)_4: 1532667901
+      MageAttack (1)_5: 28980241
+      MageAttack (1)_6: -1476071486
+      MageAttack (1)_7: 1751322317
+      MageAttack (1)_8: -1259844468
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
