@@ -16,7 +16,7 @@ public class GuardianAuraSkill : Skill
 
     [Range(0, 5)]
     public int auraRadius = 2;
-        [Range(0, 5)]
+    [Range(0, 5)]
     public int auraDuration = 5;
 
     [Header("Hiệu ứng")]
@@ -43,15 +43,7 @@ public class GuardianAuraSkill : Skill
         strongestUnit = FindStrongestDefender();
         if (strongestUnit == null) return;
 
-        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
-        strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
-        strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
         ownerCard.OnSkillActivated();
-    }
-
-    public void CastSkill()
-    {
-        // Thêm effect xử lý kỹ năng
         var effect = strongestUnit.gameObject.AddComponent<GuardianAuraSkillEffect>();
         effect.Initialize(strongestUnit, alliesNearBy, this);
         effect.Execute(Vector3.zero);

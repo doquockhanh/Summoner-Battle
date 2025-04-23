@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class AssassinateSkillEffect : MonoBehaviour, ISkillEffect
 {
@@ -18,14 +19,20 @@ public class AssassinateSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        Assassinate();
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
+        assassin.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        assassin.GetComponent<UnitView>().PlaySkillAnimation();
+
+        this.StartCoroutineSafely(Assassinate());
     }
 
 
-    private void Assassinate()
+    private IEnumerator Assassinate()
     {
+        yield return new WaitForSeconds(skillData.doSkillActionAt);
+
         bool isOccupied = HexGrid.Instance.AssertOccupyCell(target.transform.position, assassin, 2);
-        if (isOccupied == false) return;
+        if (isOccupied == false) yield break;
         assassin.GetComponent<UnitCombat>().SetRegisteredCell(null);
 
         // Thêm hiệu ứng tàng hình onKill

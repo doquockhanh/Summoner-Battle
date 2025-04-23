@@ -24,6 +24,11 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         ApplyInitialEffects();
         caster.GetComponent<UnitTargeting>().autoTargeting = false;
+
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
+
+        caster.GetComponent<UnitView>().PlaySkillAnimation();
+        caster.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
         this.StartCoroutineSafely(ChargeCoroutine());
     }
 
@@ -55,6 +60,8 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
     private IEnumerator ChargeCoroutine()
     {
+        yield return new WaitForSeconds(skillData.doSkillActionAt);
+
         bool faceRight = targetPosition.x > caster.transform.position.x;
         caster.GetComponent<UnitView>().FlipSprite(faceRight);
 

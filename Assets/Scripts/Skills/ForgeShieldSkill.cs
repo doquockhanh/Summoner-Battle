@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -47,20 +48,19 @@ public class ForgeShieldSkill : Skill
         strongestSmith = ownerCard.GetActiveUnits().OrderByDescending(unit => CalculateUnitScore(unit)).FirstOrDefault();
         if (strongestSmith == null) return;
 
-        // b1: chạy animation skill
-        // b2: animation gọi về unitMovement để dừng di chuyển
-        // b3: animation gọi về đây để cast skill
-        // b4: animation gọi về unitMovement để tiếp tục di chuyển
-        // strongestSmith.transform.localScale = new Vector3(2, 2, 0);
-        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
-
-        strongestSmith.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
-        strongestSmith.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
         ownerCard.OnSkillActivated();
+        SkillEffectHandler.Instance.StartCoroutineSafely(CastSkill());
     }
 
-    public void CastSkill()
+    public IEnumerator CastSkill()
     {
+        yield return new WaitForSeconds(doSkillActionAt);
+
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
+
+        strongestSmith.GetComponent<UnitView>().PlaySkillAnimation();
+        strongestSmith.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+
         // Tính lượng khiên dựa trên máu tối đa
         float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f);
 

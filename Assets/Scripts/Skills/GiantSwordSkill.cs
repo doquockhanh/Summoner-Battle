@@ -54,23 +54,15 @@ public class GiantSwordSkill : Skill
 
         }
 
-        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
-        strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
-        strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
         ownerCard.OnSkillActivated();
+        UndeadSwordEffect effect = strongestUnit.gameObject.AddComponent<UndeadSwordEffect>();
+        effect.Initialize(strongestUnit, this);
+        effect.Execute(targetPos);
     }
 
     public override void ApplyToUnit(Unit target, Unit[] nearbyUnits = null)
     {
         throw new System.NotImplementedException();
-    }
-
-    public void CastSkill()
-    {
-
-        var effect = strongestUnit.gameObject.AddComponent<UndeadSwordEffect>();
-        effect.Initialize(strongestUnit, this);
-        effect.Execute(targetPos);
     }
 
     private float CalculateUnitScore(Unit unit)

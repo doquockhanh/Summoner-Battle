@@ -45,26 +45,13 @@ public class AssassinateSkill : Skill
 
         // Tìm mục tiêu yếu nhất trong tầm
         target = FindWeakestTargetInRange(assassin.OccupiedCell.Coordinates, jumpRange);
-        if (target
-         == null)
+        if (target == null)
         {
             ownerCard.OnSkillFailed();
             return;
         }
 
-        // b1: chạy animation skill
-        // b2: animation gọi về unitMovement để dừng di chuyển
-        // b3: animation gọi về đây để cast skill
-        // b4: animation gọi về unitMovement để tiếp tục di chuyển
-        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
-        assassin.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
-
-        assassin.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
         ownerCard.OnSkillActivated();
-    }
-
-    public void CastSkill()
-    {
         var effect = assassin.gameObject.AddComponent<AssassinateSkillEffect>();
         effect.Initialize(assassin, target, this);
         effect.Execute(Vector3.zero);

@@ -12,6 +12,8 @@ public abstract class Skill : ScriptableObject
     public SkillType skillType;
 
     [Header("Skill animation info")]
+    [Tooltip("Total length of skill animation")]
+    [Range(0.3f, 10f)]
     public float animationDuration = 2f;
     public float doSkillActionAt = 1.5f;
 
@@ -28,6 +30,12 @@ public abstract class Skill : ScriptableObject
     public abstract void ApplyToSummon(Unit summonedUnit);
 
     public abstract void ApplyPassive(Unit summonedUnit);
+
+    private void OnValidate()
+    {
+        animationDuration = Mathf.Max(0.3f, animationDuration);
+        doSkillActionAt = Mathf.Min(animationDuration, doSkillActionAt);
+    }
 }
 
 public enum SkillType

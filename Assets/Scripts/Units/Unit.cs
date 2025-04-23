@@ -46,6 +46,10 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public UnitCombat GetUnitCombat() {
+        return combat;
+    }
+
     public virtual void Initialize(UnitData data, bool isPlayer, CardController cardController)
     {
         ownerCard = cardController;

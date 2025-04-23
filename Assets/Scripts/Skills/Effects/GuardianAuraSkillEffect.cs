@@ -19,6 +19,10 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
+        caster.GetComponent<UnitView>().PlaySkillAnimation();
+        caster.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+
         StartCoroutine(GuardianAuraCoroutine(caster, allies, skillData));
     }
 
@@ -34,6 +38,8 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
 
     private IEnumerator GuardianAuraCoroutine(Unit caster, List<Unit> allies, GuardianAuraSkill skill)
     {
+        yield return new WaitForSeconds(skillData.doSkillActionAt);
+
         // Hiển thị vòng tròn AOE
         int indicatorId =
                 SkillEffectHandler.Instance

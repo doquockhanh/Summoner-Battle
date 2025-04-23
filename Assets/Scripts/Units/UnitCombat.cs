@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ public class UnitCombat : MonoBehaviour
     private int AttackRange => unit.GetUnitStats().GetRange();
     private HexCell lastTarget;
     private bool autoCombat = true;
+    private Coroutine autoCombatCoroutine;
 
     private const float ATTACK_COOLDOWN_BUFFER = 0.1f;
     private const float centerHexOffset = 0.1f;
@@ -309,6 +311,23 @@ public class UnitCombat : MonoBehaviour
     public void TurnOffAutoCombat()
     {
         autoCombat = false;
+    }
+
+    public void TurnOffAutoCombatTemporarily(float duration)
+    {
+        if (autoCombatCoroutine != null)
+        {
+            StopCoroutine(autoCombatCoroutine);
+        }
+        autoCombatCoroutine = StartCoroutine(TurnOffAutoCombatCoroutine(duration));
+    }
+
+    private IEnumerator TurnOffAutoCombatCoroutine(float duration)
+    {
+        TurnOffAutoCombat();
+        yield return new WaitForSeconds(duration);
+        TurnOnAutoCombat();
+        autoCombatCoroutine = null;
     }
 
     public void Reset()

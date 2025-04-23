@@ -57,19 +57,7 @@ public class FuriousCavalryCharge : Skill
             return;
         }
 
-        // b1: chạy animation skill
-        // b2: animation gọi về unitMovement để dừng di chuyển
-        // b3: animation gọi về đây để cast skill
-        // b4: animation gọi về unitMovement để tiếp tục di chuyển
-        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
-
-        strongestUnit.GetComponent<UnitView>().PlaySkillAnimation(CastSkill);
-        strongestUnit.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
         ownerCard.OnSkillActivated();
-    }
-
-    public void CastSkill()
-    {
         Vector3 bestTargetPos = FindBestTargetPosition(strongestUnit);
 
         if (bestTargetPos == Vector3.zero)

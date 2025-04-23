@@ -21,11 +21,23 @@ public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
         if (!ValidateExecution()) return;
         this.targetPos = HexGrid.Instance.GetCellAtPosition(targetPos);
 
-        HandleUndeadSwordSkill();
+        /**
+        1. turn off auto combat for a while
+        2. add growSize effect
+        3. run anim
+        4. wait until action
+        **/
+        caster.GetUnitCombat().TurnOffAutoCombatTemporarily(skillData.animationDuration);
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
+        caster.GetComponent<UnitView>().PlaySkillAnimation();
+        caster.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        this.StartCoroutineSafely(HandleUndeadSwordSkill());
     }
 
-    public void HandleUndeadSwordSkill()
+    public IEnumerator HandleUndeadSwordSkill()
     {
+        yield return new WaitForSeconds(skillData.doSkillActionAt);
+
         Unit target = targetPos.OccupyingUnit;
 
         if (target != null)
