@@ -112,7 +112,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
                     if (statusEffects != null)
                     {
                         var burningEffect = new BurningEffect(
-                            skillData.duration,
+                            skillData.burnDuration,
                             0.02f, // 1% máu tối đa mỗi giây
                             0.5f   // Giảm 50% hồi máu
                         );

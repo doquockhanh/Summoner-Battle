@@ -35,7 +35,7 @@ public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
                 DamageType.Physical,
                 caster
             );
-            var knockupEffect = new KnockupEffect(skillData.duration, 2);
+            var knockupEffect = new KnockupEffect(skillData.knockUpDuration, 2);
             target.GetComponent<UnitStatusEffects>().AddEffect(knockupEffect);
         }
 

@@ -6,6 +6,7 @@ public class SummonMonstersSkill : Skill
     [Header("Cài đặt Triệu Hồi")]
     public int monsterCount = 3;
     public float monsterLifetime = 2f;
+    public int monsterExplodeRadius = 2;
     public UnitData monsterData;
     public GameObject summonEffectPrefab;
 
@@ -20,17 +21,17 @@ public class SummonMonstersSkill : Skill
 
         // Tìm vị trí tốt nhất để triệu hồi
         Vector3 bestPos = FindBestSummonPosition();
-        
+
         // Triệu hồi quái vật
         for (int i = 0; i < monsterCount; i++)
         {
             Vector3 offset = Random.insideUnitCircle * 0.5f;
             Vector3 spawnPos = bestPos + offset;
-            
+
             Unit monster = UnitPoolManager.Instance.GetUnit(monsterData, ownerCard.IsPlayer, ownerCard);
             monster.transform.position = spawnPos;
             monster.Initialize(monsterData, ownerCard.IsPlayer, ownerCard);
-            
+
             // Thêm effect nổ khi chết
             var effect = monster.gameObject.AddComponent<ExplodingMonsterEffect>();
             effect.Initialize(monster, this);
@@ -62,4 +63,4 @@ public class SummonMonstersSkill : Skill
     {
         // Không sử dụng
     }
-} 
+}

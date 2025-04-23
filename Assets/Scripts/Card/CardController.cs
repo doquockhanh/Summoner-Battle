@@ -50,14 +50,14 @@ public class CardController : MonoBehaviour
         SpawnUnit();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        currentMana += cardData.manaRegen * Time.deltaTime;
+        currentMana += cardData.manaRegen * Time.fixedDeltaTime;
         currentMana = Mathf.Min(currentMana, cardData.maxMana);
 
         if (spawnTimer > 0)
         {
-            spawnTimer -= Time.deltaTime;
+            spawnTimer -= Time.fixedDeltaTime;
             if (spawnTimer <= 0)
             {
                 SpawnUnit();

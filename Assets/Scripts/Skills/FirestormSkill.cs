@@ -25,6 +25,8 @@ public class FirestormSkill : Skill
 
     [Range(1f, 5f)]
     public float stormDuration = 2f;
+    [Range(1f, 10f)]
+    public float burnDuration = 10f;
 
     [Header("Hiệu ứng")]
     public GameObject firestormEffectPrefab;
@@ -53,14 +55,15 @@ public class FirestormSkill : Skill
             .OrderByDescending(x => x.Score)
             .FirstOrDefault()
             .Unit;
-            
+
         if (strongestUnit == null)
         {
             ownerCard.OnSkillFailed();
             return;
         }
 
-        if (strongestUnit.CurrentTarget == null) {
+        if (strongestUnit.CurrentTarget == null)
+        {
             Debug.Log("FirestormSkill: strongestUnit has no target!");
             return;
         }
@@ -71,7 +74,7 @@ public class FirestormSkill : Skill
         effect.Execute(Vector3.zero);
         ownerCard.OnSkillActivated();
     }
-    
+
 
 
     private float CalculateUnitScore(Unit unit)

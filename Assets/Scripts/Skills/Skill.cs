@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class Skill : ScriptableObject
@@ -6,14 +7,13 @@ public abstract class Skill : ScriptableObject
     public string skillName;
     public string description;
     public float manaCost;
-    public float duration;
-    public int radius;
     public Sprite skillIcon;
-
     public bool hasPassive;
-
-    [Header("Phân loại")]
     public SkillType skillType;
+
+    [Header("Skill animation info")]
+    public float animationDuration = 2f;
+    public float doSkillActionAt = 1.5f;
 
     // Thêm reference đến card sở hữu
     [HideInInspector]

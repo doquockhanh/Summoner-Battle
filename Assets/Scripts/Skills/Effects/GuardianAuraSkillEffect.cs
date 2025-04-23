@@ -59,7 +59,7 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
         if (statusEffects != null)
         {
             var auraEffect = new GuardianAuraEffect(
-                skill.duration,
+                skill.auraDuration,
                 skill.armorBoost,
                 skill.magicResistBoost
             );
@@ -75,7 +75,7 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
                 Quaternion.identity,
                 caster.transform
             );
-            Destroy(auraEffect, skill.duration);
+            Destroy(auraEffect, skill.auraDuration);
         }
     }
 

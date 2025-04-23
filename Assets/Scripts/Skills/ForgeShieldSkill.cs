@@ -16,6 +16,8 @@ public class ForgeShieldSkill : Skill
 
     [Range(1f, 10f)]
     public float shareRadius = 3f;
+    [Range(1f, 10f)]
+    public float shieldDuration = 3f;
 
     [Header("Hiệu ứng")]
     public GameObject shieldEffectPrefab;
@@ -62,7 +64,7 @@ public class ForgeShieldSkill : Skill
         // Tính lượng khiên dựa trên máu tối đa
         float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f);
 
-        shield = new ShieldLayer(shieldAmount, duration, strongestSmith);
+        shield = new ShieldLayer(shieldAmount, shieldDuration, strongestSmith);
         strongestSmith.GetUnitStats().AddShield(shield);
         shield.OnShieldBroken += HandleShareShield;
         shield.OnShieldExpired += HandleShareShield;
@@ -89,7 +91,7 @@ public class ForgeShieldSkill : Skill
                 if (ally != null)
                 {
                     float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f) * (sharedShieldPercent / 100f);
-                    ally.GetUnitStats().AddShield(shieldAmount, duration);
+                    ally.GetUnitStats().AddShield(shieldAmount, shieldDuration);
                 }
             }
         }

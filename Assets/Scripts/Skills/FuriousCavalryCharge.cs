@@ -7,6 +7,7 @@ using UnityEngine;
 public class FuriousCavalryCharge : Skill
 {
     [Header("Charge Properties")]
+    public int chargeRadius = 4;
     public float chargeSpeed = 10f;
     public float damageMultiplier = 1f;
     public float knockupDuration = 1f;
@@ -90,7 +91,7 @@ public class FuriousCavalryCharge : Skill
         {
             // Tìm tất cả enemy trong tầm radius
             List<Unit> enemies = HexGrid.Instance
-                                    .GetUnitsInRange(caster.OccupiedCell.Coordinates, radius, !caster.IsPlayerUnit);
+                                    .GetUnitsInRange(caster.OccupiedCell.Coordinates, chargeRadius, !caster.IsPlayerUnit);
             float maxDistance = 0f;
             Vector3 targetPos = Vector3.zero;
 

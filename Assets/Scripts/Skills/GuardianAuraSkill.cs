@@ -16,6 +16,8 @@ public class GuardianAuraSkill : Skill
 
     [Range(0, 5)]
     public int auraRadius = 2;
+        [Range(0, 5)]
+    public int auraDuration = 5;
 
     [Header("Hiệu ứng")]
     public GameObject auraEffectPrefab;

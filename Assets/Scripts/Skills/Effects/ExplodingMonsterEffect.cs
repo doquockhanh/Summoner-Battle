@@ -78,7 +78,7 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
 
     private void Explode()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(monster.transform.position, skillData.radius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(monster.transform.position, skillData.monsterExplodeRadius);
 
         foreach (Collider2D hit in hits)
         {

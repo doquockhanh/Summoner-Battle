@@ -51,10 +51,8 @@ public class AncientRootEffect : MonoBehaviour, ISkillEffect
         }
 
         // Tính lượng hút mỗi tick
-        tickCount = Mathf.RoundToInt(skillData.duration / skillData.drainInterval);
+        tickCount = Mathf.RoundToInt(skillData.stunDuration / skillData.drainInterval);
         drainPerTick = totalDrainAmount / tickCount;
-        Debug.Log("totalDrainAmount: " + totalDrainAmount);
-        Debug.Log("drainPerTick: " + drainPerTick);
     }
 
     private void ApplyRootEffect(Collider2D[] hits)
