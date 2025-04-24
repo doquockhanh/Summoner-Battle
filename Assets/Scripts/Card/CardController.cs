@@ -69,7 +69,7 @@ public class CardController : MonoBehaviour
             }
         }
 
-        if (canActivateSkill && cardData.skill != null && cardData.skill.CanActivate(currentMana))
+        if (!isWaitingForUnit && canActivateSkill && cardData.skill != null && cardData.skill.CanActivate(currentMana))
         {
             TryActivateSkill();
         }

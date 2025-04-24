@@ -128,4 +128,8 @@ public class UnitStatusEffects : MonoBehaviour
         activeEffects.TryGetValue(type, out var effect);
         return effect;
     }
+
+    public void ResetStatusEffect() {
+        activeEffects.Clear();
+    }
 }

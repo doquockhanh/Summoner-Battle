@@ -46,7 +46,8 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public UnitCombat GetUnitCombat() {
+    public UnitCombat GetUnitCombat()
+    {
         return combat;
     }
 
@@ -64,6 +65,10 @@ public class Unit : MonoBehaviour
         {
             occupiedCell.SetUnit(this);
         }
+
+        targeting.autoTargeting = true;
+        combat.TurnOnAutoCombat();
+        GetComponent<UnitStatusEffects>()?.ResetStatusEffect();
     }
 
     void Start()
@@ -98,7 +103,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void SetOccupiedCell(HexCell cell) {
+    public void SetOccupiedCell(HexCell cell)
+    {
         occupiedCell = cell;
+    }
+
+    public void resetState()
+    {
+        targeting.autoTargeting = true;
     }
 }
