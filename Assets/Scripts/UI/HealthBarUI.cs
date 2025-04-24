@@ -20,17 +20,16 @@ public class HealthBarUI : MonoBehaviour
     private float currentHp;
     private float delayedHp;
     private float currentShield;
-    private Coroutine damageDelayCoroutine;
     
     public Color healthColor = new Color(0.3f, 0.8f, 0.3f);
     public Color shieldColor = new Color(0.8f, 0.8f, 1f, 0.8f);
     public Color delayedColor = new Color(0.4f, 0.4f, 0.4f);
 
-    public void Initialize(float maxHealth)
+    public void Initialize(float maxHp)
     {
-        maxHp = maxHealth;
-        currentHp = maxHealth;
-        delayedHp = maxHealth;
+        this.maxHp = maxHp;
+        currentHp = maxHp;
+        delayedHp = maxHp;
         currentShield = 0;
         
         SetupBars();
@@ -54,20 +53,20 @@ public class HealthBarUI : MonoBehaviour
         shieldBar.gameObject.SetActive(true);
     }
 
-    public void UpdateHealth(float newHp)
+    public void UpdateHealth(float newHp, float maxHp)
     {
-        float oldHpPercent = currentHp / maxHp;
-        float newHpPercent = newHp / maxHp;
+        if (maxHp != this.maxHp) {
+            this.maxHp = maxHp;
+        }
+        float oldHpPercent = currentHp / this.maxHp;
+        float newHpPercent = newHp / this.maxHp;
         
         currentHp = newHp;
         
         if (newHpPercent < oldHpPercent)
         {
-            if (damageDelayCoroutine != null)
-            {
-                StopCoroutine(damageDelayCoroutine);
-            }
-            damageDelayCoroutine = StartCoroutine(UpdateDamageDelayBar(oldHpPercent));
+            StopAllCoroutines();
+            this.StartCoroutineSafely(UpdateDamageDelayBar(oldHpPercent));
         }
         else
         {

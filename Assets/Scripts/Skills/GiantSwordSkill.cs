@@ -34,7 +34,7 @@ public class GiantSwordSkill : Skill
         })
         .OrderByDescending(x => x.Score)
         .FirstOrDefault()
-        .Unit;
+        ?.Unit;
 
         if (strongestUnit != null)
         {

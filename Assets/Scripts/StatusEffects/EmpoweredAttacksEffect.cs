@@ -22,6 +22,7 @@ public class EmpoweredAttacksEffect : BaseStatusEffect
         {
             UnitEvents.Combat.OnDamageDealt += HandleAttack;
             owner.GetUnitStats().ModifyStat(StatType.PhysicalDamage, 0, damageMultiplier);
+            owner.GetUnitStats().ModifyStat(StatType.Range, 5);
         }
     }
 
@@ -34,7 +35,7 @@ public class EmpoweredAttacksEffect : BaseStatusEffect
         // Kiểm tra điều kiện kết thúc
         if (remainingAttacks <= 0)
         {
-            Remove();
+            owner.GetComponent<UnitStatusEffects>().RemoveEffect(type);
         }
     }
 
@@ -44,19 +45,9 @@ public class EmpoweredAttacksEffect : BaseStatusEffect
         {
             UnitEvents.Combat.OnDamageDealt -= HandleAttack;
             owner.GetUnitStats().ModifyStat(StatType.PhysicalDamage, 0, -damageMultiplier);
+            owner.GetUnitStats().ModifyStat(StatType.Range, -5);
         }
         base.Remove();
-    }
-
-    public override void Tick()
-    {
-        base.Tick();
-
-        // Tự động remove khi hết thời gian
-        if (IsExpired)
-        {
-            Remove();
-        }
     }
 
     // Thêm phương thức để kiểm tra số đòn đánh còn lại

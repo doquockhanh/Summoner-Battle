@@ -68,6 +68,9 @@ public class UnitStats : BaseStats
             case DamageType.ThornsDamage:
                 color = Color.yellow;
                 break;
+            case DamageType.SharedDamage:
+                color = Color.yellow;
+                break;
         }
 
         FloatingTextManager.Instance.ShowFloatingText(
@@ -140,5 +143,6 @@ public enum DamageType
     Physical,
     Magic,
     True,
-    ThornsDamage
+    ThornsDamage,
+    SharedDamage
 }

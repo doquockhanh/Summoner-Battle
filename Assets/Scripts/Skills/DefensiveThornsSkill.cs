@@ -45,8 +45,8 @@ public class DefensiveThornsSkill : Skill
                 Score = CalculateUnitScore(unit)
             })
             .OrderByDescending(x => x.Score)
-            .First()
-            .Unit;
+            .FirstOrDefault()
+            ?.Unit;
 
         if (strongestUnit == null)
         {

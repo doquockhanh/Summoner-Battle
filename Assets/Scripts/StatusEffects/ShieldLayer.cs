@@ -8,6 +8,7 @@ public class ShieldLayer
     public float Duration { get; private set; }
     public Unit Source { get; private set; }
     public int OwnerSkillID { get; private set; }
+    private bool isPermanentShield = false;
     
     public event Action<float, int> OnShieldAbsorbed;
     public event Action<int> OnShieldBroken;
@@ -20,14 +21,12 @@ public class ShieldLayer
         Duration = duration;
         Source = source;
         OwnerSkillID = UnityEngine.Random.Range(0, 100000);
+
+        if (Duration < 0) isPermanentShield = true; 
     }
 
     public int GetOwnerSkillID(){
         return OwnerSkillID;
-    }
-
-    void FixedUpdate() {
-        UpdateDuration(Time.fixedDeltaTime);
     }
 
     public float AbsorbDamage(float damage)
@@ -47,7 +46,7 @@ public class ShieldLayer
 
     public void UpdateDuration(float deltaTime)
     {
-        if (Duration < 0) return; // Shield vĩnh viễn
+        if (isPermanentShield) return;
         
         Duration = Mathf.Max(Duration - deltaTime, 0);
         if (Duration == 0)
@@ -56,5 +55,5 @@ public class ShieldLayer
         }
     }
 
-    public bool IsExpired => Duration >= 0 && Duration <= 0;
+    public bool IsExpired => Duration <= 0 && !isPermanentShield;
 }

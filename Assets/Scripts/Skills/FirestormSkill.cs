@@ -54,7 +54,7 @@ public class FirestormSkill : Skill
             })
             .OrderByDescending(x => x.Score)
             .FirstOrDefault()
-            .Unit;
+            ?.Unit;
 
         if (strongestUnit == null)
         {
@@ -69,6 +69,13 @@ public class FirestormSkill : Skill
         }
 
         // Thêm effect xử lý kỹ năng
+        var existingBehavior = strongestUnit.gameObject
+        .GetComponent<FirestormEffect>();
+        if (existingBehavior != null)
+        {
+            Destroy(existingBehavior);
+        }
+
         var effect = strongestUnit.gameObject.AddComponent<FirestormEffect>();
         effect.Initialize(strongestUnit, this);
         effect.Execute(Vector3.zero);

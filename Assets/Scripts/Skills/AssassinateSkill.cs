@@ -34,8 +34,8 @@ public class AssassinateSkill : Skill
                 Score = CalculateUnitScore(unit)
             })
             .OrderByDescending(x => x.Score)
-            .First()
-            .Unit;
+            .FirstOrDefault()
+            ?.Unit;
 
         if (assassin == null)
         {

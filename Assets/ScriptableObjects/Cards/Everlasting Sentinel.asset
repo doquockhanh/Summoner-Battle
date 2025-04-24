@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Everlasting Sentinel
   cardImage: {fileID: 9103774061649690171, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: b5338d20cc2d68c4b8ed1c31e4e9683d, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
   summonUnit: {fileID: 11400000, guid: 99d1fec89f3132c49a866571cdfb5203, type: 2}
   skill: {fileID: 11400000, guid: adc29d5fd933ba64aaa9ca81f41ccf32, type: 2}

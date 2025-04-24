@@ -27,9 +27,9 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (skillData.tauntEffectPrefab != null)
         {
-            GameObject chargeEffect = Instantiate(skillData.tauntEffectPrefab,
+            GameObject tauntEffect = Instantiate(skillData.tauntEffectPrefab,
                 caster.transform.position, Quaternion.identity);
-            Destroy(chargeEffect, 1f);
+            Destroy(tauntEffect, 1f);
         } else if (SkillEffectHandler.Instance != null) {
             SkillEffectHandler.Instance.ShowRangeIndicator(caster.OccupiedCell, skillData.tauntRadius, Color.yellow, 0.2f);
         }
@@ -88,10 +88,10 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
             );
             Destroy(thornsEffect, skillData.thornsDuration);
         }
+        Cleanup();
     }
 
     public void Cleanup() {
         Destroy(this);
     }
-
 }

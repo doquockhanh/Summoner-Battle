@@ -33,6 +33,12 @@ public class SummonMonstersSkill : Skill
             monster.Initialize(monsterData, ownerCard.IsPlayer, ownerCard);
 
             // Thêm effect nổ khi chết
+            var existingBehavior = monster.gameObject
+                .GetComponent<ExplodingMonsterEffect>();
+            if (existingBehavior != null)
+            {
+                Destroy(existingBehavior);
+            }
             var effect = monster.gameObject.AddComponent<ExplodingMonsterEffect>();
             effect.Initialize(monster, this);
             effect.Execute(Vector3.zero);

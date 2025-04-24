@@ -165,4 +165,9 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         StopAllCoroutines();
         Destroy(this);
     }
+
+    void OnDestroy()
+    {
+        Cleanup();
+    }
 }

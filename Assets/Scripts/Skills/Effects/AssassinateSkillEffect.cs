@@ -21,6 +21,7 @@ public class AssassinateSkillEffect : MonoBehaviour, ISkillEffect
 
         GrowSizeEffect growSizeEffect = new(5f, 1.3f);
         assassin.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        assassin.GetUnitCombat().TurnOffAutoCombatTemporarily(skillData.animationDuration);
         assassin.GetComponent<UnitView>().PlaySkillAnimation();
 
         this.StartCoroutineSafely(Assassinate());

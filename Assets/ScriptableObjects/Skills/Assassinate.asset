@@ -15,11 +15,11 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 30
-  duration: 0
-  radius: 0
   skillIcon: {fileID: 0}
   hasPassive: 0
   skillType: 1
+  animationDuration: 2.5
+  doSkillActionAt: 1.5
   ownerCard: {fileID: 0}
   jumpRange: 6
   untargetableDuration: 1

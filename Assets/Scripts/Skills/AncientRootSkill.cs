@@ -44,8 +44,8 @@ public class AncientRootSkill : Skill
         Unit strongestUnit = ownerCard.GetActiveUnits()
             .Select(unit => new { Unit = unit, Score = CalculateUnitScore(unit) })
             .OrderByDescending(x => x.Score)
-            .First()
-            .Unit;
+            .FirstOrDefault()
+            ?.Unit;
 
         if (strongestUnit == null)
         {

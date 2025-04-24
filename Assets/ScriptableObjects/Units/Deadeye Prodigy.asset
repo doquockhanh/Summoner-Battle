@@ -31,7 +31,7 @@ MonoBehaviour:
   lifestealPercent: 0
   attackSpeed: 1
   moveSpeed: 1
-  range: 3.5
-  detectRange: 4
+  range: 4
+  detectRange: 6
   healingReceivedPercent: 100
   unitPrefab: {fileID: 8505144159870094120, guid: 343516d08af899a4ab5d1d91619686b3, type: 3}

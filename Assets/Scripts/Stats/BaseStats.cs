@@ -14,6 +14,17 @@ public abstract class BaseStats : MonoBehaviour, IStats
         InitializeModifiers();
     }
 
+    void FixedUpdate()
+    {
+        for(int i = shieldLayers.Count - 1; i >= 0; i--) {
+            shieldLayers[i].UpdateDuration(Time.fixedDeltaTime);
+            if(shieldLayers[i].IsExpired) {
+                shieldLayers.RemoveAt(i);
+                OnShieldChanged?.Invoke(GetTotalShield());
+            }
+        }
+    }
+
     protected void InitializeModifiers()
     {
         foreach (StatType type in System.Enum.GetValues(typeof(StatType)))

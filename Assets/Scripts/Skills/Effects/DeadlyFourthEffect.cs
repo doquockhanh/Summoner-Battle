@@ -64,8 +64,8 @@ public class DeadlyFourthEffect : MonoBehaviour, ISkillEffect
         {
             EmpoweredAttacksEffect empoweredEffect = new EmpoweredAttacksEffect(
                 duration: 5f,
-                damageMultiplier: 1f,
-                attackCount: 1
+                damageMultiplier: 2f,
+                attackCount: 2
             );
 
             // Thêm effect cường hóa đòn đánh
@@ -105,5 +105,10 @@ public class DeadlyFourthEffect : MonoBehaviour, ISkillEffect
             UnitEvents.Combat.OnDamageDealt -= HandleAttackCount;
         }
         Destroy(this);
+    }
+
+    void OnDestroy()
+    {
+        Cleanup();
     }
 }

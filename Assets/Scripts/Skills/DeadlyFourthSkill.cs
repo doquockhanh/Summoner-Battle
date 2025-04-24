@@ -12,7 +12,7 @@ public class DeadlyFourthSkill : Skill
     [Tooltip("Ngưỡng máu để kết liễu (15% = 15)")]
     public float executeThreshold = 15f;
 
-    
+
     [Range(0, 30)]
     [Tooltip("Tầm đánh của đòn cường hóa")]
     public int fourthShotRange = 8;
@@ -36,8 +36,15 @@ public class DeadlyFourthSkill : Skill
     {
         if (summonedUnit == null) return;
 
+        var existingBehavior = summonedUnit.gameObject
+         .GetComponent<DeadlyFourthEffect>();
+        if (existingBehavior != null)
+        {
+            Destroy(existingBehavior);
+        }
+
         var effect = summonedUnit.gameObject.AddComponent<DeadlyFourthEffect>();
         effect.Initialize(summonedUnit, this);
         effect.Execute(Vector3.zero);
     }
-} 
+}

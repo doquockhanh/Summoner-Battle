@@ -27,14 +27,14 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
     {
         // Lấy tất cả unit trong tầm đánh của quái vật
         Unit[] units = FindObjectsOfType<Unit>();
-        
+
         // Lọc ra các unit địch còn sống
         List<Unit> enemies = new List<Unit>();
         foreach (Unit hit in units)
         {
             Unit unit = hit.GetComponent<Unit>();
-            if (unit != null && 
-                !unit.IsDead && 
+            if (unit != null &&
+                !unit.IsDead &&
                 unit.IsPlayerUnit != monster.IsPlayerUnit)
             {
                 enemies.Add(unit);
@@ -93,7 +93,11 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
 
     public void Cleanup()
     {
-
         Destroy(this);
+    }
+
+    void OnDestroy()
+    {
+        Cleanup();
     }
 }

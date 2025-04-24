@@ -19,7 +19,7 @@ MonoBehaviour:
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
-  maxHp: 0
+  maxHp: 1000
   hpRegen: 0
   armor: 0
   magicResist: 0

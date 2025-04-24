@@ -13,7 +13,6 @@ public class UnitView : MonoBehaviour
 
     private HealthBarUI healthBarUI;
     private Material spriteMaterial;
-    private Coroutine flashCoroutine;
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
     private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
     private static readonly int AttackParam = Animator.StringToHash("attack");
@@ -78,6 +77,7 @@ public class UnitView : MonoBehaviour
         if (animator != null)
         {
             animator.SetTrigger(AttackParam);
+            SetMoving(false);
         }
     }
 
@@ -87,6 +87,7 @@ public class UnitView : MonoBehaviour
         if (animator == null) return;
 
         animator.SetTrigger(skillAnimParam);
+        SetMoving(false);
     }
 
     public void FlipSprite(bool faceRight)
@@ -125,20 +126,20 @@ public class UnitView : MonoBehaviour
 
         // Lấy bounds của sprite trong không gian world
         Bounds spriteBounds = unitSprite.bounds;
-        
+
         // Tính toán vị trí trên cùng của sprite
         Vector3 topPosition = transform.position;
         topPosition.y += spriteBounds.extents.y * 2;
-        
+
         // Thêm một khoảng nhỏ để health bar không bị dính vào sprite
         topPosition.y += 0.1f;
-        
+
         return topPosition;
     }
 
     private void UpdateHealth(float newHp)
     {
-        healthBarUI.UpdateHealth(newHp);
+        healthBarUI.UpdateHealth(newHp, unit.GetComponent<UnitStats>().GetMaxHp());
         PlayDamageFlash();
     }
 
@@ -162,11 +163,8 @@ public class UnitView : MonoBehaviour
 
     private void PlayDamageFlash()
     {
-        if (flashCoroutine != null)
-        {
-            StopCoroutine(flashCoroutine);
-        }
-        flashCoroutine = StartCoroutine(DamageFlashCoroutine());
+        StopAllCoroutines();
+        this.StartCoroutineSafely(DamageFlashCoroutine());
     }
 
     private IEnumerator DamageFlashCoroutine()
@@ -190,10 +188,7 @@ public class UnitView : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (flashCoroutine != null)
-        {
-            StopCoroutine(flashCoroutine);
-        }
+        StopAllCoroutines();
 
         if (healthBarUI != null)
         {

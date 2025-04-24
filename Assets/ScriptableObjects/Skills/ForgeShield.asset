@@ -15,12 +15,14 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 30
-  duration: 6
-  radius: 0
+  skillIcon: {fileID: 0}
+  hasPassive: 0
   skillType: 1
+  animationDuration: 1.6
+  doSkillActionAt: 1.4
   ownerCard: {fileID: 0}
-  shieldHealthPercent: 50
+  shieldHealthPercent: 30
   sharedShieldPercent: 50
   shareRadius: 10
-  forgeEffectPrefab: {fileID: 0}
+  shieldDuration: 3
   shieldEffectPrefab: {fileID: 0}

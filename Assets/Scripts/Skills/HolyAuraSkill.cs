@@ -20,6 +20,8 @@ public class HolyAuraSkill : Skill
     [Range(1, 10)]
     public int auraRadius = 3;
 
+    public float auraTimer = 5f;
+
     [Header("Hiệu ứng")]
     public GameObject auraEffectPrefab;
 
@@ -46,8 +48,8 @@ public class HolyAuraSkill : Skill
         Unit strongestGuardian = ownerCard.GetActiveUnits()
             .Select(unit => new { Unit = unit, Score = CalculateGuardianScore(unit) })
             .OrderByDescending(x => x.Score)
-            .First()
-            .Unit;
+            .FirstOrDefault()
+            ?.Unit;
 
         if (strongestGuardian == null)
         {

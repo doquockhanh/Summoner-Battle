@@ -15,8 +15,16 @@ MonoBehaviour:
   cardName: Elderwood Guardian
   cardImage: {fileID: -5038670940583458958, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
+  SummonerPrefab: {fileID: 8505144159870094120, guid: dadebf068f696e54fa85335a02adb15c, type: 3}
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 15
+  maxHp: 1000
+  hpRegen: 0
+  armor: 0
+  magicResist: 0
+  physicalDamage: 0
+  attackSpeed: 0
+  range: 0
   summonUnit: {fileID: 11400000, guid: e0ca92364ac2b5e448ec46313f5206f2, type: 2}
   skill: {fileID: 11400000, guid: b0bbfa7dfa41b25478216f48fca81253, type: 2}

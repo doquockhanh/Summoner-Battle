@@ -54,13 +54,14 @@ public class ForgeShieldSkill : Skill
 
     public IEnumerator CastSkill()
     {
-        yield return new WaitForSeconds(doSkillActionAt);
+        strongestSmith.GetUnitCombat().TurnOffAutoCombatTemporarily(animationDuration);
 
         GrowSizeEffect growSizeEffect = new(5f, 1.3f);
 
         strongestSmith.GetComponent<UnitView>().PlaySkillAnimation();
         strongestSmith.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
 
+        yield return new WaitForSeconds(doSkillActionAt);
         // Tính lượng khiên dựa trên máu tối đa
         float shieldAmount = strongestSmith.GetUnitStats().GetMaxHp() * (shieldHealthPercent / 100f);
 
