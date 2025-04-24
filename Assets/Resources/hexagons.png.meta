@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3a27ff15a38a99f4ea7c2451c2cd3127
+guid: d018bae709feb43498cc16ba9e8ff6ee
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 48
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,190 +123,316 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Assasin_Attack_0
+      name: hexagons_0
       rect:
         serializedVersion: 2
-        x: 27
-        y: 451
-        width: 36
-        height: 59
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
+        x: 0
+        y: 288
+        width: 64
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f704395d7be020a43811ad13965ccbbf
-      internalID: -414714782
+      spriteID: 796bac386a4e6b140b92ed5daf2a148b
+      internalID: 280730431
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_1
+      name: hexagons_1
       rect:
         serializedVersion: 2
-        x: 27
-        y: 387
-        width: 36
-        height: 59
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
+        x: 64
+        y: 288
+        width: 64
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b292ceb89e955bd4fb847691ab28c04a
-      internalID: -556748985
+      spriteID: 10f6a9d0413d11a4880211e290028e38
+      internalID: -1206970912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_2
+      name: hexagons_2
       rect:
         serializedVersion: 2
-        x: 27
-        y: 323
-        width: 36
+        x: 128
+        y: 288
+        width: 64
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03ea4e68deda14045b995129694c3162
+      internalID: 1056979402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hexagons_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 288
+        width: 64
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdac5051e59668840ad53a5d2b43cddd
+      internalID: -1112791749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hexagons_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 288
+        width: 64
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f95f35c55d0eee14c8d39085f2b249a9
+      internalID: -248373707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hexagons_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 288
+        width: 64
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 636b353fbfa75084fbeae1c81a2fbef3
+      internalID: -639567865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hexagons_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 288
+        width: 64
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5b0d4b68bea1184692cad017a4ea72f
-      internalID: -1865516114
+      spriteID: 7045323e836b1ed4ebe4c668b74b13d4
+      internalID: 1947068574
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_3
+      name: hexagons_7
       rect:
         serializedVersion: 2
-        x: 27
-        y: 259
-        width: 107
+        x: 448
+        y: 288
+        width: 64
         height: 58
-      alignment: 9
-      pivot: {x: 0.16, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e147ef1b960c6840be39c6d252d033e
-      internalID: -328031836
+      spriteID: 1ade95f4def0819478b0d5f92cd42086
+      internalID: 1442005593
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_4
+      name: hexagons_8
       rect:
         serializedVersion: 2
-        x: 27
-        y: 193
-        width: 125
+        x: 0
+        y: 192
+        width: 64
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eac4334900b603a4a8fa2e99be72ed35
+      internalID: -1965136977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hexagons_9
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 192
+        width: 64
         height: 60
-      alignment: 9
-      pivot: {x: 0.13, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41ad29b6f88c1e841b663397debece11
-      internalID: 876337611
+      spriteID: 999cddc7e39fce6459904c283128c8eb
+      internalID: 2100266801
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_6
+      name: hexagons_10
       rect:
         serializedVersion: 2
-        x: 27
-        y: 130
-        width: 154
+        x: 384
+        y: 192
+        width: 64
         height: 60
-      alignment: 9
-      pivot: {x: 0.11, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20e39503281850b4ea6103127142f682
-      internalID: 1233315593
+      spriteID: d7ee5e9d9bdacce4c91b1f763abcb612
+      internalID: -1293385489
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_10
+      name: hexagons_11
       rect:
         serializedVersion: 2
-        x: 27
-        y: 66
-        width: 148
-        height: 59
-      alignment: 9
-      pivot: {x: 0.1100786, y: 0.00000012931177}
+        x: 448
+        y: 192
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1b808f275bf2214ea5f719a75d7e9f8
-      internalID: 1869409728
+      spriteID: 521d22f180e9e9d4fa109d3cba283f99
+      internalID: 1607274137
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_14
+      name: hexagons_12
       rect:
         serializedVersion: 2
-        x: 27
-        y: 3
-        width: 140
-        height: 58
-      alignment: 9
-      pivot: {x: 0.13, y: 0}
+        x: 128
+        y: 0
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 661d514f76d64984f972484e467035cd
-      internalID: -12039994
+      spriteID: a517a7eb9c9e38649b5cd4fc872ca93e
+      internalID: -1338034666
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Assasin_Attack_5
+      name: hexagons_13
       rect:
         serializedVersion: 2
-        x: 25
-        y: 323
-        width: 38
-        height: 59
-      alignment: 9
-      pivot: {x: 0.13157895, y: 0}
+        x: 0
+        y: 0
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0144b08b9abdfe44e8d4ae9e85d50e30
-      internalID: -1664697934
+      spriteID: c99b77ef68113ba4b8abe4e409c3e4a0
+      internalID: -541223227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hexagons_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0450ae2774030874a8d9ef1004556504
+      internalID: 931209693
       vertices: []
       indices: 
       edges: []
@@ -322,25 +448,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Assasin_Attack_0: -414714782
-      Assasin_Attack_1: -556748985
-      Assasin_Attack_10: 1869409728
-      Assasin_Attack_11: -1270677245
-      Assasin_Attack_12: 1901626979
-      Assasin_Attack_13: -1609885849
-      Assasin_Attack_14: -12039994
-      Assasin_Attack_15: 297979339
-      Assasin_Attack_16: 1235885461
-      Assasin_Attack_17: -277028467
-      Assasin_Attack_18: -1135308067
-      Assasin_Attack_2: -1865516114
-      Assasin_Attack_3: -328031836
-      Assasin_Attack_4: 876337611
-      Assasin_Attack_5: -1664697934
-      Assasin_Attack_6: 1233315593
-      Assasin_Attack_7: -300253464
-      Assasin_Attack_8: -273848330
-      Assasin_Attack_9: -448794717
+      hexagons_0: 280730431
+      hexagons_1: -1206970912
+      hexagons_10: -1293385489
+      hexagons_11: 1607274137
+      hexagons_12: -1338034666
+      hexagons_13: -541223227
+      hexagons_14: 931209693
+      hexagons_15: -951368155
+      hexagons_2: 1056979402
+      hexagons_3: -1112791749
+      hexagons_4: -248373707
+      hexagons_5: -639567865
+      hexagons_6: 1947068574
+      hexagons_7: 1442005593
+      hexagons_8: -1965136977
+      hexagons_9: 2100266801
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
