@@ -12,7 +12,7 @@ public class UnitCombat : MonoBehaviour
     private UnitTargeting targeting;
     private UnitStatusEffects statusEffects;
     private HexGrid hexGrid;
-    private HexPathFinder pathFinder;
+    [HideInInspector] public HexPathFinder pathFinder;
     private List<HexCell> currentPath;
     private int currentPathIndex;
 
@@ -123,7 +123,7 @@ public class UnitCombat : MonoBehaviour
     {
         // Kiểm tra xem unit đã đến được trung tâm ô cần đến chưa
         // Nếu có ô đăng ký thì kiểm tra xem đã đến ô đăng ký chưa
-        if (registeredCell != null)
+        if (registeredCell != null && !registeredCell.IsOccupied)
             return Vector3.Distance(transform.position, registeredCell.WorldPosition) <= centerHexOffset;
         return Vector3.Distance(transform.position, unit.OccupiedCell.WorldPosition) <= centerHexOffset;
     }

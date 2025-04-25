@@ -28,7 +28,7 @@ public class SkillEffectHandler : MonoBehaviour
         }
     }
 
-    public int ShowRangeIndicator(HexCell cell, float radius, Color? color = null, float? duration = 0f)
+    public int ShowRangeIndicator(HexCell cell, float radius, Color? color = null, float? duration = 5f)
     {
         Vector2 pos2 = cell.WorldPosition;
         GameObject indicator = Instantiate(rangeIndicatorPrefab, pos2, Quaternion.identity);

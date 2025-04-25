@@ -25,6 +25,8 @@ public class Unit : MonoBehaviour
     private HexCell occupiedCell;
     public HexCell OccupiedCell => occupiedCell;
     public UnitTargeting Targeting => targeting;
+    public UnitCombat Combat => combat;
+    public UnitStatusEffects StatusEffects => GetComponent<UnitStatusEffects>();
     public Unit CurrentTarget => targeting.CurrentTarget;
 
     private void Awake()

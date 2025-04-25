@@ -7,6 +7,7 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
     private Unit caster;
     private List<Unit> allies;
     private GuardianAuraSkill skillData;
+    int indicatorId;
 
     public void Initialize(Unit caster, List<Unit> allies, GuardianAuraSkill skillData)
     {
@@ -22,8 +23,9 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
         GrowSizeEffect growSizeEffect = new(5f, 1.3f);
         caster.GetComponent<UnitView>().PlaySkillAnimation();
         caster.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        caster.GetUnitCombat().TurnOffAutoCombatTemporarily(skillData.animationDuration);
 
-        StartCoroutine(GuardianAuraCoroutine(caster, allies, skillData));
+        this.StartCoroutineSafely(GuardianAuraCoroutine(caster, allies, skillData));
     }
 
     private bool ValidateExecution()
@@ -41,7 +43,7 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
         yield return new WaitForSeconds(skillData.doSkillActionAt);
 
         // Hiển thị vòng tròn AOE
-        int indicatorId =
+        indicatorId =
                 SkillEffectHandler.Instance
                 .ShowRangeIndicator(caster.OccupiedCell, HexMetrics.GridToWorldRadius(skill.auraRadius), Color.cyan);
 
@@ -88,6 +90,12 @@ public class GuardianAuraSkillEffect : MonoBehaviour, ISkillEffect
     public void Cleanup()
     {
         StopAllCoroutines();
+        SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
         Destroy(this);
+    }
+
+    void OnDestroy()
+    {
+        Cleanup();
     }
 }

@@ -44,6 +44,13 @@ public class GuardianAuraSkill : Skill
         if (strongestUnit == null) return;
 
         ownerCard.OnSkillActivated();
+        var existingBehavior = strongestUnit.gameObject
+         .GetComponent<GuardianAuraSkillEffect>();
+        if (existingBehavior != null)
+        {
+            Destroy(existingBehavior);
+        }
+
         var effect = strongestUnit.gameObject.AddComponent<GuardianAuraSkillEffect>();
         effect.Initialize(strongestUnit, alliesNearBy, this);
         effect.Execute(Vector3.zero);

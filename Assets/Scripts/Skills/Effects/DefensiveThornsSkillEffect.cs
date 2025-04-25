@@ -18,23 +18,14 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        ApplyInitialEffects();
-        HandleDefensiveThornsSkill();
+
+        GrowSizeEffect growSizeEffect = new(5f, 1.3f);
+        caster.GetComponent<UnitView>().PlaySkillAnimation();
+        caster.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        caster.GetUnitCombat().TurnOffAutoCombatTemporarily(skillData.animationDuration);
+
+        this.StartCoroutineSafely(HandleDefensiveThornsSkill());
     }
-
-
-    private void ApplyInitialEffects()
-    {
-        if (skillData.tauntEffectPrefab != null)
-        {
-            GameObject tauntEffect = Instantiate(skillData.tauntEffectPrefab,
-                caster.transform.position, Quaternion.identity);
-            Destroy(tauntEffect, 1f);
-        } else if (SkillEffectHandler.Instance != null) {
-            SkillEffectHandler.Instance.ShowRangeIndicator(caster.OccupiedCell, skillData.tauntRadius, Color.yellow, 0.2f);
-        }
-    }
-
 
     private bool ValidateExecution()
     {
@@ -46,9 +37,22 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
         return true;
     }
 
-    public void HandleDefensiveThornsSkill()
+    public IEnumerator HandleDefensiveThornsSkill()
     {
-        if (caster == null) return;
+        yield return new WaitForSeconds(skillData.doSkillActionAt);
+
+        if (caster == null) yield break;
+
+        if (skillData.tauntEffectPrefab != null)
+        {
+            GameObject tauntEffect = Instantiate(skillData.tauntEffectPrefab,
+                caster.transform.position, Quaternion.identity);
+            Destroy(tauntEffect, 1f);
+        }
+        else if (SkillEffectHandler.Instance != null)
+        {
+            SkillEffectHandler.Instance.ShowRangeIndicator(caster.OccupiedCell, skillData.tauntRadius, Color.yellow, 0.2f);
+        }
 
         // Thêm hiệu ứng gai và giảm sát thương
         var statusEffects = caster.GetComponent<UnitStatusEffects>();
@@ -91,7 +95,8 @@ public class DefensiveThornsSkillEffect : MonoBehaviour, ISkillEffect
         Cleanup();
     }
 
-    public void Cleanup() {
+    public void Cleanup()
+    {
         Destroy(this);
     }
 }

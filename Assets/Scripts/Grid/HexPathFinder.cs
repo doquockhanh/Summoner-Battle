@@ -204,4 +204,56 @@ public class HexPathFinder
         path.Reverse();
         return path;
     }
+
+    public List<HexCell> FindPathIgnoreOccupied(HexCell start, HexCell target)
+    {
+        if (start == null || target == null) return null;
+
+        var openSet = new SortedDictionary<float, List<PathNode>>();
+        var closedSet = new HashSet<HexCell>();
+        var startNode = new PathNode(start, null, 0, CalculateHeuristic(start, target));
+
+        AddToOpenSet(openSet, startNode);
+
+        while (openSet.Count > 0)
+        {
+            // Lấy node có F thấp nhất
+            var currentNode = GetRandomBestNode(openSet);
+
+            if (currentNode.Cell == target)
+            {
+                return ReconstructPath(currentNode);
+            }
+            RemoveFromOpenSet(openSet, currentNode);
+            closedSet.Add(currentNode.Cell);
+
+            // Lấy tất cả các ô lân cận, không kiểm tra occupied
+            foreach (var neighbor in grid.GetNeighbors(currentNode.Cell))
+            {
+                if (neighbor == null || closedSet.Contains(neighbor)) continue;
+
+                float newG = currentNode.G + 1;
+
+                var neighborNode = FindNodeInOpenSet(openSet, neighbor);
+                if (neighborNode == null)
+                {
+                    neighborNode = new PathNode(
+                        neighbor,
+                        currentNode,
+                        newG,
+                        CalculateHeuristic(neighbor, target)
+                    );
+                    AddToOpenSet(openSet, neighborNode);
+                }
+                else if (newG < neighborNode.G)
+                {
+                    neighborNode.Parent = currentNode;
+                    neighborNode.G = newG;
+                    UpdateNodeInOpenSet(openSet, neighborNode);
+                }
+            }
+        }
+
+        return null; // Không tìm thấy đường đi
+    }
 }

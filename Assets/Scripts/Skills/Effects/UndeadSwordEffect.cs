@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
 {
     private Unit caster;
     private GiantSwordSkill skillData;
-    private HexCell targetPos;
-
 
     public void Initialize(Unit caster, GiantSwordSkill skillData)
     {
@@ -19,7 +18,6 @@ public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
     public void Execute(Vector3 targetPos)
     {
         if (!ValidateExecution()) return;
-        this.targetPos = HexGrid.Instance.GetCellAtPosition(targetPos);
 
         /**
         1. turn off auto combat for a while
@@ -38,21 +36,56 @@ public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
     {
         yield return new WaitForSeconds(skillData.doSkillActionAt);
 
-        Unit target = targetPos.OccupyingUnit;
-
-        if (target != null)
+        Unit target;
+        if (caster.Targeting.IsInAttackRange(caster.Targeting.CurrentTarget))
         {
-            target.TakeDamage(
-                caster.GetUnitStats().GetPhysicalDamage() * (skillData.mainTargetPercent / 100),
-                DamageType.Physical,
-                caster
-            );
-            var knockupEffect = new KnockupEffect(skillData.knockUpDuration, 2);
-            target.GetComponent<UnitStatusEffects>().AddEffect(knockupEffect);
+            target = caster.Targeting.CurrentTarget;
+        }
+        else
+        {
+            target = HexGrid.Instance.FindNearestUnitCell(caster.OccupiedCell.Coordinates, skillData.maxDashDistance, !caster.IsPlayerUnit)?.OccupyingUnit;
+
+            if (target != null)
+            {
+                List<HexCell> path = caster.Combat.pathFinder.FindPathIgnoreOccupied(caster.OccupiedCell, target.OccupiedCell);
+                HexCell newCell = path.Where(cell => cell.IsOccupied == false).LastOrDefault();
+
+                if (newCell != null)
+                {
+                    // Lưu vị trí hiện tại
+                    Vector3 startPos = caster.transform.position;
+                    Vector3 endPos = newCell.WorldPosition;
+
+                    // Tính toán hướng dash
+                    bool faceRight = endPos.x > startPos.x;
+                    caster.GetComponent<UnitView>().FlipSprite(faceRight);
+
+                    // Tạo coroutine để thực hiện dash
+                    float elapsedTime = 0;
+                    Vector3 direction = (endPos - startPos).normalized;
+
+                    while (elapsedTime < Vector3.Distance(startPos, endPos) / skillData.dashSpeed)
+                    {
+                        caster.transform.position += direction * skillData.dashSpeed * Time.deltaTime;
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
+
+                    HexGrid.Instance.OccupyCell(newCell, caster);
+                    caster.Targeting.FindNewTarget();
+                    caster.Combat.SetRegisteredCell(newCell);
+                }
+            }
         }
 
+        if (target == null)
+        {
+            Debug.Log("Không thể tìm thấy target");
+            yield break;
+        }
 
-        List<Unit> enemiesNearBy = HexGrid.Instance.GetUnitsInRange(targetPos.Coordinates, skillData.skillRange, !caster.IsPlayerUnit);
+        HexCell cell = HexGrid.Instance.GetCellAtPosition(target.transform.position);
+        List<Unit> enemiesNearBy = HexGrid.Instance.GetUnitsInRange(cell.Coordinates, skillData.skillRange, !caster.IsPlayerUnit);
         foreach (Unit enemy in enemiesNearBy)
         {
             if (enemy == null || enemy == target) continue;
@@ -63,6 +96,16 @@ public class UndeadSwordEffect : MonoBehaviour, ISkillEffect
                 caster
             );
         }
+
+
+        target.TakeDamage(
+                      caster.GetUnitStats().GetPhysicalDamage() * (skillData.mainTargetPercent / 100),
+                      DamageType.Physical,
+                      caster
+                  );
+
+        var knockupEffect = new KnockupEffect(skillData.knockUpDuration, 2);
+        target.GetComponent<UnitStatusEffects>().AddEffect(knockupEffect);
 
         Cleanup();
     }

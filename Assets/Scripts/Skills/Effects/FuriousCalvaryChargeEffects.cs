@@ -29,6 +29,7 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         caster.GetComponent<UnitView>().PlaySkillAnimation();
         caster.GetComponent<UnitStatusEffects>().AddEffect(growSizeEffect);
+        caster.GetUnitCombat().TurnOffAutoCombatTemporarily(skillData.animationDuration);
         this.StartCoroutineSafely(ChargeCoroutine());
     }
 
@@ -112,8 +113,8 @@ public class FuriousCavalryChargeEffect : MonoBehaviour, ISkillEffect
 
         // Resume targeting
         caster.GetComponent<UnitTargeting>().autoTargeting = true;
-        HexGrid.Instance.OccupyCell(HexGrid.Instance.GetCellAtPosition(caster.transform.position), caster);
-        //    HexGrid.Instance.AssertOccupyCell(caster.transform.position, caster, 3);
+        // HexGrid.Instance.OccupyCell(HexGrid.Instance.GetCellAtPosition(caster.transform.position), caster);
+        HexGrid.Instance.AssertOccupyCell(caster.transform.position, caster, 3);
 
         // Cleanups
         Cleanup();

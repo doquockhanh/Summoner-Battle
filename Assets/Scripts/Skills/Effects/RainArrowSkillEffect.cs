@@ -8,6 +8,7 @@ public class RainArrowSkillEffect : MonoBehaviour, ISkillEffect
     private RainArrowSkill skillData;
     private GameObject rainArrowEffectPrefab;
     private bool isPlayer;
+    int indicatorId;
 
     public void Initialize(HexCell targetCell, RainArrowSkill skillData, GameObject rainArrowEffectPrefab, bool isPlayer)
     {
@@ -21,7 +22,7 @@ public class RainArrowSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        StartCoroutine(RainArrowCoroutine(targetCell, skillData, rainArrowEffectPrefab, isPlayer));
+        this.StartCoroutineSafely(RainArrowCoroutine(targetCell, skillData, rainArrowEffectPrefab, isPlayer));
     }
 
     private bool ValidateExecution()
@@ -37,7 +38,7 @@ public class RainArrowSkillEffect : MonoBehaviour, ISkillEffect
     private IEnumerator RainArrowCoroutine(HexCell targetCell, RainArrowSkill skill, GameObject rainArrowEffectPrefab, bool isPlayer)
     {
         // Hiển thị vòng tròn AOE và lưu ID
-        int indicatorId = SkillEffectHandler.Instance
+        indicatorId = SkillEffectHandler.Instance
                             .ShowRangeIndicator(targetCell, HexMetrics.GridToWorldRadius(skill.effectRadius));
 
         // Tạo hiệu ứng mưa tên với callback
@@ -63,13 +64,18 @@ public class RainArrowSkillEffect : MonoBehaviour, ISkillEffect
 
         yield return new WaitForSeconds(1.1f);
         // Xóa đúng vòng tròn AOE theo ID
-        SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
         Cleanup();
     }
 
     public void Cleanup()
     {
         StopAllCoroutines();
+        SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
         Destroy(this);
+    }
+
+    void OnDestroy()
+    {
+        Cleanup();
     }
 }

@@ -2840,11 +2840,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCards:
-  - {fileID: 11400000, guid: c36e546e9df72f8449f5f1163f9c8442, type: 2}
-  - {fileID: 11400000, guid: c36e546e9df72f8449f5f1163f9c8442, type: 2}
-  - {fileID: 11400000, guid: c36e546e9df72f8449f5f1163f9c8442, type: 2}
-  - {fileID: 11400000, guid: c36e546e9df72f8449f5f1163f9c8442, type: 2}
-  - {fileID: 11400000, guid: c36e546e9df72f8449f5f1163f9c8442, type: 2}
+  - {fileID: 11400000, guid: dd592c4213b11014e88656249acf6e59, type: 2}
+  - {fileID: 11400000, guid: dd592c4213b11014e88656249acf6e59, type: 2}
+  - {fileID: 11400000, guid: dd592c4213b11014e88656249acf6e59, type: 2}
+  - {fileID: 11400000, guid: dd592c4213b11014e88656249acf6e59, type: 2}
+  - {fileID: 11400000, guid: dd592c4213b11014e88656249acf6e59, type: 2}
   playerSpawnPositions:
   - {x: 6, y: 4}
   - {x: 5, y: 7}
@@ -2852,11 +2852,11 @@ MonoBehaviour:
   - {x: 2, y: 10}
   - {x: 2, y: 1}
   enemyCards:
-  - {fileID: 11400000, guid: 104203f6327943548ada9ebb01efd4ac, type: 2}
-  - {fileID: 11400000, guid: 104203f6327943548ada9ebb01efd4ac, type: 2}
-  - {fileID: 11400000, guid: 104203f6327943548ada9ebb01efd4ac, type: 2}
-  - {fileID: 11400000, guid: 104203f6327943548ada9ebb01efd4ac, type: 2}
-  - {fileID: 11400000, guid: 104203f6327943548ada9ebb01efd4ac, type: 2}
+  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
+  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
+  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
+  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
+  - {fileID: 11400000, guid: a2ec173b6ac2d2c4e916baa0db7639cd, type: 2}
   enemiesSpawnPositions:
   - {x: 21, y: -4}
   - {x: 22, y: -7}

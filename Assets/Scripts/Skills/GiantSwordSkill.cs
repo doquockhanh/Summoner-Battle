@@ -9,6 +9,8 @@ public class GiantSwordSkill : Skill
     public float mainTargetPercent = 200f;
     public float areaPercent = 100f;
     public float knockUpDuration = 2f;
+    public int maxDashDistance = 7;
+    public float dashSpeed = 30f;
     private Unit strongestUnit;
     private Vector3 targetPos;
     public override void ApplyPassive(Unit summonedUnit)
@@ -36,22 +38,10 @@ public class GiantSwordSkill : Skill
         .FirstOrDefault()
         ?.Unit;
 
-        if (strongestUnit != null)
+        if (strongestUnit == null)
         {
-            UnitTargeting targeting = strongestUnit.GetComponent<UnitTargeting>();
-            if (targeting == null || targeting.CurrentTarget == null)
-            {
-                ownerCard.OnSkillFailed();
-                return;
-            }
-            else
-            {
-                if (targeting.CurrentTarget.OccupiedCell != null)
-                    targetPos = targeting.CurrentTarget.OccupiedCell.WorldPosition;
-                else
-                    targetPos = targeting.CurrentTarget.transform.position;
-            }
-
+            ownerCard.OnSkillFailed();
+            return;
         }
 
         ownerCard.OnSkillActivated();

@@ -15,12 +15,15 @@ MonoBehaviour:
   skillName: 
   description: 
   manaCost: 35
-  duration: 2
-  radius: 0
   skillIcon: {fileID: 0}
   hasPassive: 0
   skillType: 1
+  animationDuration: 2
+  doSkillActionAt: 1.5
   ownerCard: {fileID: 0}
-  skillRange: 2
+  skillRange: 3
   mainTargetPercent: 200
-  areaPercent: 100
+  areaPercent: 75
+  knockUpDuration: 2
+  maxDashDistance: 7
+  dashSpeed: 30

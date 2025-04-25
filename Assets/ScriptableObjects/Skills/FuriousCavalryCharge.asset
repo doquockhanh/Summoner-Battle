@@ -15,12 +15,13 @@ MonoBehaviour:
   skillName: "\u0110\xE2m Gi\xE1o"
   description: "Lao t\u1EDBi ph\xEDa tr\u01B0\u1EDBc \u0111\xE2m k\u1EBB \u0111\u1ECBch"
   manaCost: 60
-  duration: 5
-  radius: 5
   skillIcon: {fileID: -830899430, guid: e0b1a92aee50fea41a204a546840a1cf, type: 3}
   hasPassive: 0
   skillType: 1
+  animationDuration: 0.5
+  doSkillActionAt: 0
   ownerCard: {fileID: 0}
+  chargeRadius: 4
   chargeSpeed: 10
   damageMultiplier: 1
   knockupDuration: 1

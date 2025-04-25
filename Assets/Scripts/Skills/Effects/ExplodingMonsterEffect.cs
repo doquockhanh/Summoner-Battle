@@ -7,6 +7,7 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
     private Unit monster;
     private SummonMonstersSkill skillData;
     private float lifetime;
+    bool isExploded = false;
 
     public void Initialize(Unit monster, SummonMonstersSkill skillData)
     {
@@ -18,6 +19,7 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
     public void Execute(Vector3 targetPos)
     {
         if (!ValidateExecution()) return;
+        monster.GetUnitStats().OnDeath += Explode;
 
         StartCoroutine(LifetimeCoroutine());
         GetComponent<UnitTargeting>().SetTarget(FindRandomEnenmy());
@@ -69,15 +71,12 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
         {
             // Gây sát thương nổ
             Explode();
-
-            // Hủy quái vật
-            monster.GetUnitStats().TakeDamage(999f, DamageType.True);
-            UnitPoolManager.Instance.ReturnToPool(monster);
         }
     }
 
     private void Explode()
     {
+        if (isExploded == true) return;
         Collider2D[] hits = Physics2D.OverlapCircleAll(monster.transform.position, skillData.monsterExplodeRadius);
 
         foreach (Collider2D hit in hits)
@@ -89,15 +88,17 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
                 enemy.TakeDamage(damage, DamageType.Magic, monster);
             }
         }
+
+        if (!monster.GetUnitStats().IsDead)
+        {
+            monster.GetUnitStats().TakeDamage(999f, DamageType.True);
+        }
+        UnitPoolManager.Instance.ReturnToPool(monster);
+        isExploded = true;
     }
 
     public void Cleanup()
     {
         Destroy(this);
-    }
-
-    void OnDestroy()
-    {
-        Cleanup();
     }
 }

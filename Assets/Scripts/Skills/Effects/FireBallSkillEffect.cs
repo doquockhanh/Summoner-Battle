@@ -6,6 +6,7 @@ public class FireBallSkillEffect : MonoBehaviour, ISkillEffect
 {
     private HexCell targetCell;
     private FireballSkill skillData;
+    int indicatorId;
 
     public void Initialize(HexCell targetCell, FireballSkill skillData)
     {
@@ -17,7 +18,7 @@ public class FireBallSkillEffect : MonoBehaviour, ISkillEffect
     {
         if (!ValidateExecution()) return;
 
-        StartCoroutine(FireballCoroutine(targetCell, skillData, skillData.ownerCard.IsPlayer));
+        this.StartCoroutineSafely(FireballCoroutine(targetCell, skillData, skillData.ownerCard.IsPlayer));
     }
 
     private bool ValidateExecution()
@@ -33,7 +34,7 @@ public class FireBallSkillEffect : MonoBehaviour, ISkillEffect
     private IEnumerator FireballCoroutine(HexCell targetCell, FireballSkill skill, bool isFromPlayer)
     {
         // Hiển thị vòng tròn AOE và lưu ID
-        int indicatorId = SkillEffectHandler.Instance.ShowRangeIndicator(targetCell, skill.effectRadius);
+        indicatorId = SkillEffectHandler.Instance.ShowRangeIndicator(targetCell, skill.effectRadius);
 
         // Gây sát thương và áp dụng hiệu ứng thiêu đốt
         List<Unit> enemies = HexGrid.Instance.GetUnitsInRange(targetCell.Coordinates, skill.effectRadius, !isFromPlayer);
@@ -62,12 +63,18 @@ public class FireBallSkillEffect : MonoBehaviour, ISkillEffect
 
         yield return new WaitForSeconds(0.5f);
         // Xóa đúng vòng tròn AOE theo ID
-        SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
+
         Cleanup();
     }
 
     public void Cleanup()
     {
+        SkillEffectHandler.Instance.HideRangeIndicator(indicatorId);
         Destroy(this);
+    }
+
+    void OnDestroy()
+    {
+        Cleanup();
     }
 }
