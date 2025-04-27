@@ -33,6 +33,14 @@ public abstract class BaseStats : MonoBehaviour, IStats
         }
     }
 
+    protected void ResetModifiers()
+    {
+        foreach (StatType type in System.Enum.GetValues(typeof(StatType)))
+        {
+            modifiers[type].Reset();
+        }
+    }
+
     public virtual void ModifyStat(StatType type, float flatBonus, float percentBonus = 0)
     {
         if (flatBonus != 0) modifiers[type].AddFlat(flatBonus);

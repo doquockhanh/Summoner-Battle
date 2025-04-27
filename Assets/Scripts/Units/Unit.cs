@@ -68,9 +68,7 @@ public class Unit : MonoBehaviour
             occupiedCell.SetUnit(this);
         }
 
-        targeting.autoTargeting = true;
-        combat.TurnOnAutoCombat();
-        GetComponent<UnitStatusEffects>()?.ResetStatusEffect();
+        ResetState();
     }
 
     void Start()
@@ -110,8 +108,10 @@ public class Unit : MonoBehaviour
         occupiedCell = cell;
     }
 
-    public void resetState()
+    public void ResetState()
     {
         targeting.autoTargeting = true;
+        combat.TurnOnAutoCombat();
+        GetComponent<UnitStatusEffects>()?.ResetStatusEffect();
     }
 }
