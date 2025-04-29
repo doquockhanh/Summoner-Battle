@@ -640,15 +640,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteSets:
   - sprites:
-    - {fileID: 931209693, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
-    - {fileID: 2100266801, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
-    - {fileID: -1293385489, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
+    - {fileID: 456042892, guid: 7bc34f13c03367447b1665d248282e1e, type: 3}
+    - {fileID: -829998309, guid: 7bc34f13c03367447b1665d248282e1e, type: 3}
     weight: 1
   - sprites:
-    - {fileID: 1607274137, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
-    - {fileID: 1947068574, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
-    - {fileID: -541223227, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
-    weight: 0.1
+    - {fileID: -248373707, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
+    - {fileID: 1056979402, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
+    - {fileID: 2100266801, guid: d018bae709feb43498cc16ba9e8ff6ee, type: 3}
+    weight: 0.2
   cellPrefab: {fileID: 8767165698537190578, guid: 49fdcdfcff04e0d43b06c97c10df904e, type: 3}
   cellsContainer: {fileID: 1660187663}
 --- !u!1 &389303577
