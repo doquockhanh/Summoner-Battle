@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Furious Cavalry
   m_EditorClassIdentifier: 
+  id: furious_cavalry
   cardName: Furious Cavalry
   cardImage: {fileID: -2052561053, guid: 09918634292a6034a903f1facea95597, type: 3}
   description: "K\u1EF5 S\u0129 Phong Ba, c\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"

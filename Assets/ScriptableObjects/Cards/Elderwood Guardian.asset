@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Elderwood Guardian
   m_EditorClassIdentifier: 
+  id: elderwood_guardian
   cardName: Elderwood Guardian
   cardImage: {fileID: -5038670940583458958, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 

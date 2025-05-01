@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: RangeSummoner
   m_EditorClassIdentifier: 
+  id: range
   cardName: RangeSummoner
   cardImage: {fileID: 333382803326201578, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: Hahahah

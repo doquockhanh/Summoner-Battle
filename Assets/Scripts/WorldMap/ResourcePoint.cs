@@ -30,12 +30,12 @@ public class ResourcePoint : MonoBehaviour
             Debug.LogError("CameraController not found in scene!");
         }
 
-        // Ẩn popup khi bắt đầu
-        popupPanel.SetActive(false);
+        // // Ẩn popup khi bắt đầu
+        // popupPanel.SetActive(false);
 
-        // Thiết lập các button
-        leaveButton.onClick.AddListener(ClosePopup);
-        combatButton.onClick.AddListener(StartCombat);
+        // // Thiết lập các button
+        // leaveButton.onClick.AddListener(ClosePopup);
+        // combatButton.onClick.AddListener(StartCombat);
 
         // Thêm collider cho điểm tài nguyên
         if (!GetComponent<Collider2D>())
@@ -51,10 +51,10 @@ public class ResourcePoint : MonoBehaviour
             cameraController.FocusOnPosition(transform.position);
         }
 
-        if (!popupPanel.activeSelf)
-        {
-            ShowPopup();
-        }
+        // if (!popupPanel.activeSelf)
+        // {
+        //     ShowPopup();
+        // }
     }
 
     private void ShowPopup()
@@ -80,7 +80,7 @@ public class ResourcePoint : MonoBehaviour
         Debug.Log("Starting combat at " + resourceName);
     }
 
-    private void Update()
+    private void _Update()
     {
         // Kiểm tra click bên ngoài popup
         if (popupPanel.activeSelf && Input.GetMouseButtonDown(0))

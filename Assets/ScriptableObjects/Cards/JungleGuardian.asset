@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: JungleGuardian
   m_EditorClassIdentifier: 
+  id: jungle_guardian
   cardName: 
   cardImage: {fileID: 0}
   description: 
