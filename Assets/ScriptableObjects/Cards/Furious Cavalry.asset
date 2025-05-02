@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Furious Cavalry
   cardImage: {fileID: -2052561053, guid: 09918634292a6034a903f1facea95597, type: 3}
-  description: "K\u1EF5 S\u0129 Phong Ba, c\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"
+  description: "C\xE0n qu\xE9t chi\u1EBFn tr\u01B0\u1EDDng"
   SummonerPrefab: {fileID: 8505144159870094120, guid: 1260f0baa646f464fa45c2ad89091258, type: 3}
   maxMana: 100
   manaRegen: 5

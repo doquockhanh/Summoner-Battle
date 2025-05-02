@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: UndeadSword
   m_EditorClassIdentifier: 
   cardName: 
-  cardImage: {fileID: 0}
-  description: 
+  cardImage: {fileID: 21300000, guid: 3f1987db07a72d04e8e1fcf2dbff6d11, type: 3}
+  description: "\xC1m \u1EA3nh vong linh"
   SummonerPrefab: {fileID: 8505144159870094120, guid: dfac7184a5334bb4a8f7b70cf51841ae, type: 3}
   maxMana: 100
   manaRegen: 5

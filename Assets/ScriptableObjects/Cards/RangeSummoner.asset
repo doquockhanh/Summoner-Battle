@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: RangeSummoner
   m_EditorClassIdentifier: 
   cardName: RangeSummoner
-  cardImage: {fileID: 333382803326201578, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
-  description: Hahahah
+  cardImage: {fileID: 1461650658, guid: 64aa7e29871667f4cb0d21bc2f840e25, type: 3}
+  description: "M\u01B0a t\xEAn"
   SummonerPrefab: {fileID: 8505144159870094120, guid: 54d35ec8554c0cd48a503a96bc4e3d75, type: 3}
   maxMana: 100
   manaRegen: 5

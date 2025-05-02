@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: JungleGuardian
   m_EditorClassIdentifier: 
   cardName: 
-  cardImage: {fileID: 0}
-  description: 
+  cardImage: {fileID: 1271771020, guid: e1e3f781b0cdcf74da688b7b40e2a9fa, type: 3}
+  description: "Gai Ph\xF2ng Th\u1EE7 "
   SummonerPrefab: {fileID: 8505144159870094120, guid: 031a27b9e84b7ff4b924e7cb7fc574b8, type: 3}
   maxMana: 100
   manaRegen: 5

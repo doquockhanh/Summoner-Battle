@@ -345,7 +345,7 @@ MonoBehaviour:
   smoothness: 5
   zoomSpeed: 4
   minZoom: 5
-  maxZoom: 15
+  maxZoom: 7
   homeData: {fileID: 11400000, guid: 1f2c2b728b4b3454abb44a144fdfba57, type: 2}
 --- !u!1 &1342727709
 GameObject:
