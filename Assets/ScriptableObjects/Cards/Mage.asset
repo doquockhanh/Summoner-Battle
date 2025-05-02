@@ -15,7 +15,7 @@ MonoBehaviour:
   id: mage
   cardName: Mage
   cardImage: {fileID: 76158817, guid: df7c0da3d3044d54b80980242fe2311e, type: 3}
-  description: 
+  description: "B\xE3o L\u1EEDa"
   SummonerPrefab: {fileID: 8505144159870094120, guid: f8de41f63c36ea04cad884c4fc06416e, type: 3}
   maxMana: 100
   manaRegen: 5
