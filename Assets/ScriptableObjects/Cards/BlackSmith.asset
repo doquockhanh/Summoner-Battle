@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: BlackSmith
   m_EditorClassIdentifier: 
+  id: black_smith
   cardName: 
   cardImage: {fileID: 1059754826, guid: ed828a0a4bf9dcf488e28aca4f7fcae8, type: 3}
   description: "R\xE8n khi\xEAn "

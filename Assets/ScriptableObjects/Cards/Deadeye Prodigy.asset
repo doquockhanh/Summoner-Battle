@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Deadeye Prodigy
   m_EditorClassIdentifier: 
+  id: deadeye
   cardName: Deadeye Prodigy
   cardImage: {fileID: 1415160446, guid: b04d7b097840a904db9bf1444b928286, type: 3}
   description: "Th\u1EE9 t\u01B0 ch\u1EBFt ch\xF3c\n"

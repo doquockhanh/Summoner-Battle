@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Assassin
   m_EditorClassIdentifier: 
+  id: assassin
   cardName: AssassinCard
   cardImage: {fileID: 1231614157, guid: 383260bcfe2358a4c8472cfc550246a1, type: 3}
   description: "Lo\u1EA1i b\u1ECF k\u1EBB y\u1EBFu"

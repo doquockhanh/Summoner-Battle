@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: 
+  id: mage
   cardName: Mage
   cardImage: {fileID: 76158817, guid: df7c0da3d3044d54b80980242fe2311e, type: 3}
   description: "B\xE3o L\u1EEDa"

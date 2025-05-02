@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3feb071981e1a04a975ec7d4e1afb5d, type: 3}
   m_Name: Void Summoner
   m_EditorClassIdentifier: 
+  id: void_s
   cardName: Void Summoner
   cardImage: {fileID: -1236737224, guid: 0d511be3c5841c14c81ed1840daa4e99, type: 3}
   description: 

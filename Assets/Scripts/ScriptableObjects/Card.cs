@@ -3,9 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Card", menuName = "Game/Card")]
 public class Card : ScriptableObject
 {
+    [Header("Mapping Database")]
+    public string id;
+
     [Header("Card Info")]
     public string cardName;
     public Sprite cardImage;
+    
     [TextArea]
     public string description;
     public GameObject SummonerPrefab;

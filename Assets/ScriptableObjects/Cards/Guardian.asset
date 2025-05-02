@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Guardian
   m_EditorClassIdentifier: 
+  id: guardian
   cardName: Guardian Summoner
   cardImage: {fileID: -812323133, guid: 1c0b673d8ae00da4e8ea30c8019e4d07, type: 3}
   description: "T\u01B0\u1EDDng Khi\xEAn\n"

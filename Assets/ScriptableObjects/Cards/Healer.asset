@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Healer
   m_EditorClassIdentifier: 
+  id: healer
   cardName: Healer
   cardImage: {fileID: 1777392551, guid: b37e1433ca9ae0641a684bf035661cc8, type: 3}
   description: "H\u1ED3i Ph\u1EE5c Nh\u1EB9\n"

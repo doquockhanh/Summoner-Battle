@@ -52,7 +52,7 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
         else
         {
             indicator = SkillEffectHandler.Instance
-                                            .CreateRangeIndicator(targeting.CurrentTarget.OccupiedCell, HexMetrics.GridToWorldRadius(skillData.stormRadius), new Color(1.0f, 0.41f, 0.71f, 1.0f));
+                                            .CreateRangeIndicator(targeting.CurrentTarget.OccupiedCell, HexMetrics.GridToWorldRadius(skillData.stormRadius), new Color(1.0f, 0.41f, 0.71f, 1.0f), skillData.stormDuration + 0.1f);
         }
     }
 
@@ -70,6 +70,9 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
             skillData.stormSpeed * Time.fixedDeltaTime
         );
 
+        // maybe this dangerous
+        if (indicator == null) return;
+
         indicator.transform.position = currentPosition;
 
         // Gây sát thương theo tick
@@ -79,7 +82,6 @@ public class FirestormEffect : MonoBehaviour, ISkillEffect
             damageTimer = 0f;
         }
 
-        // Kết thúc sau 2 giây
         if (elapsedTime >= skillData.stormDuration)
         {
             Cleanup();

@@ -50,7 +50,7 @@ public class SkillEffectHandler : MonoBehaviour
         return indicatorId;
     }
 
-    public GameObject CreateRangeIndicator(HexCell cell, float radius, Color? color = null)
+    public GameObject CreateRangeIndicator(HexCell cell, float radius, Color? color = null, float duration = 10f)
     {
         Vector2 pos2 = cell.WorldPosition;
         GameObject indicator = Instantiate(rangeIndicatorPrefab, pos2, Quaternion.identity);
@@ -60,6 +60,14 @@ public class SkillEffectHandler : MonoBehaviour
         {
             rangeIndicator.SetRadius(radius);
             rangeIndicator.SetColor(color ?? Color.red);
+        }
+
+        int indicatorId = nextIndicatorId++;
+        activeRangeIndicators[indicatorId] = indicator;
+
+        if (duration > 0)
+        {
+            StartCoroutine(HideRangeIndicator(indicatorId, duration));
         }
 
         return indicator;

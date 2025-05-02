@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: Eira Lumina
   m_EditorClassIdentifier: 
+  id: eira_lumina
   cardName: Eira lumina
   cardImage: {fileID: 483837048, guid: 6afb98fc69b4f6c44ab0ebdd43d13149, type: 3}
   description: 

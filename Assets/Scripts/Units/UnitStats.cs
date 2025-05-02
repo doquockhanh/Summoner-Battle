@@ -22,7 +22,7 @@ public class UnitStats : BaseStats
         data = unitData;
         currentHp = unitData.maxHp;
         currentShield = 0;
-        // ResetModifiers();
+        ResetModifiers();
     }
 
     public void TakeDamage(float amount, DamageType damageType, Unit source = null)

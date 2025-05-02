@@ -129,7 +129,13 @@ public class UnitStatusEffects : MonoBehaviour
         return effect;
     }
 
-    public void ResetStatusEffect() {
+    public void ResetStatusEffect()
+    {
+        foreach (var effect in activeEffects.Values)
+        {
+            effect.Remove();
+        }
         activeEffects.Clear();
+        RemoveStatusEffectsUI();
     }
 }

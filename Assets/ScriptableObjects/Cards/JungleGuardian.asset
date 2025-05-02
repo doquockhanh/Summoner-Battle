@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484218e144294d4a862a23c75924363, type: 3}
   m_Name: JungleGuardian
   m_EditorClassIdentifier: 
+  id: jungle_guardian
   cardName: 
   cardImage: {fileID: 1271771020, guid: e1e3f781b0cdcf74da688b7b40e2a9fa, type: 3}
   description: "Gai Ph\xF2ng Th\u1EE7 "
