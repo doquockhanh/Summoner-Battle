@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: void_s
   cardName: Void Summoner
-  cardImage: {fileID: -977627134430890721, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  cardImage: {fileID: -1236737224, guid: 0d511be3c5841c14c81ed1840daa4e99, type: 3}
   description: 
   SummonerPrefab: {fileID: 8505144159870094120, guid: 487a7c93ae336d04f8e6c17f4c6554a7, type: 3}
   maxMana: 100

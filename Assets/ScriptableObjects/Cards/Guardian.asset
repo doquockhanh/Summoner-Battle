@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: guardian
   cardName: Guardian Summoner
-  cardImage: {fileID: 3073021464058892558, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
-  description: 
+  cardImage: {fileID: -812323133, guid: 1c0b673d8ae00da4e8ea30c8019e4d07, type: 3}
+  description: "T\u01B0\u1EDDng Khi\xEAn\n"
   SummonerPrefab: {fileID: 8505144159870094120, guid: c60860bcf60c08747a47a99c6dabc3d3, type: 3}
   maxMana: 100
   manaRegen: 5

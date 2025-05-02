@@ -15,7 +15,7 @@ MonoBehaviour:
   id: flame_sorcerer
   cardName: Flame Sorcerer
   cardImage: {fileID: -761581998088165820, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
-  description: 
+  description: "B\xE3o L\u1EEDa "
   SummonerPrefab: {fileID: 8505144159870094120, guid: 1ed44b16bb3555a48bbd66c02e0a408c, type: 3}
   maxMana: 100
   manaRegen: 5

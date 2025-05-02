@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: elderwood_guardian
   cardName: Elderwood Guardian
-  cardImage: {fileID: -5038670940583458958, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
+  cardImage: {fileID: 6364925694769716633, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
   description: 
   SummonerPrefab: {fileID: 8505144159870094120, guid: dadebf068f696e54fa85335a02adb15c, type: 3}
   maxMana: 100

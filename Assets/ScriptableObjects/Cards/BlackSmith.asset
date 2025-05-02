@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: black_smith
   cardName: 
-  cardImage: {fileID: 2802756392820156839, guid: 3a193848c8d389f4c9eb72aa4a07aa1a, type: 3}
-  description: 
+  cardImage: {fileID: 1059754826, guid: ed828a0a4bf9dcf488e28aca4f7fcae8, type: 3}
+  description: "R\xE8n khi\xEAn "
   SummonerPrefab: {fileID: 8505144159870094120, guid: 11b68ba0dc62a584abdbe10ec93e8d92, type: 3}
   maxMana: 100
   manaRegen: 5
