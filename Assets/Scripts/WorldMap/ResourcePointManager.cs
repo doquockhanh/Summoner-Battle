@@ -17,6 +17,7 @@ public class ResourcePointManager : MonoBehaviour
     private TileBase tileToPlace;
     public Vector2 tileSize = new Vector2(1f, 1f);
     private List<ResourceBattleground> battlegrounds = new List<ResourceBattleground>();
+    private List<ResourcePoint> spawnedResourcePoints = new List<ResourcePoint>();
 
     private async void Start()
     {
@@ -87,7 +88,7 @@ public class ResourcePointManager : MonoBehaviour
             },
             new()
             {
-                id = 1,
+                id = 3,
                 cardInfos = new List<CardInfo>
                 {
                     new () { id = "assassin"},
@@ -99,7 +100,7 @@ public class ResourcePointManager : MonoBehaviour
                 levels = new List<int> {1, 2, 1, 1, 1}
             },
             new() {
-                id = 2,
+                id = 4,
                 cardInfos = new List<CardInfo>
                 {
                     new () { id = "black_smith"},
@@ -119,8 +120,17 @@ public class ResourcePointManager : MonoBehaviour
 
         foreach (var battleground in battlegrounds)
         {
-            tilemap.SetTile(mapData[battlegroundIndex], tileToPlace);
+            Vector3Int cellPos = mapData[battlegroundIndex];
+            tilemap.SetTile(cellPos, tileToPlace);
+
             battlegroundIndex++;
         }
+    }
+
+    public void SaveNewResourceBattleGround(ResourcePoint rb) {
+        spawnedResourcePoints.Add(rb);
+
+        // lấy data tương ứng
+        rb.resourceBattleground = battlegrounds[spawnedResourcePoints.Count - 1];
     }
 }
