@@ -18,11 +18,8 @@ public class DropSlot : MonoBehaviour, IDropHandler
         DraggableCard draggableCard = dropedGO.GetComponent<DraggableCard>();
         ResourcePoint resourcePoint = GetComponentInParent<ResourcePoint>();
 
-        Debug.Log(draggableCard);
-        Debug.Log(resourcePoint);
         if (draggableCard == null || resourcePoint == null) return;
 
-        Debug.Log(3);
         resourcePoint.SetCardInSlot(slotIndex, draggableCard.id);
     }
 }

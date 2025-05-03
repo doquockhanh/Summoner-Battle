@@ -27292,6 +27292,54 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1895606899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1895606901}
+  - component: {fileID: 1895606900}
+  m_Layer: 0
+  m_Name: BattleDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1895606900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895606899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669caa8cac6be7e46900d9f6def92349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defenderIDs: []
+  attackerIDs: []
+  cardInventory: {fileID: 11400000, guid: 79d3e3fb983c7684aa78b4635bbf1b05, type: 2}
+  cardStorageHolder: {fileID: 11400000, guid: ea85db162f2042f428b11c0a400af260, type: 2}
+--- !u!4 &1895606901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895606899}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.0866545, y: 0.8341502, z: -9.899949}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2115985498
 GameObject:
   m_ObjectHideFlags: 0
@@ -27351,3 +27399,4 @@ SceneRoots:
   - {fileID: 23807649}
   - {fileID: 2115985500}
   - {fileID: 1332545710}
+  - {fileID: 1895606901}

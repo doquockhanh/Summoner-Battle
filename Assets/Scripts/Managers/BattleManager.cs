@@ -45,8 +45,33 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         // Khởi tạo pools trước khi bắt đầu trận đấu
+        PrepareData();
         unitPoolManager.InitializePools(playerCards, enemyCards);
         StartBattle();
+    }
+
+    private void PrepareData()
+    {
+        BattleDataManager battleDataManager = BattleDataManager.Instance;
+        if (battleDataManager == null) return;
+        
+        if (battleDataManager.attackerIDs.Count >= 0)
+        {
+            List<Card> attackerCards = battleDataManager.GetAttackerCards();
+            if (attackerCards.Count > 0)
+            {
+                playerCards = attackerCards;
+            }
+        }
+
+        if (battleDataManager.defenderIDs.Count >= 0)
+        {
+            List<Card> defenderCards = battleDataManager.GetDefenderCards();
+            if (defenderCards.Count > 0)
+            {
+                enemyCards = defenderCards;
+            }
+        }
     }
 
     public void StartBattle()

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class ResourcePoint : MonoBehaviour
 {
@@ -127,10 +129,13 @@ public class ResourcePoint : MonoBehaviour
 
     private void StartCombat()
     {
-        // TODO: Implement combat logic
-        Debug.Log("Starting combat at ");
-        foreach (string id in choosenAttackerIds) {
+        // assign data for BattleDataManager (instace not destroy on load)
+        BattleDataManager.Instance.defenderIDs = resourceBattleground.cardInfos.Select(c => c.id).ToList();
+        foreach (string id in BattleDataManager.Instance.defenderIDs) {
             Debug.Log(id);
         }
+        BattleDataManager.Instance.attackerIDs = choosenAttackerIds;
+
+        SceneManager.LoadScene("Battle");
     }
 }
