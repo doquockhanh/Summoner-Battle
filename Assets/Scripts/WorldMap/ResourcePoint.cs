@@ -11,10 +11,16 @@ public class ResourcePoint : MonoBehaviour
     public Text RBName;
     public Button leaveButton;
     public Button combatButton;
+    public List<Image> attackerCardsUi;
+    public Transform InventoryScrollViewContent;
+    public GameObject inventoryCardPrefab;
+
     public CardInventory cardInventory;
+    public CardStorage cardStorageHolder;
 
     private CameraController cameraController;
     [HideInInspector] public ResourceBattleground resourceBattleground;
+    private List<string> choosenAttackerIds = new List<string>(5);
 
     private void Start()
     {
@@ -23,11 +29,27 @@ public class ResourcePoint : MonoBehaviour
 
         SetupPanelInfo();
 
+        for (int i = choosenAttackerIds.Count; i < 5; i++)
+            choosenAttackerIds.Add(null);
+
         // Thêm collider cho điểm tài nguyên nếu chưa có
         if (!GetComponent<Collider2D>())
         {
             gameObject.AddComponent<BoxCollider2D>();
         }
+    }
+
+    public void SetCardInSlot(int index, string id)
+    {
+        if (index >= 0 && index < choosenAttackerIds.Count)
+        {
+            choosenAttackerIds[index] = id;
+        }
+    }
+
+    public string GetCardInSlot(int index)
+    {
+        return choosenAttackerIds[index];
     }
 
     private void SetupPanelInfo()
@@ -38,12 +60,27 @@ public class ResourcePoint : MonoBehaviour
 
         RBName.text = "Fake name";
         List<CardInfo> defenseCards = resourceBattleground.cardInfos;
-        // Debug.Log(defenseCards.Count);
-        List<Card> cards = cardInventory.availableCards;
+        List<Card> cardStorage = cardStorageHolder.cards;
         for (int i = 0; i < defenseCards.Count; i++)
         {
-            Card card = cards.Where(c => c.id == defenseCards[i].id).FirstOrDefault();
+            Card card = cardStorage.Where(c => c.id == defenseCards[i].id).FirstOrDefault();
             defenseCardsUI[i].sprite = card.cardImage;
+        }
+
+
+        // Hiển thị các card ở inventory ra scroll view
+        List<Card> cards = cardInventory.availableCards;
+        foreach (var card in cards)
+        {
+            GameObject cardPrefab = Instantiate(inventoryCardPrefab, InventoryScrollViewContent); // Gắn vào content
+            Image image = cardPrefab.GetComponentsInChildren<Image>().Last();
+            DraggableCard draggableCard = cardPrefab.GetComponent<DraggableCard>();
+
+            if (draggableCard != null)
+                draggableCard.id = card.id;
+
+            if (image != null)
+                image.sprite = card.cardImage;
         }
 
         // Ẩn popup khi bắt đầu
@@ -92,5 +129,8 @@ public class ResourcePoint : MonoBehaviour
     {
         // TODO: Implement combat logic
         Debug.Log("Starting combat at ");
+        foreach (string id in choosenAttackerIds) {
+            Debug.Log(id);
+        }
     }
 }
