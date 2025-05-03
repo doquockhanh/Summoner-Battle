@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -99,6 +100,12 @@ public class CameraController : MonoBehaviour
 
     private void HandleDrag()
     {
+        if (IsPointerOverUI())
+        {
+            isDragging = false;
+            return;
+        }
+
         // Bắt đầu kéo khi nhấn chuột trái
         if (Input.GetMouseButtonDown(0))
         {
@@ -117,14 +124,14 @@ public class CameraController : MonoBehaviour
         {
             Vector3 difference = dragOrigin - Input.mousePosition;
             difference = difference * dragSpeed * Time.deltaTime;
-            
+
             // Chuyển đổi từ screen space sang world space và nhân thêm hệ số để tăng tốc độ
             Vector3 worldDifference = mainCamera.ScreenToWorldPoint(difference) - mainCamera.ScreenToWorldPoint(Vector3.zero);
             worldDifference *= 2f; // Nhân thêm hệ số để tăng tốc độ di chuyển
-            
+
             // Cập nhật vị trí đích
             targetPosition += worldDifference;
-            
+
             // Cập nhật vị trí bắt đầu kéo
             dragOrigin = Input.mousePosition;
         }
@@ -138,7 +145,7 @@ public class CameraController : MonoBehaviour
     {
         // Giữ nguyên giá trị z của camera
         targetPosition.z = this.targetPosition.z;
-        
+
         // Giới hạn vị trí theo boundary
         if (homeData == null)
         {
@@ -152,5 +159,11 @@ public class CameraController : MonoBehaviour
         }
 
         this.targetPosition = targetPosition;
+    }
+
+    bool IsPointerOverUI()
+    {
+        // Đảm bảo pointer không đang tương tác với bất kỳ UI element nào (kể cả kéo, scroll...)
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 }
