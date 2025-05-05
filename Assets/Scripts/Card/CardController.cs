@@ -44,6 +44,8 @@ public class CardController : MonoBehaviour
         }
         if (cardCombat != null) cardCombat.Initialize(this);
         if (cardView != null) cardView.Initialize();
+        if (cardData != null)
+            BattleStatsManager.Instance?.RegisterCard(cardData.id, this);
     }
 
     private void Start()
@@ -138,6 +140,8 @@ public class CardController : MonoBehaviour
         unit.Initialize(cardData.summonUnit, isPlayer, this);
 
         activeUnits.Add(unit);
+
+        BattleStatsManager.Instance?.RegisterUnit(unit, cardData.summonUnit.unitName, this);
 
         unit.GetUnitStats().OnDeath += () => RemoveUnit(unit);
 

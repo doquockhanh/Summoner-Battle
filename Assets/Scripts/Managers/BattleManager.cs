@@ -13,7 +13,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private List<Vector2> playerSpawnPositions;
     [SerializeField] private List<Card> enemyCards;
     [SerializeField] private List<Vector2> enemiesSpawnPositions;
-    [SerializeField] private GameObject resultPanel;
     [SerializeField] private Button goHomeBtn;
     [SerializeField] private Button toWorldBtn;
     public bool spawnOnce = false;
@@ -22,6 +21,7 @@ public class BattleManager : MonoBehaviour
     public List<CardController> ActiveCards => activeCards;
 
     [SerializeField] private UnitPoolManager unitPoolManager;
+    [SerializeField] private BattleResultStatsPanel battleResultStatsPanel;
 
     private void Awake()
     {
@@ -58,7 +58,6 @@ public class BattleManager : MonoBehaviour
 
     private void PrepareResultPanel()
     {
-        resultPanel?.SetActive(false);
         if (goHomeBtn != null)
             goHomeBtn.onClick.AddListener(() => SceneManager.LoadScene("Home"));
         if (toWorldBtn != null)
@@ -153,8 +152,18 @@ public class BattleManager : MonoBehaviour
     public void EndGame(bool playerWon)
     {
         // Hiển thị màn hình victory/defeat
-        resultPanel?.SetActive(true);
+        // resultPanel?.SetActive(true);
         Debug.Log(playerWon ? "Player Won!" : "Enemy Won!");
+        // Hiển thị bảng tổng kết chỉ số
+        if (battleResultStatsPanel != null)
+        {
+            var statsList = BattleStatsManager.Instance?.GetAllCardStats();
+            if (statsList != null)
+            {
+                battleResultStatsPanel.Show(statsList);
+            }
+
+        }
     }
 
     public void RemoveFromActiveCards(CardController card)

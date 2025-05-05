@@ -39,6 +39,7 @@ public class UnitStats : BaseStats
         ShowHeathDamage(healthDamage, damageType);
 
         OnTakeDamage?.Invoke(finalDamage, source);
+        BattleStatsManager.Instance?.AddDamageTakenToUnit(GetComponent<Unit>(), finalDamage);
     }
 
     private float ProcessHealthDamage(float damage)

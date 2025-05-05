@@ -118,6 +118,11 @@ public class CardCombat : MonoBehaviour
         {
             target.TakeDamage(damage, DamageType.Physical);
         }
+        if (cardController != null && cardController.Unit != null && cardController.Unit.unitName != null && cardController.Unit != null)
+        {
+            BattleStatsManager.Instance?.AddDamageDealtToCard(cardController.Unit.unitName, damage);
+        }
+        BattleStatsManager.Instance?.AddDamageTakenToUnit(target, damage);
     }
 
     private void ResetAttackTimer()
