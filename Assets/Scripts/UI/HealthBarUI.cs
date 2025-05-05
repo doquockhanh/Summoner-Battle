@@ -119,4 +119,12 @@ public class HealthBarUI : MonoBehaviour
 
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
+
+    public void SetBarColors(Color health, Color delayed)
+    {
+        healthColor = health;
+        delayedColor = delayed;
+        if (healthBar != null) healthBar.color = healthColor;
+        if (damageDelayedBar != null) damageDelayedBar.color = delayedColor;
+    }
 } 

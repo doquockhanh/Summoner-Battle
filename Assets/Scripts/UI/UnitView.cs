@@ -1,17 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UnitView : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SpriteRenderer unitSprite;
-    [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private ParticleSystem attackEffect;
     [SerializeField] private Animator animator;
+    [SerializeField] private HealthBarController healthBarController;
 
-    private HealthBarUI healthBarUI;
     private Material spriteMaterial;
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
     private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
@@ -28,24 +25,18 @@ public class UnitView : MonoBehaviour
 
     private void OnEnable()
     {
-        if (healthBarUI != null)
+        if (healthBarController != null)
         {
-            healthBarUI.Show();
-            UpdateHealthBarPosition();
+            healthBarController.Show();
         }
     }
 
     private void OnDisable()
     {
-        if (healthBarUI != null)
+        if (healthBarController != null)
         {
-            healthBarUI.Hide();
+            healthBarController.Hide();
         }
-    }
-
-    private void LateUpdate()
-    {
-        UpdateHealthBarPosition();
     }
 
     public void Initialize(Unit unit)
@@ -55,7 +46,7 @@ public class UnitView : MonoBehaviour
         spriteMaterial = unitSprite.material;
 
         var stats = unit.GetComponent<UnitStats>();
-        SetupHealthBar(stats.GetMaxHp());
+        healthBarController.Initialize(stats.GetMaxHp(), unit.IsPlayerUnit);
         SetupOutline();
 
         // Subscribe to events
@@ -98,59 +89,20 @@ public class UnitView : MonoBehaviour
         }
     }
 
-    private void SetupHealthBar(float maxHp)
-    {
-        if (healthBarUI == null && healthBarPrefab != null)
-        {
-            var healthBarObject = Instantiate(healthBarPrefab, HealthBarManager.Instance.GetCanvasTransform());
-            healthBarUI = healthBarObject.GetComponent<HealthBarUI>();
-            healthBarUI.transform.SetParent(HealthBarManager.Instance.GetCanvasTransform(), true); // Gắn healthbar vào unit
-        }
-
-        healthBarUI.Initialize(maxHp);
-        UpdateHealthBarPosition();
-    }
-
-    private void UpdateHealthBarPosition()
-    {
-        if (healthBarUI != null)
-        {
-            Vector3 worldPosition = GetHealthBarPosition();
-            healthBarUI.transform.position = worldPosition;
-        }
-    }
-
-    private Vector3 GetHealthBarPosition()
-    {
-        if (unitSprite == null) return transform.position;
-
-        // Lấy bounds của sprite trong không gian world
-        Bounds spriteBounds = unitSprite.bounds;
-
-        // Tính toán vị trí trên cùng của sprite
-        Vector3 topPosition = transform.position;
-        topPosition.y += spriteBounds.extents.y * 2;
-
-        // Thêm một khoảng nhỏ để health bar không bị dính vào sprite
-        topPosition.y += 0.1f;
-
-        return topPosition;
-    }
-
     private void UpdateHealth(float newHp)
     {
-        healthBarUI.UpdateHealth(newHp, unit.GetComponent<UnitStats>().GetMaxHp());
+        healthBarController.UpdateHealth(newHp, unit.GetComponent<UnitStats>().GetMaxHp());
         PlayDamageFlash();
     }
 
     private void UpdateShield(float shieldAmount)
     {
-        healthBarUI.UpdateShield(shieldAmount);
+        healthBarController.UpdateShield(shieldAmount);
     }
 
     private void OnUnitDeath()
     {
-        healthBarUI.Hide();
+        healthBarController.Hide();
     }
 
     public void PlayAttackEffect()
@@ -190,15 +142,15 @@ public class UnitView : MonoBehaviour
     {
         StopAllCoroutines();
 
-        if (healthBarUI != null)
+        if (healthBarController != null)
         {
-            Destroy(healthBarUI.gameObject);
+            Destroy(healthBarController.gameObject);
         }
     }
 
     public HealthBarUI GetHealthBar()
     {
-        return healthBarUI;
+        return healthBarController != null ? healthBarController.GetHealthBarUI() : null;
     }
 
     private void SetupOutline()

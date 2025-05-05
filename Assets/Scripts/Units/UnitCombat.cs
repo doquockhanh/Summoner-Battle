@@ -233,7 +233,7 @@ public class UnitCombat : MonoBehaviour
         {
             if (card.TryGetComponent<CardStats>(out var cardStats))
             {
-                // cardStats.TakeDamage(damage, DamageType.Physical);
+                cardStats.TakeDamage(damage, DamageType.Physical);
             }
         }
 

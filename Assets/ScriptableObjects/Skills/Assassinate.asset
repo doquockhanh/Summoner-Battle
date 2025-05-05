@@ -22,4 +22,4 @@ MonoBehaviour:
   doSkillActionAt: 1.5
   ownerCard: {fileID: 0}
   jumpRange: 6
-  untargetableDuration: 1
+  untargetableDuration: 0.4

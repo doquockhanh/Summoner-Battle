@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: -8771364452776901417}
   - component: {fileID: -5550928645432154189}
   - component: {fileID: 6000535133270558605}
+  - component: {fileID: 6360265406353357946}
+  - component: {fileID: -5610202423132806315}
   m_Layer: 8
   m_Name: ElderWoodSummoner
   m_TagString: Untagged
@@ -240,3 +242,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 31ff38d10e318df4595c69d08b62a3a0, type: 2}
+--- !u!114 &6360265406353357946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505144159870094120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e173e12381b414f9d410f72dea41ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarUI: {fileID: 0}
+  healthBarPrefab: {fileID: 6144050299231746094, guid: 295b71fbb8aeae14a8a8487de25efd85, type: 3}
+  useWorldSpaceCanvas: 1
+--- !u!114 &-5610202423132806315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505144159870094120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646f83aa23f74054fb1e7492143c4c32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 6360265406353357946}

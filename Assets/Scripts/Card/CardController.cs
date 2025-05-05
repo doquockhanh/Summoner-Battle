@@ -8,6 +8,7 @@ public class CardController : MonoBehaviour
 
     private Card cardData;
     private CardStats cardStats;
+    private CardView cardView;
     private float currentMana;
     public float spawnCooldown = 0;
     private float spawnTimer;
@@ -36,8 +37,10 @@ public class CardController : MonoBehaviour
         }
 
         cardStats = GetComponent<CardStats>();
+        cardView = GetComponent<CardView>();
         if (cardStats != null) cardStats.Initialize(cardData);
         if (cardCombat != null) cardCombat.Initialize(this);
+        if (cardView != null) cardView.Initialize();
     }
 
     private void Start()

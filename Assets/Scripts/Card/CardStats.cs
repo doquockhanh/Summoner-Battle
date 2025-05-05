@@ -5,6 +5,7 @@ public class CardStats : BaseStats, IStats
 {
     [SerializeField] private Card data; // Tạm thời dùng chung UnitData
     public float CurrentHp => currentHp;
+    public event System.Action<float> OnHealthChanged;
 
     public void Initialize(Card cardData)
     {
@@ -16,7 +17,14 @@ public class CardStats : BaseStats, IStats
     public void TakeDamage(float amount, DamageType damageType)
     {
         float finalDamage = StatsCalculator.CalculateFinalDamage(amount, damageType, this);
+
         currentHp = Mathf.Max(0, currentHp - finalDamage);
+        OnHealthChanged?.Invoke(currentHp);
+        FloatingTextManager.Instance.ShowFloatingText(
+           finalDamage.ToString("F0"),
+           transform.position,
+           Color.red
+       );
     }
 
     public override float GetMaxHp() => GetModifiedStat(StatType.MaxHp, data.maxHp);
