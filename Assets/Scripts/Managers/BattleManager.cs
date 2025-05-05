@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private List<Vector2> playerSpawnPositions;
     [SerializeField] private List<Card> enemyCards;
     [SerializeField] private List<Vector2> enemiesSpawnPositions;
+    [SerializeField] private GameObject resultPanel;
+    [SerializeField] private Button goHomeBtn;
+    [SerializeField] private Button toWorldBtn;
     public bool spawnOnce = false;
 
     private List<CardController> activeCards = new List<CardController>();
@@ -44,17 +49,27 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        PrepareResultPanel();
         // Khởi tạo pools trước khi bắt đầu trận đấu
         PrepareData();
         unitPoolManager.InitializePools(playerCards, enemyCards);
         StartBattle();
     }
 
+    private void PrepareResultPanel()
+    {
+        resultPanel?.SetActive(false);
+        if (goHomeBtn != null)
+            goHomeBtn.onClick.AddListener(() => SceneManager.LoadScene("Home"));
+        if (toWorldBtn != null)
+            toWorldBtn.onClick.AddListener(() => SceneManager.LoadScene("WorldMap"));
+    }
+
     private void PrepareData()
     {
         BattleDataManager battleDataManager = BattleDataManager.Instance;
         if (battleDataManager == null) return;
-        
+
         if (battleDataManager.attackerIDs.Count >= 0)
         {
             List<Card> attackerCards = battleDataManager.GetAttackerCards();
@@ -138,6 +153,7 @@ public class BattleManager : MonoBehaviour
     public void EndGame(bool playerWon)
     {
         // Hiển thị màn hình victory/defeat
+        resultPanel?.SetActive(true);
         Debug.Log(playerWon ? "Player Won!" : "Enemy Won!");
     }
 
@@ -162,5 +178,16 @@ public class BattleManager : MonoBehaviour
              .ToList();
 
         return units;
+    }
+
+    public void CheckEndGame()
+    {
+        bool playerAlive = activeCards.Any(c => c.IsPlayer && c.GetComponent<CardStats>().CurrentHp > 0);
+        bool enemyAlive = activeCards.Any(c => !c.IsPlayer && c.GetComponent<CardStats>().CurrentHp > 0);
+
+        if (!playerAlive)
+            EndGame(false);
+        else if (!enemyAlive)
+            EndGame(true);
     }
 }

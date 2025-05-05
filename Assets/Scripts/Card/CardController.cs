@@ -38,7 +38,10 @@ public class CardController : MonoBehaviour
 
         cardStats = GetComponent<CardStats>();
         cardView = GetComponent<CardView>();
-        if (cardStats != null) cardStats.Initialize(cardData);
+        if (cardStats != null) {
+            cardStats.Initialize(cardData);
+            cardStats.OnCardDead += HandleCardDead;
+        }
         if (cardCombat != null) cardCombat.Initialize(this);
         if (cardView != null) cardView.Initialize();
     }
@@ -170,11 +173,10 @@ public class CardController : MonoBehaviour
         currentMana = Mathf.Min(currentMana + amount, cardData.maxMana);
     }
 
-    private void OnDestroy()
+    private void HandleCardDead()
     {
-        if (BattleManager.Instance != null)
-        {
-            BattleManager.Instance.RemoveFromActiveCards(this);
-        }
+        BattleManager.Instance.RemoveFromActiveCards(this);
+        Destroy(gameObject);
+        BattleManager.Instance.CheckEndGame();
     }
 }
