@@ -20,11 +20,11 @@ MonoBehaviour:
   maxMana: 100
   manaRegen: 5
   spawnCooldown: 10
-  maxHp: 1000
+  maxHp: 200
   hpRegen: 0
   armor: 0
   magicResist: 0
-  physicalDamage: 104
+  physicalDamage: 0
   attackSpeed: 1
   range: 3
   summonUnit: {fileID: 11400000, guid: 14d57373e757ee44ca14e1dd862f047f, type: 2}

@@ -7,26 +7,48 @@ public static class UnitEvents
 
         public static event System.Action<Unit, Unit> OnDeath;
         public static event System.Action<Unit, Unit, float> OnTakeRawDamage;
-        
+        public static event System.Action<Unit, float> OnDamageReduced;
+
+        public static event System.Action<Unit, float> OnShieldDamage;
+
+        public static event System.Action<Unit, float> OnHealing;
+
         public static void RaiseDamageDealt(Unit source, Unit target, float amount)
         {
             OnDamageDealt?.Invoke(source, target, amount);
         }
 
-        public static void RaiseDeath(Unit source, Unit target) {
+        public static void RaiseDeath(Unit source, Unit target)
+        {
             OnDeath?.Invoke(source, target);
         }
 
-        public static void RaiseRawDamageReceived(Unit source, Unit target, float amount) {
+        public static void RaiseRawDamageReceived(Unit source, Unit target, float amount)
+        {
             OnTakeRawDamage?.Invoke(source, target, amount);
         }
+
+        public static void RaiseDamageReduced(Unit source, float amount)
+        {
+            OnDamageReduced?.Invoke(source, amount);
+        }
+
+        public static void RaiseShieldDamage(Unit source, float amount)
+        {
+            OnShieldDamage?.Invoke(source, amount);
+        }
+
+        public static void RaiseHealing(Unit source, float amount)
+        {
+            OnHealing?.Invoke(source, amount);
+        }
     }
-    
+
     public static class Status
     {
         public delegate void UnitStatusHandler(Unit unit);
         public static event UnitStatusHandler OnUnitDeath;
-        
+
         public static void RaiseUnitDeath(Unit unit)
         {
             OnUnitDeath?.Invoke(unit);
@@ -34,7 +56,7 @@ public static class UnitEvents
 
         public delegate void SoulAbsorbHandler(Unit absorber, Unit soul);
         public static event SoulAbsorbHandler OnSoulAbsorbed;
-        
+
         public static void RaiseSoulAbsorbed(Unit absorber, Unit soul)
         {
             OnSoulAbsorbed?.Invoke(absorber, soul);
@@ -42,10 +64,10 @@ public static class UnitEvents
 
         public delegate void SkillActivateHandler(Unit unit, Skill skill);
         public static event SkillActivateHandler OnSkillActivated;
-        
+
         public static void RaiseSkillActivated(Unit unit, Skill skill)
         {
             OnSkillActivated?.Invoke(unit, skill);
         }
     }
-} 
+}

@@ -212,9 +212,6 @@ public class UnitCombat : MonoBehaviour
             target.TakeDamage(damage, DamageType.Physical, unit);
             view.PlayAttackEffect();
         }
-        // Ghi nhận damage gây ra và nhận vào cho unit
-        BattleStatsManager.Instance?.AddDamageDealtToUnit(unit, damage);
-        BattleStatsManager.Instance?.AddDamageTakenToUnit(target, damage);
     }
 
     private void PerformAttackOnCard(CardController card)

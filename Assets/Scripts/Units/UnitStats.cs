@@ -29,17 +29,18 @@ public class UnitStats : BaseStats
     {
         UnitEvents.Combat.RaiseRawDamageReceived(source, GetComponent<Unit>(), amount);
         float finalDamage = CalculateFinalDamage(amount, damageType);
+        UnitEvents.Combat.RaiseDamageReduced(GetComponent<Unit>(), amount - finalDamage);
 
         OnModifyRawDamage?.Invoke(finalDamage, source, GetComponent<Unit>(), damageType);
 
         float remainingDamage = ProcessShieldDamage(finalDamage);
+        UnitEvents.Combat.RaiseShieldDamage(GetComponent<Unit>(), finalDamage - remainingDamage);
 
         lastSource = source;
         float healthDamage = ProcessHealthDamage(remainingDamage);
         ShowHeathDamage(healthDamage, damageType);
 
         OnTakeDamage?.Invoke(finalDamage, source);
-        BattleStatsManager.Instance?.AddDamageTakenToUnit(GetComponent<Unit>(), finalDamage);
     }
 
     private float ProcessHealthDamage(float damage)
@@ -93,6 +94,7 @@ public class UnitStats : BaseStats
     public void Heal(float amount)
     {
         float healing = StatsCalculator.CalculateHealing(amount, this);
+        UnitEvents.Combat.RaiseHealing(GetComponent<Unit>(), healing);
         currentHp = Mathf.Min(currentHp + healing, GetMaxHp());
         OnHealthChanged?.Invoke(currentHp);
     }

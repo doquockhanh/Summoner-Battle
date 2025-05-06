@@ -7,6 +7,7 @@ public class CardController : MonoBehaviour
     [SerializeField] private CardCombat cardCombat;
 
     private Card cardData;
+    public Card CardData => cardData;
     private CardStats cardStats;
     private CardView cardView;
     private float currentMana;
@@ -140,8 +141,6 @@ public class CardController : MonoBehaviour
         unit.Initialize(cardData.summonUnit, isPlayer, this);
 
         activeUnits.Add(unit);
-
-        BattleStatsManager.Instance?.RegisterUnit(unit, cardData.summonUnit.unitName, this);
 
         unit.GetUnitStats().OnDeath += () => RemoveUnit(unit);
 

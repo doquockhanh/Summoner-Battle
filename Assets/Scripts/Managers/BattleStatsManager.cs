@@ -12,20 +12,11 @@ public class BattleStatsManager : MonoBehaviour
         public CardController cardController;
         public float totalDamageDealt;
         public float totalDamageTaken;
-        public List<UnitBattleStats> unitStats = new List<UnitBattleStats>();
-    }
-
-    [System.Serializable]
-    public class UnitBattleStats
-    {
-        public string unitId;
-        public Unit unit;
-        public float totalDamageDealt;
-        public float totalDamageTaken;
+        public float totalDamageReduced;
+        public float totalHealShield;
     }
 
     private Dictionary<string, CardBattleStats> cardStatsDict = new Dictionary<string, CardBattleStats>();
-    private Dictionary<Unit, UnitBattleStats> unitStatsDict = new Dictionary<Unit, UnitBattleStats>();
 
     private void Awake()
     {
@@ -38,6 +29,21 @@ public class BattleStatsManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnEnable()
+    {
+        UnitEvents.Combat.OnTakeRawDamage += HandleDamage;
+        UnitEvents.Combat.OnDamageReduced += HandleDamageReduced;
+        UnitEvents.Combat.OnShieldDamage += HandleHealAndShield;
+        UnitEvents.Combat.OnHealing += HandleHealAndShield;
+    }
+    private void OnDisable()
+    {
+        UnitEvents.Combat.OnTakeRawDamage -= HandleDamage;
+        UnitEvents.Combat.OnDamageReduced -= HandleDamageReduced;
+        UnitEvents.Combat.OnShieldDamage -= HandleHealAndShield;
+        UnitEvents.Combat.OnHealing -= HandleHealAndShield;
     }
 
     // Đăng ký card khi bắt đầu trận
@@ -56,60 +62,49 @@ public class BattleStatsManager : MonoBehaviour
         }
     }
 
-    // Đăng ký unit khi được triệu hồi
-    public void RegisterUnit(Unit unit, string unitId, CardController ownerCard)
+    // Lắng nghe event gây/nhận damage
+    private void HandleDamage(Unit source, Unit target, float amount)
     {
-        if (!unitStatsDict.ContainsKey(unit))
+        if (source != null && source.OwnerCard != null && source.OwnerCard.CardData != null)
         {
-            var stats = new UnitBattleStats
+            var cardId = source.OwnerCard.CardData.id;
+            if (cardStatsDict.TryGetValue(cardId, out var cardStats))
             {
-                unitId = unitId,
-                unit = unit,
-                totalDamageDealt = 0,
-                totalDamageTaken = 0
-            };
-            unitStatsDict[unit] = stats;
-            // Gắn vào card chủ quản
-            if (ownerCard != null && cardStatsDict.TryGetValue(ownerCard.name, out var cardStats))
+                cardStats.totalDamageDealt += amount;
+            }
+        }
+        if (target != null && target.OwnerCard != null && target.OwnerCard.CardData != null)
+        {
+            var cardId = target.OwnerCard.CardData.id;
+            if (cardStatsDict.TryGetValue(cardId, out var cardStats))
             {
-                cardStats.unitStats.Add(stats);
+                cardStats.totalDamageTaken += amount;
             }
         }
     }
 
-    // Ghi nhận damage gây ra cho card
-    public void AddDamageDealtToCard(string cardId, float amount)
+    private void HandleDamageReduced(Unit source, float amount)
     {
-        if (cardStatsDict.TryGetValue(cardId, out var stats))
+        if (source != null && source.OwnerCard != null && source.OwnerCard.CardData != null)
         {
-            stats.totalDamageDealt += amount;
+            var cardId = source.OwnerCard.CardData.id;
+            if (cardStatsDict.TryGetValue(cardId, out var cardStats))
+            {
+                cardStats.totalDamageReduced += amount;
+            }
         }
     }
 
-    // Ghi nhận damage nhận vào cho card
-    public void AddDamageTakenToCard(string cardId, float amount)
-    {
-        if (cardStatsDict.TryGetValue(cardId, out var stats))
-        {
-            stats.totalDamageTaken += amount;
-        }
-    }
 
-    // Ghi nhận damage gây ra cho unit
-    public void AddDamageDealtToUnit(Unit unit, float amount)
+    private void HandleHealAndShield(Unit source, float amount)
     {
-        if (unitStatsDict.TryGetValue(unit, out var stats))
+        if (source != null && source.OwnerCard != null && source.OwnerCard.CardData != null)
         {
-            stats.totalDamageDealt += amount;
-        }
-    }
-
-    // Ghi nhận damage nhận vào cho unit
-    public void AddDamageTakenToUnit(Unit unit, float amount)
-    {
-        if (unitStatsDict.TryGetValue(unit, out var stats))
-        {
-            stats.totalDamageTaken += amount;
+            var cardId = source.OwnerCard.CardData.id;
+            if (cardStatsDict.TryGetValue(cardId, out var cardStats))
+            {
+                cardStats.totalHealShield += amount;
+            }
         }
     }
 
@@ -122,6 +117,5 @@ public class BattleStatsManager : MonoBehaviour
     public void ResetStats()
     {
         cardStatsDict.Clear();
-        unitStatsDict.Clear();
     }
-} 
+}

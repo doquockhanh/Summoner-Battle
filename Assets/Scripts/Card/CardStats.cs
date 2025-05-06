@@ -30,9 +30,6 @@ public class CardStats : BaseStats, IStats
         {
             OnCardDead?.Invoke();
         }
-        // Ghi nhận damage nhận vào cho card
-        if (data != null)
-            BattleStatsManager.Instance?.AddDamageTakenToCard(data.id, finalDamage);
     }
 
     public override float GetMaxHp() => GetModifiedStat(StatType.MaxHp, data.maxHp);
