@@ -221,6 +221,8 @@ MonoBehaviour:
   attackEffect: {fileID: 0}
   animator: {fileID: 0}
   healthBarController: {fileID: 2733953494786001486}
+  attackAnimClip: {fileID: 7400000, guid: e8db204e15cce7e4ba2060a563e0116f, type: 2}
+  baseAttackAnimDuration: 0.45
 --- !u!114 &2569714632955878430
 MonoBehaviour:
   m_ObjectHideFlags: 0

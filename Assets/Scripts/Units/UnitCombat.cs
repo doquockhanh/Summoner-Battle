@@ -32,6 +32,10 @@ public class UnitCombat : MonoBehaviour
     [SerializeField] private Color projectileColor = Color.white;
     [SerializeField] private Transform projectileSpawnPoint;
 
+    private float attackHitTimingPercent = 0.5f; // Tỉ lệ thời điểm gây damage trong animation (giữa animation)
+    private Unit pendingAttackTarget;
+    private CardController pendingAttackCardTarget;
+
     private void Awake()
     {
         statusEffects = GetComponent<UnitStatusEffects>();
@@ -157,7 +161,6 @@ public class UnitCombat : MonoBehaviour
             if (IsInAttackRange(targeting.CurrentTarget.OccupiedCell))
             {
                 PerformAttack(targeting.CurrentTarget);
-                ResetAttackTimer();
                 return true;
             }
         }
@@ -170,7 +173,6 @@ public class UnitCombat : MonoBehaviour
                 if (IsInAttackRange(targeting.CurrentCardTarget.occupiedHex))
                 {
                     PerformAttackOnCard(targeting.CurrentCardTarget);
-                    ResetAttackTimer();
                     return true;
                 }
             }
@@ -187,56 +189,71 @@ public class UnitCombat : MonoBehaviour
 
     private void PerformAttack(Unit target)
     {
-        float damage = stats.GetPhysicalDamage();
-
-        if (stats.RollForCritical())
-        {
-            damage = stats.CalculateCriticalDamage(damage);
-        }
-
-        bool faceRight = target.transform.position.x > transform.position.x;
-        view.FlipSprite(faceRight);
-        view.PlayAttackAnimation();
-
-        if (useProjectile && projectilePrefab != null)
-        {
-            Vector3 spawnPos = projectileSpawnPoint != null ?
-                projectileSpawnPoint.position : transform.position;
-
-            GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-            var projectile = proj.GetComponent<Projectile>();
-            projectile.Initialize(target, damage, projectileColor, unit);
-        }
-        else
-        {
-            target.TakeDamage(damage, DamageType.Physical, unit);
-            view.PlayAttackEffect();
-        }
+        float baseAnimDuration = view.BaseAttackAnimDuration;
+        float attackSpeed = stats.GetAttackSpeed();
+        float animSpeed = baseAnimDuration / (1f / attackSpeed);
+        pendingAttackTarget = target;
+        view.FlipSprite(target.transform.position.x > transform.position.x);
+        view.PlayAttackAnimation(animSpeed);
+        StartCoroutine(AttackDamageCoroutine(baseAnimDuration, animSpeed, false));
+        ResetAttackTimer();
     }
 
     private void PerformAttackOnCard(CardController card)
     {
-        float damage = stats.GetPhysicalDamage();
+        float baseAnimDuration = view.BaseAttackAnimDuration;
+        float attackSpeed = stats.GetAttackSpeed();
+        float animSpeed = baseAnimDuration / (1f / attackSpeed);
+        pendingAttackCardTarget = card;
+        view.PlayAttackAnimation(animSpeed);
+        view.FlipSprite(card.transform.position.x > transform.position.x);
+        StartCoroutine(AttackDamageCoroutine(baseAnimDuration, animSpeed, true));
+        ResetAttackTimer();
+    }
 
-        if (useProjectile && projectilePrefab != null)
+    private IEnumerator AttackDamageCoroutine(float baseAnimDuration, float animSpeed, bool isCard)
+    {
+        float scaledDuration = baseAnimDuration / animSpeed;
+        float hitTime = scaledDuration * attackHitTimingPercent;
+        yield return new WaitForSeconds(hitTime);
+        if (isCard && pendingAttackCardTarget != null)
         {
-            Vector3 spawnPos = projectileSpawnPoint != null ?
-                projectileSpawnPoint.position : transform.position;
-
-            GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-            var projectile = proj.GetComponent<Projectile>();
-            projectile.InitializeCardTarget(card, damage, projectileColor);
-        }
-        else
-        {
-            if (card.TryGetComponent<CardStats>(out var cardStats))
+            var cardStats = pendingAttackCardTarget.GetComponent<CardStats>();
+            if (cardStats != null && cardStats.CurrentHp > 0)
             {
-                cardStats.TakeDamage(damage, DamageType.Physical);
+                if (useProjectile && projectilePrefab != null)
+                {
+                    Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
+                    GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+                    var projectile = proj.GetComponent<Projectile>();
+                    projectile.InitializeCardTarget(pendingAttackCardTarget, stats.GetPhysicalDamage(), projectileColor);
+                }
+                else
+                {
+                    cardStats.TakeDamage(stats.GetPhysicalDamage(), DamageType.Physical);
+                    view.PlayAttackEffect();
+                }
             }
         }
-
-        view.PlayAttackAnimation();
-        view.FlipSprite(card.transform.position.x > transform.position.x);
+        else if (!isCard && pendingAttackTarget != null && !pendingAttackTarget.IsDead)
+        {
+            if (useProjectile && projectilePrefab != null)
+            {
+                Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
+                GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+                var projectile = proj.GetComponent<Projectile>();
+                projectile.Initialize(pendingAttackTarget, stats.GetPhysicalDamage(), projectileColor, unit);
+            }
+            else
+            {
+                pendingAttackTarget.TakeDamage(stats.GetPhysicalDamage(), DamageType.Physical, unit);
+                view.PlayAttackEffect();
+            }
+        }
+        yield return new WaitForSeconds(scaledDuration - hitTime);
+        view.ResetAttackAnimSpeed();
+        pendingAttackTarget = null;
+        pendingAttackCardTarget = null;
     }
 
     private bool CanAttack() => attackTimer <= 0;

@@ -9,6 +9,14 @@ public class UnitView : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private HealthBarController healthBarController;
 
+    [Header("Animation Settings")]
+    [SerializeField] private AnimationClip attackAnimClip; // Gán clip attack nếu muốn tự động lấy length
+    [Tooltip("Nếu đã gắn animation clip thì ko cần chỉnh dòng này")]
+    [SerializeField] private float baseAttackAnimDuration = 0.45f; // Thời lượng animation attack gốc, có thể chỉnh cho từng unit
+
+    public float BaseAttackAnimDuration => baseAttackAnimDuration;
+    private float lastAttackAnimSpeed = 1f;
+
     private Material spriteMaterial;
     private static readonly int FlashProperty = Shader.PropertyToID("_Flash");
     private static readonly int IsMovingParam = Animator.StringToHash("isMoving");
@@ -21,6 +29,11 @@ public class UnitView : MonoBehaviour
     {
         if (animator == null)
             animator = GetComponent<Animator>();
+        // Nếu chưa set baseAttackAnimDuration hoặc nhỏ hơn 0.01, tự lấy từ AnimationClip
+        if (attackAnimClip != null)
+        {
+            baseAttackAnimDuration = attackAnimClip.length;
+        }
     }
 
     private void OnEnable()
@@ -63,15 +76,24 @@ public class UnitView : MonoBehaviour
         }
     }
 
-    public void PlayAttackAnimation()
+    public void PlayAttackAnimation(float animSpeed)
     {
         if (animator != null)
         {
+            lastAttackAnimSpeed = animator.speed;
+            animator.speed = animSpeed;
             animator.SetTrigger(AttackParam);
             SetMoving(false);
         }
     }
 
+    public void ResetAttackAnimSpeed()
+    {
+        if (animator != null)
+        {
+            animator.speed = lastAttackAnimSpeed;
+        }
+    }
 
     public void PlaySkillAnimation()
     {
