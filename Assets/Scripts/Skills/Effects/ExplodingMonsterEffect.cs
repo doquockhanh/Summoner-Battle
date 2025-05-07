@@ -91,7 +91,7 @@ public class ExplodingMonsterEffect : MonoBehaviour, ISkillEffect
 
         if (!monster.GetUnitStats().IsDead)
         {
-            monster.GetUnitStats().TakeDamage(999f, DamageType.True);
+            monster.GetUnitStats().TakeDamage(999f, DamageType.SelfExplore);
         }
         UnitPoolManager.Instance.ReturnToPool(monster);
         isExploded = true;

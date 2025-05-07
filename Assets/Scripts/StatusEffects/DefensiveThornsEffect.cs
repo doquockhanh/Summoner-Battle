@@ -31,7 +31,7 @@ public class DefensiveThornsEffect : BaseStatusEffect
         // source là kẻ tấn công
         // target là kẻ chịu đòn
         // target != this.owner loại bỏ kẻ chịu đòn ko phải chủ sở hữu trạng thái
-        if (source == null || target == null || target != this.owner) return;
+        if (source == null || source.IsDead || target == null || target != owner) return;
         float thornsDamage = damage * (thornsDamagePercent / 100f);
         source.TakeDamage(thornsDamage, DamageType.ThornsDamage);
     }

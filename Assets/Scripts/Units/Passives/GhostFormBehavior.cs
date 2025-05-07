@@ -62,7 +62,7 @@ public class GhostFormBehavior : MonoBehaviour
         if (unit != null)
         {
             stats.OnTakeLethalityDamage -= ActivateGhostForm;
-            unit.GetComponent<UnitStats>().TakeDamage(9999, DamageType.True);
+            unit.GetComponent<UnitStats>().TakeDamage(9999, DamageType.SelfExplore);
             UnitPoolManager.Instance.ReturnToPool(unit);
         }
         if (immortalEffect != null)

@@ -147,5 +147,6 @@ public enum DamageType
     Magic,
     True,
     ThornsDamage,
-    SharedDamage
+    SharedDamage,
+    SelfExplore
 }

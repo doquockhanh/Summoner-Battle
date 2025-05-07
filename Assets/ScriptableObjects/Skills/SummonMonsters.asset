@@ -15,13 +15,14 @@ MonoBehaviour:
   skillName: Summon Monters
   description: 
   manaCost: 40
-  duration: 0
-  radius: 2
   skillIcon: {fileID: 0}
   hasPassive: 0
   skillType: 0
+  animationDuration: 2
+  doSkillActionAt: 1.5
   ownerCard: {fileID: 0}
-  monsterCount: 3
+  monsterCount: 1
   monsterLifetime: 6
+  monsterExplodeRadius: 2
   monsterData: {fileID: 11400000, guid: f58dbaba1373a864d8583031458e7dab, type: 2}
   summonEffectPrefab: {fileID: 0}

@@ -68,7 +68,7 @@ public class HolyAuraEffect : MonoBehaviour, ISkillEffect
     {
         // ko take dame/heal bởi nguồn của bản thân
         // ko share qua lại damageType == DamageType.SharedDamage
-        if (source == caster || target == caster || damageType == DamageType.SharedDamage) return rawDamage; 
+        if (source == caster || target == caster || damageType == DamageType.SharedDamage || damageType == DamageType.SelfExplore) return rawDamage; 
 
         if (protectedAllies.Contains(source))
         {
