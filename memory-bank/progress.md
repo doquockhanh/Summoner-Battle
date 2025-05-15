@@ -1,19 +1,18 @@
 # Progress
 
 ## What Works
-- Memory Bank structure established
-- Core documentation files created
+- Memory Bank structure initialized and core documentation files created.
 
 ## What's Left to Build
-- Implement core gameplay systems (summoning, battle, progression)
-- Develop UI/UX
-- Add unit/ability data
-- Playtesting and balancing
+- Core gameplay systems: summoning, movement, combat, abilities.
+- User interface for game controls and feedback.
+- Multiplayer/networking (if in scope).
+- Content: summoners, creatures, abilities.
+- Testing and polish.
 
 ## Current Status
-- Project documentation initialized
-- Ready to begin core development
+- Project documentation and planning phase.
+- No gameplay systems implemented yet.
 
 ## Known Issues
-- No gameplay features implemented yet
-- Documentation will need regular updates as project evolves 
+- None at this stage; project is in initial setup phase. 

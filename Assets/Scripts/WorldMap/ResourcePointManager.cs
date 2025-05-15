@@ -21,7 +21,7 @@ public class ResourcePointManager : MonoBehaviour
 
     private async void Start()
     {
-        tileToPlace = Resources.Load<TileBase>("Tiles/cave1");
+        tileToPlace = Resources.Load<TileBase>("Tiles/WorldMap/cave1");
         await LoadResourcePoints();
     }
 
@@ -116,10 +116,16 @@ public class ResourcePointManager : MonoBehaviour
 
     private void SpawnResourcePoints()
     {
+        if(tileToPlace == null) {
+            Debug.Log("Không tìm thấy tile RPB");
+            return;
+        }
+
         int battlegroundIndex = 0;
 
         foreach (var battleground in battlegrounds)
         {
+            Debug.Log("showww");
             Vector3Int cellPos = mapData[battlegroundIndex];
             tilemap.SetTile(cellPos, tileToPlace);
 

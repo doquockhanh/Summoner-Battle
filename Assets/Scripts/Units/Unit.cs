@@ -9,7 +9,6 @@ public class Unit : MonoBehaviour
     [SerializeField] private UnitTargeting targeting;
     [SerializeField] private UnitView view;
 
-    private Base currentBaseTarget;
     private bool isPlayerUnit;
     private CardController ownerCard;
 
@@ -17,7 +16,6 @@ public class Unit : MonoBehaviour
 
     public bool IsDead => stats.IsDead;
     public bool IsPlayerUnit => isPlayerUnit;
-    public Base CurrentBaseTarget => currentBaseTarget;
     public UnitData GetUnitData() => stats.Data;
     public UnitStats GetUnitStats() => stats;
     public float GetCurrentHP() => stats.CurrentHP;

@@ -1,10 +1,22 @@
-# .clinerules
+# .clinerules – Project Intelligence Journal
 
-## Project Intelligence and Patterns
+## Patterns & Preferences
+- Always update Memory Bank files before and after significant changes.
+- Prioritize clarity and maintainability in documentation and code.
+- Use modular, data-driven approaches for all systems.
 
-- Always read and update all Memory Bank files at the start of every task.
-- Maintain clear, up-to-date documentation for all project changes.
-- Document new patterns, decisions, and user preferences as they emerge.
-- Use modular, maintainable code and documentation structures.
-- Prioritize clarity, maintainability, and extensibility in all work.
-- Capture project-specific insights and workflow optimizations here. 
+## Project-Specific Insights
+- Summoner Battle's core value is in its extensibility and tactical depth.
+- Documentation is the single source of truth for all design and technical decisions.
+
+## Known Challenges
+- Ensuring documentation stays in sync with rapid development.
+- Balancing accessibility with strategic complexity.
+
+## Tool Usage
+- Use Unity's ScriptableObjects for all game data definitions.
+- Leverage event-driven patterns for game logic and UI updates.
+
+## Evolution of Decisions
+- Initial focus is on documentation and planning before implementation.
+- All new features or changes must be reflected in the Memory Bank immediately. 

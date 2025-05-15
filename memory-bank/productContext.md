@@ -1,18 +1,21 @@
 # Product Context
 
 ## Why This Project Exists
-Summoner Battle is designed to fill the gap for players seeking a strategic, turn-based battle game with unique summoning mechanics. The project aims to provide a fun, replayable experience that rewards tactical thinking.
+Summoner Battle is designed to fill a gap in the tactical strategy game genre by offering a unique blend of summoning mechanics and deep tactical gameplay. The project aims to provide players with a fresh, engaging experience that emphasizes strategic decision-making and creative play.
 
 ## Problems It Solves
-- Lack of accessible tactical battle games with summoning features
-- Need for a well-documented, maintainable codebase for future expansion
+- Lack of innovative summoning-based tactical games.
+- Need for a modular, extensible system for rapid prototyping and content updates.
+- Desire for a game that balances depth and accessibility for both casual and competitive players.
 
 ## How It Should Work
-- Players summon units and battle in turn-based combat
-- Each unit has unique abilities and stats
-- Victory is achieved by outsmarting the opponent
+- Players control summoners who can call forth creatures to the battlefield.
+- Each summoner and creature has unique abilities and stats.
+- The game is turn-based, with a focus on positioning, ability usage, and resource management.
+- The system should allow for easy addition of new content (summoners, creatures, abilities).
 
 ## User Experience Goals
-- Intuitive controls and clear feedback
-- Satisfying progression and rewards
-- Easy onboarding for new players 
+- Intuitive controls and clear feedback for all actions.
+- Visually distinct and readable battlefield.
+- Satisfying progression and rewards.
+- Smooth onboarding for new players, with depth for advanced strategies. 
