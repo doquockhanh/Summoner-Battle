@@ -42,4 +42,4 @@ public class InventoryDemoLoader : MonoBehaviour
     //         Debug.Log($"Inventory loaded from API: {playerInventory.Count} items");
     //     }));
     // }
-} 
+}

@@ -8,7 +8,7 @@ public static class ItemDatabase
     public static void LoadAllItems()
     {
         ItemsById = new Dictionary<int, ItemData>();
-        var allItems = Resources.LoadAll<ItemData>("Items");
+        var allItems = Resources.LoadAll<ItemData>("ScriptableObjects/Items");
         foreach (var item in allItems)
         {
             ItemsById[item.id] = item;
