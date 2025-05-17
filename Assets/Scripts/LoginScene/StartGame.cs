@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour {
     public void LoadHome() {
-        SceneManager.LoadScene("Home");
+         CutsceneManager.Instance.PlayCutscene("Home", 0.5f);
+        //SceneManager.LoadScene("Home");
+
     }
 }
