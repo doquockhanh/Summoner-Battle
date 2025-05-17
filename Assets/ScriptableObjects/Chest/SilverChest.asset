@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b511d9a894502b4997dca929a282534, type: 3}
+  m_Name: SilverChest
+  m_EditorClassIdentifier: 
+  rewards:
+  - rewardData: {fileID: 11400000, guid: a6bf1b15f8fa09642888930caa606eff, type: 2}
+    probability: 0.27
+    minAmount: 1
+    maxAmount: 1
+  - rewardData: {fileID: 11400000, guid: 3f6670e1650226b4c93372254e440081, type: 2}
+    probability: 0.49
+    minAmount: 10
+    maxAmount: 20
+  - rewardData: {fileID: 11400000, guid: d72de0714c77ff94d80015f20a4499d0, type: 2}
+    probability: 0.49
+    minAmount: 1
+    maxAmount: 3

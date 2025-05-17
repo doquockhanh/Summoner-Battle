@@ -10,4 +10,4 @@ public class ItemData : ScriptableObject
     [TextArea]
     public string description;
     // Có thể mở rộng thêm các trường khác nếu cần
-} 
+}
