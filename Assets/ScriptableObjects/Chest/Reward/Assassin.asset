@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74b361dd01e763a4a8670e8852fb8db0, type: 3}
-  m_Name: WoodChest
+  m_Script: {fileID: 11500000, guid: e8fba0d9b915a8840a2c3d8669bc08ae, type: 3}
+  m_Name: Assassin
   m_EditorClassIdentifier: 
-  id: 4
-  itemName: Wood Chest
-  icon: {fileID: -907669468, guid: 130745bd6cb40734e984eb327db108d9, type: 3}
-  maxStack: 10
-  description: Open to obtain rewards.
+  cardData: {fileID: 11400000, guid: c9d0d035aac22214cb08336b87382a33, type: 2}
