@@ -45,13 +45,13 @@ public class CardDetailPanel : MonoBehaviour
     private void Start()
     {
         gameObject.SetActive(false);
-        closeButton.SetActive(false);
+        Debug.Log("ashdi");
+        closeButton.GetComponent<Button>().onClick.AddListener(Hide);
     }
     
     public void Show(Card card)
     {
         gameObject.SetActive(true);
-        closeButton.SetActive(true);  
         cardInventoryUI.gameObject.SetActive(false); 
         // Hiển thị thông tin cơ bản
         cardImage.sprite = card.cardImage;
@@ -103,8 +103,8 @@ public class CardDetailPanel : MonoBehaviour
     
     public void Hide()
     {
+        Debug.Log("clickckckckkc");
         gameObject.SetActive(false);
-        closeButton.SetActive(false); 
         cardInventoryUI.gameObject.SetActive(true);   
     }
 } 

@@ -11,13 +11,17 @@ public class InventoryUI : MonoBehaviour
     public Transform contentRoot;               // Gán là InventoryPanel
 
     private List<GameObject> spawnedSlots = new List<GameObject>();
+    [SerializeField] private GameObject closeButton;
+    [SerializeField] private GameObject canvas;
 
     void Start()
     {
+        closeButton.GetComponent<Button>().onClick.AddListener(Hide);
         StartCoroutine(ShowInventoryDelayed(2));
     }
 
-    private IEnumerator ShowInventoryDelayed(int delay) {
+    private IEnumerator ShowInventoryDelayed(int delay)
+    {
         yield return new WaitForSeconds(delay);
         ShowInventory();
     }
@@ -37,5 +41,9 @@ public class InventoryUI : MonoBehaviour
             slotUI.Setup(item);
             spawnedSlots.Add(slotObj);
         }
+    }
+    private void Hide()
+    {
+        canvas.SetActive(false);
     }
 }

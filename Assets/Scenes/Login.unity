@@ -628,6 +628,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &547013327
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2270908767154694439, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: cutsceneManagerObject
+      value: 
+      objectReference: {fileID: 1609765837}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 136.5611
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 51.742126
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6857118
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307310094662060857, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8228249264995594691, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
+      propertyPath: m_Name
+      value: GameStarter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 173f653c15fa65b478e2e8c36775b0c3, type: 3}
 --- !u!1 &651867254
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,8 +1376,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1062328354}
-        m_TargetAssemblyTypeName: StartGame, Assembly-CSharp
-        m_MethodName: LoadHome
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1373,9 +1434,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1062328349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8afbca8e93fe2c748bd9fb4bcd4d3d6e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ea2d556d087bef4fb815a6ba96f623e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetSceneName: Home
+  transitionDuration: 0.5
+  useCutscene: 1
 --- !u!1 &1115907305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,6 +1720,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1609765837 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4340697422360763747, guid: 54175ccea14d7e846a561a3afcb8b8d9, type: 3}
+  m_PrefabInstance: {fileID: 815610024}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1613791661
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,3 +2187,4 @@ SceneRoots:
   - {fileID: 1395818511}
   - {fileID: 1821053452}
   - {fileID: 815610024}
+  - {fileID: 547013327}

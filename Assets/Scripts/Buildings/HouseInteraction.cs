@@ -5,12 +5,16 @@ public class HouseInteraction : MonoBehaviour
 {
     private CardInventoryUI cardInventoryUI;
     public GameObject cardInventory;
+    public GameObject cardDetailPanel;
     public bool isOpen = true;
 
-    void Start () {
-        cardInventoryUI = GetComponentInChildren<CardInventoryUI>();
-        cardInventory = cardInventoryUI.gameObject;
-        ToggleCardInventory();
+    void Start()
+    {
+        isOpen = cardInventory.activeInHierarchy;
+        if (CardDetailPanel.Instance == null)
+        {
+            cardDetailPanel.SetActive(true);
+        }
     }
 
     void OnMouseDown()
@@ -25,7 +29,12 @@ public class HouseInteraction : MonoBehaviour
         cardInventory.SetActive(isOpen);
 
         if (isOpen)
+        {
+            if (cardInventoryUI == null)
+            {
+                cardInventoryUI = GetComponentInChildren<CardInventoryUI>();
+            }
             cardInventoryUI.LoadCards();
+        }
     }
-
 }

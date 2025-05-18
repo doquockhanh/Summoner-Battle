@@ -56,11 +56,14 @@ public class CutsceneManager : MonoBehaviour
         // Fade in
         yield return StartCoroutine(FadeIn());
 
-        // Wait for cutscene duration
-        yield return new WaitForSeconds(duration);
-
         // Load next scene
         SceneManager.LoadScene(nextSceneName);
+        
+        // Đợi một frame để scene mới load xong
+        yield return null;
+
+        // Wait for cutscene duration
+        yield return new WaitForSeconds(duration);
 
         // Fade out
         yield return StartCoroutine(FadeOut());
@@ -68,6 +71,7 @@ public class CutsceneManager : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
+        fadePanel.raycastTarget = true;
         float elapsedTime = 0f;
         Color startColor = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0);
         Color targetColor = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 1);
@@ -98,5 +102,6 @@ public class CutsceneManager : MonoBehaviour
         }
 
         fadePanel.color = targetColor;
+        fadePanel.raycastTarget = false;
     }
 } 
