@@ -7,6 +7,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
     public InventoryDataSO inventoryDataSO; // Gán asset runtime hoặc tạo mới
     public MockInventoryDataSO mockDataSO; // Gán asset mock database trong Inspector
+    public event System.Action HasChange;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class InventoryManager : MonoBehaviour
         {
             Debug.LogWarning("Load inventory API failed, dùng data cũ trong InventoryDataSO");
         }
+        HasChange?.Invoke();
     }
 
     private IEnumerator LoadInventoryFromMockSO(System.Action<bool> onDone)
@@ -86,6 +88,36 @@ public class InventoryManager : MonoBehaviour
     }
 
     private IEnumerator SimulateAddItemApi(ItemData itemData, int quantity, System.Action<bool> onDone)
+    {
+        // Giả lập delay và thành công
+        yield return new WaitForSeconds(0.1f);
+        onDone?.Invoke(true);
+    }
+
+    public void RemoveItemFromInventory(ItemData itemData, int quantity = 1)
+    {
+        StartCoroutine(RemoveItemFromInventoryCoroutine(itemData, quantity));
+    }
+
+    private IEnumerator RemoveItemFromInventoryCoroutine(ItemData itemData, int quantity)
+    {
+        bool apiSuccess = false;
+        // TODO: Thay thế bằng call API thật khi có
+        yield return StartCoroutine(SimulateRemoveItemApi(itemData, quantity, (success) => { apiSuccess = success; }));
+        if (apiSuccess)
+        {
+            if (mockDataSO != null)
+                mockDataSO.RemoveItem(itemData, quantity);
+            // Đồng bộ lại inventoryDataSO
+            LoadInventory();
+        }
+        else
+        {
+            Debug.LogWarning("Remove item API failed, không cập nhật InventoryDataSO");
+        }
+    }
+
+    private IEnumerator SimulateRemoveItemApi(ItemData itemData, int quantity, System.Action<bool> onDone)
     {
         // Giả lập delay và thành công
         yield return new WaitForSeconds(0.1f);

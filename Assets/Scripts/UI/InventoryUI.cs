@@ -14,6 +14,7 @@ public class InventoryUI : MonoBehaviour
     void Start()
     {
         closeButton.GetComponent<Button>().onClick.AddListener(Hide);
+        InventoryManager.Instance.HasChange += ShowInventory;
     }
 
     void OnEnable()
@@ -43,5 +44,10 @@ public class InventoryUI : MonoBehaviour
     private void Hide()
     {
         canvas.SetActive(false);
+    }
+
+    void OnDestroy()
+    {
+        InventoryManager.Instance.HasChange -= ShowInventory;
     }
 }

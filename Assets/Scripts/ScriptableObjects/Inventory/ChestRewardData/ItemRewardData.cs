@@ -6,7 +6,8 @@ public class ItemRewardData : ChestRewardData
     public ItemData itemData;
     public override void GrantReward(object player, int amount)
     {
-        // TODO: Thêm item vào inventory player
+        // Thêm item vào inventory player
+        InventoryManager.Instance.AddItemToInventory(itemData, amount);
         Debug.Log($"Player nhận được {amount} x {itemData.itemName}");
     }
 } 
