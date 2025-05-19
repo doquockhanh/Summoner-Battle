@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections;
 
 public class InventoryUI : MonoBehaviour
 {
-    public InventoryDemoLoader inventoryLoader; // Gán trong Inspector
     public GameObject itemSlotPrefab;           // Gán prefab ItemSlot
-    public Transform contentRoot;               // Gán là InventoryPanel
+    public Transform contentRoot;
 
     private List<GameObject> spawnedSlots = new List<GameObject>();
     [SerializeField] private GameObject closeButton;
@@ -17,12 +14,10 @@ public class InventoryUI : MonoBehaviour
     void Start()
     {
         closeButton.GetComponent<Button>().onClick.AddListener(Hide);
-        StartCoroutine(ShowInventoryDelayed(2));
     }
 
-    private IEnumerator ShowInventoryDelayed(int delay)
+    void OnEnable()
     {
-        yield return new WaitForSeconds(delay);
         ShowInventory();
     }
 
@@ -33,8 +28,11 @@ public class InventoryUI : MonoBehaviour
             Destroy(slot);
         spawnedSlots.Clear();
 
-        // Hiển thị từng item
-        foreach (var item in inventoryLoader.playerInventory)
+        var inventorySO = InventoryManager.Instance.inventoryDataSO;
+
+        if (inventorySO == null) return;
+
+        foreach (var item in inventorySO.items)
         {
             var slotObj = Instantiate(itemSlotPrefab, contentRoot);
             var slotUI = slotObj.GetComponent<InventorySlotUI>();

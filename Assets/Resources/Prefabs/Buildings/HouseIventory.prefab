@@ -227,9 +227,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e6e1211646bc746bfb79c8ca6ecce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryLoader: {fileID: 7301435965917514104}
   itemSlotPrefab: {fileID: 2744097797506651312, guid: 9669f7b9e0c9b4c40910d7622e675934, type: 3}
   contentRoot: {fileID: 6440015379702786978}
+  demoLoader: {fileID: 0}
   closeButton: {fileID: 8128224034473392278}
   canvas: {fileID: 8902300848671497565}
 --- !u!114 &3682439555333693023
@@ -367,7 +367,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7797917197396824774}
-  - {fileID: 1445527299728040085}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6995189803739274412
@@ -601,50 +600,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &8525826680370523735
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1445527299728040085}
-  - component: {fileID: 7301435965917514104}
-  m_Layer: 0
-  m_Name: InventoryManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1445527299728040085
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8525826680370523735}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.4435375, y: -0.741004, z: -10.406202}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3191529100883962655}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7301435965917514104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8525826680370523735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87ef654ac8cdafd4aac78b1f135e47d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8902300848671497565
 GameObject:
   m_ObjectHideFlags: 0
